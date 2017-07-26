@@ -3,3 +3,4 @@
 /out
 /target
 /nbproject
+/web/WEB-INF/persistence.xml
