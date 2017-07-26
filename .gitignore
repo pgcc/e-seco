@@ -3,4 +3,5 @@
 /out
 /target
 /nbproject
+*.iml
 /web/WEB-INF/persistence-local.xml
