@@ -22,7 +22,7 @@
           <factory-entry name="LOCAL_PERSISTENCE" />
           <factory-entry name="getEntityManagerFactoryBean" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/web/WEB-INF/persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/web/WEB-INF/persistence-local.xml" />
       </configuration>
     </facet>
   </component>
