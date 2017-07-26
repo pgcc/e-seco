@@ -1,0 +1,26 @@
+[
+    [
+        {"area": "Number of Methods", "value": 9},
+        {"area": "Fan-In", "value": 9},
+        {"area": "Number of Attributes", "value": 0},
+        {"area": "Fan-Out", "value": 2}
+    ],
+    [
+        {"area": "Number of Methods", "value": 1},
+        {"area": "Fan-In", "value": 3},
+        {"area": "Number of Attributes", "value": 0},
+        {"area": "Fan-Out", "value": 5}
+    ],
+    [
+        {"area": "Number of Methods", "value": 1},
+        {"area": "Fan-In", "value": 1},
+        {"area": "Number of Attributes", "value": 0},
+        {"area": "Fan-Out", "value": 3}
+    ],
+    [
+        {"area": "Number of Methods", "value": 2},
+        {"area": "Fan-In", "value": 6},
+        {"area": "Number of Attributes", "value": 0},
+        {"area": "Fan-Out", "value": 3}
+    ]
+]

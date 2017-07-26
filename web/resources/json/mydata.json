@@ -1,0 +1,51 @@
+{
+    "name": "WsUserList",
+    "children": [
+        {
+            "name": "br.ufjf.pgcc.eseco.dao.AgentDAO",
+            "children": [
+                {
+                    "name": "br.ufjf.pgcc.eseco.model.Agent",
+                    "size": 5
+                }
+            ]
+        },
+        {
+            "name": "br.ufjf.pgcc.eseco.dao.IsPartOfDAO",
+            "children": [
+                {
+                    "name": "br.ufjf.pgcc.eseco.model.IsPartOf",
+                    "size": 5
+                }
+            ]
+        },
+        {
+            "name": "br.ufjf.pgcc.eseco.model.Agent",
+            "size": 5
+        },
+        {
+            "name": "br.ufjf.pgcc.eseco.model.IsPartOf",
+            "size": 6
+        },
+        {
+            "name": "javax.jws.WebMethod",
+            "size": 6
+        },
+        {
+            "name": "javax.jws.WebParam",
+            "size": 6
+        },
+        {
+            "name": "javax.jws.WebService",
+            "size": 6
+        },
+        {
+            "name": "java.util.ArrayList",
+            "size": 6
+        },
+        {
+            "name": "java.util.List",
+            "size": 6
+        }
+    ]
+}

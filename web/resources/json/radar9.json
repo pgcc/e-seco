@@ -1,0 +1,9 @@
+[
+    [
+        {"area": "WsUserList", "value": 9},
+        {"area": "WsProVersion", "value": 2},
+        {"area": "WsMessage", "value": 1},
+        {"area": "WSGeneIdStr", "value": 1},
+        {"area": "WsAlignmentServices", "value": 2}
+    ]
+]

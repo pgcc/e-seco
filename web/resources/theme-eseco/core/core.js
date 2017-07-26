@@ -1,0 +1,3 @@
+/**
+ * E-SECO THEME CORE JAVASCRIPT
+ */

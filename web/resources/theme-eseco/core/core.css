@@ -1,0 +1,280 @@
+/**
+ * E-SECO THEME CORE STYLESHEET
+ */
+
+html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+
+/**********************************************************************************************************************/
+/*** LOGIN STRUCTURE                                                                                                  */
+/**********************************************************************************************************************/
+
+body.structure-login {
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
+@media only screen and (max-width : 480px) {
+    .structure-login main{
+        width: 100%;
+    }
+}
+
+
+
+/**********************************************************************************************************************/
+/*** APP INNER STRUCTURE                                                                                              */
+/**********************************************************************************************************************/
+
+.structure-app-inner header{
+    background: #006064;
+}
+.structure-app-inner header h1{
+    margin: 0;
+    padding: 20px 0;
+    font-weight: 300;
+    color: #fff;
+}
+.structure-app-inner header .top-header{
+    background-image: url('../../../resources/images/eseco-top-bg.jpg');
+    height: 120px;
+}
+.structure-app-inner header .top-header img{
+    height: 100px;
+    position: relative;
+    top: 10px;
+    left: 30px;
+}
+.structure-app-inner header nav.top-menu{
+    display: flex;
+    justify-content: space-between;
+    background: #00838f;
+}
+.structure-app-inner header nav.top-menu ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.structure-app-inner header nav.top-menu ul li{
+    display: inline-block;
+}
+.structure-app-inner header nav.top-menu ul li a{
+    padding: 15px;
+    display: block;
+    color: #fff;
+}
+.structure-app-inner header nav.top-menu ul li a:hover{
+    text-decoration: none;
+    background-color: #0097a7;
+}
+.structure-app-inner header nav.top-menu .dropdown ul{
+    min-width: 0;
+    padding: 5px 0;
+    background-color: #00838f;
+}
+.structure-app-inner header nav.top-menu .dropdown ul li{
+    display: block;
+}
+.structure-app-inner header nav.top-menu .dropdown ul li.divider{
+    margin: 5px 0;
+    background: #0097a7;
+}
+.structure-app-inner header nav.top-menu .dropdown ul li a{
+    padding: 3px 20px;
+}
+.structure-app-inner header nav.breadcrumbs{
+    padding: 10px;
+    background: #dddddd;
+    border-bottom: 1px solid #bbb;
+}
+
+.structure-app-inner main {
+    display: flex;
+    flex: 1;
+}
+
+.structure-app-inner .main-menu {
+    flex: 0 0 230px;
+    background: #eeeeee;
+    border-right: 1px solid #ccc;
+}
+.structure-app-inner .main-menu ul{
+    margin: 20px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+.structure-app-inner .main-menu ul li{
+
+}
+.structure-app-inner .main-menu ul li a{
+    padding: 10px;
+    display: block;
+}
+.structure-app-inner .main-menu ul li a:hover{
+    text-decoration: none;
+    background-color: #ddd;
+}
+
+.structure-app-inner .main-content {
+    flex: 100%;
+}
+.structure-app-inner .main-content h2 {
+    font-weight: 300;
+}
+
+.structure-app-inner footer{
+    padding: 20px;
+    background: #006064;
+}
+.structure-app-inner footer p{
+    margin: 0;
+    font-weight: 100;
+    color: #fff;
+}
+
+
+/* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
+@media only screen and (max-width : 480px) {
+    .structure-app-inner header nav.top-menu ul li a{
+        padding: 10px;
+        display: block;
+        color: #fff;
+    }
+    .structure-app-inner header nav.top-menu ul li a i{
+        font-size: 2em;
+    }
+    .structure-app-inner header nav.top-menu ul li a span{
+        display: none;
+    }
+    .structure-app-inner header nav.top-menu .dropdown ul li a{
+        padding: 0 6px;
+        text-align: center;
+    }
+
+    .structure-app-inner main {
+        display: block;
+    }
+
+    .structure-app-inner .main-menu {
+        border-bottom: 1px solid #ccc;
+    }
+    .structure-app-inner .main-menu ul{
+        margin: 0;
+    }
+}
+
+
+
+/**********************************************************************************************************************/
+/*** COMPONENTS                                                                                                       */
+/**********************************************************************************************************************/
+
+/* Panel Heading Buttons */
+div.pnl-heading-buttons{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0 0 15px;
+}
+div.pnl-heading-buttons h3{
+    margin: 10px;
+}
+div.pnl-heading-buttons-buttons{
+    display: flex;
+}
+div.pnl-heading-buttons-buttons a.btn{
+    border-left: 1px solid #ddd;
+    align-self: center;
+}
+
+
+/* Data Value List */
+ul.lst-data-value{
+    list-style: none;
+}
+ul.lst-data-value li{
+    display: flex;
+    justify-content: space-between;
+}
+ul.lst-data-value li span:nth-child(1){
+}
+ul.lst-data-value li span:nth-child(2){
+    font-weight: bold;
+}
+
+
+/**********************************************************************************************************************/
+/*** HELPERS                                                                                                          */
+/**********************************************************************************************************************/
+
+/* TEXTS */
+
+.text-large{
+    font-size: 1.2em !important;
+}
+.text-small{
+    font-size: 0.8em !important;
+}
+
+
+/* MARGINS */
+
+.no-margin{
+    margin: 0 !important;
+}
+.no-margin-top{
+    margin-top: 0 !important;
+}
+.no-margin-bottom{
+    margin-bottom: 0 !important;
+}
+.no-margin-left{
+    margin-left: 0 !important;
+}
+.no-margin-right{
+    margin-right: 0 !important;
+}
+
+.margin-5{
+    margin: 5px !important;
+}
+.margin-5-top{
+    margin-top: 5px !important;
+}
+.margin-5-bottom{
+    margin-bottom: 5px !important;
+}
+.margin-5-left{
+    margin-left: 5px !important;
+}
+.margin-5-right{
+    margin-right: 5px !important;
+}
+
+.margin-10{
+    margin: 10px !important;
+}
+.margin-10-top{
+    margin-top: 10px !important;
+}
+.margin-10-bottom{
+    margin-bottom: 10px !important;
+}
+.margin-10-left{
+    margin-left: 10px !important;
+}
+.margin-10-right{
+    margin-right: 10px !important;
+}
