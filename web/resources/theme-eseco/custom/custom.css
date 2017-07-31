@@ -32,10 +32,28 @@
     color: #fff;
 }
 
+.pnl-register{
+    width: 400px;
+    border: 1px solid #2d543f;
+    background-color: rgba(255,255,255,0.8);
+}
+.pnl-register .panel-heading{
+    background-color: #006064;
+    background-image: url('../../images/eseco-top-bg.jpg');
+    text-align: center;
+}
+.pnl-register .panel-heading img{
+    width: 100px;
+}
+.pnl-register .panel-footer{
+    background-color: #006064;
+    color: #fff;
+}
+
 
 /* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
 @media only screen and (max-width : 480px) {
-    .pnl-login{
+    .pnl-login, .pnl-register{
         width: 100%;
     }
 }

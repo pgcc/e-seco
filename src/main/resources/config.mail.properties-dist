@@ -1,0 +1,5 @@
+<!--
+DO NOT EDIT OR DELETE THIS FILE, INSTEAD, USE IT TO CREATE AN config.mail.properties AND POPULATE THE PROPERTIES THERE.
+-->
+mail.server.username=[USERNAME]
+mail.server.password=[PASSWORD]

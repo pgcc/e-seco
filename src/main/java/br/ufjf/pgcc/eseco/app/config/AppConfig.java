@@ -12,14 +12,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScans(value = {
     @ComponentScan("br.ufjf.pgcc.eseco.domain.dao"),
-    @ComponentScan("br.ufjf.pgcc.eseco.domain.service")
+    @ComponentScan("br.ufjf.pgcc.eseco.domain.service"),
+    @ComponentScan("br.ufjf.pgcc.eseco.app.service")
 })
 public class AppConfig {
 
     @Bean
     public LocalEntityManagerFactoryBean getEntityManagerFactoryBean() {
         LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
-        factoryBean.setPersistenceUnitName("LOCAL_PERSISTENCE");
+        factoryBean.setPersistenceUnitName("PERSISTENCE_LOCAL");
         return factoryBean;
     }
 

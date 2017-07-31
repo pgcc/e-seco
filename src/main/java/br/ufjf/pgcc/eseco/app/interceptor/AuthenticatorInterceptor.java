@@ -36,6 +36,11 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        // Authorize Register for all not logged users
+        if (uri.contains("register") && userIsLogged == null) {
+            return true;
+        }
+
         // Block logged users from acessing login
         if (uri.contains("login") && userIsLogged != null) {
             httpServletResponse.sendRedirect("/");

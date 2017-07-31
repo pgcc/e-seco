@@ -37,15 +37,34 @@ public abstract class CommonDAO<T, PK extends Serializable> {
         return t;
     }
 
+    /**
+     * Update an entry in database.
+     *
+     * @param t object of some type (t) to update in database
+     *
+     * @return return the object updated
+     */
     public T update(T t) {
         return this.em.merge(t);
     }
 
+    /**
+     * Delete an entry in database.
+     *
+     * @param t object of some type (t) to delete from database
+     */
     public void delete(T t) {
         t = this.em.merge(t);
         this.em.remove(t);
     }
 
+    /**
+     * Searches for an entry in database through its primary key.
+     *
+     * @param id The primary key to search an entry for
+     *
+     * @return Returns the found entry or NULL if none
+     */
     public T find(PK id) {
         return this.em.find(entityClass, id);
     }
@@ -56,12 +75,26 @@ public abstract class CommonDAO<T, PK extends Serializable> {
         return results.getResultList();
     }
 
+    /**
+     * Searches the database for entries through their fields values.
+     *
+     * @param fields A list of fields and values to be used as search criteria
+     *
+     * @return The list of found entries
+     */
     public List<T> findBy(Map<String, String> fields) {
         TypedQuery<T> results = this.getTypedQuery(fields);
 
         return results.getResultList();
     }
 
+    /**
+     * Search the database for a single entry through its fields values.
+     *
+     * @param fields A list of fields and values to be used as search criteria
+     *
+     * @return The found entry or NULL if none
+     */
     public T findOneBy(Map<String, String> fields) {
         TypedQuery<T> results = this.getTypedQuery(fields);
 
@@ -72,6 +105,13 @@ public abstract class CommonDAO<T, PK extends Serializable> {
         }
     }
 
+    /**
+     * Performs a query in database
+     *
+     * @param fields A list of fields and values to be used as criteria for query
+     *
+     * @return An list of found entries
+     */
     private TypedQuery<T> getTypedQuery(Map<String, String> fields) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.entityClass);

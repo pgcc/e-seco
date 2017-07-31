@@ -1,0 +1,12 @@
+<!--
+DO NOT EDIT OR DELETE THIS FILE, INSTEAD, USE IT TO CREATE AN config.mail.javamail.properties AND POPULATE
+THE PROPERTIES THERE.
+-->
+mail.smtp.host=[HOST]
+mail.smtp.port=[PORT]
+mail.smtp.email=[EMAIL]
+mail.smtp.auth=true
+mail.debug=true
+mail.smtp.starttls.enable=true
+mail.smtp.ssl.enable=true
+mail.smtp.ssl.trust=[HOST]

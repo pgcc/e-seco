@@ -28,7 +28,7 @@
             <div class="col-xs-12">
                 <h2>Profile of ${sessionScope.logged_user.name}</h2>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-12 col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading pnl-heading-buttons">
                         <h3 class="panel-title">Basic Information</h3>

@@ -4,4 +4,6 @@
 /target
 /nbproject
 *.iml
-/web/WEB-INF/persistence-local.xml
+/web/WEB-INF/persistence.xml
+/src/main/resources/config.mail.properties
+/src/main/resources/config.mail.javamail.properties

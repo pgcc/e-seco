@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class UserService {
         this.userDao = userDao;
     }
 
+
     @Transactional
     public User add(User user) {
         return userDao.add(user);
@@ -29,6 +31,18 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userDao.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findByEmail(String email) {
+        if (email != null) {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("email", email);
+
+            return userDao.findBy(map);
+        } else {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
@@ -42,5 +56,41 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public User registerNewUser(User user) throws MessagingException {
+
+
+/*
+        String authentication_code = DigestUtils.sha1Hex("ae");
+        String authentication_uri = "/register/" + authentication_code;
+        String to = user.getEmail();
+        String subject = "New Account Registration";
+        String content = "" +
+                "<p>Hi <strong>" + user.getName() + "</strong>!</p>" +
+                "<br>" +
+                "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>" +
+                "<br>" +
+                "<br>" +
+                "<a href='" + authentication_uri + "'>" + authentication_uri + "</a>" +
+                "<br>"+
+                "<br>"+
+                "<p>E-Seco</p>";
+*/
+
+        user.setLogin(user.getEmail());
+
+        user = add(user);
+
+        /*
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MailerService mailerService = context.getBean(MailerService.class);
+
+        //MailerService mailerService = new MailerService();
+        mailerService.sendMail(to, subject, content);
+*/
+
+        return user;
     }
 }
