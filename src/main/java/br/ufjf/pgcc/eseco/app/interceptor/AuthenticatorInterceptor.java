@@ -43,7 +43,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
 
         // Block logged users from acessing login
         if (uri.contains("login") && userIsLogged != null) {
-            httpServletResponse.sendRedirect("/");
+            httpServletResponse.sendRedirect("/eseco/home");
             return false;
         }
 
@@ -53,7 +53,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         }
 
         // Block not logged users from acessing any other path
-        httpServletResponse.sendRedirect("/login");
+        httpServletResponse.sendRedirect("/eseco/login");
         return false;
     }
 

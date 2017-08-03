@@ -1,9 +1,10 @@
 /.idea
+*.iml
 /lib
 /out
 /target
 /nbproject
-*.iml
-/web/WEB-INF/persistence.xml
+nb-configuration.xml
+/src/main/resources/META-INF/persistence.xml
 /src/main/resources/config.mail.properties
 /src/main/resources/config.mail.javamail.properties

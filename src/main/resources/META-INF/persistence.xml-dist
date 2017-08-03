@@ -8,7 +8,7 @@ DO NOT EDIT OR DELETE THIS FILE, INSTEAD, USE IT TO CREATE AN persistence.xml AN
              version="2.1">
 
     <persistence-unit name="PERSISTENCE_LOCAL">
-        <description>Spring Hibernate JPA Configuration Example</description>
+        <description>Spring Hibernate JPA Configuration</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <properties>
