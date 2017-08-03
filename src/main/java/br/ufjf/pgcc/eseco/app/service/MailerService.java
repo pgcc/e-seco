@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-
+@Service
 public class MailerService {
 
 
-
+    @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    public MailerService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+
+    //public MailerService(JavaMailSender mailSender) {
+      //  this.mailSender = mailSender;
+    //}
 
     /**
      * Send an e-mail.

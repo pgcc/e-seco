@@ -20,9 +20,12 @@ import java.util.List;
 
 @Controller
 public class UacController extends CommonController {
-
+    /*
     @Autowired
     private JavaMailSender mailSender;
+    */
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
@@ -31,7 +34,7 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpSession session, Model model) {
-        UserService userService = getService(UserService.class);
+       // UserService userService = getService(UserService.class);
 
         User authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
 
@@ -59,7 +62,7 @@ public class UacController extends CommonController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(User user, Model model) {
 
-        UserService userService = getService(UserService.class);
+        //UserService userService = getService(UserService.class);
 
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //
@@ -89,6 +92,7 @@ public class UacController extends CommonController {
             try {
                 user = userService.registerNewUser(user);
 
+                /*
                 MimeMessage mimeMessage = mailSender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
 
@@ -113,6 +117,7 @@ public class UacController extends CommonController {
                 helper.setFrom("E-Seco<eseco@datawebhost.com.br>");
 
                 mailSender.send(mimeMessage);
+                */
 
                 model.addAttribute("new_user", user);
 

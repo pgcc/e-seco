@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.service.uac;
 
+import br.ufjf.pgcc.eseco.app.service.MailerService;
 import br.ufjf.pgcc.eseco.domain.dao.uac.UserDAO;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,11 +16,13 @@ import java.util.Map;
 @Service
 public class UserService {
 
+    private MailerService mailerService;
     private UserDAO userDao;
 
     @Autowired
-    public UserService(UserDAO userDao) {
+    public UserService(UserDAO userDao, MailerService mailerService) {
         this.userDao = userDao;
+        this.mailerService = mailerService;
     }
 
 
@@ -62,7 +65,7 @@ public class UserService {
     public User registerNewUser(User user) throws MessagingException {
 
 
-/*
+
         String authentication_code = DigestUtils.sha1Hex("ae");
         String authentication_uri = "/register/" + authentication_code;
         String to = user.getEmail();
@@ -77,19 +80,16 @@ public class UserService {
                 "<br>"+
                 "<br>"+
                 "<p>E-Seco</p>";
-*/
+
 
         user.setLogin(user.getEmail());
 
         user = add(user);
 
-        /*
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        MailerService mailerService = context.getBean(MailerService.class);
 
-        //MailerService mailerService = new MailerService();
+
         mailerService.sendMail(to, subject, content);
-*/
+
 
         return user;
     }
