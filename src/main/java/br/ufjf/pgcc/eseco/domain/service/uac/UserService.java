@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -26,11 +26,6 @@ public class UserService {
     }
 
 
-    @Transactional
-    public User add(User user) {
-        return userDao.add(user);
-    }
-
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userDao.findAll();
@@ -39,7 +34,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<User> findByEmail(String email) {
         if (email != null) {
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("email", email);
 
             return userDao.findBy(map);
@@ -51,7 +46,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findByEmailAndPassword(String email, String password) {
         if (email != null && password != null) {
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("email", email);
             map.put("password", DigestUtils.sha1Hex(password));
 
@@ -61,13 +56,45 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public User findByActivationCode(String activationCode) {
+        if (activationCode != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("activationCode", activationCode);
+
+            return userDao.findOneBy(map);
+        } else {
+            return null;
+        }
+    }
+
     @Transactional
     public User registerNewUser(User user) throws MessagingException {
+        // Define new user data
+        Date date_today = new Date();
 
+        // Get tomorrow date
+        Calendar c = Calendar.getInstance();
+        c.setTime(date_today);
+        c.add(Calendar.DATE, 1);
+        Date date_tomorrow = c.getTime();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        String formatted_date_tomorrow = df.format(date_tomorrow);
 
+        // Create authentication code
+        String authentication_code = DigestUtils.sha1Hex(date_tomorrow + "u" + user.getEmail());
+        String authentication_uri = "http://localhost:8888/eseco/register/" + authentication_code;
 
-        String authentication_code = DigestUtils.sha1Hex("ae");
-        String authentication_uri = "/register/" + authentication_code;
+        // Set new user data
+        user.setActive(false);
+        user.setLogin(user.getEmail());
+        user.setRegisterDate(date_today);
+        user.setActivationCode(authentication_code);
+        user.setActivationExpireDate(date_tomorrow);
+
+        user = userDao.add(user);
+
+        // Set register instructions e-mail content
         String to = user.getEmail();
         String subject = "New Account Registration";
         String content = "" +
@@ -75,21 +102,15 @@ public class UserService {
                 "<br>" +
                 "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>" +
                 "<br>" +
-                "<br>" +
-                "<a href='" + authentication_uri + "'>" + authentication_uri + "</a>" +
+                "<p><a href='" + authentication_uri + "'>" + authentication_uri + "</a></p>" +
+                "<br>"+
+                "<p>This link will be active until: "+ formatted_date_tomorrow +"</p>" +
                 "<br>"+
                 "<br>"+
                 "<p>E-Seco</p>";
 
-
-        user.setLogin(user.getEmail());
-
-        user = add(user);
-
-
-
+        // Send register instructions e-mail
         mailerService.sendMail(to, subject, content);
-
 
         return user;
     }

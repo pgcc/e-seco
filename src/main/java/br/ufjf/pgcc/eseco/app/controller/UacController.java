@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,12 +21,17 @@ import java.util.List;
 
 @Controller
 public class UacController extends CommonController {
-    /*
-    @Autowired
-    private JavaMailSender mailSender;
-    */
-    @Autowired
+
     private UserService userService;
+
+    @Autowired
+    public UacController(UserService userService) {
+        this.userService = userService;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // LOGIN/LOGOUT                                                                                                  //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
@@ -34,7 +40,7 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpSession session, Model model) {
-       // UserService userService = getService(UserService.class);
+        // UserService userService = getService(UserService.class);
 
         User authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
 
@@ -54,6 +60,11 @@ public class UacController extends CommonController {
         return "redirect:login";
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // REGISTER                                                                                                      //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register() {
         return "uac/register";
@@ -67,19 +78,19 @@ public class UacController extends CommonController {
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //
         ///////////////////////////////////////////////////////////////////////
-        ArrayList<String> errorsList = new ArrayList<String>();
+        ArrayList<String> errorsList = new ArrayList<>();
 
         // Name
-        if(user.getName().equals("")){
+        if (user.getName().equals("")) {
             errorsList.add("Name cannot be empty.");
         }
 
         // E-mail
-        if(user.getEmail().equals("")){
+        if (user.getEmail().equals("")) {
             errorsList.add("E-mail cannot be empty.");
-        }else{
+        } else {
             List<User> usersWithSameEmail = userService.findByEmail(user.getEmail());
-            if(!usersWithSameEmail.isEmpty()){
+            if (!usersWithSameEmail.isEmpty()) {
                 errorsList.add("The provided E-mail is already registered to another user.");
             }
         }
@@ -88,36 +99,9 @@ public class UacController extends CommonController {
         ///////////////////////////////////////////////////////////////////////
         // PROCESS VALIDATED DATA                                            //
         ///////////////////////////////////////////////////////////////////////
-        if(errorsList.isEmpty()){
+        if (errorsList.isEmpty()) {
             try {
                 user = userService.registerNewUser(user);
-
-                /*
-                MimeMessage mimeMessage = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-
-                String authentication_code = DigestUtils.sha1Hex("ae");
-                String authentication_uri = "/register/" + authentication_code;
-                String to = user.getEmail();
-                String subject = "New Account Registration";
-                String content = "" +
-                        "<p>Hi <strong>" + user.getName() + "</strong>!</p>" +
-                        "<br>" +
-                        "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>" +
-                        "<br>" +
-                        "<br>" +
-                        "<a href='" + authentication_uri + "'>" + authentication_uri + "</a>" +
-                        "<br>"+
-                        "<br>"+
-                        "<p>E-Seco</p>";
-
-                mimeMessage.setContent(content, "text/html");
-                helper.setTo(to);
-                helper.setSubject(subject);
-                helper.setFrom("E-Seco<eseco@datawebhost.com.br>");
-
-                mailSender.send(mimeMessage);
-                */
 
                 model.addAttribute("new_user", user);
 
@@ -132,13 +116,75 @@ public class UacController extends CommonController {
         ///////////////////////////////////////////////////////////////////////
         // ERROR HANDLING                                                    //
         ///////////////////////////////////////////////////////////////////////
-        if(!errorsList.isEmpty()){
+        if (!errorsList.isEmpty()) {
             model.addAttribute("error", true);
             model.addAttribute("error_messages", errorsList);
         }
 
         return "uac/register";
     }
+
+    @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.GET)
+    public String registerActivation(Model model, @PathVariable(value = "activationCode") String activationCode) {
+
+        User user = userService.findByActivationCode(activationCode);
+
+        if (user != null) {
+            model.addAttribute("user", user);
+        } else {
+            model.addAttribute("error", true);
+        }
+
+        return "uac/register-activation";
+    }
+
+    @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.POST)
+    public String registerActivation(User user, Model model, @PathVariable(value = "activationCode") String activationCode) {
+
+        ///////////////////////////////////////////////////////////////////////
+        // VALIDATE DATA                                                     //
+        ///////////////////////////////////////////////////////////////////////
+        ArrayList<String> errorsList = new ArrayList<>();
+
+        // Name
+        if (user.getName().equals("")) {
+            errorsList.add("Name cannot be empty.");
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////
+        // PROCESS VALIDATED DATA                                            //
+        ///////////////////////////////////////////////////////////////////////
+        if (errorsList.isEmpty()) {
+            try {
+                user = userService.registerNewUser(user);
+
+                model.addAttribute("user", user);
+
+                return "uac/register-phase-two-result";
+
+            } catch (MessagingException e) {
+                errorsList.add(e.getMessage());
+            }
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////
+        // ERROR HANDLING                                                    //
+        ///////////////////////////////////////////////////////////////////////
+        if (!errorsList.isEmpty()) {
+            model.addAttribute("error", true);
+            model.addAttribute("error_messages", errorsList);
+        }
+
+
+        return "uac/register-activation";
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MISCELLANEOUS                                                                                                 //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/profile")
     public String profile() {
