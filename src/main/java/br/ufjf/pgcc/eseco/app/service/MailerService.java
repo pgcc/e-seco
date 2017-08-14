@@ -31,6 +31,7 @@ public class MailerService {
         mimeMessage.setContent(content, "text/html");
         helper.setTo(to);
         helper.setSubject(subject);
+        // @TODO: Remove the hardcoded "from" attribute by retrieving from a parameter
         helper.setFrom("E-Seco<eseco@datawebhost.com.br>");
 
         mailSender.send(mimeMessage);

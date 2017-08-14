@@ -1,4 +1,4 @@
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
@@ -43,7 +43,8 @@
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-block btn-success">Register</button>
-                        <p class="margin-10-top no-margin-bottom"><a href="<c:url value="/login" />">Back to Login</a></p>
+                        <p class="margin-10-top no-margin-bottom"><a href="<c:url value="/login" />">Back to Login</a>
+                        </p>
                     </div>
                 </form>
             </div>

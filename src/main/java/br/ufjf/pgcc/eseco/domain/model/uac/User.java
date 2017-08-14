@@ -1,5 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.model.uac;
 
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -41,6 +43,7 @@ public class User {
 
     @Column(name = "redefinition_expire_date", columnDefinition = "DATETIME")
     private Date redefinitionExpireDate;
+
 
 
     /* GETTERS/SETTERS */
@@ -135,9 +138,9 @@ public class User {
 
 
     /* OTHER METHODS */
+/*
+    public Researcher getResearcherProfile(){
 
-    @Override
-    public String toString() {
-        return "id=" + id + ", name=" + name;
     }
+*/
 }

@@ -1,7 +1,11 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
+import br.ufjf.pgcc.eseco.domain.model.core.Developer;
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.core.DeveloperService;
+import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.uac.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +27,12 @@ import java.util.List;
 public class UacController extends CommonController {
 
     private UserService userService;
+    private DeveloperService developerService;
 
     @Autowired
-    public UacController(UserService userService) {
+    public UacController(UserService userService, DeveloperService developerService) {
         this.userService = userService;
+        this.developerService = developerService;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,10 +46,11 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpSession session, Model model) {
-        // UserService userService = getService(UserService.class);
 
+        // Try to find a user with the passed login credentials
         User authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
 
+        // If a user can be found, register the session and redirect, otherwise, send an error to the view
         if (authenticatedUser != null) {
             session.setAttribute("logged_user", authenticatedUser);
             return "redirect:/";
@@ -72,8 +79,6 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(User user, Model model) {
-
-        //UserService userService = getService(UserService.class);
 
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //
@@ -127,12 +132,14 @@ public class UacController extends CommonController {
     @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.GET)
     public String registerActivation(Model model, @PathVariable(value = "activationCode") String activationCode) {
 
+        // Try to find a user with the passed activation code
         User user = userService.findByActivationCode(activationCode);
 
+        // If a user can be found, send him to view, otherwise, send an error to the view
         if (user != null) {
             model.addAttribute("user", user);
         } else {
-            model.addAttribute("error", true);
+            model.addAttribute("error_activation", true);
         }
 
         return "uac/register-activation";
@@ -140,6 +147,11 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.POST)
     public String registerActivation(User user, Model model, @PathVariable(value = "activationCode") String activationCode) {
+
+        // Redirect if the activation code don't return a valid user
+        if (userService.findByActivationCode(activationCode) == null) {
+            return "redirect:login";
+        }
 
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //

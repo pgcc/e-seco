@@ -1,22 +1,35 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import br.ufjf.pgcc.eseco.domain.model.uac.User;
+
+import javax.persistence.*;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "core_agents")
-public class Agent {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Agent {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private User user;
+
+    @Column(name = "birthday", columnDefinition = "DATETIME")
+    private Date birthday;
+
+    @Column(name = "gender", length = 1)
+    private String gender;
+
+
+    /* GETTERS/SETTERS */
 
     public int getId() {
         return id;
@@ -26,16 +39,27 @@ public class Agent {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "id=" + id + ", name=" + name;
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

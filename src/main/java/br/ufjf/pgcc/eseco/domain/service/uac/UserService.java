@@ -62,7 +62,16 @@ public class UserService {
             Map<String, String> map = new HashMap<>();
             map.put("activationCode", activationCode);
 
-            return userDao.findOneBy(map);
+            User user = userDao.findOneBy(map);
+
+            // Check if the activation date is not expired
+            Date date_today = new Date();
+            if (date_today.before(user.getActivationExpireDate())) {
+                return user;
+            } else {
+                return null;
+            }
+
         } else {
             return null;
         }
@@ -83,6 +92,7 @@ public class UserService {
 
         // Create authentication code
         String authentication_code = DigestUtils.sha1Hex(date_tomorrow + "u" + user.getEmail());
+        // @TODO: Get the actual url, instead of localhost:8888
         String authentication_uri = "http://localhost:8888/eseco/register/" + authentication_code;
 
         // Set new user data
@@ -97,21 +107,27 @@ public class UserService {
         // Set register instructions e-mail content
         String to = user.getEmail();
         String subject = "New Account Registration";
+        // @TODO: Remove the hardcoded content by retrieving it from a .jsp file
         String content = "" +
                 "<p>Hi <strong>" + user.getName() + "</strong>!</p>" +
                 "<br>" +
                 "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>" +
                 "<br>" +
                 "<p><a href='" + authentication_uri + "'>" + authentication_uri + "</a></p>" +
-                "<br>"+
-                "<p>This link will be active until: "+ formatted_date_tomorrow +"</p>" +
-                "<br>"+
-                "<br>"+
+                "<br>" +
+                "<p>This link will be active until: " + formatted_date_tomorrow + "</p>" +
+                "<br>" +
+                "<br>" +
                 "<p>E-Seco</p>";
 
         // Send register instructions e-mail
         mailerService.sendMail(to, subject, content);
 
+        return user;
+    }
+
+    @Transactional
+    public User activateUser(User user) {
         return user;
     }
 }
