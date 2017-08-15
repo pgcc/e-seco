@@ -78,7 +78,7 @@ public class UserService {
     }
 
     @Transactional
-    public User registerNewUser(User user) throws MessagingException {
+    public User registerNewUser(User user) throws Exception {
         // Define new user data
         Date date_today = new Date();
 
@@ -127,7 +127,14 @@ public class UserService {
     }
 
     @Transactional
-    public User activateUser(User user) {
+    public User activateUser(User user, String password) throws Exception {
+        user.setPassword(DigestUtils.sha1Hex(password));
+        user.setActivationCode(null);
+        user.setActivationExpireDate(null);
+        user.setActive(true);
+
+        user = userDao.update(user);
+
         return user;
     }
 }

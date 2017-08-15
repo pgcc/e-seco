@@ -37,6 +37,7 @@
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery/jquery.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/core.js" />"></script>
 <!-- CORE JAVASCRIPTS END -->
 

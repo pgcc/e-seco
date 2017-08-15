@@ -25,7 +25,7 @@ public class ResearcherService {
     }
 
     @Transactional
-    public Researcher registerNewResearcher(Researcher researcher) {
+    public Researcher registerNewResearcher(Researcher researcher) throws Exception {
 
         researcher = researcherDao.add(researcher);
 
