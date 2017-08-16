@@ -71,12 +71,10 @@
 </header>
 <main>
     <div class="main-menu">
-        <ul>
-            <c:if test="${fn:contains(pageContext.request.requestURI, 'services')}">
-                <li><a href="<c:url value="/services"/>"><i class="fa fa-th"></i> Overview</a></li>
-                <li><a href="<c:url value="/services/explore"/>"><i class="fa fa-binoculars"></i> Explore</a></li>
-            </c:if>
-        </ul>
+        <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}" />
+        <c:if test="${urlParts[1] != null}">
+            <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp" />
+        </c:if>
     </div>
     <div class="main-content container-fluid">
         <jsp:doBody/>

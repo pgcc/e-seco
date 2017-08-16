@@ -223,13 +223,4 @@ public class UacController extends CommonController {
         return "uac/register-activation";
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // MISCELLANEOUS                                                                                                 //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @RequestMapping(value = "/profile")
-    public String profile() {
-        return "uac/profile";
-    }
 }

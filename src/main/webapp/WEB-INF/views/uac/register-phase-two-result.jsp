@@ -19,9 +19,10 @@
             <div class="panel-body">
                 <p class="text-center">Thank you <strong>${user.name}</strong>!</p>
                 <p>
-                    You have initiated an register process. An email has been sent to:
-                    <strong>${user.email}</strong>.
-                    Please, follow its instructions to proceed with your registration.
+                    You account has been succefully activated, you may login now.
+                </p>
+                <p class="text-center">
+                    <a href="<c:url value="/login"/>">Go to Login</a>
                 </p>
             </div>
             <div class="panel-footer">
