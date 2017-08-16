@@ -35,7 +35,7 @@ public class ServicesController {
         resource.setName("WsUserList");
         resource.setClassName("br.ufjf.pgcc.eseco.webservice.WsUserList");
 
-
+        /*
         Class cls = Class.forName(resource.getClassName());
 
         // returns public, protected, private and default method of that specific class only (it excludes inherited methods).
@@ -45,13 +45,13 @@ public class ServicesController {
         int MCount = cls.getDeclaredMethods().length;
 
         // Inheritence
-        /*
         Class<?> class2 = cls.getSuperclass();
         Method[] methods2 = class2.getDeclaredMethods();
         MCount += class2.getDeclaredMethods().length;
-        */
+
 
         System.out.println("total metodos na webservice: " + MCount);
+        */
 
         // -----------------------------------------------------------------------------------------------------------
         Class clsAgent = Class.forName("br.ufjf.pgcc.eseco.domain.model.core.Agent");

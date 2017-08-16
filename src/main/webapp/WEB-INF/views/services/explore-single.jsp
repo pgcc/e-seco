@@ -19,7 +19,7 @@
                 src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
             $("#btn-show-treemap").on("click", function () {
-                drawTreemap('/resources/json/mydata.json');
+                drawTreemap('/eseco/resources/json/mydata.json');
             });
 
             $("#btn-show-treemap-2").on("click", function () {
@@ -27,7 +27,7 @@
             });
 
             $("#btn-show-radar").on("click", function () {
-                drawRadar('/resources/json/radar11.json');
+                drawRadar('/eseco/resources/json/radar11.json');
             });
         </script>
     </jsp:attribute>
