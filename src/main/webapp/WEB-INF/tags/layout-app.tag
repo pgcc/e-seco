@@ -39,6 +39,7 @@
         <ul class="top-menu-left">
             <li><a href="<c:url value="/"/>"><i class="fa fa-home"></i> <span>HOME</span></a></li>
             <li><a href="<c:url value="/services"/>"><i class="fa fa-cogs"></i> <span>SERVICES</span></a></li>
+            <li><a href="<c:url value="/researchers"/>"><i class="fa fa-cogs"></i> <span>RESEARCHERS</span></a></li>
         </ul>
         <ul class="top-menu-right">
             <li>

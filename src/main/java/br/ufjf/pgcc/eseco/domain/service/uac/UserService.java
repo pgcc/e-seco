@@ -25,7 +25,6 @@ public class UserService {
         this.mailerService = mailerService;
     }
 
-
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userDao.findAll();
@@ -108,22 +107,36 @@ public class UserService {
         String to = user.getEmail();
         String subject = "New Account Registration";
         // @TODO: Remove the hardcoded content by retrieving it from a .jsp file
-        String content = "" +
-                "<p>Hi <strong>" + user.getName() + "</strong>!</p>" +
-                "<br>" +
-                "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>" +
-                "<br>" +
-                "<p><a href='" + authentication_uri + "'>" + authentication_uri + "</a></p>" +
-                "<br>" +
-                "<p>This link will be active until: " + formatted_date_tomorrow + "</p>" +
-                "<br>" +
-                "<br>" +
-                "<p>E-Seco</p>";
+        String content = ""
+                + "<p>Hi <strong>" + user.getName() + "</strong>!</p>"
+                + "<br>"
+                + "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>"
+                + "<br>"
+                + "<p><a href='" + authentication_uri + "'>" + authentication_uri + "</a></p>"
+                + "<br>"
+                + "<p>This link will be active until: " + formatted_date_tomorrow + "</p>"
+                + "<br>"
+                + "<br>"
+                + "<p>E-Seco</p>";
 
         // Send register instructions e-mail
         mailerService.sendMail(to, subject, content);
 
         return user;
+    }
+
+    @Transactional
+    public User saveOrUpdate(User user) {
+        if (user.getId() == 0 || find(user.getId()) == null) {
+            return userDao.add(user);
+        } else {
+            return userDao.update(user);
+        }
+    }
+
+    @Transactional
+    public User find(int userId) {
+        return userDao.find(userId);
     }
 
     @Transactional

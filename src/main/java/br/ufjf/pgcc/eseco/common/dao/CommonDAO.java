@@ -65,7 +65,7 @@ public abstract class CommonDAO<T, PK extends Serializable> {
      *
      * @return Returns the found entry or NULL if none
      */
-    public T find(PK id) {
+    public T find(int id) {
         return this.em.find(entityClass, id);
     }
 

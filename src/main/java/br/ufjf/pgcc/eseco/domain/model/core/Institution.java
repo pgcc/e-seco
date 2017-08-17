@@ -2,11 +2,10 @@ package br.ufjf.pgcc.eseco.domain.model.core;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "core_institutions")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Institution {
+public class Institution {
 
     @Id
     @Column(name = "id")
@@ -16,9 +15,10 @@ public abstract class Institution {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "details")
+    private String details;
 
     /* GETTERS/SETTERS */
-
     public int getId() {
         return id;
     }
@@ -34,4 +34,13 @@ public abstract class Institution {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
 }
