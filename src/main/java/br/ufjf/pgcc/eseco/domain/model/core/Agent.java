@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "core_agents")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Agent {
+public class Agent {
 
     @Id
     @Column(name = "id")
@@ -19,6 +19,9 @@ public abstract class Agent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "birthday", columnDefinition = "DATETIME")
     private Date birthday;
@@ -43,6 +46,14 @@ public abstract class Agent {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getBirthday() {

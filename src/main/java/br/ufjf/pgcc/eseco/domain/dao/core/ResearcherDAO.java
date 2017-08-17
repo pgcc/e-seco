@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class ResearcherDAO extends CommonDAO<Researcher, Long> {
+public class ResearcherDAO extends CommonDAO<Researcher, Integer> {
 
     protected ResearcherDAO() {
         super(Researcher.class);

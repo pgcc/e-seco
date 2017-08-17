@@ -5,7 +5,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Resource;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ResourceDAO extends CommonDAO<Resource, Long> {
+public class ResourceDAO extends CommonDAO<Resource, Integer> {
 
     protected ResourceDAO() {
         super(Resource.class);

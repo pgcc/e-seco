@@ -2,7 +2,9 @@ package br.ufjf.pgcc.eseco.domain.service.uac;
 
 import br.ufjf.pgcc.eseco.app.service.MailerService;
 import br.ufjf.pgcc.eseco.domain.dao.uac.UserDAO;
+import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,14 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private MailerService mailerService;
     private UserDAO userDao;
+    private MailerService mailerService;
+    private AgentService agentService;
 
     @Autowired
-    public UserService(UserDAO userDao, MailerService mailerService) {
+    public UserService(UserDAO userDao, MailerService mailerService, AgentService agentService) {
         this.userDao = userDao;
+        this.agentService = agentService;
         this.mailerService = mailerService;
     }
 
@@ -76,7 +80,11 @@ public class UserService {
     }
 
     @Transactional
-    public User registerNewUser(User user) throws Exception {
+    public User registerNewUser(String email, String name) throws Exception {
+        // Instantiate the new User and his respective Agent (every User has an Agent linked to him)
+        User new_user = new User();
+        Agent new_user_agent = new Agent();
+
         // Define new user data
         Date date_today = new Date();
 
@@ -89,25 +97,32 @@ public class UserService {
         String formatted_date_tomorrow = df.format(date_tomorrow);
 
         // Create authentication code
-        String authentication_code = DigestUtils.sha1Hex(date_tomorrow + "u" + user.getEmail());
+        String authentication_code = DigestUtils.sha1Hex(date_tomorrow + "u" + new_user.getEmail());
         // @TODO: Get the actual url, instead of localhost:8888
         String authentication_uri = "http://localhost:8888/eseco/register/" + authentication_code;
 
         // Set new user data
-        user.setActive(false);
-        user.setLogin(user.getEmail());
-        user.setRegisterDate(date_today);
-        user.setActivationCode(authentication_code);
-        user.setActivationExpireDate(date_tomorrow);
+        new_user.setActive(false);
+        new_user.setEmail(email);
+        new_user.setLogin(email);
+        new_user.setRegisterDate(date_today);
+        new_user.setActivationCode(authentication_code);
+        new_user.setActivationExpireDate(date_tomorrow);
 
-        user = userDao.add(user);
+        new_user = userDao.add(new_user);
+
+        // Define new user agent data
+        new_user_agent.setName(name);
+        new_user_agent.setUser(new_user);
+
+        new_user_agent = agentService.registerNewAgent(new_user_agent);
 
         // Set register instructions e-mail content
-        String to = user.getEmail();
+        String to = new_user.getEmail();
         String subject = "New Account Registration";
         // @TODO: Remove the hardcoded content by retrieving it from a .jsp file
         String content = ""
-                + "<p>Hi <strong>" + user.getName() + "</strong>!</p>"
+                + "<p>Hi <strong>" + new_user_agent.getName() + "</strong>!</p>"
                 + "<br>"
                 + "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>"
                 + "<br>"
@@ -121,7 +136,7 @@ public class UserService {
         // Send register instructions e-mail
         mailerService.sendMail(to, subject, content);
 
-        return user;
+        return new_user;
     }
 
     @Transactional

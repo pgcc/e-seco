@@ -78,23 +78,26 @@ public class UacController extends CommonController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user, Model model) {
+    public String register(HttpServletRequest request, Model model) {
 
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //
         ///////////////////////////////////////////////////////////////////////
         ArrayList<String> errorsList = new ArrayList<>();
 
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+
         // Name
-        if (user.getName().equals("")) {
+        if (name.equals("")) {
             errorsList.add("Name cannot be empty.");
         }
 
         // E-mail
-        if (user.getEmail().equals("")) {
+        if (email.equals("")) {
             errorsList.add("E-mail cannot be empty.");
         } else {
-            List<User> usersWithSameEmail = userService.findByEmail(user.getEmail());
+            List<User> usersWithSameEmail = userService.findByEmail(email);
             if (!usersWithSameEmail.isEmpty()) {
                 errorsList.add("The provided E-mail is already registered to another user.");
             }
@@ -106,7 +109,7 @@ public class UacController extends CommonController {
         ///////////////////////////////////////////////////////////////////////
         if (errorsList.isEmpty()) {
             try {
-                user = userService.registerNewUser(user);
+                User user = userService.registerNewUser(email, name);
 
                 model.addAttribute("new_user", user);
 

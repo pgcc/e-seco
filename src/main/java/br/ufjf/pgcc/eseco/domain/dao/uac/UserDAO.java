@@ -5,7 +5,7 @@ import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserDAO extends CommonDAO<User, Long> {
+public class UserDAO extends CommonDAO<User, Integer> {
 
     protected UserDAO() {
         super(User.class);

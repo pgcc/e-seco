@@ -4,7 +4,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "core_agents_researchers")
+@PrimaryKeyJoinColumn(name="id_agent")
 public class Researcher extends Agent {
+
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_agent", nullable = false)
+    @Column(name = "id_agent")
+    private Agent agent;
+    */
 
     @Column(name = "display_name")
     private String displayName;
@@ -18,13 +26,14 @@ public class Researcher extends Agent {
     @Column(name = "mendeley_id")
     private String mendeleyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_agent", nullable = false)
-    private Agent agent;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_institution", nullable = false)
     private Institution institution;
+
+
+    /* GETTERS/SETTERS */
 
     public String getDisplayName() {
         return displayName;
@@ -54,18 +63,10 @@ public class Researcher extends Agent {
         return mendeleyId;
     }
 
-    /* GETTERS/SETTERS */
     public void setMendeleyId(String mendeleyId) {
         this.mendeleyId = mendeleyId;
     }
 
-    public Agent getAgent() {
-        return agent;
-    }
-
-    public void setAgent(Agent agent) {
-        this.agent = agent;
-    }
 
     public Institution getInstitution() {
         return institution;
