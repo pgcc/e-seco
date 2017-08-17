@@ -18,8 +18,6 @@ public abstract class Agent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
     private User user;
 
     @Column(name = "birthday", columnDefinition = "DATETIME")

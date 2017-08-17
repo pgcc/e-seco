@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -77,7 +76,7 @@ public class UserService {
     }
 
     @Transactional
-    public User registerNewUser(User user) throws MessagingException {
+    public User registerNewUser(User user) throws Exception {
         // Define new user data
         Date date_today = new Date();
 
@@ -126,7 +125,17 @@ public class UserService {
     }
 
     @Transactional
-    public User saveOrUpdate(User user) {
+    public User activateUser(User user, String password) throws Exception {
+        user.setPassword(DigestUtils.sha1Hex(password));
+        user.setActivationCode(null);
+        user.setActivationExpireDate(null);
+        user.setActive(true);
+
+        user = userDao.update(user);
+        return user;
+    }
+
+    public User saveOrUpdate(User user) throws Exception {
         if (user.getId() == 0 || find(user.getId()) == null) {
             return userDao.add(user);
         } else {
@@ -137,10 +146,5 @@ public class UserService {
     @Transactional
     public User find(int userId) {
         return userDao.find(userId);
-    }
-
-    @Transactional
-    public User activateUser(User user) {
-        return user;
     }
 }

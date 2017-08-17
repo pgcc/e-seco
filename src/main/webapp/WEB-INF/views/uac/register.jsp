@@ -42,8 +42,9 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-block btn-success">Register</button>
-                        <p class="margin-10-top no-margin-bottom"><a href="<c:url value="/login" />">Back to Login</a>
+                        <button class="btn btn-block btn-success">Register</button>
+                        <p class="margin-10-top no-margin-bottom">
+                            <a href="<c:url value="/login" />">Back to Login</a>
                         </p>
                     </div>
                 </form>

@@ -26,7 +26,7 @@ public class ResearcherService {
     }
 
     @Transactional
-    public Researcher saveOrUpdate(Researcher researcher) {
+    public Researcher saveOrUpdate(Researcher researcher) throws Exception {
         if (researcher.getId() == 0 || find(researcher.getId()) == null) {
             return researcherDAO.add(researcher);
         } else {
@@ -35,7 +35,15 @@ public class ResearcherService {
     }
 
     @Transactional
-    public void delete(Researcher researcher) {
+    public Researcher registerNewResearcher(Researcher researcher) throws Exception {
+
+        researcher = researcherDAO.add(researcher);
+
+        return researcher;
+    }
+
+    @Transactional
+    public void delete(Researcher researcher) throws Exception {
         researcherDAO.delete(researcher);
     }
 

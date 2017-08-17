@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
+import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,10 @@ import java.util.List;
 public class UacController extends CommonController {
 
     private UserService userService;
-    private DeveloperService developerService;
 
     @Autowired
-    public UacController(UserService userService, DeveloperService developerService) {
+    public UacController(UserService userService) {
         this.userService = userService;
-        this.developerService = developerService;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class UacController extends CommonController {
 
                 return "uac/register-phase-one-result";
 
-            } catch (MessagingException e) {
+            } catch (Exception e) {
                 errorsList.add(e.getMessage());
             }
         }
@@ -146,21 +146,47 @@ public class UacController extends CommonController {
     }
 
     @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.POST)
-    public String registerActivation(User user, Model model, @PathVariable(value = "activationCode") String activationCode) {
+    public String registerActivation(Model model, HttpServletRequest request,
+                                     @PathVariable(value = "activationCode") String activationCode) {
 
         // Redirect if the activation code don't return a valid user
+        User user = userService.findByActivationCode(activationCode);
         if (userService.findByActivationCode(activationCode) == null) {
             return "redirect:login";
+        }else{
+            model.addAttribute("user", user);
         }
+
 
         ///////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                     //
         ///////////////////////////////////////////////////////////////////////
         ArrayList<String> errorsList = new ArrayList<>();
 
-        // Name
-        if (user.getName().equals("")) {
-            errorsList.add("Name cannot be empty.");
+        String gender = request.getParameter("gender");
+        String birthday = request.getParameter("birthday");
+        String role_researcher = request.getParameter("role_researcher");
+        String role_developer = request.getParameter("role_developer");
+        String password = request.getParameter("password");
+        String password_re = request.getParameter("password_re");
+
+        // Gender
+        if (gender.equals("")) {
+            errorsList.add("Gender cannot be empty.");
+        }
+
+        // At least one role
+        if (role_researcher == null && role_developer == null) {
+            errorsList.add("At least one Role must be chosen.");
+        }
+
+        // Password
+        if (password.equals("")) {
+            errorsList.add("Password cannot be empty.");
+        }else{
+            if (!password.equals(password_re)) {
+                errorsList.add("Password confirmation differ from Password.");
+            }
         }
 
 
@@ -168,14 +194,18 @@ public class UacController extends CommonController {
         // PROCESS VALIDATED DATA                                            //
         ///////////////////////////////////////////////////////////////////////
         if (errorsList.isEmpty()) {
+            // Populate Roles list
+            ArrayList<Integer> rolesList = new ArrayList<>();
+
             try {
-                user = userService.registerNewUser(user);
+                // Activate user
+                user = userService.activateUser(user, password);
 
                 model.addAttribute("user", user);
 
                 return "uac/register-phase-two-result";
 
-            } catch (MessagingException e) {
+            } catch (Exception e) {
                 errorsList.add(e.getMessage());
             }
         }
@@ -193,13 +223,4 @@ public class UacController extends CommonController {
         return "uac/register-activation";
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // MISCELLANEOUS                                                                                                 //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @RequestMapping(value = "/profile")
-    public String profile() {
-        return "uac/profile";
-    }
 }

@@ -14,6 +14,8 @@ import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import br.ufjf.pgcc.eseco.domain.service.uac.UserService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,11 +95,17 @@ public class ResearcherController extends CommonController {
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Researcher updated successfully!");
             }
-            user = userService.saveOrUpdate(user);
-            institution = institutionService.saveOrUpdate(researcher.getInstitution());
-            researcher.setUser(user);
-            researcher.setInstitution(institution);
-            researcher = researcherService.saveOrUpdate(researcher);
+            try {
+                user = userService.saveOrUpdate(user);
+                institution = institutionService.saveOrUpdate(researcher.getInstitution());
+                researcher.setUser(user);
+                researcher.setInstitution(institution);
+                researcher = researcherService.saveOrUpdate(researcher);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Logger.getLogger(ResearcherController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             // POST/REDIRECT/GET
             return "redirect:/researchers/" + researcher.getId();

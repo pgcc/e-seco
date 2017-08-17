@@ -19,7 +19,7 @@ public class ResourceService {
     }
 
     @Transactional
-    public Resource add(Resource resource) {
+    public Resource add(Resource resource) throws Exception{
         return resourceDao.add(resource);
     }
 

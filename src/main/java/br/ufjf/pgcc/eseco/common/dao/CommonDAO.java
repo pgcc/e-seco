@@ -32,7 +32,7 @@ public abstract class CommonDAO<T, PK extends Serializable> {
      *
      * @return return the object inserted
      */
-    public T add(T t) {
+    public T add(T t) throws Exception {
         this.em.persist(t);
         return t;
     }
@@ -44,7 +44,7 @@ public abstract class CommonDAO<T, PK extends Serializable> {
      *
      * @return return the object updated
      */
-    public T update(T t) {
+    public T update(T t) throws Exception {
         return this.em.merge(t);
     }
 
@@ -53,7 +53,7 @@ public abstract class CommonDAO<T, PK extends Serializable> {
      *
      * @param t object of some type (t) to delete from database
      */
-    public void delete(T t) {
+    public void delete(T t) throws Exception {
         t = this.em.merge(t);
         this.em.remove(t);
     }

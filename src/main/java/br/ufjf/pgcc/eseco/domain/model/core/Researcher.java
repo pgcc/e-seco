@@ -19,6 +19,10 @@ public class Researcher extends Agent {
     private String mendeleyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_agent", nullable = false)
+    private Agent agent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_institution", nullable = false)
     private Institution institution;
 
@@ -53,6 +57,14 @@ public class Researcher extends Agent {
     /* GETTERS/SETTERS */
     public void setMendeleyId(String mendeleyId) {
         this.mendeleyId = mendeleyId;
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public Institution getInstitution() {

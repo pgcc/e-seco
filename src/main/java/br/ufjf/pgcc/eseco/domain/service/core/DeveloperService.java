@@ -25,7 +25,7 @@ public class DeveloperService {
     }
 
     @Transactional
-    public Developer registerNewDeveloper(Developer developer) {
+    public Developer registerNewDeveloper(Developer developer) throws Exception {
 
         developer = developerDao.add(developer);
 
