@@ -25,7 +25,7 @@ public class InstitutionService {
     }
 
     @Transactional
-    public Institution saveOrUpdate(Institution institution) {
+    public Institution saveOrUpdate(Institution institution) throws Exception {
         if (institution.getId() == 0 || find(institution.getId()) == null) {
             return institutionDAO.add(institution);
         } else {
@@ -34,7 +34,7 @@ public class InstitutionService {
     }
 
     @Transactional
-    public void delete(Institution institution) {
+    public void delete(Institution institution) throws Exception {
         institutionDAO.delete(institution);
     }
 

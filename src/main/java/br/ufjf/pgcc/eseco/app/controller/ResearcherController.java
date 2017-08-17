@@ -67,11 +67,13 @@ public class ResearcherController extends CommonController {
     }
 
     @RequestMapping(value = "/researchers/{id}", method = RequestMethod.GET)
-    public String showUpdateResearcherForm(@PathVariable("id") int id, Model model) {
+    public String showUpdateResearcherForm(@PathVariable("id") int id, Model model, HttpSession session) {
 
         researcher = researcherService.find(id);
-        institution = institutionService.find(researcher.getInstitution().getId());
-        user = userService.find(researcher.getUser().getId());
+//        institution = institutionService.find(researcher.getInstitution().getId());
+//        user = userService.find(researcher.getUser().getId());
+        user = (User) session.getAttribute("logged_user");
+        institution = new Institution();
         researcher.setInstitution(institution);
         researcher.setUser(user);
         model.addAttribute("researcherForm", researcher);
