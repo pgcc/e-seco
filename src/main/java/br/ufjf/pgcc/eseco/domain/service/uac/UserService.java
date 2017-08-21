@@ -28,6 +28,10 @@ public class UserService {
         this.mailerService = mailerService;
     }
 
+    public UserService() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return userDao.findAll();

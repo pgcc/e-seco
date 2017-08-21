@@ -45,7 +45,7 @@
             <li>
                 <div class="dropdown">
                     <a id="top-menu-item-user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user"></i> <span>${sessionScope.logged_user.name}</span>
+                        <i class="fa fa-user"></i> <span>${sessionScope.logged_user.email}</span>
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="top-menu-item-user">

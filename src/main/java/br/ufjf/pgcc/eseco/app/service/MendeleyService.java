@@ -139,6 +139,7 @@ public class MendeleyService {
 
         try {
             String response = searchGET(url.toString());
+            System.out.println(response);
             return parseResearcherList(response);
         } catch (IOException ex) {
             Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
@@ -223,6 +224,7 @@ public class MendeleyService {
             while ((output = in.readLine()) != null) {
                 response.append(output);
             }
+            System.out.println(response.toString());
             return response.toString();
         }
     }
