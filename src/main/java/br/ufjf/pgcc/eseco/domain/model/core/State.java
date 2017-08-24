@@ -40,7 +40,7 @@ public class State {
     private Country country;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_capital", nullable = false)
+    @JoinColumn(name = "id_capital")
     private City capital;
 
     public State(String name, String code, Country country) {
@@ -49,7 +49,9 @@ public class State {
         this.country = country;
     }
 
-    
+    public State() {
+    }
+
     public int getId() {
         return id;
     }

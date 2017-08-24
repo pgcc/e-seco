@@ -19,8 +19,6 @@ public class CountryDAO extends CommonDAO<Country, Integer> {
     public CountryDAO() {
         super(Country.class);
     }
-    
-    
 
     public void populateCountries() throws Exception {
         add(new Country("Afghanistan", "AF"));

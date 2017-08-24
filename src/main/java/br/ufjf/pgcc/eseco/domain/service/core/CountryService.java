@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class CountryService {
@@ -50,6 +52,7 @@ public class CountryService {
         return countryDAO.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Country> findByName(String name) {
         if (name != null) {
             Map<String, String> map = new HashMap<>();
@@ -58,6 +61,17 @@ public class CountryService {
             return countryDAO.findBy(map);
         } else {
             return null;
+        }
+    }
+
+    @Transactional
+    public void populateCountries() {
+        if (countryDAO.findAll().isEmpty()) {
+            try {
+                countryDAO.populateCountries();
+            } catch (Exception ex) {
+                Logger.getLogger(CountryService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

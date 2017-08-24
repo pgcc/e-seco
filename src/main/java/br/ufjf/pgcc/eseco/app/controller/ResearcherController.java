@@ -5,7 +5,6 @@
  */
 package br.ufjf.pgcc.eseco.app.controller;
 
-import br.ufjf.pgcc.eseco.app.DatabaseInitiator;
 import br.ufjf.pgcc.eseco.app.service.MendeleyService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
@@ -44,7 +43,7 @@ public class ResearcherController extends CommonController {
 
     @Autowired
     private UserService userService;
-
+   
     private Researcher researcher;
     private User user;
     private Institution institution;
@@ -57,14 +56,13 @@ public class ResearcherController extends CommonController {
     @RequestMapping(value = "/researchers", method = RequestMethod.GET)
     public String showAddResearcherForm(Model model, HttpSession session) {
 
-        new DatabaseInitiator().contextInitialized(null);
         user = (User) session.getAttribute("logged_user");
         institution = new Institution();
         researcher = new Researcher();
         researcher.setInstitution(institution);
         researcher.setUser(user);
         model.addAttribute("researcherForm", researcher);
-
+        
         return "researchers/researcherform";
     }
 

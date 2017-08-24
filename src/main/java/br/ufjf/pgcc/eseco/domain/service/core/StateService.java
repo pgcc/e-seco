@@ -1,5 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.core;
 
+import br.ufjf.pgcc.eseco.domain.dao.core.CityDAO;
+import br.ufjf.pgcc.eseco.domain.dao.core.CountryDAO;
 import br.ufjf.pgcc.eseco.domain.dao.core.StateDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,15 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class StateService {
 
     private final StateDAO stateDAO;
+    private final CountryDAO countryDAO;
+    private final CityDAO cityDAO;
 
     @Autowired
-    public StateService(StateDAO stateDao) {
+    public StateService(StateDAO stateDao, CountryDAO countryDAO, CityDAO cityDAO) {
         this.stateDAO = stateDao;
+        this.countryDAO = countryDAO;
+        this.cityDAO = cityDAO;
     }
 
     @Transactional
@@ -50,6 +58,7 @@ public class StateService {
         return stateDAO.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<State> findByName(String name) {
         if (name != null) {
             Map<String, String> map = new HashMap<>();
@@ -58,6 +67,17 @@ public class StateService {
             return stateDAO.findBy(map);
         } else {
             return null;
+        }
+    }
+
+    @Transactional
+    public void populateBrazilStates() {
+        if (stateDAO.findAll().isEmpty()) {
+            try {
+                stateDAO.populateBrazilStates(countryDAO, cityDAO);
+            } catch (Exception ex) {
+                Logger.getLogger(StateService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
