@@ -8,11 +8,21 @@ public class Role {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name", nullable = false)
     private String name;
+
+
+    /* CONSTRUCTORS */
+
+    public Role() {
+    }
+
+    public Role(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 
     /* GETTERS/SETTERS */

@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.domain.service.uac;
 import br.ufjf.pgcc.eseco.app.service.MailerService;
 import br.ufjf.pgcc.eseco.domain.dao.uac.UserDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
+import br.ufjf.pgcc.eseco.domain.model.uac.Role;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -20,16 +21,23 @@ public class UserService {
     private UserDAO userDao;
     private MailerService mailerService;
     private AgentService agentService;
+    private RoleService roleService;
 
     @Autowired
-    public UserService(UserDAO userDao, MailerService mailerService, AgentService agentService) {
+    public UserService(UserDAO userDao, MailerService mailerService, AgentService agentService, RoleService roleService) {
         this.userDao = userDao;
-        this.agentService = agentService;
         this.mailerService = mailerService;
+        this.agentService = agentService;
+        this.roleService = roleService;
     }
 
     public UserService() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Transactional
+    public User find(int userId) {
+        return userDao.find(userId);
     }
 
     @Transactional(readOnly = true)
@@ -89,7 +97,7 @@ public class UserService {
         User new_user = new User();
         Agent new_user_agent = new Agent();
 
-        // Define new user data
+        // Get today date
         Date date_today = new Date();
 
         // Get tomorrow date
@@ -113,20 +121,25 @@ public class UserService {
         new_user.setActivationCode(authentication_code);
         new_user.setActivationExpireDate(date_tomorrow);
 
+        // Add new user
         new_user = userDao.add(new_user);
 
         // Define new user agent data
         new_user_agent.setName(name);
         new_user_agent.setUser(new_user);
 
+        // Add new user agent
         new_user_agent = agentService.registerNewAgent(new_user_agent);
+
+        // Set user agent to user
+        new_user.setAgent(new_user_agent);
 
         // Set register instructions e-mail content
         String to = new_user.getEmail();
         String subject = "New Account Registration";
         // @TODO: Remove the hardcoded content by retrieving it from a .jsp file
         String content = ""
-                + "<p>Hi <strong>" + new_user_agent.getName() + "</strong>!</p>"
+                + "<p>Hi <strong>" + new_user.getAgent().getName() + "</strong>!</p>"
                 + "<br>"
                 + "<p>Welcome to E-seco. In order to validate your new account, please, follow the link below:</p>"
                 + "<br>"
@@ -144,13 +157,29 @@ public class UserService {
     }
 
     @Transactional
-    public User activateUser(User user, String password) throws Exception {
+    public User activateUser(User user, String password, List<Integer> rolesIdList) throws Exception {
+        // Get the Roles from roles id list
+        ArrayList<Role> rolesList = new ArrayList<>();
+        for (Integer roleId : rolesIdList) {
+            rolesList.add(roleService.find(roleId));
+        }
+
+        // Set user data
         user.setPassword(DigestUtils.sha1Hex(password));
         user.setActivationCode(null);
         user.setActivationExpireDate(null);
         user.setActive(true);
+        user.setRoles(rolesList);
 
+        // Update user
         user = userDao.update(user);
+
+        return user;
+    }
+
+    @Transactional
+    public User startUserRecovery(User user) {
+        // @TODO: Implement user recovery process
         return user;
     }
 
@@ -160,10 +189,5 @@ public class UserService {
         } else {
             return userDao.update(user);
         }
-    }
-
-    @Transactional
-    public User find(int userId) {
-        return userDao.find(userId);
     }
 }

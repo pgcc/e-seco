@@ -4,7 +4,7 @@
 
 <t:layout-app-login>
     <jsp:attribute name="title">
-        E-SECO Register
+        E-SECO Account Recovery
     </jsp:attribute>
 
     <jsp:attribute name="javascripts">
@@ -17,11 +17,11 @@
                 <img src="<c:url value="/resources/images/eseco-logo-1.png"/>" alt="E-SECO">
             </div>
             <div class="panel-body">
-                <p class="text-center">Thank you <strong>${new_user.agent.name}</strong>!</p>
+                <p class="text-center">Hi <strong>${user.agent.name}</strong>!</p>
                 <p>
-                    You have initiated a register process. An email has been sent to:
-                    <strong>${new_user.email}</strong>.
-                    Please, follow its instructions to proceed with your registration.
+                    You have initiated a recovery process. An email has been sent to:
+                    <strong>${user.email}</strong>.
+                    Please, follow its instructions to proceed with your password resetting.
                 </p>
             </div>
             <div class="panel-footer">

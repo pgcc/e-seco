@@ -4,12 +4,12 @@
 
 <t:layout-app-login>
     <jsp:attribute name="title">
-        E-SECO Register
+        E-SECO Account Recovery
     </jsp:attribute>
 
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
-            $("#login").focus();
+            $("#email").focus();
             <c:if test="${not empty error}">
             var message = "";
             <c:forEach var="msg" items="${error_messages}">
@@ -26,14 +26,11 @@
                 <img src="<c:url value="/resources/images/eseco-logo-1.png"/>" alt="E-SECO">
             </div>
             <div class="panel-body">
-                <form action="<c:url value="/register"/>" method="post">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                            <input id="name" name="name" class="form-control" type="text" required>
-                        </div>
-                    </div>
+                <p>
+                    In order to recovery your account, please, inform your email below.
+                    We will send an email containing instructions to reset your password.
+                </p>
+                <form action="<c:url value="/recovery"/>" method="post">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <div class="input-group">
@@ -42,7 +39,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button class="btn btn-block btn-success">Register</button>
+                        <button class="btn btn-block btn-success">Send Email</button>
                         <p class="margin-10-top no-margin-bottom">
                             <a href="<c:url value="/login" />">Back to Login</a>
                         </p>

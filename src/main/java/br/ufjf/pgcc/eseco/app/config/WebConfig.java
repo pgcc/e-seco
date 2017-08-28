@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.app.config;
 
 import br.ufjf.pgcc.eseco.app.interceptor.AuthenticatorInterceptor;
+import br.ufjf.pgcc.eseco.app.interceptor.NotificationsInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -17,10 +18,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return new AuthenticatorInterceptor();
     }
 
+    @Bean
+    NotificationsInterceptor notificationsInterceptor() {
+        return new NotificationsInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
         registry.addInterceptor(authenticatorInterceptor());
+        registry.addInterceptor(notificationsInterceptor());
     }
 
     @Override

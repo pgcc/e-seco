@@ -1,18 +1,19 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "core_agents_researchers")
-@PrimaryKeyJoinColumn(name="id_agent")
-public class Researcher extends Agent {
+public class Researcher {
 
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_agent", nullable = false)
-    @Column(name = "id_agent")
-    private Agent agent;
-    */
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "display_name")
     private String displayName;
@@ -26,14 +27,32 @@ public class Researcher extends Agent {
     @Column(name = "mendeley_id")
     private String mendeleyId;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private Agent agent;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_institution", nullable = false)
-    private Institution institution;
+    @OneToMany
+    @JoinTable(
+            name = "core_agents_researchers_institutions",
+            joinColumns = {
+                    @JoinColumn(name = "id_researcher", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "id_institution", nullable = false)
+            }
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Institution> institutions;
 
 
     /* GETTERS/SETTERS */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -67,12 +86,19 @@ public class Researcher extends Agent {
         this.mendeleyId = mendeleyId;
     }
 
-
-    public Institution getInstitution() {
-        return institution;
+    public Agent getAgent() {
+        return agent;
     }
 
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
+
+    public List<Institution> getInstitutions() {
+        return institutions;
+    }
+
+    public void setInstitutions(List<Institution> institutions) {
+        this.institutions = institutions;
     }
 }

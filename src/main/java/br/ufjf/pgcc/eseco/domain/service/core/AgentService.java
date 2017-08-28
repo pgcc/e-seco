@@ -26,9 +26,11 @@ public class AgentService {
 
     @Transactional
     public Agent registerNewAgent(Agent agent) throws Exception {
+        return agentDao.add(agent);
+    }
 
-        agent = agentDao.add(agent);
-
-        return agent;
+    @Transactional
+    public Agent updateAgent(Agent agent) throws Exception {
+        return agentDao.update(agent);
     }
 }

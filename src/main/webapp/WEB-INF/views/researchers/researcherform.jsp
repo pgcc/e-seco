@@ -5,7 +5,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Researcher
+        E-SECO Researcher Profile
     </jsp:attribute>
 
 
@@ -20,7 +20,8 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/researcher/mendeleySearch"/>"><i class="fa fa-street-view"></i> Researcher Profile</a>
+        <a href="<c:url value="/profile"/>"><i class="fa fa-street-view"></i> User Profile</a>
+        <a href="<c:url value="/researcher/mendeleySearch"/>"><i class="fa fa-angle-double-right"></i> Researcher Profile</a>
     </jsp:attribute>
 
 
@@ -36,8 +37,8 @@
                         <c:url var="mendeleySearch" value="/researchers/mendeleySearch" />
                         <f:form method="post" action="${mendeleySearch}"  modelAttribute="researcherForm">
                             <div class="form-group">
-                                <f:label path="user.email">E-mail</f:label>
-                                <f:input path="user.email" class="form-control" type="email" value="${sessionScope.logged_user.email}"/>
+                                <f:label path="agent.user.email">E-mail</f:label>
+                                <f:input path="agent.user.email" class="form-control" type="email" value="${sessionScope.logged_user.email}"/>
                             </div>
                             <div class="form-group">
                                 <f:button type="submit" class="btn btn-block btn-primary">Mendeley Search</f:button>
@@ -58,8 +59,8 @@
                                 <f:input path="academicStatus" class="form-control" type="text"/>
                             </div>        
                             <div class="form-group">
-                                <f:label path="institution.name">Institution</f:label>
-                                <f:input path="institution.name" class="form-control" type="text" />
+                                <f:label path="institutions[0].name">Institution</f:label>
+                                <f:input path="institutions[0].name" class="form-control" type="text" />
                             </div>
                             <f:button type="submit" class="btn btn-success">Save</f:button>
                         </f:form>

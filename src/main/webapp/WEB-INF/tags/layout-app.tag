@@ -38,13 +38,51 @@
     <nav class="top-menu">
         <ul class="top-menu-left">
             <li><a href="<c:url value="/"/>"><i class="fa fa-home"></i> <span>HOME</span></a></li>
-            <li><a href="<c:url value="/services"/>"><i class="fa fa-cogs"></i> <span>SERVICES</span></a></li>
-            <li><a href="<c:url value="/researchers"/>"><i class="fa fa-cogs"></i> <span>RESEARCHERS</span></a></li>
+            <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
+                <li><a href="<c:url value="/services"/>"><i class="fa fa-cogs"></i> <span>SERVICES</span></a></li>
+            </c:if>
+
         </ul>
         <ul class="top-menu-right">
             <li>
                 <div class="dropdown">
-                    <a id="top-menu-item-user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a id="top-menu-item-notifications" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <i class="fa fa-bell"></i>
+                        <c:choose>
+                            <c:when test="${fn:length(sessionScope.notifications) >= 1}">
+                            <span class="el-notification-number el-notification-number-one-or-more">${fn:length(sessionScope.notifications)}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="el-notification-number el-notification-number-none">0</span>
+                            </c:otherwise>
+                        </c:choose>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="top-menu-item-user">
+                        <c:forEach var="notification" items="${sessionScope.notifications}" end="2">
+                            <li>
+                                <p>
+                                    <a href="<c:url value="${notification.link}"/>">
+                                        <i class="fa ${notification.icon}"></i> <span>${notification.text}</span>
+                                    </a>
+                                </p>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                        </c:forEach>
+                        <li>
+                            <a href="<c:url value="/notifications"/>">
+                                <i class="fa fa-bell"></i> <span>View All Notifications</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <div class="dropdown">
+                    <a id="top-menu-item-user" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
                         <i class="fa fa-user"></i> <span>${sessionScope.logged_user.email}</span>
                         <span class="caret"></span>
                     </a>
@@ -72,9 +110,9 @@
 </header>
 <main>
     <div class="main-menu">
-        <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}" />
+        <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}"/>
         <c:if test="${urlParts[1] != null}">
-            <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp" />
+            <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
         </c:if>
     </div>
     <div class="main-content container-fluid">
@@ -87,9 +125,12 @@
 
 <!-- CORE JAVASCRIPTS START -->
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery/jquery.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
+<script type="text/javascript"
+        src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
+<script type="text/javascript"
+        src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
+<script type="text/javascript"
+        src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/core.js" />"></script>
 <!-- CORE JAVASCRIPTS END -->
 

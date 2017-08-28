@@ -17,9 +17,9 @@
                 <img src="<c:url value="/resources/images/eseco-logo-1.png"/>" alt="E-SECO">
             </div>
             <div class="panel-body">
-                <p class="text-center">Thank you <strong>${user.name}</strong>!</p>
+                <p class="text-center">Thank you <strong>${user.agent.name}</strong>!</p>
                 <p>
-                    You account has been succefully activated, you may login now.
+                    Your account has been successfully activated, you may login now.
                 </p>
                 <p class="text-center">
                     <a href="<c:url value="/login"/>">Go to Login</a>

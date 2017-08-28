@@ -23,38 +23,96 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         // Get requested URI
         String uri = httpServletRequest.getRequestURI();
 
+        // Get the requested Route
+        String[] uriParts = uri.split("/");
+        String route = "home";
+        if (uriParts.length >= 3) {
+            route = uriParts[2];
+        }
+
         // Get user logged status
         Object userIsLogged = httpServletRequest.getSession().getAttribute("logged_user");
 
+        // Get roles
+        Boolean roleAdmin = (Boolean) httpServletRequest.getSession().getAttribute("role_admin");
+        Boolean roleResearcher = (Boolean) httpServletRequest.getSession().getAttribute("role_researcher");
+        Boolean roleDeveloper = (Boolean) httpServletRequest.getSession().getAttribute("role_developer");
+
         // Authorize Resources for all
-        if (uri.contains("resources")) {
+        if (route.equals("resources")) {
             return true;
         }
 
-        // Authorize Login for all not logged users
-        if (uri.contains("login") && userIsLogged == null) {
-            return true;
+
+        //////////////////////////////////////////////////////////////////////
+        // AUTHORIZATION FOR NON LOGGED USERS                               //
+        //////////////////////////////////////////////////////////////////////
+
+        if (userIsLogged == null) {
+            if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
+                return true;
+            } else {
+                httpServletResponse.sendRedirect("/eseco/login");
+                return false;
+            }
         }
 
-        // Authorize Register for all not logged users
-        if (uri.contains("register") && userIsLogged == null) {
-            return true;
-        }
 
-        // Block logged users from acessing login
-        if (uri.contains("login") && userIsLogged != null) {
-            httpServletResponse.sendRedirect("/eseco/home");
+        //////////////////////////////////////////////////////////////////////
+        // AUTHORIZATION FOR LOGGED USERS                                   //
+        //////////////////////////////////////////////////////////////////////
+
+        // Block logged users from acessing login, register and recovery
+        if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
+            httpServletResponse.sendRedirect("/eseco/");
             return false;
         }
 
-        // Authorize logged users to access any path
-        if (userIsLogged != null) {
-            return true;
+        // Authorize logged users to access paths accordingly with his roles
+        Boolean isAuthorized = false;
+
+        // Admins
+        if (roleAdmin) {
+            // Admin may access all resources
+            isAuthorized = true;
         }
 
-        // Block not logged users from acessing any other path
-        httpServletResponse.sendRedirect("/eseco/login");
-        return false;
+        // Researchers
+        if (roleResearcher) {
+            switch (route) {
+                case "not-authorized":
+                case "logout":
+                case "home":
+                case "notifications":
+                case "profile":
+                case "researchers":
+                    isAuthorized = true;
+                    break;
+            }
+        }
+
+        // Developers
+        if (roleDeveloper) {
+            switch (route) {
+                case "not-authorized":
+                case "logout":
+                case "home":
+                case "notifications":
+                case "profile":
+                case "services":
+                case "developers":
+                    isAuthorized = true;
+                    break;
+            }
+        }
+
+        // Check if user is authorized
+        if (isAuthorized) {
+            return true;
+        } else {
+            httpServletResponse.sendRedirect("/eseco/not-authorized");
+            return false;
+        }
     }
 
     /**

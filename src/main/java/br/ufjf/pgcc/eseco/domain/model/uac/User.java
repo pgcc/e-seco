@@ -1,9 +1,10 @@
 package br.ufjf.pgcc.eseco.domain.model.uac;
 
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "uac_users")
@@ -41,6 +42,20 @@ public class User {
     @Column(name = "redefinition_expire_date", columnDefinition = "DATETIME")
     private Date redefinitionExpireDate;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private Agent agent;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "uac_users_roles",
+            joinColumns = {
+                    @JoinColumn(name = "id_user", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "id_role", nullable = false)
+            }
+    )
+    private List<Role> roles;
 
 
     /* GETTERS/SETTERS */
@@ -125,11 +140,20 @@ public class User {
         this.redefinitionExpireDate = redefinitionExpireDate;
     }
 
-
-    /* OTHER METHODS */
-/*
-    public Researcher getResearcherProfile(){
-
+    public Agent getAgent() {
+        return agent;
     }
-*/
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
 }

@@ -48,7 +48,7 @@
                         </p>
                     </c:when>
                     <c:otherwise>
-                        <p>Hi <strong>${user.name}</strong>, complete the information required below to activate you
+                        <p>Hi <strong>${user.agent.name}</strong>, complete the information required below to activate you
                             account.</p>
                         <form action="<c:url value="/register/${user.activationCode}"/>" method="post">
                             <div class="row">

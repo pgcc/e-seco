@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "core_institutions")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Institution {
 
     @Id
@@ -18,7 +17,9 @@ public class Institution {
     @Column(name = "details")
     private String details;
 
+
     /* GETTERS/SETTERS */
+
     public int getId() {
         return id;
     }

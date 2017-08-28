@@ -10,8 +10,11 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             $("#login").focus();
-            <c:if test="${not empty error}">
+            <c:if test="${not empty error_credentials}">
             swal("Error", "Invalid credentials!", "error");
+            </c:if>
+            <c:if test="${not empty error_active}">
+            swal("Error", "You user is not active!", "error");
             </c:if>
         </script>
     </jsp:attribute>
@@ -40,7 +43,7 @@
 
                     <div class="text-center">
                         <button type="submit" class="btn btn-block btn-success">Enter</button>
-                        <p class="margin-10-top no-margin-bottom"><a href="#">Account recovery</a></p>
+                        <p class="margin-10-top no-margin-bottom"><a href="<c:url value="/recovery"/>">Account recovery</a></p>
                         <p class="margin-10-top no-margin-bottom"><a href="<c:url value="/register"/>">Create Account</a></p>
                     </div>
                 </form>

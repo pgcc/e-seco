@@ -35,14 +35,6 @@ public class ResearcherService {
     }
 
     @Transactional
-    public Researcher registerNewResearcher(Researcher researcher) throws Exception {
-
-        researcher = researcherDAO.add(researcher);
-
-        return researcher;
-    }
-
-    @Transactional
     public void delete(Researcher researcher) throws Exception {
         researcherDAO.delete(researcher);
     }
@@ -91,7 +83,9 @@ public class ResearcherService {
                         if (object.get("institution_details") != null) {
                             //  institution.setDetails(object.get("institution_details").getAsString());
                         }
-                        r.setInstitution(institution);
+                        ArrayList<Institution> institutionsList = new ArrayList<>();
+                        institutionsList.add(institution);
+                        r.setInstitutions(institutionsList);
                     }
 
                 } catch (Exception e) {

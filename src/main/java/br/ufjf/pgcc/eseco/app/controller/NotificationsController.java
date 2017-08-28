@@ -9,23 +9,28 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @Controller
-public class MainController {
+public class NotificationsController {
 
-    @RequestMapping(value = "/")
-    public String home(Model model, HttpSession session) {
+    @RequestMapping(value = "/notifications")
+    public String notifications(Model model, HttpSession session) {
 
-        // Get important notifications to show
+        // Split important notifications from common notifications
         ArrayList<Notification> importantNotificationsList = new ArrayList<>();
+        ArrayList<Notification> commonNotificationsList = new ArrayList<>();
         ArrayList<Notification> notificationsList = (ArrayList<Notification>) session.getAttribute("notifications");
+
         for (Notification notification : notificationsList) {
             if (notification.isImportant()) {
                 importantNotificationsList.add(notification);
+            } else {
+                commonNotificationsList.add(notification);
             }
         }
 
-        model.addAttribute("notifications", importantNotificationsList);
+        model.addAttribute("importantNotifications", importantNotificationsList);
+        model.addAttribute("commonNotifications", commonNotificationsList);
 
-        return "home";
+        return "notifications/overview";
     }
 }
 

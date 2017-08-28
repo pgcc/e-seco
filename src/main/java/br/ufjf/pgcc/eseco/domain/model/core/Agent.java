@@ -5,10 +5,8 @@ import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "core_agents")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Agent {
 
     @Id
@@ -16,9 +14,17 @@ public class Agent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_researcher")
+    private Researcher researcher;
+
+    @ManyToOne
+    @JoinColumn(name = "id_developer")
+    private Developer developer;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -46,6 +52,22 @@ public class Agent {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Researcher getResearcher() {
+        return researcher;
+    }
+
+    public void setResearcher(Researcher researcher) {
+        this.researcher = researcher;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
     }
 
     public String getName() {

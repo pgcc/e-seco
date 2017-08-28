@@ -4,7 +4,7 @@
 
 <t:layout-app-login>
     <jsp:attribute name="title">
-        E-SECO Register
+        E-SECO Unauthorized
     </jsp:attribute>
 
     <jsp:attribute name="javascripts">
@@ -17,11 +17,12 @@
                 <img src="<c:url value="/resources/images/eseco-logo-1.png"/>" alt="E-SECO">
             </div>
             <div class="panel-body">
-                <p class="text-center">Thank you <strong>${new_user.agent.name}</strong>!</p>
+                <p class="text-center"><strong>Unauthorized Access Attempt</strong>!</p>
                 <p>
-                    You have initiated a register process. An email has been sent to:
-                    <strong>${new_user.email}</strong>.
-                    Please, follow its instructions to proceed with your registration.
+                    You don't have the appropriate permissions to access this resource.
+                </p>
+                <p class="text-center">
+                    <a href="<c:url value="/"/>">Go to Back</a>
                 </p>
             </div>
             <div class="panel-footer">

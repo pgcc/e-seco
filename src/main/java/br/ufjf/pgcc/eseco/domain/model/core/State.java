@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.ufjf.pgcc.eseco.domain.model.core;
 
 import javax.persistence.Column;
@@ -16,10 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-/**
- *
- * @author Lenita
- */
 @Entity
 @Table(name = "core_states")
 public class State {
@@ -43,14 +34,19 @@ public class State {
     @JoinColumn(name = "id_capital")
     private City capital;
 
+
+    /* CONSTRUCTORS */
+    public State() {
+    }
+
     public State(String name, String code, Country country) {
         this.name = name;
         this.code = code;
         this.country = country;
     }
 
-    public State() {
-    }
+
+    /* GETTERS/SETTERS */
 
     public int getId() {
         return id;
