@@ -14,16 +14,14 @@ public class Agent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_user", nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "id_researcher")
+    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER)
     private Researcher researcher;
 
-    @ManyToOne
-    @JoinColumn(name = "id_developer")
+    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER)
     private Developer developer;
 
     @Column(name = "name", nullable = false)
@@ -37,7 +35,6 @@ public class Agent {
 
 
     /* GETTERS/SETTERS */
-
     public int getId() {
         return id;
     }

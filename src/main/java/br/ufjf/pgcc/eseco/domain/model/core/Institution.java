@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -17,9 +18,14 @@ public class Institution {
     @Column(name = "details")
     private String details;
 
+    @ManyToOne
+    private City city;
+
+//    private List<String> alternative_names;
+//
+//    private List<String> urls;
 
     /* GETTERS/SETTERS */
-
     public int getId() {
         return id;
     }
@@ -42,6 +48,14 @@ public class Institution {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
 }

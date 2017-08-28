@@ -34,10 +34,10 @@ public class Researcher {
     @JoinTable(
             name = "core_agents_researchers_institutions",
             joinColumns = {
-                    @JoinColumn(name = "id_researcher", nullable = false)
+                    @JoinColumn(name = "researcher_id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "id_institution", nullable = false)
+                    @JoinColumn(name = "institution_id", nullable = false)
             }
     )
     @LazyCollection(LazyCollectionOption.FALSE)

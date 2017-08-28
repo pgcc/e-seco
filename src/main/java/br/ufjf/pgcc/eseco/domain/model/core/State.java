@@ -27,11 +27,11 @@ public class State {
     private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_country", nullable = false)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_capital")
+    @JoinColumn(name = "capital_id")
     private City capital;
 
 

@@ -42,7 +42,7 @@ public class User {
     @Column(name = "redefinition_expire_date", columnDefinition = "DATETIME")
     private Date redefinitionExpireDate;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy="user")
     private Agent agent;
 
     @OneToMany(fetch = FetchType.EAGER)

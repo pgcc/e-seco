@@ -23,7 +23,7 @@ public class City {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_state", nullable = false)
+    @JoinColumn(name = "state_id", nullable = false)
     private State state;
 
 

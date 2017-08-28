@@ -22,10 +22,10 @@ public class Developer {
     @JoinTable(
             name = "core_agents_developers_institutions",
             joinColumns = {
-                    @JoinColumn(name = "id_developer", nullable = false)
+                    @JoinColumn(name = "developer_id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "id_institution", nullable = false)
+                    @JoinColumn(name = "institution_id", nullable = false)
             }
     )
     @LazyCollection(LazyCollectionOption.FALSE)

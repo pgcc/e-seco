@@ -133,6 +133,7 @@ public class UserService {
 
         // Set user agent to user
         new_user.setAgent(new_user_agent);
+        new_user = userDao.update(new_user);
 
         // Set register instructions e-mail content
         String to = new_user.getEmail();
