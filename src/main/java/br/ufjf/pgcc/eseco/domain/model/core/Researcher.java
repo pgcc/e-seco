@@ -30,14 +30,14 @@ public class Researcher {
     @OneToOne(fetch = FetchType.EAGER)
     private Agent agent;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "core_agents_researchers_institutions",
             joinColumns = {
-                    @JoinColumn(name = "researcher_id", nullable = false)
+                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "institution_id", nullable = false)
+                @JoinColumn(name = "institution_id", referencedColumnName = "id", nullable = false)
             }
     )
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -45,7 +45,6 @@ public class Researcher {
 
 
     /* GETTERS/SETTERS */
-
     public int getId() {
         return id;
     }

@@ -6,7 +6,11 @@
 package br.ufjf.pgcc.eseco.app.service;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.domain.service.core.CityService;
+import br.ufjf.pgcc.eseco.domain.service.core.CountryService;
+import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
+import br.ufjf.pgcc.eseco.domain.service.core.StateService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -28,12 +32,20 @@ import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Lenita
  */
+@Service
 public class MendeleyService {
+
+    private final CountryService countryService;
+    private final StateService stateService;
+    private final CityService cityService;
+    private final InstitutionService institutionService;
 
     /**
      * Mendeley OAuth token exchange endpoint
@@ -65,17 +77,19 @@ public class MendeleyService {
      */
     private MendeleyAccessToken accessToken;
 
-    /**
-     * Constructs a new connector
-     */
-    public MendeleyService() {
+    @Autowired
+    public MendeleyService(CountryService countryService, StateService stateService, CityService cityService, InstitutionService institutionService) {
+        this.stateService = stateService;
+        this.cityService = cityService;
+        this.countryService = countryService;
+        this.institutionService = institutionService;
 
+        //Constructs a new connector  
         try {
             getAccessTokenSecret();
         } catch (IOException ex) {
             Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
@@ -211,20 +225,21 @@ public class MendeleyService {
      * @throws IOException
      */
     private String searchGET(String url) throws MalformedURLException, IOException {
-        System.out.println(url);
+
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
         con.setDoOutput(true);
         try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()))) {
+                new InputStreamReader(con.getInputStream(), "UTF-8"))) {
             String output;
             StringBuilder response = new StringBuilder();
             while ((output = in.readLine()) != null) {
                 response.append(output);
             }
-            System.out.println(response.toString());
+            in.close();
+
             return response.toString();
         }
     }
@@ -237,7 +252,7 @@ public class MendeleyService {
      */
     private ArrayList<Researcher> parseResearcherList(String response) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Researcher.class, ResearcherService.getDeserialiser());
+        gsonBuilder.registerTypeAdapter(Researcher.class, ResearcherService.getDeserialiser(countryService, stateService, cityService, institutionService));
         Gson gson = gsonBuilder.create();
         JsonElement json = new JsonParser().parse(response);
 

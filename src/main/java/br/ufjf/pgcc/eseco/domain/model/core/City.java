@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +23,7 @@ public class City {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "state_id", nullable = false)
     private State state;
 

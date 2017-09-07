@@ -3,6 +3,8 @@ package br.ufjf.pgcc.eseco.domain.service.core;
 import br.ufjf.pgcc.eseco.domain.dao.core.ResearcherDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -21,8 +23,8 @@ public class ResearcherService {
     private final ResearcherDAO researcherDAO;
 
     @Autowired
-    public ResearcherService(ResearcherDAO researcherDao) {
-        this.researcherDAO = researcherDao;
+    public ResearcherService(ResearcherDAO researcherDAO) {
+        this.researcherDAO = researcherDAO;
     }
 
     @Transactional
@@ -39,12 +41,10 @@ public class ResearcherService {
         researcherDAO.delete(researcher);
     }
 
-    @Transactional
     public Researcher find(int researcherId) {
         return researcherDAO.find(researcherId);
     }
 
-    @Transactional(readOnly = true)
     public List<Researcher> findAll() {
         return researcherDAO.findAll();
     }
@@ -52,9 +52,14 @@ public class ResearcherService {
     /**
      * Cria um Json Deserializer para o objeto Researcher
      *
+     * @param countryService
+     * @param stateService
+     * @param cityService
+     * @param institutionService
      * @return
      */
-    public static JsonDeserializer<Researcher> getDeserialiser() {
+    public static JsonDeserializer<Researcher> getDeserialiser(final CountryService countryService, final StateService stateService,
+            final CityService cityService, final InstitutionService institutionService) {
         return new JsonDeserializer() {
             @Override
             public Researcher deserialize(JsonElement je, Type type, JsonDeserializationContext jdc) throws JsonParseException {
@@ -78,13 +83,17 @@ public class ResearcherService {
                     }
 
                     if (object.get("institution") != null) {
-                        Institution institution = new Institution();
-                        institution.setName(object.get("institution").getAsString());
-                        if (object.get("institution_details") != null) {
-                            //  institution.setDetails(object.get("institution_details").getAsString());
-                        }
                         ArrayList<Institution> institutionsList = new ArrayList<>();
-                        institutionsList.add(institution);
+                        if (object.get("institution_details") != null) {
+                            GsonBuilder gsonBuilder = new GsonBuilder();
+                            gsonBuilder.registerTypeAdapter(Institution.class, InstitutionService.getDeserialiser(
+                                    countryService, stateService, cityService, institutionService));
+                            JsonElement institutionElement = object.get("institution_details");
+                            Gson gson = gsonBuilder.create();
+                            Institution institution = gson.fromJson(institutionElement, Institution.class);
+                            institutionsList.add(institution);
+                        }
+
                         r.setInstitutions(institutionsList);
                     }
 

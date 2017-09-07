@@ -33,8 +33,7 @@ public abstract class CommonDAO<T, PK extends Serializable> {
      * @return return the object inserted
      */
     public T add(T t) throws Exception {
-        this.em.persist(t);
-        return t;
+        return this.em.merge(t);
     }
 
     /**

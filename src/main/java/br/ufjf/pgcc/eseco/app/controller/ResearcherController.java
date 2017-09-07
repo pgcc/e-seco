@@ -5,7 +5,6 @@ import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
-import br.ufjf.pgcc.eseco.domain.model.core.Institution;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
@@ -18,110 +17,93 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
+@SessionAttributes({"researcher"})
 public class ResearcherController extends CommonController {
 
-    private ResearcherService researcherService;
-    private InstitutionService institutionService;
-    private AgentService agentService;
-    private Researcher researcher;
+    private final ResearcherService researcherService;
+    private final InstitutionService institutionService;
+    private final AgentService agentService;
+    private final MendeleyService mendeleyService;
 
     @Autowired
-    public ResearcherController(ResearcherService researcherService, InstitutionService institutionService, AgentService agentService) {
+    public ResearcherController(ResearcherService researcherService, InstitutionService institutionService,
+            AgentService agentService, MendeleyService mendeleyService) {
         this.researcherService = researcherService;
         this.institutionService = institutionService;
         this.agentService = agentService;
+        this.mendeleyService = mendeleyService;
     }
 
     @RequestMapping(value = "/researchers", method = RequestMethod.GET)
-    public String showAddResearcherForm(Model model) {
-
-        researcher = new Researcher();
-
-        model.addAttribute("researcherForm", researcher);
-
-        return "researchers/researcherform";
+    public String showAddResearcherForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("logged_user");
+        if (user.getAgent() != null && user.getAgent().getResearcher() != null) {
+            return "redirect:/researchers/" + user.getAgent().getResearcher().getId();
+        } else {
+            Researcher researcher = new Researcher();
+            model.addAttribute("user", user);
+            model.addAttribute("researcher", researcher);
+            return "researchers/researcherform";
+        }
     }
 
     @RequestMapping(value = "/researchers/{id}", method = RequestMethod.GET)
     public String showUpdateResearcherForm(@PathVariable("id") int id, Model model) {
-
-        researcher = researcherService.find(id);
-
-        model.addAttribute("researcherForm", researcher);
-
+        Researcher researcher = researcherService.find(id);
+        model.addAttribute("user", researcher.getAgent().getUser());
+        model.addAttribute("researcher", researcher);
         return "researchers/researcherform";
 
     }
 
     @RequestMapping(value = "/researchers", method = RequestMethod.POST)
-    public String saveOrUpdateResearcher(@ModelAttribute("researcherForm") Researcher researcher, HttpSession session,
-                                         BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+    public String saveOrUpdateResearcher(@ModelAttribute("researcher") Researcher researcher, HttpSession session,
+            Model model) {
 
-        if (result.hasErrors()) {
-            return "researchers/researcherform";
-        } else {
+        try {
 
-            // Add message to flash scope
-            redirectAttributes.addFlashAttribute("css", "success");
-            if (researcher.getId() == 0) {
-                redirectAttributes.addFlashAttribute("msg", "Researcher added successfully!");
-            } else {
-                redirectAttributes.addFlashAttribute("msg", "Researcher updated successfully!");
-            }
-
-            try {
-                // Save Institutions of researcher
-                for (Institution institution : researcher.getInstitutions()) {
-                    institutionService.saveOrUpdate(institution);
-                }
-
-                // Get agent
-                Agent agent = ((User) session.getAttribute("logged_user")).getAgent();
-
-                // Save or Update Researcher
-                researcher.setAgent(agent);
-                researcher = researcherService.saveOrUpdate(researcher);
-
-                // Update the Agent Researcher ID
+            Agent agent = researcher.getAgent();
+            if (agent == null) {
+                agent = ((User) session.getAttribute("logged_user")).getAgent();
                 agent.setResearcher(researcher);
-                agentService.updateAgent(agent);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Logger.getLogger(ResearcherController.class.getName()).log(Level.SEVERE, null, ex);
+                researcher.setAgent(agent);
+                //researcher = researcherService.saveOrUpdate(researcher);
             }
+            researcher = researcherService.saveOrUpdate(researcher);
 
-            // POST/REDIRECT/GET
-            return "redirect:/researchers/" + researcher.getId();
-
-            // POST/FORWARD/GET
-            // return "user/list";
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ResearcherController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return "redirect:/researchers/" + researcher.getId();
+
     }
 
-    @RequestMapping(value = "/researchers/mendeleySearch", method = RequestMethod.POST)
-    public String mendeleySearch(@ModelAttribute("researcherForm") @Validated Researcher r, Model model) {
+    @RequestMapping(value = "/researchers/mendeleySearch", method = RequestMethod.GET)
+    public String mendeleySearch(@ModelAttribute("user") User user, @ModelAttribute("researcher") Researcher researcher, Model model) {
 
-        MendeleyService mendeleyService = new MendeleyService();
-        List<Researcher> lista = mendeleyService.searchByEmail(r.getAgent().getUser().getEmail());
+        List<Researcher> lista = mendeleyService.searchByEmail(user.getEmail());
         if (lista.size() == 1) {
             Researcher res = lista.get(0);
+
             researcher.setAcademicStatus(res.getAcademicStatus());
             researcher.setDisplayName(res.getDisplayName());
             researcher.setMendeleyId(res.getMendeleyId());
             researcher.setTitle(res.getTitle());
+            researcher.setMendeleyId(res.getMendeleyId());
             researcher.setInstitutions(res.getInstitutions());
         }
-        model.addAttribute("researcherForm", researcher);
+        model.addAttribute("institutions", researcher.getInstitutions());
+        model.addAttribute("user", user);
+        model.addAttribute("researcher", researcher);
 
         return "researchers/researcherform";
     }

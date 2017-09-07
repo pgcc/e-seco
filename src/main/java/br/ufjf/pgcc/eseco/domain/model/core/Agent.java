@@ -18,10 +18,10 @@ public class Agent {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Researcher researcher;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Developer developer;
 
     @Column(name = "name", nullable = false)

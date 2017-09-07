@@ -15,10 +15,8 @@ public class Institution {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "details")
-    private String details;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_id")
     private City city;
 
 //    private List<String> alternative_names;
@@ -40,14 +38,6 @@ public class Institution {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public City getCity() {

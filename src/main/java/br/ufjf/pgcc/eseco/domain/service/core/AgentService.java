@@ -19,7 +19,6 @@ public class AgentService {
     }
 
 
-    @Transactional(readOnly = true)
     public List<Agent> findAll() {
         return agentDao.findAll();
     }
