@@ -2,8 +2,7 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.domain.model.experiment.Resource;
 import br.ufjf.pgcc.eseco.domain.model.analysis.ServiceDependency;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Controller
 public class ServicesController {
@@ -28,6 +32,36 @@ public class ServicesController {
 
     @RequestMapping(value = "/services/explore/single/{id}")
     public String exploreSingle(Model model, @PathVariable(value = "id") int id) throws ClassNotFoundException {
+
+
+        String sURL = "http://freegeoip.net/json/"; //just a string
+        String sURL2 = "https://www.biocatalogue.org/search.json?q=gene&scope=services"; //just a string
+
+        // Connect to the URL using java's native library
+        URL url = null;
+        try {
+            url = new URL(sURL2);
+            HttpURLConnection request = null;
+            request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            // Convert to a JSON object to print data
+            JsonParser jp = new JsonParser(); //from gson
+            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
+            JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
+            //String city = rootobj.get("city").getAsString(); //just grab the zipcode
+          // String search = rootobj.get("search").getAsString(); //just grab the zipcode
+            //String search_query = rootobj.get("search_query").getAsString(); //just grab the zipcode
+            String sq = rootobj.getAsJsonObject("search").get("search_query").getAsString();
+
+            //System.out.println("search: " + search);
+            //System.out.println("search_query: " + search_query);
+            System.out.println("sq: " + sq);
+
+        } catch (IOException e) {
+            System.out.println("erro");
+            e.printStackTrace();
+        }
 
 
         Resource resource = new Resource();
