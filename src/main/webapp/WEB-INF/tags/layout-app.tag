@@ -38,8 +38,11 @@
     <nav class="top-menu">
         <ul class="top-menu-left">
             <li><a href="<c:url value="/"/>"><i class="fa fa-home"></i> <span>HOME</span></a></li>
+            <li><a href="<c:url value="/experiments"/>"><i class="fa fa-flask"></i> <span>EXPERIMENTS</span></a></li>
+            <li><a href="<c:url value="/members"/>"><i class="fa fa-id-card"></i> <span>MEMBERS</span></a></li>
+            <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
             <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
-                <li><a href="<c:url value="/services"/>"><i class="fa fa-cogs"></i> <span>SERVICES</span></a></li>
+
             </c:if>
 
         </ul>
@@ -125,12 +128,9 @@
 
 <!-- CORE JAVASCRIPTS START -->
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery/jquery.min.js" />"></script>
-<script type="text/javascript"
-        src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
-<script type="text/javascript"
-        src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
-<script type="text/javascript"
-        src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/core.js" />"></script>
 <!-- CORE JAVASCRIPTS END -->
 

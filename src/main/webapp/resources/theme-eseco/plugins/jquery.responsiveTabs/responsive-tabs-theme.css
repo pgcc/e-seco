@@ -1,0 +1,25 @@
+.r-tabs .r-tabs-accordion-title {
+    background: #eee none repeat scroll 0 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 0 10px 0;
+}
+.r-tabs .r-tabs-accordion-title.r-tabs-state-active {
+    margin: 0 !important;
+    border-radius: 5px 5px 0 0 !important;
+}
+
+.r-tabs .r-tabs-panel{
+    border: 1px solid #ddd;
+    border-top: 0;
+    margin: 0 0 10px 0;
+}
+
+/* FOR BOOTSTRAP */
+.r-tabs .r-tabs-nav{
+    padding-left: 20px;
+}
+.r-tabs .r-tabs-tab{
+    margin-bottom: -1px !important;
+}

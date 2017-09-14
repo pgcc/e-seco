@@ -4,7 +4,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Services Overview
+        E-SECO Plugins
     </jsp:attribute>
 
 
@@ -19,15 +19,15 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/services"/>"><i class="fa fa-street-view"></i> Services</a>
-        <a href="<c:url value="/services"/>"><i class="fa fa-angle-double-right"></i> Overview</a>
+        <a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a>
+        <a href="<c:url value="/components/plugins"/>"><i class="fa fa-angle-double-right"></i> Plugins</a>
     </jsp:attribute>
 
 
     <jsp:body>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Services Overview</h2>
+                <h2>Plugins</h2>
             </div>
         </div>
     </jsp:body>

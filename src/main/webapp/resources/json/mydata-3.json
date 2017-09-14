@@ -1,0 +1,71 @@
+{
+    "name": "Service 003",
+    "children": [
+        {
+            "name": "Service 001",
+            "children": [
+                {
+                    "name": "br.ufjf.pgcc.eseco.model.core.Researcher",
+                    "children": [
+                        {
+                            "name": "br.ufjf.pgcc.eseco.model.core.Agent",
+                            "size": 5
+                        },
+                        {
+                            "name": "br.ufjf.pgcc.eseco.model.core.Institution",
+                            "children": [
+                                {
+                                    "name": "br.ufjf.pgcc.eseco.model.core.City",
+                                    "children": [
+                                        {
+                                            "name": "br.ufjf.pgcc.eseco.model.core.State",
+                                            "children": [
+                                                {
+                                                    "name": "br.ufjf.pgcc.eseco.model.core.Country",
+                                                    "size": 5
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Service 002",
+            "children": [
+                {
+                    "name": "br.ufjf.pgcc.eseco.model.core.Developer",
+                    "children": [
+                        {
+                            "name": "br.ufjf.pgcc.eseco.model.core.Agent",
+                            "size": 5
+                        },
+                        {
+                            "name": "br.ufjf.pgcc.eseco.model.core.Institution",
+                            "children": [
+                                {
+                                    "name": "br.ufjf.pgcc.eseco.model.core.City",
+                                    "children": [
+                                        {
+                                            "name": "br.ufjf.pgcc.eseco.model.core.State",
+                                            "children": [
+                                                {
+                                                    "name": "br.ufjf.pgcc.eseco.model.core.Country",
+                                                    "size": 5
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

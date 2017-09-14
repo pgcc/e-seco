@@ -85,6 +85,9 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "home":
                 case "notifications":
                 case "profile":
+                case "members":
+                case "components":
+                case "experiments":
                 case "researchers":
                     isAuthorized = true;
                     break;
@@ -99,7 +102,9 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "home":
                 case "notifications":
                 case "profile":
-                case "services":
+                case "members":
+                case "components":
+                case "experiments":
                 case "developers":
                     isAuthorized = true;
                     break;

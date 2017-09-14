@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.domain.model.experiment;
+package br.ufjf.pgcc.eseco.domain.model.resource;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "exp_resources_types")
-public class ResourceType {
+@Table(name = "res_component_types")
+public class ComponentType {
 
     @Id
     @Column(name = "id")
