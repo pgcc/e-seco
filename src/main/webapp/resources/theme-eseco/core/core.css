@@ -15,6 +15,22 @@ body{
 }
 
 
+@media (min-width: 768px) {
+  .container {
+    width: 520px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 740px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 940px;
+  }
+}
+
 
 /**********************************************************************************************************************/
 /*** LOGIN STRUCTURE                                                                                                  */

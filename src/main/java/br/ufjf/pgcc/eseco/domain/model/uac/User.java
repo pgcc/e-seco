@@ -45,7 +45,7 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER, mappedBy="user")
     private Agent agent;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "uac_users_roles",
             joinColumns = {

@@ -29,7 +29,7 @@ public class ResearcherService {
 
     @Transactional
     public Researcher saveOrUpdate(Researcher researcher) throws Exception {
-        if (researcher.getId() == 0 || find(researcher.getId()) == null) {
+        if (researcher.isNew()) {
             return researcherDAO.add(researcher);
         } else {
             return researcherDAO.update(researcher);

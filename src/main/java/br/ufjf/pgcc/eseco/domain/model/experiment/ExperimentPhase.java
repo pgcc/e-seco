@@ -5,13 +5,35 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Lenita
  */
 public enum ExperimentPhase {
-    PROBLEM_INVESTIGATION,
-    EXPERIMENT_PROTOTYPING,
-    EXPERIMENT_EXECUTION,
-    RESULTS_PUBLICATION
+    PROBLEM_INVESTIGATION("Ploblem Investigation"),
+    EXPERIMENT_PROTOTYPING("Experiment Prototyping"),
+    EXPERIMENT_EXECUTION("Experiment Execution"),
+    RESULTS_PUBLICATION("Results Publication");
+
+    public final String name;
+
+    private ExperimentPhase(String value) {
+        name = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static List<ExperimentPhase> getList() {
+        List<ExperimentPhase> list = new ArrayList<>();
+        list.add(PROBLEM_INVESTIGATION);
+        list.add(EXPERIMENT_PROTOTYPING);
+        list.add(EXPERIMENT_EXECUTION);
+        list.add(RESULTS_PUBLICATION);
+        return list;
+    }
 }

@@ -5,7 +5,7 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
-import br.ufjf.pgcc.eseco.domain.model.core.Disciplines;
+import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
 import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
@@ -51,6 +51,10 @@ public class Experiment {
     @Temporal(value = TemporalType.DATE)
     private Date dateCreated;
 
+    @Column(name = "date_updated", columnDefinition = "DATE")
+    @Temporal(value = TemporalType.DATE)
+    private Date dateUpdated;
+
     @Column(name = "date_ended", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
     private Date dateEnded;
@@ -74,10 +78,10 @@ public class Experiment {
                 @JoinColumn(name = "discipline_id", nullable = false)
             }
     )
-    private List<Disciplines> disciplines;
+    private List<Discipline> disciplines;
 
     @Column(name = "key_words")
-    private String keyWords;
+    private String keywords;
 
     @OneToMany
     @JoinTable(
@@ -170,6 +174,14 @@ public class Experiment {
         this.dateCreated = dateCreated;
     }
 
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
     public Date getDateEnded() {
         return dateEnded;
     }
@@ -202,20 +214,20 @@ public class Experiment {
         this.version = version;
     }
 
-    public List<Disciplines> getDisciplines() {
+    public List<Discipline> getDisciplines() {
         return disciplines;
     }
 
-    public void setDisciplines(List<Disciplines> disciplines) {
+    public void setDisciplines(List<Discipline> disciplines) {
         this.disciplines = disciplines;
     }
 
-    public String getKeyWords() {
-        return keyWords;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setKeyWords(String keyWords) {
-        this.keyWords = keyWords;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public List<Institution> getInstitutions() {
@@ -250,5 +262,7 @@ public class Experiment {
         this.workflows = workflows;
     }
 
-    
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

@@ -22,7 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "core_disciplines")
-public class Disciplines {
+public class Discipline {
 
     @Id
     @Column(name = "id")
@@ -42,9 +42,9 @@ public class Disciplines {
                 @JoinColumn(name = "subdiscipline_id", nullable = false)
             }
     )
-    private List<Disciplines> subdisciplines;
+    private List<Discipline> subdisciplines;
 
-    public Disciplines() {
+    public Discipline() {
     }
 
     public int getId() {
@@ -63,11 +63,11 @@ public class Disciplines {
         this.name = name;
     }
 
-    public List<Disciplines> getSubdisciplines() {
+    public List<Discipline> getSubdisciplines() {
         return subdisciplines;
     }
 
-    public void setSubdisciplines(List<Disciplines> subdisciplines) {
+    public void setSubdisciplines(List<Discipline> subdisciplines) {
         this.subdisciplines = subdisciplines;
     }
 
