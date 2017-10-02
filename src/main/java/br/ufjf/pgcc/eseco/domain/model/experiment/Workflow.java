@@ -15,11 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -72,6 +75,10 @@ public class Workflow {
             }
     )
     private List<Activity> activities;
+
+    @ManyToMany(mappedBy = "workflows")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Experiment> experiments;
 
     public Workflow() {
     }
@@ -154,6 +161,18 @@ public class Workflow {
 
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    public List<Experiment> getExperiments() {
+        return experiments;
+    }
+
+    public void setExperiments(List<Experiment> experiments) {
+        this.experiments = experiments;
+    }
+
+    public boolean isNew() {
+        return (this.id == 0);
     }
 
 }
