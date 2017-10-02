@@ -21,7 +21,9 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/profile"/>"><i class="fa fa-street-view"></i> User Profile</a>
+        <ol class="breadcrumb">
+            <li><a class="fa fa-street-view" href="<c:url value="/profile"/>"> User Profile</a></li>
+        </ol>   
     </jsp:attribute>
 
 

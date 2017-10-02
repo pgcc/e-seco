@@ -24,8 +24,8 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/researcher"/>"> Researchers</a></li>
-            <li class="active" ><a href="<c:url value="/researcher/${researcher.id}"/>">View</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/researchers"/>"> Researchers</a></li>
+            <li class="active" ><a href="<c:url value="/researchers/${researcher.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
 

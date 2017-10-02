@@ -54,7 +54,7 @@ public class ResearcherController extends CommonController {
         } else {
             Researcher researcher = new Researcher();
             model.addAttribute("user", user);
-            model.addAttribute("researcher", researcher);
+            model.addAttribute("researcherForm", researcher);
             return "researchers/researcher-form";
         }
     }
@@ -77,7 +77,6 @@ public class ResearcherController extends CommonController {
             return "researchers/researcher-form";
         }
         model.addAttribute("researcher", researcher);
-
         return "researchers/show";
 
     }

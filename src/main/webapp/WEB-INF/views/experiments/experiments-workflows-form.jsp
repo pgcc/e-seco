@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Experiment Phase Report
+        E-SECO Workflow
     </jsp:attribute>
 
 
@@ -25,8 +25,8 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/${experimentPhaseReportForm.experiment.id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${experimentPhaseReportForm.experiment.id}/experimentPhaseReport/add"/>">Add Experiment Phase Report</a></li>
+            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
+            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/workflows/add"/>">Add Workflow</a></li>
         </ol>
     </jsp:attribute>
 
@@ -36,20 +36,31 @@
         <div class="container-fluid">
 
             <c:choose>
-                <c:when test="${experimentPhaseReportForm['new']}">
-                    <h2>Add Experiment Phase Report</h2>
+                <c:when test="${experimentWorkflowForm['new']}">
+                    <h2>Add Workflow</h2>
                 </c:when>
                 <c:otherwise>
-                    <h2>Update Experiment Phase Report</h2>
+                    <h2>Update Workflow</h2>
                 </c:otherwise>
             </c:choose>
             <br />
 
-            <spring:url value="/experiments/experimentPhaseReport" var="experimentPhaseReportActionUrl" />
+            <spring:url value="/experiments/workflows" var="experimentWorkflowsUrl" />
 
-            <f:form class="form form-horizontal" method="post" modelAttribute="experimentPhaseReportForm" action="${experimentPhaseReportActionUrl}">
+            <f:form class="form form-horizontal" method="post" modelAttribute="experimentWorkflowForm" 
+                    action="${experimentWorkflowsUrl}">
 
                 <f:hidden path="id" />
+
+                <spring:bind path="name">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name" />
+                            <f:errors path="name" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
 
                 <spring:bind path="description">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -61,15 +72,16 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="experiment.name">
+                <spring:bind path="link">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Experiment Name</label>
+                        <label class="col-sm-2 control-label">Link</label>
                         <div class="col-sm-10">
-                            <f:input path="experiment.name" class="form-control" id="experiment.name" placeholder="Experiment Name" disabled="true"/>
+                            <f:input path="link" class="form-control" rows="5" id="link" placeholder="Link" />
+                            <f:errors path="link" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
-                
+
                 <spring:bind path="author.displayName">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Author</label>
@@ -89,21 +101,21 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="currentPhase">
+                <spring:bind path="version">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Current Phase</label>
+                        <label class="col-sm-2 control-label">Version</label>
                         <div class="col-sm-10">
-                            <f:radiobuttons path="currentPhase" items="${phaseList}" itemLabel="name" element="label class='radio-inline'" disabled="true" />
+                            <f:input path="version" class="form-control" rows="5" id="version" placeholder="Version" />
+                            <f:errors path="version" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
 
-
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
-                            <c:when test="${experimentPhaseReportForm['new']}">
-                                <button type="submit" cc:when test="${experimentPhaseReportForm['new']}" class="btn-lg btn-primary pull-right">Add</button>
+                            <c:when test="${experimentWorkflowForm['new']}">
+                                <button type="submit" cc:when test="${experimentWorkflowForm['new']}" class="btn-lg btn-primary pull-right">Add</button>
                             </c:when>
                             <c:otherwise>
                                 <button type="submit" class="btn-lg btn-primary pull-right">Update</button>

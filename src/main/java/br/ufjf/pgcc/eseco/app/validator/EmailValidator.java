@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.app.validadtor;
+package br.ufjf.pgcc.eseco.app.validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

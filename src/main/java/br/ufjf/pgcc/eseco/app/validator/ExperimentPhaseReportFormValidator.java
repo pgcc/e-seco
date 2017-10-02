@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.app.validadtor;
+package br.ufjf.pgcc.eseco.app.validator;
 
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhaseReport;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentPhaseReportService;

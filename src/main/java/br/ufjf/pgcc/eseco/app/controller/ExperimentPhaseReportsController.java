@@ -1,23 +1,15 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
-import br.ufjf.pgcc.eseco.app.validadtor.ExperimentPhaseReportFormValidator;
-import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
-import br.ufjf.pgcc.eseco.domain.model.core.Institution;
-import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.app.validator.ExperimentPhaseReportFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhaseReport;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentPhaseReportService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -41,9 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SessionAttributes({"experimentPhaseReportForm"})
-public class ExperimentPhaseReportController {
+public class ExperimentPhaseReportsController {
 
-    private static final Logger LOGGER = Logger.getLogger(ExperimentPhaseReportController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ExperimentPhaseReportsController.class.getName());
 
     @Autowired
     ExperimentPhaseReportFormValidator experimentPhaseReportFormValidator;
@@ -66,8 +58,9 @@ public class ExperimentPhaseReportController {
     }
 
     @RequestMapping(value = "/experiments/experimentPhaseReport", method = RequestMethod.POST)
-    public String saveOrUpdateExperimentPhaseReport(@ModelAttribute("experimentPhaseReportForm") @Validated ExperimentPhaseReport experimentPhaseReport,
-            BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+    public String saveOrUpdateExperimentPhaseReport(@ModelAttribute("experimentPhaseReportForm")
+            @Validated ExperimentPhaseReport experimentPhaseReport, BindingResult result, Model model,
+            final RedirectAttributes redirectAttributes) {
 
         LOGGER.log(Level.INFO, "saveOrUpdateExperimentPhaseReport() : {0}", experimentPhaseReport);
 
@@ -101,10 +94,9 @@ public class ExperimentPhaseReportController {
                 }
                 experimentService.saveOrUpdate(experiment);
             } catch (Exception ex) {
-                Logger.getLogger(ExperimentPhaseReportController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExperimentPhaseReportsController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            
             // POST/FORWARD/GET
             return "redirect:/experiments/" + experimentPhaseReport.getExperiment().getId();
 
@@ -115,7 +107,8 @@ public class ExperimentPhaseReportController {
     }
 
     @RequestMapping(value = "/experiments/{experimentId}/experimentPhaseReport/add", method = RequestMethod.GET)
-    public String showAddExperimentPhaseReportForm(Model model, @PathVariable("experimentId") int experimentId, HttpSession session) {
+    public String showAddExperimentPhaseReportForm(Model model, @PathVariable("experimentId") int experimentId,
+            HttpSession session) {
 
         LOGGER.info("showAddExperimentPhaseReportForm()");
 
@@ -156,7 +149,7 @@ public class ExperimentPhaseReportController {
         try {
             experimentPhaseReportService.delete(experimentPhaseReport);
         } catch (Exception ex) {
-            Logger.getLogger(ExperimentPhaseReportController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ExperimentPhaseReportsController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         redirectAttributes.addFlashAttribute("css", "success");

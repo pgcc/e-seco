@@ -1,6 +1,6 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
-import br.ufjf.pgcc.eseco.app.validadtor.ExperimentFormValidator;
+import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
 import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
