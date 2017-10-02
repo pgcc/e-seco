@@ -16,19 +16,19 @@ body{
 
 
 @media (min-width: 768px) {
-  .container {
-    width: 520px;
-  }
+    .container {
+        width: 520px;
+    }
 }
 @media (min-width: 992px) {
-  .container {
-    width: 740px;
-  }
+    .container {
+        width: 740px;
+    }
 }
 @media (min-width: 1200px) {
-  .container {
-    width: 940px;
-  }
+    .container {
+        width: 940px;
+    }
 }
 
 
@@ -112,9 +112,11 @@ body.structure-login {
     padding: 3px 20px;
 }
 .structure-app-inner header nav.breadcrumbs{
-    padding: 10px;
-    background: #dddddd;
-    border-bottom: 1px solid #bbb;
+    padding: 5px;
+}
+
+.structure-app-inner .breadcrumb{
+    margin-bottom: 0px
 }
 
 .structure-app-inner main {
@@ -125,7 +127,6 @@ body.structure-login {
 .structure-app-inner .main-menu {
     flex: 0 0 230px;
     background: #eeeeee;
-    border-right: 1px solid #ccc;
 }
 .structure-app-inner .main-menu ul{
     margin: 20px 0 0 0;
@@ -159,6 +160,15 @@ body.structure-login {
     margin: 0;
     font-weight: 100;
     color: #fff;
+}
+
+.structure-app-inner .navbar {
+    min-height: 0px;
+}
+
+.structure-app-inner .navbar-inverse {
+    background-color: #006064;
+    border-color: #006064;
 }
 
 
@@ -215,6 +225,15 @@ div.pnl-heading-buttons-buttons a.btn{
     align-self: center;
 }
 
+/* Navbar Inverse Buttons */
+.navbar-inverse .btn-link {
+    color: #fff;
+}
+
+.navbar-inverse .btn-link:hover {
+    text-decoration: none;
+    background-color: #0097a7;
+}
 
 /* Data Value List */
 ul.lst-data-value{

@@ -2,7 +2,11 @@ package br.ufjf.pgcc.eseco.app.config;
 
 import br.ufjf.pgcc.eseco.app.interceptor.AuthenticatorInterceptor;
 import br.ufjf.pgcc.eseco.app.interceptor.NotificationsInterceptor;
-import br.ufjf.pgcc.eseco.domain.converter.DisciplineIdToDisciplineConverter;
+import br.ufjf.pgcc.eseco.app.converter.DisciplineIdToDisciplineConverter;
+import br.ufjf.pgcc.eseco.app.converter.InstitutionIdToInstitutionConverter;
+import br.ufjf.pgcc.eseco.app.converter.ResearchGroupIdToResearchGroupConverter;
+import br.ufjf.pgcc.eseco.app.converter.ResearcherIdToResearcherConverter;
+import br.ufjf.pgcc.eseco.app.converter.WorkflowIdToWorkflowConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -48,6 +52,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addFormatters(FormatterRegistry registry) {
         super.addFormatters(registry);
         registry.addConverter(new DisciplineIdToDisciplineConverter());
+        registry.addConverter(new InstitutionIdToInstitutionConverter());
+        registry.addConverter(new ResearchGroupIdToResearchGroupConverter());
+        registry.addConverter(new ResearcherIdToResearcherConverter());
+        registry.addConverter(new WorkflowIdToWorkflowConverter());
     }
 
 }

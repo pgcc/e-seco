@@ -8,7 +8,6 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,30 +21,34 @@ import javax.persistence.TemporalType;
  *
  * @author Lenita
  */
-@Entity
-@Table(name = "exp_activities")
-public class Activity {
+@javax.persistence.Entity
+@Table(name = "exp_experiment_phase_reports")
+public class ExperimentPhaseReport {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Researcher author;
+
+    @ManyToOne
+    @JoinColumn(name = "experiment_id", nullable = false)
+    private Experiment experiment;
+
+    @Column(name = "current_phase")
+    private ExperimentPhase currentPhase;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     @Column(name = "date_created", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
     private Date dateCreated;
 
-    public Activity() {
+    public ExperimentPhaseReport() {
     }
 
     public int getId() {
@@ -56,12 +59,28 @@ public class Activity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Researcher getAuthor() {
+        return author;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthor(Researcher author) {
+        this.author = author;
+    }
+
+    public Experiment getExperiment() {
+        return experiment;
+    }
+
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
+    }
+
+    public ExperimentPhase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public void setCurrentPhase(ExperimentPhase currentPhase) {
+        this.currentPhase = currentPhase;
     }
 
     public String getDescription() {
@@ -72,14 +91,6 @@ public class Activity {
         this.description = description;
     }
 
-    public Researcher getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Researcher author) {
-        this.author = author;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -88,4 +99,7 @@ public class Activity {
         this.dateCreated = dateCreated;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

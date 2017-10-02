@@ -1,4 +1,3 @@
-<%@ page session="false"%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -9,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Experiments
+        E-SECO Experiment
     </jsp:attribute>
 
 
@@ -24,15 +23,16 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/experiments"/>"><i class="fa fa-street-view"></i> Experiments</a>
-        <a href="<c:url value="/experiments/add"/>"><i class="fa fa-angle-double-right"></i> Add</a>
+        <ol class="breadcrumb">
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/add"/>">Add</a></li>
+        </ol>
     </jsp:attribute>
 
 
     <jsp:body>
 
-        <div class="container">
-
+        <div class="container-fluid">
             <c:choose>
                 <c:when test="${experimentForm['new']}">
                     <h2>Add Experiment</h2>
@@ -159,7 +159,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Institutions</label>
                         <div class="col-sm-10">
-                            <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name"/>
+                            <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -168,7 +168,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Researchers</label>
                         <div class="col-sm-10">
-                            <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName"/>
+                            <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -177,7 +177,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Research Groups</label>
                         <div class="col-sm-10">
-                            <f:select path="researchGroups" items="${researchGroupsList}" multiple="true" size="3" class="form-control" itemLabel="name"/>
+                            <f:select path="researchGroups" items="${researchGroupsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -186,7 +186,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Workflows</label>
                         <div class="col-sm-10">
-                            <f:select path="workflows" items="${workflowsList}" multiple="true" size="3" class="form-control" itemLabel="name" />
+                            <f:select path="workflows" items="${workflowsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -195,10 +195,10 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
                             <c:when test="${experimentForm['new']}">
-                                <button type="submit" cc:when test="${experimentForm['new']}" class="btn-lg btn-primary pull-right">Add</button>
+                                <button type="submit" cc:when test="${experimentForm['new']}" class="btn btn-primary pull-right">Add</button>
                             </c:when>
                             <c:otherwise>
-                                <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
+                                <button type="submit" class="btn btn-primary pull-right">Update</button>
                             </c:otherwise>
                         </c:choose>
                     </div>

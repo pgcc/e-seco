@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufjf.pgcc.eseco.domain.converter;
+package br.ufjf.pgcc.eseco.app.converter;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
-import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

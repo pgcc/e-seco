@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@SessionAttributes({"researcher"})
+@SessionAttributes({"researcherForm"})
 public class ResearcherController extends CommonController {
+
+    private static final Logger LOGGER = Logger.getLogger(ExperimentsController.class.getName());
 
     private final ResearcherService researcherService;
     private final InstitutionService institutionService;
@@ -41,8 +43,11 @@ public class ResearcherController extends CommonController {
         this.mendeleyService = mendeleyService;
     }
 
-    @RequestMapping(value = "/researchers", method = RequestMethod.GET)
+    @RequestMapping(value = "/researchers/add", method = RequestMethod.GET)
     public String showAddResearcherForm(Model model, HttpSession session) {
+
+        LOGGER.info("showAddResearcherForm()");
+
         User user = (User) session.getAttribute("logged_user");
         if (user.getAgent() != null && user.getAgent().getResearcher() != null) {
             return "redirect:/researchers/" + user.getAgent().getResearcher().getId();
@@ -50,22 +55,50 @@ public class ResearcherController extends CommonController {
             Researcher researcher = new Researcher();
             model.addAttribute("user", user);
             model.addAttribute("researcher", researcher);
-            return "researchers/researcherform";
+            return "researchers/researcher-form";
         }
     }
 
     @RequestMapping(value = "/researchers/{id}", method = RequestMethod.GET)
+    public String showResearcher(@PathVariable("id") int id, Model model, HttpSession session) {
+
+        LOGGER.log(Level.INFO, "showResearcher() : {0}", id);
+
+        Researcher researcher = researcherService.find(id);
+
+        if (researcher == null) {
+            model.addAttribute("css", "danger");
+            model.addAttribute("msg", "Researcher not found");
+
+            User user = (User) session.getAttribute("logged_user");
+            researcher = new Researcher();
+            model.addAttribute("user", user);
+            model.addAttribute("researcherForm", researcher);
+            return "researchers/researcher-form";
+        }
+        model.addAttribute("researcher", researcher);
+
+        return "researchers/show";
+
+    }
+
+    @RequestMapping(value = "/researchers/{id}/update", method = RequestMethod.GET)
     public String showUpdateResearcherForm(@PathVariable("id") int id, Model model) {
+
+        LOGGER.log(Level.INFO, "showUpdateResearcherForm() : {0}", id);
+
         Researcher researcher = researcherService.find(id);
         model.addAttribute("user", researcher.getAgent().getUser());
-        model.addAttribute("researcher", researcher);
-        return "researchers/researcherform";
+        model.addAttribute("researcherForm", researcher);
+        return "researchers/researcher-form";
 
     }
 
     @RequestMapping(value = "/researchers", method = RequestMethod.POST)
-    public String saveOrUpdateResearcher(@ModelAttribute("researcher") Researcher researcher, HttpSession session,
+    public String saveOrUpdateResearcher(@ModelAttribute("researcherForm") Researcher researcher, HttpSession session,
             Model model) {
+
+        LOGGER.log(Level.INFO, "saveOrUpdateResearcher() : {0}", researcher);
 
         try {
 
@@ -79,8 +112,7 @@ public class ResearcherController extends CommonController {
             researcher = researcherService.saveOrUpdate(researcher);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
-            Logger.getLogger(ResearcherController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
 
         return "redirect:/researchers/" + researcher.getId();
@@ -89,6 +121,8 @@ public class ResearcherController extends CommonController {
 
     @RequestMapping(value = "/researchers/mendeleySearch", method = RequestMethod.GET)
     public String mendeleySearch(@ModelAttribute("user") User user, @ModelAttribute("researcher") Researcher researcher, Model model) {
+
+        LOGGER.log(Level.INFO, "mendeleySearch() : {0}", user.getEmail());
 
         List<Researcher> lista = mendeleyService.searchByEmail(user.getEmail());
         if (lista.size() == 1) {
@@ -103,8 +137,8 @@ public class ResearcherController extends CommonController {
         }
         model.addAttribute("institutions", researcher.getInstitutions());
         model.addAttribute("user", user);
-        model.addAttribute("researcher", researcher);
+        model.addAttribute("researcherForm", researcher);
 
-        return "researchers/researcherform";
+        return "researchers/researcher-form";
     }
 }

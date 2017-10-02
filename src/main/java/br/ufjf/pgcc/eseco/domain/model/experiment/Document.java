@@ -29,7 +29,7 @@ public class Document {
     @OneToOne(fetch = FetchType.EAGER)
     private Entity entity;
 
-    @Column(name = "value")
+    @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
     @Column(name = "link")

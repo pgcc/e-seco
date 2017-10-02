@@ -13,16 +13,20 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -40,7 +44,7 @@ public class Experiment {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
@@ -68,7 +72,8 @@ public class Experiment {
     @Column(name = "version")
     private String version;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE) 
     @JoinTable(
             name = "exp_experiment_discipline",
             joinColumns = {
@@ -83,7 +88,8 @@ public class Experiment {
     @Column(name = "key_words")
     private String keywords;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_experiment_institution",
             joinColumns = {
@@ -95,7 +101,8 @@ public class Experiment {
     )
     private List<Institution> institutions;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_experiment_researcher",
             joinColumns = {
@@ -107,7 +114,8 @@ public class Experiment {
     )
     private List<Researcher> researchers;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_experiment_research_group",
             joinColumns = {
@@ -119,7 +127,8 @@ public class Experiment {
     )
     private List<ResearchGroup> researchGroups;
 
-    @OneToMany
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_experiment_workflow",
             joinColumns = {

@@ -91,9 +91,8 @@ public class ExperimentsController {
 
         if (result.hasErrors()) {
             populateDefaultModel(model);
-            return "experiments/experimentsform";
+            return "experiments/experiments-form";
         } else {
-
             redirectAttributes.addFlashAttribute("css", "success");
             if (experiment.isNew()) {
                 redirectAttributes.addFlashAttribute("msg", "Experiment added successfully!");
@@ -103,15 +102,13 @@ public class ExperimentsController {
 
             try {
                 experiment = experimentService.saveOrUpdate(experiment);
+                return "redirect:/experiments/" + experiment.getId();
             } catch (Exception ex) {
                 Logger.getLogger(ExperimentsController.class.getName()).log(Level.SEVERE, null, ex);
+                populateDefaultModel(model);
+                return "experiments/experiments-form";
             }
 
-            // POST/REDIRECT/GET
-            return "redirect:/experiments/" + experiment.getId();
-
-            // POST/FORWARD/GET
-            // return "experiment/list";
         }
 
     }
@@ -136,7 +133,7 @@ public class ExperimentsController {
 
         populateDefaultModel(model);
 
-        return "experiments/experimentsform";
+        return "experiments/experiments-form";
 
     }
 
@@ -150,7 +147,7 @@ public class ExperimentsController {
 
         populateDefaultModel(model);
 
-        return "experiments/experimentsform";
+        return "experiments/experiments-form";
 
     }
 
@@ -174,7 +171,7 @@ public class ExperimentsController {
     }
 
     @RequestMapping(value = "/experiments/{id}", method = RequestMethod.GET)
-    public String showExperiment(@PathVariable("id") int id, Model model) {
+    public String showExperiment(@PathVariable("id") int id, Model model, HttpSession session) {
 
         LOGGER.log(Level.INFO, "showExperiment() id: {0}", id);
 
@@ -183,7 +180,10 @@ public class ExperimentsController {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Experiment not found");
         }
+
         model.addAttribute("experiment", experiment);
+
+        setSessionCurrentPhase(session, experiment);
 
         return "experiments/show";
 
@@ -226,5 +226,32 @@ public class ExperimentsController {
 
         return model;
 
+    }
+
+    private void setSessionCurrentPhase(HttpSession session, Experiment experiment) {
+        session.setAttribute("problem_investigation", false);
+        session.setAttribute("experiment_prototyping", false);
+        session.setAttribute("experiment_execution", false);
+        session.setAttribute("results_publication", false);
+        session.setAttribute("experiment_finished", false);
+        switch (experiment.getCurrentPhase()) {
+            case PROBLEM_INVESTIGATION:
+                session.setAttribute("problem_investigation", true);
+                break;
+            case EXPERIMENT_PROTOTYPING:
+                session.setAttribute("experiment_prototyping", true);
+                break;
+            case EXPERIMENT_EXECUTION:
+                session.setAttribute("experiment_execution", true);
+                break;
+            case RESULTS_PUBLICATION:
+                session.setAttribute("results_publication", true);
+                break;
+            case EXPERIMENT_FINISHED:
+                session.setAttribute("experiment_finished", true);
+                break;
+            default:
+                break;
+        }
     }
 }

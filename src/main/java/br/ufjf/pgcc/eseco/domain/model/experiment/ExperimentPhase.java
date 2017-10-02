@@ -16,7 +16,8 @@ public enum ExperimentPhase {
     PROBLEM_INVESTIGATION("Ploblem Investigation"),
     EXPERIMENT_PROTOTYPING("Experiment Prototyping"),
     EXPERIMENT_EXECUTION("Experiment Execution"),
-    RESULTS_PUBLICATION("Results Publication");
+    RESULTS_PUBLICATION("Results Publication"),
+    EXPERIMENT_FINISHED("Experiment Finished");
 
     public final String name;
 
