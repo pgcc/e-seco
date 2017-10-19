@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
+import br.ufjf.biocatalogue.core.BioCatalogueClient;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.analysis.ServiceDependency;
 import br.ufjf.pgcc.eseco.domain.model.resource.ServiceWorkflow;
@@ -87,19 +88,13 @@ public class ComponentsController {
 
         /*
         Class cls = Class.forName(resource.getClassName());
-
         // returns public, protected, private and default method of that specific class only (it excludes inherited methods).
         Method methlist[] = cls.getDeclaredMethods();
-
-
         int MCount = cls.getDeclaredMethods().length;
-
         // Inheritence
         Class<?> class2 = cls.getSuperclass();
         Method[] methods2 = class2.getDeclaredMethods();
         MCount += class2.getDeclaredMethods().length;
-
-
         System.out.println("total metodos na webservice: " + MCount);
         */
 
@@ -125,10 +120,10 @@ public class ComponentsController {
     @RequestMapping(value = "/components/services-search", method = RequestMethod.POST)
     public String servicesSearch() {
 
-//        BioCatalogueClient bioClient;
-//        //bioCatalogue
-//        bioClient = new BioCatalogueClient();
-//        bioClient.setBaseUri("https://www.biocatalogue.org");
+        BioCatalogueClient bioClient;
+        //bioCatalogue
+        bioClient = new BioCatalogueClient();
+        bioClient.setBaseUri("https://www.biocatalogue.org");
 
         String sURL = "http://freegeoip.net/json/"; //just a string
         String sURL2 = "https://www.biocatalogue.org/search.json?q=gene&scope=services"; //just a string
@@ -189,6 +184,3 @@ public class ComponentsController {
         return gson.toJson(sd);
     }
 }
-
-
-

@@ -8,7 +8,7 @@
         <c:if test="${experiment != null && sessionScope.experiment_execution}">
         <li><a href="<c:url value="/experiments/${experiment.id}/workflows/add"/>"><i class="fa fa-tasks"></i> Add Workflow</a></li>
         </c:if>
-        <c:if test="${experiment != null && sessionScope.experiment_execution}">
-        <li><a href="<c:url value=""/>"><i class="fa fa-book"></i> Import Prevenance Data</a></li>
+        <c:if test="${experiment != null && sessionScope.experiment_execution && experiment.workflows.size() > 0}">
+        <li><a href="<c:url value="/experiments/${experiment.id}/addProvenance"/>"><i class="fa fa-book"></i> Import Prevenance Data</a></li>
         </c:if>
 </ul>

@@ -59,8 +59,8 @@ public class ExperimentWorkflowsController {
         this.workflowService = workflowService;
     }
 
-    @RequestMapping(value = "/experiments/workflows", method = RequestMethod.POST)
-    public String saveOrUpdateExperimentWorkflow(@ModelAttribute("experimentWorkflowForm") @Validated Workflow workflow,
+    @RequestMapping(value = "/experiments/{id}/workflows", method = RequestMethod.POST)
+    public String saveOrUpdateExperimentWorkflow(@PathVariable("id") int experimentId, @ModelAttribute("experimentWorkflowForm") @Validated Workflow workflow,
             BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
 
         LOGGER.log(Level.INFO, "saveOrUpdateExperimentWorkflow() : {0}", workflow);
@@ -75,13 +75,15 @@ public class ExperimentWorkflowsController {
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Experiment Workflow updated successfully!");
             }
-
+            Experiment experiment = experimentService.find(experimentId);
             try {
                 workflow = workflowService.saveOrUpdate(workflow);
-                return "redirect:/experiments/" + workflow.getExperiments().get(0).getId();
+                experiment.getWorkflows().add(workflow);
+                experimentService.saveOrUpdate(experiment);
+                return "redirect:/experiments/" + experiment.getId();
             } catch (Exception ex) {
                 Logger.getLogger(ExperimentWorkflowsController.class.getName()).log(Level.SEVERE, null, ex);
-                populateDefaultModel(model);                
+                populateDefaultModel(model);
                 return "experiments/experiments-workflows-form";
             }
 

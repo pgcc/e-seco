@@ -61,19 +61,20 @@
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-
                         <c:forEach var="experiment" items="${experiments}">
+
+                            <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
+                            <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
+
+
                             <tr>
-                                <td>${experiment.id}</td>
-                                <td>${experiment.name}</td>
-                                <td>${experiment.status.name}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
                                 <td>${experiment.currentPhase.name}</td>
 
                                 <td class="text-center">
-                                    <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
-                                    <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
-                                    <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
-
                                     <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>

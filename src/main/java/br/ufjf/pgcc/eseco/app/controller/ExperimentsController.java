@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
+import br.ufjf.pgcc.eseco.app.service.ImportProvenanceDataService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
@@ -16,6 +17,10 @@ import br.ufjf.pgcc.eseco.domain.service.core.ResearchGroupService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +42,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -61,17 +67,19 @@ public class ExperimentsController {
     private ResearcherService researcherService;
     private ResearchGroupService researchGroupService;
     private WorkflowService workflowService;
+    private ImportProvenanceDataService importProvenanceDataService;
 
     @Autowired
     public void setExperimentService(ExperimentService experimentService, DisciplineService disciplineService,
             InstitutionService institutionService, ResearcherService researcherService, ResearchGroupService researchGroupService,
-            WorkflowService workflowService) {
+            WorkflowService workflowService, ImportProvenanceDataService importProvenanceDataService) {
         this.experimentService = experimentService;
         this.disciplineService = disciplineService;
         this.institutionService = institutionService;
         this.researcherService = researcherService;
         this.researchGroupService = researchGroupService;
         this.workflowService = workflowService;
+        this.importProvenanceDataService = importProvenanceDataService;
     }
 
     @RequestMapping(value = "/experiments", method = RequestMethod.GET)
@@ -187,6 +195,55 @@ public class ExperimentsController {
 
         return "experiments/show";
 
+    }
+
+    @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.GET)
+    public String showAddProvenanceDataForm(@PathVariable("id") int id, Model model) {
+
+        LOGGER.log(Level.INFO, "showAddProvenanceDataForm() : {0}", id);
+
+        Experiment experiment = experimentService.find(id);
+        model.addAttribute("experimentForm", experiment);
+
+        model.addAttribute("workflowsList", experiment.getWorkflows());
+
+        return "experiments/experiments-add-provenance-data-form";
+
+    }
+
+    @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.POST)
+    public String chooseProvenanceDataFile(@PathVariable("id") int id, @ModelAttribute("experimentForm") Experiment experiment, Model model) {
+
+        LOGGER.log(Level.INFO, "chooseProvenanceDataFile() : {0}", id);
+
+        FileDialog fileDialog = new FileDialog(new Frame(), "Open", FileDialog.LOAD);
+        fileDialog.setFile("*.json");
+        fileDialog.setFilenameFilter(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".json");
+            }
+        });
+
+        fileDialog.setFocusable(true);
+        fileDialog.setVisible(true);
+        fileDialog.toFront();
+        model.addAttribute("file", fileDialog.getDirectory() + fileDialog.getFile());
+        model.addAttribute("workflowsList", experimentService.find(id).getWorkflows());
+        return "experiments/experiments-add-provenance-data-form";
+
+    }
+
+    @RequestMapping(value = "/experiments/saveProvenance", method = RequestMethod.POST)
+    public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment, @RequestParam(value = "file") String file, Model model) {
+
+        LOGGER.log(Level.INFO, "saveProvenanceData() : {0}", experiment);
+
+        if (experiment.getWorkflows().get(0) != null) {
+            Workflow workflow = workflowService.find(experiment.getWorkflows().get(0).getId());
+            importProvenanceDataService.importProvenanceData(experiment, workflow, file);
+        }
+        return "experiments/experiments-add-provenance-data-form";
     }
 
     private void populateDefaultModel(Model model) {

@@ -45,7 +45,7 @@
             </c:choose>
             <br />
 
-            <spring:url value="/experiments/workflows" var="experimentWorkflowsUrl" />
+            <spring:url value="/experiments/${sessionScope.current_experiment_id}/workflows" var="experimentWorkflowsUrl" />
 
             <f:form class="form form-horizontal" method="post" modelAttribute="experimentWorkflowForm" 
                     action="${experimentWorkflowsUrl}">
