@@ -103,10 +103,11 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
                             <c:when test="${experimentPhaseReportForm['new']}">
-                                <button type="submit" cc:when test="${experimentPhaseReportForm['new']}" class="btn-lg btn-primary pull-right">Add</button>
+                                <button type="submit" cc:when test="${experimentPhaseReportForm['new']}" 
+                                        class="btn btn-primary pull-right">Save</button>
                             </c:when>
                             <c:otherwise>
-                                <button type="submit" class="btn-lg btn-primary pull-right">Update</button>
+                                <button type="submit" class="btn btn-primary pull-right">Update</button>
                             </c:otherwise>
                         </c:choose>
                     </div>

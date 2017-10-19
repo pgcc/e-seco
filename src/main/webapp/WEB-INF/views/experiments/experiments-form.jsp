@@ -195,7 +195,8 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
                             <c:when test="${experimentForm['new']}">
-                                <button type="submit" cc:when test="${experimentForm['new']}" class="btn btn-primary pull-right">Add</button>
+                                <button type="submit" cc:when test="${experimentForm['new']}" 
+                                        class="btn btn-primary pull-right">Save</button>
                             </c:when>
                             <c:otherwise>
                                 <button type="submit" class="btn btn-primary pull-right">Update</button>
