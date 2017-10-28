@@ -21,13 +21,11 @@
             $("#btn-show-treemap").on("click", function () {
                 drawTreemap('/eseco/resources/json/mydata-3.json');
             });
-
             $("#btn-show-treemap-2").on("click", function () {
                 drawTreemap('<c:url value="/returnjson"/>');
             });
-
             $("#btn-show-radar").on("click", function () {
-                drawRadar('/eseco/resources/json/radar11.json');
+                drawRadar('/eseco/resources/json/radar13.json');
             });
         </script>
     </jsp:attribute>

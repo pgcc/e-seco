@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.domain.model.misc;
+package br.ufjf.pgcc.eseco.app.model;
 
 public class Notification {
 

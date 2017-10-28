@@ -44,6 +44,9 @@ public class Component {
     @Column(name = "date_created", columnDefinition = "DATETIME")
     private Date dateCreated;
 
+    @OneToOne(mappedBy = "component", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private ServiceWorkflow serviceWorkflow;
+
 
     /* GETTERS/SETTERS */
 
@@ -103,4 +106,11 @@ public class Component {
         this.dateCreated = dateCreated;
     }
 
+    public ServiceWorkflow getServiceWorkflow() {
+        return serviceWorkflow;
+    }
+
+    public void setServiceWorkflow(ServiceWorkflow serviceWorkflow) {
+        this.serviceWorkflow = serviceWorkflow;
+    }
 }

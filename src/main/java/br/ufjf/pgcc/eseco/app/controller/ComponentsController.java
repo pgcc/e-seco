@@ -1,6 +1,8 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
-import br.ufjf.biocatalogue.core.BioCatalogueClient;
+import br.ufjf.biocatalogue.exception.BioCatalogueException;
+import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
+import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.analysis.ServiceDependency;
 import br.ufjf.pgcc.eseco.domain.model.resource.ServiceWorkflow;
@@ -15,24 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ComponentsController {
 
+    private static final int DETAIL_PLUGIN = 1;
+    private static final int DETAIL_WORKFLOW_SERVICE_INTERNAL = 2;
+    private static final int DETAIL_WORKFLOW_SERVICE_EXTERNAL_BIOCATALOGUE = 3;
+
     private ComponentService componentService;
     private ServiceWorkflowService serviceWorkflowService;
+    private BioCatalogueService bioCatalogueService;
 
     @Autowired
-    public ComponentsController(ComponentService componentService, ServiceWorkflowService serviceWorkflowService) {
+    public ComponentsController(ComponentService componentService, ServiceWorkflowService serviceWorkflowService,
+                                BioCatalogueService bioCatalogueService) {
         this.componentService = componentService;
         this.serviceWorkflowService = serviceWorkflowService;
+        this.bioCatalogueService = bioCatalogueService;
     }
 
     @RequestMapping(value = "/components")
@@ -40,43 +45,32 @@ public class ComponentsController {
         return "components/overview";
     }
 
-    @RequestMapping(value = "/components/plugins")
-    public String plugins() {
-        return "components/plugins";
-    }
 
-    @RequestMapping(value = "/components/services-explorer")
-    public String servicesExplorer(Model model) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // COMPONENTS DETAILS                                                                                            //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        List<ServiceWorkflow> services_workflow_list =  serviceWorkflowService.findAll();
+    @RequestMapping(value = "/components/details/{type}/{id}")
+    public String serviceDetails(Model model, @PathVariable(value = "type") int type, @PathVariable(value = "id") int id) throws ClassNotFoundException {
 
-        model.addAttribute("services_workflow_list", services_workflow_list);
+        model.addAttribute("type", type);
 
-        return "components/services-explorer";
-    }
+        switch(type){
+            case DETAIL_PLUGIN:
+            case DETAIL_WORKFLOW_SERVICE_INTERNAL:
+                Component component = componentService.find(id);
+                if (null != component) {
+                    model.addAttribute("component", component);
+                }
+                break;
 
-    @RequestMapping(value = "/components/services-composer")
-    public String servicesComposer() {
-        return "components/services-composer";
-    }
-
-
-
-    @RequestMapping(value = "/components/details/{id}")
-    public String serviceDetails(Model model, @PathVariable(value = "id") int id) throws ClassNotFoundException {
-
-        Component component = componentService.find(id);
-
-        if(null != component){
-            model.addAttribute("component", component);
-
-            return "components/details";
-
-        }else{
-            return null;
+            case DETAIL_WORKFLOW_SERVICE_EXTERNAL_BIOCATALOGUE:
+                // @TODO: BIOCATALOGUE: get result from biocatalogue service getDetails
+                break;
         }
-    }
 
+        return "components/details";
+    }
 
     @RequestMapping(value = "/components/explore-single/{id}")
     public String exploreSingle(Model model, @PathVariable(value = "id") int id) throws ClassNotFoundException {
@@ -121,51 +115,60 @@ public class ComponentsController {
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // COMPONENTS EXPLORERS                                                                                          //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    @RequestMapping(value = "/components/explore/plugins")
+    public String plugins() {
+        return "components/explore-plugins";
+    }
 
-    @RequestMapping(value = "/components/services-search", method = RequestMethod.POST)
-    public String servicesSearch() {
+    @RequestMapping(value = "/components/workflow-services/internal")
+    public String workflowServicesInternal(Model model) {
 
-        BioCatalogueClient bioClient;
-        //bioCatalogue
-        bioClient = new BioCatalogueClient();
-        bioClient.setBaseUri("https://www.biocatalogue.org");
+        List<ServiceWorkflow> services_workflow_list = serviceWorkflowService.findAll();
 
-        String sURL = "http://freegeoip.net/json/"; //just a string
-        String sURL2 = "https://www.biocatalogue.org/search.json?q=gene&scope=services"; //just a string
+        model.addAttribute("services_workflow_list", services_workflow_list);
 
-        // Connect to the URL using java's native library
-        URL url = null;
+        return "components/explore-workflow-services-internal";
+    }
+
+    @RequestMapping(value = "/components/workflow-services/external")
+    public String workflowServicesExternal() {
+        return "components/explore-workflow-services-external";
+    }
+
+    @RequestMapping(value = "/components/workflow-services/search", method = RequestMethod.POST)
+    public String workflowServicesSearch(Model model, HttpServletRequest request) {
+
+        String searchQuery = request.getParameter("search_string");
+
+        ArrayList<WorkflowServiceSearchResult> searchResults = null;
+
+        // Search in BioCatalogue
         try {
-            url = new URL(sURL2);
-            HttpURLConnection request = null;
-            request = (HttpURLConnection) url.openConnection();
-            request.connect();
+            searchResults = bioCatalogueService.search(searchQuery, "services");
 
-            // Convert to a JSON object to print data
-            JsonParser jp = new JsonParser(); //from gson
-            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-            JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-            //String city = rootobj.get("city").getAsString(); //just grab the zipcode
-            // String search = rootobj.get("search").getAsString(); //just grab the zipcode
-            //String search_query = rootobj.get("search_query").getAsString(); //just grab the zipcode
-            String sq = rootobj.getAsJsonObject("search").get("search_query").getAsString();
-
-            //System.out.println("search: " + search);
-            //System.out.println("search_query: " + search_query);
-            System.out.println("sq: " + sq);
-
-        } catch (IOException e) {
-            System.out.println("erro");
+        } catch (BioCatalogueException e) {
             e.printStackTrace();
         }
 
-        return "components/services-composer";
+        model.addAttribute("searchString", searchQuery);
+        model.addAttribute("searchResults", searchResults);
+
+        return "components/explore-workflow-services-external";
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // COMPONENTS COMPOSITIONS                                                                                       //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    @RequestMapping(value = "/components/compositions/workflow-services")
+    public String compositionsWorkflowServices() {
+        return "components/compositions-workflow-services";
+    }
 
 
     @RequestMapping(value = "/returnjson", method = RequestMethod.GET)

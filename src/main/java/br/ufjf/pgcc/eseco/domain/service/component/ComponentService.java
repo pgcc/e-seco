@@ -23,7 +23,6 @@ public class ComponentService {
         return componentDao.add(component);
     }
 
-
     public Component find(int componentId) {
         return componentDao.find(componentId);
     }

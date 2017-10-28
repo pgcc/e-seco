@@ -23,7 +23,6 @@ public class ServiceWorkflowService {
         return serviceWorkflowDAO.add(serviceWorkflow);
     }
 
-    @Transactional(readOnly = true)
     public List<ServiceWorkflow> findAll() {
         return serviceWorkflowDAO.findAll();
     }

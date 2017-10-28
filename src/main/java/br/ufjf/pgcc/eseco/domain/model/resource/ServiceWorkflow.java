@@ -11,12 +11,14 @@ public class ServiceWorkflow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "component_id", nullable = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Component component;
 
-    @Column(name = "protocol")
-    private String protocol;
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "description")
+    private String description;
 
 
     /* GETTERS/SETTERS */
@@ -37,12 +39,30 @@ public class ServiceWorkflow {
         this.component = component;
     }
 
-    public String getProtocol() {
-        return protocol;
+    public String getType() {
+        return type;
     }
 
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
+    public void setType(String type) {
+        this.type = type;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    /* OTHER METHODS */
+
+    public String getShortDescription() {
+        if (description != null && description.length() > 100) {
+            return description.substring(0, 100) + "...";
+        } else {
+            return description;
+        }
+    }
 }

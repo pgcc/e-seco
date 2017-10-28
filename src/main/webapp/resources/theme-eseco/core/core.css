@@ -127,6 +127,12 @@ body.structure-login {
     text-decoration: none;
     background-color: #ddd;
 }
+.structure-app-inner .main-menu ul li ul{
+    margin: 0 !important;
+}
+.structure-app-inner .main-menu ul li ul li{
+    padding: 0 0 0 30px !important;
+}
 
 .structure-app-inner .main-content {
     flex: 100%;
@@ -221,7 +227,6 @@ ul.lst-data-value li span:nth-child(2){
 /**********************************************************************************************************************/
 
 /* TEXTS */
-
 .text-large{
     font-size: 1.2em !important;
 }
@@ -229,9 +234,7 @@ ul.lst-data-value li span:nth-child(2){
     font-size: 0.8em !important;
 }
 
-
 /* MARGINS */
-
 .no-margin{
     margin: 0 !important;
 }
@@ -278,4 +281,12 @@ ul.lst-data-value li span:nth-child(2){
 }
 .margin-10-right{
     margin-right: 10px !important;
+}
+
+/* WIDTHS */
+.width-100{
+    width: 100% !important;
+}
+.width-95{
+    width: 95% !important;
 }

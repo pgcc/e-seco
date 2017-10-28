@@ -1,6 +1,6 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
-import br.ufjf.pgcc.eseco.domain.model.misc.Notification;
+import br.ufjf.pgcc.eseco.app.model.Notification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

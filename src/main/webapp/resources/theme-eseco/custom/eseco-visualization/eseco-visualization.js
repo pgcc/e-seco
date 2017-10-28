@@ -130,8 +130,8 @@ function drawRadar(data) {
     var config = {
         w: width,
         h: height,
-        maxValue: 35,
-        levels: 5,
+        maxValue: 7,
+        levels: 7,
         ExtraWidthX: 300
     }
 

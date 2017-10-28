@@ -1,7 +1,7 @@
 package br.ufjf.pgcc.eseco.app.interceptor;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
-import br.ufjf.pgcc.eseco.domain.model.misc.Notification;
+import br.ufjf.pgcc.eseco.app.model.Notification;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
