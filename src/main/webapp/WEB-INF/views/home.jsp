@@ -20,7 +20,9 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/"/>"><i class="fa fa-street-view"></i> Home</a>
+        <ol class="breadcrumb">
+            <li><a class="fa fa-street-view" href="<c:url value="/"/>"> Home</a></li>
+        </ol>
     </jsp:attribute>
 
 
@@ -36,11 +38,11 @@
                         </li>
 
                         <c:forEach var="notification" items="${notifications}">
-                        <li class="list-group-item">
-                            <a href="<c:url value="${notification.link}"/>">
-                                <i class="fa ${notification.icon}"></i> <span>${notification.text}</span>
-                            </a>
-                        </li>
+                            <li class="list-group-item">
+                                <a href="<c:url value="${notification.link}"/>">
+                                    <i class="fa ${notification.icon}"></i> <span>${notification.text}</span>
+                                </a>
+                            </li>
                         </c:forEach>
                     </ul>
                 </c:if>

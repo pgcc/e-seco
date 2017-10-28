@@ -113,7 +113,36 @@
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
-
+        
+        <!-- LOCAL DEPENDENCIES -->
+        <dependency>
+            <groupId>biocatalogue</groupId>
+            <artifactId>br.ufjf.biocatalogue</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/BioCatalogueClient.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>myexperiment</groupId>
+            <artifactId>br.ufjf.myexperiment</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/MyExperimentClient.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>parsifal</groupId>
+            <artifactId>br.ufjf.parsifal</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ParsifalClient.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>taverna</groupId>
+            <artifactId>br.ufjf.taverna</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/TavernaClient.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

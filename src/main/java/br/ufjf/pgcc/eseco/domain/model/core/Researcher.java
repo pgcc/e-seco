@@ -100,4 +100,8 @@ public class Researcher {
     public void setInstitutions(List<Institution> institutions) {
         this.institutions = institutions;
     }
+
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

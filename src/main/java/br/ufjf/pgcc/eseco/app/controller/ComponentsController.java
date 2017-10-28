@@ -82,19 +82,13 @@ public class ComponentsController {
 
         /*
         Class cls = Class.forName(resource.getClassName());
-
         // returns public, protected, private and default method of that specific class only (it excludes inherited methods).
         Method methlist[] = cls.getDeclaredMethods();
-
-
         int MCount = cls.getDeclaredMethods().length;
-
         // Inheritence
         Class<?> class2 = cls.getSuperclass();
         Method[] methods2 = class2.getDeclaredMethods();
         MCount += class2.getDeclaredMethods().length;
-
-
         System.out.println("total metodos na webservice: " + MCount);
         */
 
@@ -193,6 +187,3 @@ public class ComponentsController {
         return gson.toJson(sd);
     }
 }
-
-
-

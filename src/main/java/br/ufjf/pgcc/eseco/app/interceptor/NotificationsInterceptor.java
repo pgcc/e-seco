@@ -52,7 +52,7 @@ public class NotificationsInterceptor implements HandlerInterceptor {
             if (agent.getResearcher() == null) {
                 Notification notification = new Notification();
                 notification.setText("You don't have a Researcher Profile Yet! Create one Right Now!");
-                notification.setLink("/researchers");
+                notification.setLink("/researchers/add");
                 notification.setIcon("fa-id-card-o");
                 notification.setImportant(true);
                 notificationsList.add(notification);
