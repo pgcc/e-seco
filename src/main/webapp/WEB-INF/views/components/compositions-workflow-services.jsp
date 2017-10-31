@@ -19,9 +19,11 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a>
-        <a href="#"><i class="fa fa-angle-double-right"></i> Compositions</a>
-        <a href="<c:url value="/components/compositions/workflow-services"/>"><i class="fa fa-angle-double-right"></i> Workflow Services</a>
+        <ol class="breadcrumb">
+            <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
+            <li><a href="#">Compositions</a></li>
+            <li><a href="<c:url value="/components/compositions/workflow-services"/>">Workflow Services</a></li>
+        </ol>
     </jsp:attribute>
 
 

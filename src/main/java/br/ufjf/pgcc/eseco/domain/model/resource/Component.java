@@ -38,14 +38,14 @@ public class Component {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "date_created", columnDefinition = "DATETIME")
     private Date dateCreated;
 
+    @Column(name = "date_updated", columnDefinition = "DATETIME")
+    private Date dateUpdated;
+
     @OneToOne(mappedBy = "component", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private ServiceWorkflow serviceWorkflow;
+    private WorkflowService workflowService;
 
 
     /* GETTERS/SETTERS */
@@ -90,14 +90,6 @@ public class Component {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -106,11 +98,20 @@ public class Component {
         this.dateCreated = dateCreated;
     }
 
-    public ServiceWorkflow getServiceWorkflow() {
-        return serviceWorkflow;
+    public Date getDateUpdated() {
+        return dateUpdated;
     }
 
-    public void setServiceWorkflow(ServiceWorkflow serviceWorkflow) {
-        this.serviceWorkflow = serviceWorkflow;
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
     }
+
+    public WorkflowService getWorkflowService() {
+        return workflowService;
+    }
+
+    public void setWorkflowService(WorkflowService workflowService) {
+        this.workflowService = workflowService;
+    }
+
 }

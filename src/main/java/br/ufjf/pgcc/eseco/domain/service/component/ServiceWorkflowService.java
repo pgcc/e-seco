@@ -1,7 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.component;
 
 import br.ufjf.pgcc.eseco.domain.dao.resource.ServiceWorkflowDAO;
-import br.ufjf.pgcc.eseco.domain.model.resource.ServiceWorkflow;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +19,11 @@ public class ServiceWorkflowService {
     }
 
     @Transactional
-    public ServiceWorkflow add(ServiceWorkflow serviceWorkflow) throws Exception{
-        return serviceWorkflowDAO.add(serviceWorkflow);
+    public WorkflowService add(WorkflowService workflowService) throws Exception{
+        return serviceWorkflowDAO.add(workflowService);
     }
 
-    public List<ServiceWorkflow> findAll() {
+    public List<WorkflowService> findAll() {
         return serviceWorkflowDAO.findAll();
     }
 }

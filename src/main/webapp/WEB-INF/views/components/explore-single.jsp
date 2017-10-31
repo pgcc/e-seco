@@ -32,10 +32,11 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/services"/>"><i class="fa fa-street-view"></i> Services</a>
-        <a href="<c:url value="/services/explore"/>"><i class="fa fa-angle-double-right"></i> Explore</a>
-        <a href="<c:url value="/services/explore/single/${resource.id}"/>">
-            <i class="fa fa-angle-double-right"></i> Single view of ${resource.name}</a>
+        <ol class="breadcrumb">
+            <li><a href="<c:url value="/services"/>"><i class="fa fa-street-view"></i> Services</a></li>
+            <li><a href="<c:url value="/services/explore"/>">Explore</a></li>
+            <li><a href="<c:url value="/services/explore/single/${resource.id}"/>">Single view of ${resource.name}</a></li>
+        </ol>
     </jsp:attribute>
 
 

@@ -3,11 +3,13 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.biocatalogue.exception.BioCatalogueException;
 import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
 import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
+import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.analysis.ServiceDependency;
-import br.ufjf.pgcc.eseco.domain.model.resource.ServiceWorkflow;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.service.component.ComponentService;
 import br.ufjf.pgcc.eseco.domain.service.component.ServiceWorkflowService;
+import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,13 +33,16 @@ public class ComponentsController {
     private ComponentService componentService;
     private ServiceWorkflowService serviceWorkflowService;
     private BioCatalogueService bioCatalogueService;
+    private WorkflowServiceContextModelService workflowServiceContextModelService;
 
     @Autowired
     public ComponentsController(ComponentService componentService, ServiceWorkflowService serviceWorkflowService,
-                                BioCatalogueService bioCatalogueService) {
+                                BioCatalogueService bioCatalogueService,
+                                WorkflowServiceContextModelService workflowServiceContextModelService) {
         this.componentService = componentService;
         this.serviceWorkflowService = serviceWorkflowService;
         this.bioCatalogueService = bioCatalogueService;
+        this.workflowServiceContextModelService = workflowServiceContextModelService;
     }
 
     @RequestMapping(value = "/components")
@@ -51,16 +56,27 @@ public class ComponentsController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/components/details/{type}/{id}")
-    public String serviceDetails(Model model, @PathVariable(value = "type") int type, @PathVariable(value = "id") int id) throws ClassNotFoundException {
+    public String serviceDetails(Model model,
+                                 @PathVariable(value = "type") int type,
+                                 @PathVariable(value = "id") int id) throws ClassNotFoundException {
 
         model.addAttribute("type", type);
 
-        switch(type){
+        switch (type) {
             case DETAIL_PLUGIN:
             case DETAIL_WORKFLOW_SERVICE_INTERNAL:
                 Component component = componentService.find(id);
                 if (null != component) {
+                    // Create context info for this component
+                    WorkflowServiceContextModel componentContextInfo = null;
+                    try {
+                        componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     model.addAttribute("component", component);
+                    model.addAttribute("componentContextInfo", componentContextInfo);
                 }
                 break;
 
@@ -72,48 +88,12 @@ public class ComponentsController {
         return "components/details";
     }
 
-    @RequestMapping(value = "/components/explore-single/{id}")
-    public String exploreSingle(Model model, @PathVariable(value = "id") int id) throws ClassNotFoundException {
-
-        Component resource = new Component();
-        resource.setId(id);
-        resource.setName("WsUserList");
-        //resource.setClassName("br.ufjf.pgcc.eseco.webservice.WsUserList");
-
-        /*
-        Class cls = Class.forName(resource.getClassName());
-        // returns public, protected, private and default method of that specific class only (it excludes inherited methods).
-        Method methlist[] = cls.getDeclaredMethods();
-        int MCount = cls.getDeclaredMethods().length;
-        // Inheritence
-        Class<?> class2 = cls.getSuperclass();
-        Method[] methods2 = class2.getDeclaredMethods();
-        MCount += class2.getDeclaredMethods().length;
-        System.out.println("total metodos na webservice: " + MCount);
-        */
-
-        // -----------------------------------------------------------------------------------------------------------
-        Class clsAgent = Class.forName("br.ufjf.pgcc.eseco.domain.model.core.Agent");
-        System.out.println("total metodos na Agent: " + clsAgent.getDeclaredMethods().length);
-
-
-        /*
-        Gson gson = new Gson();
-        int[][] data = {{1, 2, 3}, {3, 4, 5}, {4, 5, 6}};
-        String json = gson.toJson(data);
-        System.out.println("Data = " + json);
-        */
-
-        model.addAttribute("components", resource);
-        return "components/explore-single";
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // COMPONENTS EXPLORERS                                                                                          //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @RequestMapping(value = "/components/explore/plugins")
+    @RequestMapping(value = "/components/plugins")
     public String plugins() {
         return "components/explore-plugins";
     }
@@ -121,7 +101,7 @@ public class ComponentsController {
     @RequestMapping(value = "/components/workflow-services/internal")
     public String workflowServicesInternal(Model model) {
 
-        List<ServiceWorkflow> services_workflow_list = serviceWorkflowService.findAll();
+        List<WorkflowService> services_workflow_list = serviceWorkflowService.findAll();
 
         model.addAttribute("services_workflow_list", services_workflow_list);
 

@@ -20,11 +20,12 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a>
-        <a href="<c:url value="#"/>"><i class="fa fa-angle-double-right"></i> Explorer</a>
-        <a href="<c:url value="#"/>"><i class="fa fa-angle-double-right"></i> Workflow Services</a>
-        <a href="<c:url value="/components/workflow-services/internal"/>"><i class="fa fa-angle-double-right"></i>
-            Internal</a>
+        <ol class="breadcrumb">
+            <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
+            <li><a href="<c:url value="#"/>">Explorer</a></li>
+            <li><a href="<c:url value="#"/>">Workflow Services</a></li>
+            <li><a href="<c:url value="/components/workflow-services/internal"/>">Internal</a></li>
+        </ol>
     </jsp:attribute>
 
 

@@ -3,8 +3,8 @@ package br.ufjf.pgcc.eseco.domain.model.resource;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "res_services_workflow")
-public class ServiceWorkflow {
+@Table(name = "res_workflow_services")
+public class WorkflowService {
 
     @Id
     @Column(name = "id")
@@ -17,8 +17,17 @@ public class ServiceWorkflow {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "nature")
+    private String nature;
+
+    @Column(name = "url")
+    private String url;
+
     @Column(name = "description")
     private String description;
+
+    @Column(name = "internal_class")
+    private String internalClass;
 
 
     /* GETTERS/SETTERS */
@@ -53,6 +62,30 @@ public class ServiceWorkflow {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getInternalClass() {
+        return internalClass;
+    }
+
+    public void setInternalClass(String internalClass) {
+        this.internalClass = internalClass;
     }
 
 

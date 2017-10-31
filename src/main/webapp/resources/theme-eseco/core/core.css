@@ -116,7 +116,7 @@ body.structure-login {
 }
 
 .structure-app-inner .breadcrumb{
-    margin-bottom: 0px
+    margin-bottom: 0;
 }
 
 .structure-app-inner main {
@@ -169,7 +169,7 @@ body.structure-login {
 }
 
 .structure-app-inner .navbar {
-    min-height: 0px;
+    min-height: 0;
 }
 
 .structure-app-inner .navbar-inverse {
