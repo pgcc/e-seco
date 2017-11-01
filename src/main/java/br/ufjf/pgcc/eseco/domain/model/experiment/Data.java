@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * @author Lenita
  */
 @javax.persistence.Entity
-@Table(name = "exp_entities_datas")
+@Table(name = "exp_entities_data")
 public class Data {
 
     @Id
@@ -31,6 +31,9 @@ public class Data {
 
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
+
+    @Column(name = "type")
+    private String type;
 
     public Data() {
     }
@@ -57,6 +60,14 @@ public class Data {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

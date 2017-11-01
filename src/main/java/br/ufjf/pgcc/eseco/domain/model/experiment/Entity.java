@@ -5,8 +5,6 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
-import br.ufjf.pgcc.eseco.domain.model.core.Developer;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -32,11 +30,11 @@ public class Entity {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Researcher researcher;
+    @OneToOne(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Data data;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Developer developer;
+    @OneToOne(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Document document;
 
     public Entity() {
     }
@@ -57,20 +55,20 @@ public class Entity {
         this.name = name;
     }
 
-    public Researcher getResearcher() {
-        return researcher;
+    public Data getData() {
+        return data;
     }
 
-    public void setResearcher(Researcher researcher) {
-        this.researcher = researcher;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public Document getDocument() {
+        return document;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setDocument(Document document) {
+        this.document = document;
     }
 
 }

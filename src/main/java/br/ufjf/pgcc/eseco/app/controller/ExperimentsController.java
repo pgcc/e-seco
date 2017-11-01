@@ -235,19 +235,23 @@ public class ExperimentsController {
     }
 
     @RequestMapping(value = "/experiments/saveProvenance", method = RequestMethod.POST)
-    public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment, @RequestParam(value = "file") String file, Model model, final RedirectAttributes redirectAttributes) {
+    public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment,
+            @RequestParam(value = "file") String file, Model model,
+            final RedirectAttributes redirectAttributes, HttpSession session) {
 
         LOGGER.log(Level.INFO, "saveProvenanceData() : {0}", experiment);
+        User user = (User) session.getAttribute("logged_user");
 
         if (experiment.getWorkflows().size() == 1 && !file.isEmpty()) {
             Workflow workflow = workflowService.find(experiment.getWorkflows().get(0).getId());
             try {
-                importProvenanceDataService.importProvenanceData(experiment, workflow, file);
+                importProvenanceDataService.importProvenanceData(experiment, workflow, file, user.getAgent().getResearcher());
                 redirectAttributes.addFlashAttribute("css", "success");
                 redirectAttributes.addFlashAttribute("msg", "Prevenance data successfully imported!");
                 return "redirect:/experiments/" + experiment.getId();
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 LOGGER.log(Level.SEVERE, ex.getMessage());
             }
 

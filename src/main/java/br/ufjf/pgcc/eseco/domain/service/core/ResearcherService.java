@@ -48,6 +48,17 @@ public class ResearcherService {
     public List<Researcher> findAll() {
         return researcherDAO.findAll();
     }
+    
+    public Researcher findByKeplerId(String keplerId) {
+        if (keplerId != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("keplerId", keplerId);
+            List<Researcher> findBy = researcherDAO.findBy(map);
+            return findBy.size() > 0 ? findBy.get(0) : null;
+        }
+        return null;
+
+    }
 
     /**
      * Cria um Json Deserializer para o objeto Researcher
