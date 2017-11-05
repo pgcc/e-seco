@@ -8,7 +8,7 @@
  * @param jQuery
  */
 function setInputMasks(jQuery){
-    jQuery(".mask-date").mask("99/99/9999");
+    jQuery(".mask-date").mask("aaa aaa 99 99:99:99 aaaa 9999",{placeholder:"___ ___ __ __:__:__ ____ ____"});
 }
 
 /**

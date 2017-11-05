@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @SessionAttributes({"researcherForm"})
-public class ResearcherController extends CommonController {
+public class ResearchersController extends CommonController {
 
     private static final Logger LOGGER = Logger.getLogger(ExperimentsController.class.getName());
 
@@ -35,7 +35,7 @@ public class ResearcherController extends CommonController {
     private final MendeleyService mendeleyService;
 
     @Autowired
-    public ResearcherController(ResearcherService researcherService, InstitutionService institutionService,
+    public ResearchersController(ResearcherService researcherService, InstitutionService institutionService,
             AgentService agentService, MendeleyService mendeleyService) {
         this.researcherService = researcherService;
         this.institutionService = institutionService;

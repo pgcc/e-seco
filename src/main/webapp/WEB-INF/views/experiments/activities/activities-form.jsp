@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Workflow
+        E-SECO Activity
     </jsp:attribute>
 
 
@@ -26,7 +26,7 @@
         <ol class="breadcrumb">
             <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
             <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/workflows/add"/>">Add Workflow</a></li>
+            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/activitys/add"/>">Add Activity</a></li>
         </ol>
     </jsp:attribute>
 
@@ -36,19 +36,19 @@
         <div class="container-fluid">
 
             <c:choose>
-                <c:when test="${experimentWorkflowForm['new']}">
-                    <h2>Add Workflow</h2>
+                <c:when test="${activityForm['new']}">
+                    <h2>Add Activity</h2>
                 </c:when>
                 <c:otherwise>
-                    <h2>Update Workflow</h2>
+                    <h2>Update Activity</h2>
                 </c:otherwise>
             </c:choose>
             <br />
 
-            <spring:url value="/experiments/${sessionScope.current_experiment_id}/workflows" var="experimentWorkflowsUrl" />
+            <spring:url value="/experiments/activitys" var="experimentActivitiesUrl" />
 
-            <f:form class="form form-horizontal" method="post" modelAttribute="experimentWorkflowForm" 
-                    action="${experimentWorkflowsUrl}">
+            <f:form class="form form-horizontal" method="post" modelAttribute="activityForm" 
+                    action="${experimentActivitiesUrl}">
 
                 <f:hidden path="id" />
 
@@ -114,8 +114,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
-                            <c:when test="${experimentWorkflowForm['new']}">
-                                <button type="submit" cc:when test="${experimentWorkflowForm['new']}" 
+                            <c:when test="${activityForm['new']}">
+                                <button type="submit" cc:when test="${activityForm['new']}" 
                                         class="btn btn-primary pull-right">Save</button>
                             </c:when>
                             <c:otherwise>

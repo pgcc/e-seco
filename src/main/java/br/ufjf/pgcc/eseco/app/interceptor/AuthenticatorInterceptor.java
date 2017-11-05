@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticatorInterceptor implements HandlerInterceptor {
 
     /**
-     * @param httpServletRequest  HTTP Request object to be pre handled.
+     * @param httpServletRequest HTTP Request object to be pre handled.
      * @param httpServletResponse HTTP Response object to be pre handled.
-     * @param handler             Object target of handle.
+     * @param handler Object target of handle.
      *
      * @return boolean
      *
      * @throws Exception Simple Exception
      */
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                             Object handler) throws Exception {
+            Object handler) throws Exception {
 
         // Get requested URI
         String uri = httpServletRequest.getRequestURI();
@@ -43,11 +43,9 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
             return true;
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // AUTHORIZATION FOR NON LOGGED USERS                               //
         //////////////////////////////////////////////////////////////////////
-
         if (userIsLogged == null) {
             if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
                 return true;
@@ -57,11 +55,9 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
             }
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // AUTHORIZATION FOR LOGGED USERS                                   //
         //////////////////////////////////////////////////////////////////////
-
         // Block logged users from acessing login, register and recovery
         if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
             httpServletResponse.sendRedirect("/eseco/");
@@ -90,6 +86,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "experiments":
                 case "experimentPhaseReport":
                 case "researchers":
+                case "agents":
                     isAuthorized = true;
                     break;
             }
@@ -107,6 +104,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "components":
                 case "experiments":
                 case "developers":
+                case "agents":
                     isAuthorized = true;
                     break;
             }
@@ -122,28 +120,28 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * @param httpServletRequest  HTTP Request object to be pre handled.
+     * @param httpServletRequest HTTP Request object to be pre handled.
      * @param httpServletResponse HTTP Response object to be pre handled.
-     * @param handler             Object target of handle.
-     * @param modelAndView        modelAndView
+     * @param handler Object target of handle.
+     * @param modelAndView modelAndView
      *
      * @throws Exception Simple Exception
      */
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                           Object handler, ModelAndView modelAndView) throws Exception {
+            Object handler, ModelAndView modelAndView) throws Exception {
 
     }
 
     /**
-     * @param httpServletRequest  HTTP Request object to be pre handled.
+     * @param httpServletRequest HTTP Request object to be pre handled.
      * @param httpServletResponse HTTP Response object to be pre handled.
-     * @param handler             Object target of handle.
-     * @param e                   Simple Exception
+     * @param handler Object target of handle.
+     * @param e Simple Exception
      *
      * @throws Exception Simple Exception
      */
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                Object handler, Exception e) throws Exception {
+            Object handler, Exception e) throws Exception {
 
     }
 }

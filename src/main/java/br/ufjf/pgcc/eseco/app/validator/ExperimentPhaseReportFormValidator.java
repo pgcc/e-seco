@@ -13,7 +13,7 @@ public class ExperimentPhaseReportFormValidator implements Validator {
 
 
     @Autowired
-    ExperimentPhaseReportService experimentPhaseReportService;
+    private ExperimentPhaseReportService experimentPhaseReportService;
 
     @Override
     public boolean supports(Class<?> clazz) {

@@ -1,101 +1,75 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowFormValidator;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
+import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@SessionAttributes({"experimentWorkflowForm"})
+@SessionAttributes({"workflowForm"})
 public class ExperimentWorkflowsController {
 
     private static final Logger LOGGER = Logger.getLogger(ExperimentWorkflowsController.class.getName());
 
     @Autowired
-    ExperimentWorkflowFormValidator experimentWorkflowFormValidator;
+    ExperimentWorkflowFormValidator workflowFormValidator;
+
+    private ExperimentService experimentService;
+    private WorkflowService workflowService;
+    private WfmsService wfmsService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(experimentWorkflowFormValidator);
+        binder.setValidator(workflowFormValidator);
     }
-
-    private ExperimentService experimentService;
-    private ResearcherService researcherService;
-    private WorkflowService workflowService;
 
     @Autowired
-    public void setExperimentService(ExperimentService experimentService, ResearcherService researcherService,
-            WorkflowService workflowService) {
+    public void setWorkflowService(ExperimentService experimentService, WorkflowService workflowService, 
+            WfmsService wfmsService) {
         this.experimentService = experimentService;
-        this.researcherService = researcherService;
         this.workflowService = workflowService;
+        this.wfmsService = wfmsService;
     }
 
-    @RequestMapping(value = "/experiments/{id}/workflows", method = RequestMethod.POST)
-    public String saveOrUpdateExperimentWorkflow(@PathVariable("id") int experimentId, @ModelAttribute("experimentWorkflowForm") @Validated Workflow workflow,
-            BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/experiments/workflows", method = RequestMethod.GET)
+    public String showAllWorkflows(Model model) {
 
-        LOGGER.log(Level.INFO, "saveOrUpdateExperimentWorkflow() : {0}", workflow);
+        LOGGER.info("showAllWorkflows()");
+        model.addAttribute("workflows", workflowService.findAll());
 
-        if (result.hasErrors()) {
-            populateDefaultModel(model);
-            return "experiments/experiments-workflows-form";
-        } else {
-            redirectAttributes.addFlashAttribute("css", "success");
-            if (workflow.isNew()) {
-                redirectAttributes.addFlashAttribute("msg", "Experiment Workflow added successfully!");
-            } else {
-                redirectAttributes.addFlashAttribute("msg", "Experiment Workflow updated successfully!");
-            }
-            Experiment experiment = experimentService.find(experimentId);
-            try {
-                workflow = workflowService.saveOrUpdate(workflow);
-                experiment.getWorkflows().add(workflow);
-                experimentService.saveOrUpdate(experiment);
-                return "redirect:/experiments/" + experiment.getId();
-            } catch (Exception ex) {
-                Logger.getLogger(ExperimentWorkflowsController.class.getName()).log(Level.SEVERE, null, ex);
-                populateDefaultModel(model);
-                return "experiments/experiments-workflows-form";
-            }
-
-        }
+        return "experiments/workflows/list";
 
     }
 
     @RequestMapping(value = "/experiments/{experimentId}/workflows/add", method = RequestMethod.GET)
-    public String showAddExperimentWorkflowForm(Model model, @PathVariable("experimentId") int experimentId,
+    public String showAddWorkflowForm(Model model, @PathVariable("experimentId") int experimentId,
             HttpSession session) {
 
-        LOGGER.info("showAddExperimentWorkflowForm()");
+        LOGGER.info("showAddWorkflowForm()");
 
         User user = (User) session.getAttribute("logged_user");
         Experiment experiment = experimentService.find(experimentId);
@@ -106,91 +80,101 @@ public class ExperimentWorkflowsController {
         workflow.setDateCreated(new Date());
         workflow.setVersion("1.0.0");
         Wfms wfms = new Wfms();
-        wfms.setId(1);
         workflow.setWfms(wfms);
         ArrayList<Experiment> experiments = new ArrayList<>();
         experiments.add(experiment);
         workflow.setExperiments(experiments);
-        model.addAttribute("experimentWorkflowForm", workflow);
+        model.addAttribute("workflowForm", workflow);
         session.setAttribute("current_experiment_id", experimentId);
 
         populateDefaultModel(model);
-
-        return "experiments/experiments-workflows-form";
-
+        return "experiments/workflows/workflows-form";
     }
 
     @RequestMapping(value = "/experiments/workflows/{id}/update", method = RequestMethod.GET)
-    public String showUpdateExperimentWorkflowForm(@PathVariable("id") int id, Model model) {
+    public String showUpdateWorkflowForm(@PathVariable("id") int id, Model model) {
 
-        LOGGER.log(Level.INFO, "showUpdateExperimentWorkflowForm() : {0}", id);
+        LOGGER.log(Level.INFO, "showUpdateWorkflowForm() : {0}", id);
 
         Workflow workflow = workflowService.find(id);
-        model.addAttribute("experimentWorkflowForm", workflow);
+        model.addAttribute("workflowForm", workflow);
 
         populateDefaultModel(model);
+        return "experiments/workflows/workflows-form";
+    }
 
-        return "experiments/experiments-workflows-form";
+    @RequestMapping(value = "/experiments/workflows", method = RequestMethod.POST)
+    public String saveOrUpdateWorkflow(@ModelAttribute("workflowForm") @Validated Workflow workflow,
+            BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
 
+        LOGGER.log(Level.INFO, "saveOrUpdateWorkflow() : {0}", workflow);
+
+        if (result.hasErrors()) {
+            populateDefaultModel(model);
+            return "experiments/workflows/workflows-form";
+        } else {
+            redirectAttributes.addFlashAttribute("css", "success");
+            if (workflow.isNew()) {
+                redirectAttributes.addFlashAttribute("msg", "Workflow added successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("msg", "Workflow updated successfully!");
+            }
+
+            try {
+                workflow = workflowService.saveOrUpdate(workflow);
+                if (session.getAttribute("current_experiment_id") != null) {
+                    int experimentId = (Integer) session.getAttribute("current_experiment_id");
+                    Experiment experiment = experimentService.find(experimentId);
+                    experiment.getWorkflows().add(workflow);
+                    experimentService.saveOrUpdate(experiment);
+                }
+                return "redirect:/experiments/workflows/" + workflow.getId();
+
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+                populateDefaultModel(model);
+                return "experiments/workflows/workflows-form";
+            }
+        }
     }
 
     @RequestMapping(value = "/experiments/workflows/{id}/delete", method = RequestMethod.POST)
-    public String deleteExperimentWorkflow(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
+    public String deleteWorkflow(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
 
-        LOGGER.log(Level.INFO, "deleteExperimentWorkflow() : {0}", id);
+        LOGGER.log(Level.INFO, "deleteWorkflow() : {0}", id);
 
         Workflow workflow = workflowService.find(id);
         try {
             workflowService.delete(workflow);
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", "Workflow has been deleted!");
         } catch (Exception ex) {
-            Logger.getLogger(ExperimentWorkflowsController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", ex.getMessage());
         }
 
-        redirectAttributes.addFlashAttribute("css", "success");
-        redirectAttributes.addFlashAttribute("msg", "Experiment Workflow is deleted!");
-
-        return "redirect:/experiments";
-
+        return "redirect:/experiments/workflows";
     }
 
     @RequestMapping(value = "/experiments/workflows/{id}", method = RequestMethod.GET)
-    public String showExperiment(@PathVariable("id") int id, Model model, HttpSession session) {
+    public String showWorkflow(@PathVariable("id") int id, Model model, HttpSession session) {
 
-        LOGGER.log(Level.INFO, "showExperiment() id: {0}", id);
+        LOGGER.log(Level.INFO, "showWorkflow() id: {0}", id);
 
         Workflow workflow = workflowService.find(id);
         if (workflow == null) {
             model.addAttribute("css", "danger");
-            model.addAttribute("msg", "Experiment Workflow not found");
+            model.addAttribute("msg", "Workflow not found");
         }
 
         model.addAttribute("workflow", workflow);
-
         return "experiments/workflows/show";
-
     }
 
     private void populateDefaultModel(Model model) {
 
-        List<Researcher> researches = researcherService.findAll();
-        model.addAttribute("researchesList", researches);
-
-        List<Workflow> workflows = workflowService.findAll();
-        model.addAttribute("workflowsList", workflows);
-
-    }
-
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ModelAndView handleEmptyData(HttpServletRequest req, Exception ex) {
-
-        LOGGER.info("handleEmptyData()");
-        LOGGER.log(Level.INFO, "Request: {0}, error {1}", new Object[]{req.getRequestURL(), ex});
-
-        ModelAndView model = new ModelAndView();
-        model.setViewName("experiment/workflow/show");
-        model.addObject("msg", "experiment workflow not found");
-
-        return model;
+        model.addAttribute("wfmsList", wfmsService.findAll());
 
     }
 

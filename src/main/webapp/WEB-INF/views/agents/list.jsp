@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Experiments
+        E-SECO Agents
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this experiment!",
+                    text: "Your will not be able to recover this agent!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/agents"/>"> Agents</a></li>
         </ol>
     </jsp:attribute>
 
@@ -59,7 +59,7 @@
                 </div>
             </c:if>
 
-            <h2>All Experiments</h2>
+            <h2>All Agents</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -68,26 +68,26 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
-                                <th>Status</th>
-                                <th>Phase</th>
-                                <th class="text-center" >Action</th>
+                                <th>Gender</th>
+                                <th>Birthday</th>
+<!--                                <th class="text-center" >Action</th>-->
                             </tr>
                         </thead>
-                        <c:forEach var="experiment" items="${experiments}">
+                        <c:forEach var="agent" items="${agents}">
 
-                            <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
-                            <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
+                            <spring:url value="/agents/${agent.id}" var="agentUrl" />
+                            <spring:url value="/agents/${agent.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="/agents/${agent.id}/update" var="updateUrl" />
 
 
                             <tr>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
+                                <td onclick="location.href = '${agentUrl}'">${agent.id}</td>
+                                <td onclick="location.href = '${agentUrl}'">${agent.name}</td>
+                                <td onclick="location.href = '${agentUrl}'">${agent.gender}</td>
+                                <td onclick="location.href = '${agentUrl}'">${agent.birthday}</td>
 
-                                <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
+<!--                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${agentUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
                                     <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
@@ -96,7 +96,7 @@
                                     <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
-                                </td>
+                                </td>-->
                             </tr>
                         </c:forEach>
                     </table>

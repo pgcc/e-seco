@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Experiments
+        E-SECO Workflows
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this experiment!",
+                    text: "Your will not be able to recover this workflow!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments/workflows"/>"> Workflows</a></li>
         </ol>
     </jsp:attribute>
 
@@ -52,14 +52,15 @@
         <div class="container-fluid">
             <c:if test="${not empty msg}">
                 <div class="alert alert-${css} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
                     </button>
                     <strong>${msg}</strong>
                 </div>
-            </c:if>
+            </c:if> 
 
-            <h2>All Experiments</h2>
+            <h2>All Workflows</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -68,32 +69,36 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
-                                <th>Status</th>
-                                <th>Phase</th>
+                                <th>Wfms</th>
+                                <th>Author</th>
+                                <th>Version</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="experiment" items="${experiments}">
+                        <c:forEach var="workflow" items="${workflows}">
 
-                            <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
-                            <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
+                            <spring:url value="workflows/${workflow.id}" var="workflowUrl" />
+                            <spring:url value="workflows/${workflow.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="workflows/${workflow.id}/update" var="updateUrl" />
 
 
                             <tr>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
-                                <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
+                                <td onclick="location.href = '${workflowUrl}'">${workflow.id}</td>
+                                <td onclick="location.href = '${workflowUrl}'">${workflow.name}</td>
+                                <td onclick="location.href = '${workflowUrl}'">${workflow.wfms.name}</td>
+                                <td onclick="location.href = '${workflowUrl}'">${workflow.author.displayName}</td>
+                                <td onclick="location.href = '${workflowUrl}'">${workflow.version}</td>
+
 
                                 <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${workflowUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
                                     <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
                                         <span class="glyphicon glyphicon-edit"/>
                                     </button>
-                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
+                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true;
+                                            post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
                                 </td>

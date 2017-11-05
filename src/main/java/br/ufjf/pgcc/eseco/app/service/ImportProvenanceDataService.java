@@ -11,9 +11,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Data;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Document;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
@@ -46,17 +44,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ImportProvenanceDataService {
-    
-    ResearcherService researcherService;
-    EntityService entityService;
-    DataService dataService;
-    DocumentService documentService;
-    ActivityService activityService;
-    ActivityExecutionService activityExecutionService;
-    WorkflowExecutionService workflowExecutionService;
-    PortService portService;
-    WorkflowService workflowService;
-    
+
+    private ResearcherService researcherService;
+    private EntityService entityService;
+    private DataService dataService;
+    private DocumentService documentService;
+    private ActivityService activityService;
+    private ActivityExecutionService activityExecutionService;
+    private WorkflowExecutionService workflowExecutionService;
+    private PortService portService;
+    private WorkflowService workflowService;
+
+    private static final Logger LOGGER = Logger.getLogger(ImportProvenanceDataService.class.getName());
+
     @Autowired
     public ImportProvenanceDataService(ResearcherService researcherService, EntityService entityService,
             DataService dataService, DocumentService documentService, ActivityService activityService,
@@ -72,21 +72,20 @@ public class ImportProvenanceDataService {
         this.portService = portService;
         this.workflowService = workflowService;
     }
-    
+
     public ImportProvenanceDataService() {
     }
 
     /**
      * Imports the execution provenance data extracted from a WfMS
      *
-     * @param experiment
      * @param workflow
      * @param filePath
      */
-    public void importProvenanceData(Experiment experiment, Workflow workflow, String filePath, Researcher researcher) throws Exception {
+    public void importProvenanceData(Workflow workflow, String filePath, Researcher researcher) throws Exception {
         switch (workflow.getWfms().getName()) {
             case "Kepler":
-                importKeplerData(experiment, workflow, filePath, researcher);
+                importKeplerData(workflow, filePath, researcher);
         }
     }
 
@@ -97,25 +96,28 @@ public class ImportProvenanceDataService {
      * @param workflow
      * @param filePath
      */
-    private void importKeplerData(Experiment experiment, Workflow workflow, String filePath, Researcher loggedResearcher) throws Exception {
-        
+    private void importKeplerData(Workflow workflow, String filePath, Researcher loggedResearcher) throws Exception {
+
+        LOGGER.log(Level.INFO, "Importing Kepler Provenance Data. ", filePath);
+
         Map<String, Researcher> mapResearchers = new HashMap<>();
         WorkflowExecution workflowExecution = new WorkflowExecution();
         Map<String, Entity> mapEntities = new HashMap<>();
         Map<String, Activity> mapActivities = new HashMap<>();
         Map<String, ActivityExecution> mapActivitiesExecutions = new HashMap<>();
-        Map<String, Port> mapPorts = new HashMap<>();
-        
+
         try {
+            //Read the JSON file
             JsonObject jsonObject = new JsonParser().parse(new FileReader(filePath)).getAsJsonObject();
-            
+
+            //Import the Agents
             JsonObject agents = jsonObject.get("agent").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : agents.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
                 String keplerId = value.getAsJsonObject().get("prov:label").getAsString();
                 System.out.println("agent: " + key + " name: " + keplerId);
-                
+
                 if (loggedResearcher.getKeplerId() != null && !loggedResearcher.getKeplerId().equalsIgnoreCase(keplerId)) {
                     Researcher findByKeplerId = researcherService.findByKeplerId(keplerId);
                     if (findByKeplerId != null) {
@@ -123,21 +125,24 @@ public class ImportProvenanceDataService {
                         continue;
                     }
                 }
-                if (loggedResearcher.getKeplerId() == null) {
+                if (loggedResearcher.getKeplerId() == null || loggedResearcher.getKeplerId().isEmpty()) {
                     loggedResearcher.setKeplerId(keplerId);
                     loggedResearcher = researcherService.saveOrUpdate(loggedResearcher);
                     mapResearchers.put(key, loggedResearcher);
                     continue;
                 }
+                
                 Researcher r = new Researcher();
                 r.setKeplerId(keplerId);
                 r.setDisplayName(keplerId);
                 r = researcherService.saveOrUpdate(r);
                 mapResearchers.put(key, r);
             }
-            
+
+            //Import the Entities
             JsonObject entities = jsonObject.get("entity").getAsJsonObject();
-            
+
+            //Import the workflow entity
             JsonObject keplerWorkflowExec = entities.getAsJsonObject("kepler:workflow");
             String workflowValue = keplerWorkflowExec.getAsJsonObject("prov:value").get("$").getAsString();
             String workflowName = keplerWorkflowExec.getAsJsonObject("kepler:actorName").get("$").getAsString();
@@ -145,26 +150,26 @@ public class ImportProvenanceDataService {
             String endString = keplerWorkflowExec.getAsJsonObject("kepler:executionStopTime").get("$").getAsString();
             ZonedDateTime startDateTime = ZonedDateTime.parse(startString);
             ZonedDateTime endDateTime = ZonedDateTime.parse(endString);
-            
+
             workflow.setValue(workflowValue);
             if (workflow.getName() == null) {
                 workflow.setName(workflowName);
-            }            
+            }
             workflow = workflowService.saveOrUpdate(workflow);
-            
+
             workflowExecution.setWorkflow(workflow);
             workflowExecution.setStartTime(Date.from(startDateTime.toInstant()));
             workflowExecution.setEndTime(Date.from(endDateTime.toInstant()));
             workflowExecution.setAuthor(loggedResearcher);
             workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
-            
+
             entities.remove("kepler:workflow");
-            
+
+            //Import the others Entities
             for (Map.Entry<String, JsonElement> en : entities.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
-                System.out.println("entity: " + key);
-                
+
                 Entity entity = new Entity();
                 entity.setName(key);
                 entity = entityService.saveOrUpdate(entity);
@@ -188,12 +193,12 @@ public class ImportProvenanceDataService {
                 entity = entityService.saveOrUpdate(entity);
                 mapEntities.put(key, entity);
             }
-            
+
+            //Import the Activities
             JsonObject activities = jsonObject.get("activity").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : activities.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
-                System.out.println("activity: " + key);
                 startString = value.getAsJsonObject().get("prov:startTime").getAsString();
                 endString = value.getAsJsonObject().get("prov:endTime").getAsString();
                 startDateTime = ZonedDateTime.parse(startString);
@@ -204,7 +209,7 @@ public class ImportProvenanceDataService {
                 activity.setName(name);
                 activity.setDateCreated(Date.from(startDateTime.toInstant()));
                 activity.setAuthor(loggedResearcher);
-                
+
                 if (workflow.getActivities() != null && !workflow.getActivities().isEmpty()) {
                     for (Activity ac : workflow.getActivities()) {
                         if (ac.getName().equalsIgnoreCase(activity.getName())) {
@@ -214,85 +219,85 @@ public class ImportProvenanceDataService {
                 }
                 activity = activityService.saveOrUpdate(activity);
                 mapActivities.put(key, activity);
-                
+
                 ActivityExecution activityExecution = new ActivityExecution();
                 activityExecution.setActivity(activity);
                 activityExecution.setStartTime(Date.from(startDateTime.toInstant()));
                 activityExecution.setEndTime(Date.from(endDateTime.toInstant()));
                 activityExecution.setAuthor(loggedResearcher);
-                
+
                 activityExecution = activityExecutionService.saveOrUpdate(activityExecution);
                 mapActivitiesExecutions.put(key, activityExecution);
             }
-            
+
             if (workflowExecution.getInputs() == null) {
                 workflowExecution.setInputs(new ArrayList<Port>());
             }
             if (workflowExecution.getOutputs() == null) {
                 workflowExecution.setOutputs(new ArrayList<Port>());
             }
-            
+
+            //Imprt the Use relation
             JsonObject uses = jsonObject.get("used").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : uses.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
-                System.out.println("used: " + key);
-                
+
                 Port port = new Port();
                 port.setEntity(mapEntities.get(value.getAsJsonObject().get("prov:entity").getAsString()));
                 port = portService.saveOrUpdate(port);
-                
+
                 ActivityExecution activityExecution = mapActivitiesExecutions.get(value.getAsJsonObject().get("prov:activity").getAsString());
                 if (activityExecution.getInputs() == null) {
                     activityExecution.setInputs(new ArrayList<Port>());
                 }
                 activityExecution.getInputs().add(port);
                 activityExecutionService.saveOrUpdate(activityExecution);
-                
+
                 workflowExecution.getInputs().add(port);
                 workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
             }
-            
+
+            //Imprt the Was Generated By relation
             JsonObject generations = jsonObject.get("wasGeneratedBy").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : generations.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
-                System.out.println("wasGeneratedBy: " + key);
-                
+
                 Port port = new Port();
                 port.setEntity(mapEntities.get(value.getAsJsonObject().get("prov:entity").getAsString()));
                 port = portService.saveOrUpdate(port);
-                
+
                 ActivityExecution activityExecution = mapActivitiesExecutions.get(value.getAsJsonObject().get("prov:activity").getAsString());
                 if (activityExecution.getOutputs() == null) {
                     activityExecution.setOutputs(new ArrayList<Port>());
                 }
                 activityExecution.getOutputs().add(port);
                 activityExecutionService.saveOrUpdate(activityExecution);
-                
+
                 workflowExecution.getOutputs().add(port);
                 workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
             }
-            
+
+            //Import the Associations
             JsonObject associations = jsonObject.get("wasAssociatedWith").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : associations.entrySet()) {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
-                System.out.println("wasAssociatedWith: " + key);
-                
+
                 Researcher researcher = mapResearchers.get(value.getAsJsonObject().get("prov:agent").getAsString());
-                
+
                 Activity activity = mapActivities.get(value.getAsJsonObject().get("prov:activity").getAsString());
                 if (workflow.getActivities() == null) {
                     workflow.setActivities(new ArrayList<Activity>());
                 }
-                workflow.getActivities().add(activity);                
+                workflow.getActivities().add(activity);
                 workflow = workflowService.saveOrUpdate(workflow);
-                
+
                 ActivityExecution activityExecution = mapActivitiesExecutions.get(value.getAsJsonObject().get("prov:activity").getAsString());
                 activityExecution.setAuthor(researcher);
                 activityExecutionService.saveOrUpdate(activityExecution);
-                
+
                 if (workflowExecution.getActivityExecutions() == null) {
                     workflowExecution.setActivityExecutions(new ArrayList<ActivityExecution>());
                 }
@@ -300,24 +305,9 @@ public class ImportProvenanceDataService {
                 workflowExecution.setAuthor(researcher);
                 workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
             }
-            
-            System.out.println("FIM");
-            
+            LOGGER.log(Level.INFO, "Successfully imported Provenance Data.");
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ImportProvenanceDataService.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void main(String[] args) {
-        Wfms wfms = new Wfms();
-        wfms.setName("Kepler");
-        Workflow workflow = new Workflow();
-        workflow.setWfms(wfms);
-        try {
-            new ImportProvenanceDataService().importProvenanceData(new Experiment(), workflow, "C:\\Users\\YURI\\Desktop\\Provenance.json", new Researcher());
-        } catch (Exception ex) {
-            Logger.getLogger(ImportProvenanceDataService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
 }

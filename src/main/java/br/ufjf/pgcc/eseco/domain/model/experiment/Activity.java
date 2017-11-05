@@ -44,10 +44,10 @@ public class Activity {
     @JoinTable(
             name = "exp_activities_workflowservices",
             joinColumns = {
-                    @JoinColumn(name = "activity_id", nullable = false)
+                @JoinColumn(name = "activity_id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "workflowservice_id", nullable = false)
+                @JoinColumn(name = "workflowservice_id", nullable = false)
             }
     )
     private List<WorkflowService> workflowServices;
@@ -101,5 +101,9 @@ public class Activity {
 
     public void setWorkflowServices(List<WorkflowService> workflowServices) {
         this.workflowServices = workflowServices;
+    }
+
+    public boolean isNew() {
+        return (this.id == 0);
     }
 }
