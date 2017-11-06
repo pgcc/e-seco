@@ -26,7 +26,7 @@
         <ol class="breadcrumb">
             <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
             <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/activitys/add"/>">Add Activity</a></li>
+            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/activities/add"/>">Add Activity</a></li>
         </ol>
     </jsp:attribute>
 
@@ -45,7 +45,7 @@
             </c:choose>
             <br />
 
-            <spring:url value="/experiments/activitys" var="experimentActivitiesUrl" />
+            <spring:url value="/experiments/activities" var="experimentActivitiesUrl" />
 
             <f:form class="form form-horizontal" method="post" modelAttribute="activityForm" 
                     action="${experimentActivitiesUrl}">
@@ -72,16 +72,6 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="link">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Link</label>
-                        <div class="col-sm-10">
-                            <f:input path="link" class="form-control" rows="5" id="link" placeholder="Link" />
-                            <f:errors path="link" class="control-label" />
-                        </div>
-                    </div>
-                </spring:bind>
-
                 <spring:bind path="author.displayName">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Author</label>
@@ -96,17 +86,16 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateCreated" class="form-control mask-date" id="dateCreated" placeholder="Created in" disabled="true"/>
+                            <f:input path="dateCreated" class="form-control" id="dateCreated" placeholder="Created in" disabled="true"/>
                         </div>                        
                     </div>
                 </spring:bind>
 
-                <spring:bind path="version">
+                <spring:bind path="workflowServices">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Version</label>
+                        <label class="col-sm-2 control-label">Services</label>
                         <div class="col-sm-10">
-                            <f:input path="version" class="form-control" rows="5" id="version" placeholder="Version" />
-                            <f:errors path="version" class="control-label" />
+                            <f:select path="workflowServices" items="${servicesList}" multiple="true" size="3" class="form-control" itemLabel="description" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>

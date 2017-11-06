@@ -2,9 +2,12 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.component.ServiceWorkflowService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -32,6 +35,7 @@ public class ExperimentActivitiesController {
     ExperimentActivityFormValidator activityFormValidator;
 
     private ActivityService activityService;
+    private ServiceWorkflowService serviceWorkflowService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -39,8 +43,9 @@ public class ExperimentActivitiesController {
     }
 
     @Autowired
-    public void setActivityService(ActivityService activityService) {
+    public void setActivityService(ActivityService activityService, ServiceWorkflowService serviceWorkflowService) {
         this.activityService = activityService;
+        this.serviceWorkflowService = serviceWorkflowService;
     }
 
     @RequestMapping(value = "/experiments/activities", method = RequestMethod.GET)
@@ -52,9 +57,8 @@ public class ExperimentActivitiesController {
         return "experiments/activities/list";
     }
 
-    @RequestMapping(value = "/experiments/{experimentId}/activities/add", method = RequestMethod.GET)
-    public String showAddActivityForm(Model model, @PathVariable("experimentId") int experimentId,
-            HttpSession session) {
+    @RequestMapping(value = "/experiments/activities/add", method = RequestMethod.GET)
+    public String showAddActivityForm(Model model, HttpSession session) {
 
         LOGGER.info("showAddActivityForm()");
 
@@ -150,7 +154,9 @@ public class ExperimentActivitiesController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-
+       
+        List<WorkflowService> servicesList = serviceWorkflowService.findAll();
+        model.addAttribute("servicesList", servicesList);
     }
 
 }

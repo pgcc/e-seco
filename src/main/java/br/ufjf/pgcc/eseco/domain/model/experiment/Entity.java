@@ -5,14 +5,18 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -29,6 +33,13 @@ public class Entity {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Researcher author;
+
+    @Transient
+    private EntityKind kind;
 
     @OneToOne(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Data data;
@@ -55,6 +66,30 @@ public class Entity {
         this.name = name;
     }
 
+    public Researcher getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Researcher author) {
+        this.author = author;
+    }
+
+    public EntityKind getKind() {
+        if (kind == null) {
+            if (this.getData() != null) {
+                return EntityKind.DATA;
+            }
+            if (this.getDocument() != null) {
+                return EntityKind.DOCUMENT;
+            }
+        }
+        return kind;
+    }
+
+    public void setKind(EntityKind kind) {
+        this.kind = kind;
+    }
+
     public Data getData() {
         return data;
     }
@@ -71,4 +106,7 @@ public class Entity {
         this.document = document;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

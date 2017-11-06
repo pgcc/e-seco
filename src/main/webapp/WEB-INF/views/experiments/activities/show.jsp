@@ -87,7 +87,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${activity.workflowServices}" var="service">
-                                        <li class="list-group-item">${service.name}</li>
+                                        <li class="list-group-item">${service.description}</li>
                                         </c:forEach>
                                 </ul>
                             </div>
