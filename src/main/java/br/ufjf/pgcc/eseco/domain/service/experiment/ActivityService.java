@@ -40,4 +40,22 @@ public class ActivityService {
         return activityDAO.findAll();
     }
 
+    public List<Activity> findByWorkflowServiceId(int workflowServiceID) {
+
+        List<Activity> activities = findAll();
+        ArrayList<Activity> activitiesFound = new ArrayList<>();
+
+        for(Activity activity: activities){
+            for(br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService ws: activity.getWorkflowServices()){
+                if(ws.getId() == workflowServiceID){
+                    if(!activitiesFound.contains(activity)){
+                        activitiesFound.add(activity);
+                    }
+                }
+            }
+        }
+
+        return activitiesFound;
+    }
+
 }

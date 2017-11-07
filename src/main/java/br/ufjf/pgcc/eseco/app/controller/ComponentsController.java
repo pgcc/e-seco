@@ -4,11 +4,14 @@ import br.ufjf.biocatalogue.exception.BioCatalogueException;
 import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
 import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
-import br.ufjf.pgcc.eseco.domain.model.analysis.ServiceDependency;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.service.component.ComponentService;
-import br.ufjf.pgcc.eseco.domain.service.component.ServiceWorkflowService;
+import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -31,16 +33,16 @@ public class ComponentsController {
     private static final int DETAIL_WORKFLOW_SERVICE_EXTERNAL_BIOCATALOGUE = 3;
 
     private ComponentService componentService;
-    private ServiceWorkflowService serviceWorkflowService;
+    private WorkflowServiceService workflowServiceService;
     private BioCatalogueService bioCatalogueService;
     private WorkflowServiceContextModelService workflowServiceContextModelService;
 
     @Autowired
-    public ComponentsController(ComponentService componentService, ServiceWorkflowService serviceWorkflowService,
+    public ComponentsController(ComponentService componentService, WorkflowServiceService workflowServiceService,
                                 BioCatalogueService bioCatalogueService,
                                 WorkflowServiceContextModelService workflowServiceContextModelService) {
         this.componentService = componentService;
-        this.serviceWorkflowService = serviceWorkflowService;
+        this.workflowServiceService = workflowServiceService;
         this.bioCatalogueService = bioCatalogueService;
         this.workflowServiceContextModelService = workflowServiceContextModelService;
     }
@@ -75,8 +77,37 @@ public class ComponentsController {
                         e.printStackTrace();
                     }
 
+                    // Prepare for transformation (reduce the object to avoid stack overflow from gson)
+                    List<Activity> activitiesList = new ArrayList<>();
+                    List<Workflow> workflowsList = new ArrayList<>();
+                    List<Experiment> experimentsList = new ArrayList<>();
+                    List<Researcher> researchersList = new ArrayList<>();
+
+                    if (componentContextInfo != null) {
+                        activitiesList = componentContextInfo.getActivitiesUsing();
+                        componentContextInfo.setActivitiesUsing(null);
+
+                        workflowsList = componentContextInfo.getWorkflowsUsing();
+                        componentContextInfo.setWorkflowsUsing(null);
+
+                        experimentsList = componentContextInfo.getExperimentsUsing();
+                        componentContextInfo.setExperimentsUsing(null);
+
+                        researchersList = componentContextInfo.getResearchersUsing();
+                        componentContextInfo.setResearchersUsing(null);
+                    }
+
+                    // Transform context info into JSON String
+                    Gson gson = new GsonBuilder().create();
+                    String componentContextInfoJSON = gson.toJson(componentContextInfo);
+
                     model.addAttribute("component", component);
                     model.addAttribute("componentContextInfo", componentContextInfo);
+                    model.addAttribute("componentContextInfoJSON", componentContextInfoJSON);
+                    model.addAttribute("activitiesList", activitiesList);
+                    model.addAttribute("workflowsList", workflowsList);
+                    model.addAttribute("experimentsList", experimentsList);
+                    model.addAttribute("researchersList", researchersList);
                 }
                 break;
 
@@ -101,7 +132,7 @@ public class ComponentsController {
     @RequestMapping(value = "/components/workflow-services/internal")
     public String workflowServicesInternal(Model model) {
 
-        List<WorkflowService> services_workflow_list = serviceWorkflowService.findAll();
+        List<WorkflowService> services_workflow_list = workflowServiceService.findAll();
 
         model.addAttribute("services_workflow_list", services_workflow_list);
 
@@ -136,6 +167,47 @@ public class ComponentsController {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // COMPONENTS ACTIONS                                                                                            //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @RequestMapping(value = "/components/actions/workflow-services/compare")
+    public String actionsWorkflowServicesCompare(Model model, HttpServletRequest request) {
+        String ids = request.getParameter("actions-ids");
+        String[] idsList = ids.split(",");
+
+        ArrayList<WorkflowServiceContextModel> componentsContextModelList = new ArrayList<>();
+
+        for (String id : idsList) {
+            Component component = componentService.find(Integer.parseInt(id));
+
+            // Create context info for this component
+            WorkflowServiceContextModel componentContextInfo = null;
+            try {
+                componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Prepare for transformation (reduce the object to avoid stack overflow from gson)
+            componentContextInfo.setActivitiesUsing(null);
+            componentContextInfo.setWorkflowsUsing(null);
+            componentContextInfo.setExperimentsUsing(null);
+            componentContextInfo.setResearchersUsing(null);
+
+            componentsContextModelList.add(componentContextInfo);
+        }
+
+        // Transform List into JSON String
+        Gson gson = new GsonBuilder().create();
+        String componentsContextInfoJSON = gson.toJson(componentsContextModelList);
+
+        model.addAttribute("componentsContextInfo", componentsContextInfoJSON);
+
+        return "components/actions-workflow-services-compare";
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // COMPONENTS COMPOSITIONS                                                                                       //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -144,26 +216,4 @@ public class ComponentsController {
         return "components/compositions-workflow-services";
     }
 
-
-    @RequestMapping(value = "/returnjson", method = RequestMethod.GET)
-    @ResponseBody
-    public String returnJson() {
-
-        ServiceDependency sd = new ServiceDependency();
-        sd.setName("WsUserList");
-
-        ServiceDependency sd2 = new ServiceDependency();
-        sd2.setName("br.ufjf.pgcc.eseco.dao.AgentDAO");
-
-        ServiceDependency sd3 = new ServiceDependency();
-        sd3.setName("br.ufjf.pgcc.eseco.model.Agent");
-        sd3.setSize(5);
-
-        sd2.addChild(sd3);
-        sd.addChild(sd2);
-
-        Gson gson = new GsonBuilder().create();
-
-        return gson.toJson(sd);
-    }
 }

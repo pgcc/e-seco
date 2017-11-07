@@ -1,9 +1,0 @@
-[
-    [
-        {"area": "Lines of Code ", "value": 74},
-        {"area": "Number of Attributes", "value": 0},
-        {"area": "Number of Methods", "value": 9},
-        {"area": "Fan-In", "value": 4},
-        {"area": "Fan-Out", "value": 2}
-    ]
-]

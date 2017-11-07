@@ -3,32 +3,87 @@
  */
 
 /*********************************************/
+/* GRAPH                                     */
+/*********************************************/
+
+function drawGraph(data){
+    // Call function to draw the Radar chart
+    if(data.constructor === Object){
+        GraphChart.draw(data);
+
+    }else if(typeof data === "string"){
+        d3.json(data, function (error, data) {
+            if (error) throw error;
+            GraphChart.draw(data);
+        });
+    }
+}
+
+var GraphChart = {
+    draw: function (data) {
+
+
+    }
+};
+
+
+
+/*********************************************/
 /* TREEMAP                                   */
 /*********************************************/
 function drawTreemap(datFn01) {
 
-    var paddingAllowance = 2;
+    // Call function to draw the Radar chart
+    if(datFn01.constructor === Object){
+        TreemapChart.draw(datFn01);
 
-    var container = d3.select("#chart").html("");
+    }else if(typeof datFn01 === "string"){
+        d3.json(datFn01, function (error, data) {
+            if (error) throw error;
+            TreemapChart.draw(data);
+        });
+    }
+}
 
-    var svg = container.append("svg");
-    var width = 800;
-    var height = 500;
+function hovered(hover) {
+    return function (d) {
+        d3.selectAll(d.ancestors().map(function (d) {
+            return d.node;
+        }))
+            .classed("node--hover", hover)
+            .select("rect")
+            .attr("width", function (d) {
+                return d.x1 - d.x0 - hover;
+            })
+            .attr("height", function (d) {
+                return d.y1 - d.y0 - hover;
+            });
+    };
+}
+
+var TreemapChart = {
+    draw: function (data) {
+        var paddingAllowance = 2;
+
+        var container = d3.select("#chart").html("");
+
+        var svg = container.append("svg");
+        var width = 800;
+        var height = 500;
 
 
-    svg.attr("width", width).attr("height", height);
+        svg.attr("width", width).attr("height", height);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory20c);
+        var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
-    var treemap = d3.treemap()
-        .size([width, height])
-        .paddingOuter(3)
-        .paddingTop(19)
-        .paddingInner(1)
-        .round(true);
+        var treemap = d3.treemap()
+            .size([width, height])
+            .paddingOuter(3)
+            .paddingTop(19)
+            .paddingInner(1)
+            .round(true);
 
-    d3.json(datFn01, function (error, data) {
-        if (error) throw error;
+
 
         var root = d3.hierarchy(data)
             .eachBefore(function (d) {
@@ -85,34 +140,20 @@ function drawTreemap(datFn01) {
             .attr("class", "treemap-block-header")
             .append("p")
             .text(function (d) {
-                console.log(d.data)
+                //console.log(d.data)
                 return d.data.name;
             })
             .attr("text-anchor", "middle")
-    });
-}
 
-function hovered(hover) {
-    return function (d) {
-        d3.selectAll(d.ancestors().map(function (d) {
-            return d.node;
-        }))
-            .classed("node--hover", hover)
-            .select("rect")
-            .attr("width", function (d) {
-                return d.x1 - d.x0 - hover;
-            })
-            .attr("height", function (d) {
-                return d.y1 - d.y0 - hover;
-            });
-    };
-}
+
+    }
+};
 
 
 /*********************************************/
 /* RADAR                                     */
 /*********************************************/
-function drawRadar(data) {
+function drawRadar(data, targetId) {
     /*
      var svg = d3.select("svg");
      svg.html("");
@@ -125,16 +166,21 @@ function drawRadar(data) {
     var config = {
         w: width,
         h: height,
-        maxValue: 7,
-        levels: 7,
+        maxValue: 10,
+        levels: 10,
         ExtraWidthX: 300
-    }
+    };
 
     // Call function to draw the Radar chart
-    d3.json(data, function (error, data) {
-        if (error) throw error;
-        RadarChart.draw("#chart", data, config);
-    });
+    if(data.constructor === Array){
+        RadarChart.draw("#"+targetId, data, config);
+
+    }else if(typeof data === "string"){
+        d3.json(data, function (error, data) {
+            if (error) throw error;
+            RadarChart.draw("#"+targetId, data, config);
+        });
+    }
 
     var svg = d3.select('body')
         .selectAll('svg')

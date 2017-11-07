@@ -20,14 +20,82 @@
         <script type="text/javascript"
                 src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
+            // Get Items
+            var itemsToCompare = JSON.parse('${componentContextInfoJSON}');
+
+            /***********************************************/
+            /* DEPENDENCIES VISUALIZATION                  */
+            /***********************************************/
+            function showDependenciesVisualization() {
+                var treemapData = mountDataToTreemap(itemsToCompare);
+                drawTreemap(treemapData);
+            };
+
+            function mountDataToTreemap(itemData) {
+                var treemapData = {
+                    "name": itemData.wsInternalClass,
+                    "size": null,
+                    "children": null
+                };
+
+                // If it has childs
+                if (itemData.usedEsecoCoreServicesList || itemData.usedEsecoWorkflowServicesList) {
+                    var children = [];
+
+                    // Seek for Eseco Core Services Childs
+                    if (itemData.usedEsecoCoreServicesList && itemData.usedEsecoCoreServicesList.length > 0) {
+                        $.each(itemData.usedEsecoCoreServicesList, function (i, item) {
+                            var esecoCoreServiceData = {
+                                "name": item,
+                                "wsInternalClass": item
+                            };
+                            var childrenData = mountDataToTreemap(esecoCoreServiceData);
+                            children.push(childrenData);
+                        });
+                    }
+
+                    // Seek for Eseco Workflow Services Childs
+                    if (itemData.usedEsecoWorkflowServicesList && itemData.usedEsecoWorkflowServicesList.length > 0) {
+                        $.each(itemData.usedEsecoWorkflowServicesList, function (i, item) {
+                            var childrenData = mountDataToTreemap(item);
+                            children.push(childrenData);
+                        });
+                    }
+
+                    treemapData.children = children;
+
+                } else {
+                    treemapData.size = 5;
+                }
+
+                return treemapData;
+            }
+
             $("#btn-visualize-dependencies").on("click", function () {
-                $('#myModal').modal();
-
-                //drawTreemap('<c:url value="/returnjson"/>');
-                drawRadar('/eseco/resources/json/radar11.json');
-
-                //drawTreemap('/eseco/resources/json/mydata-3.json');
+                $('#modal-visualize-dependencies').modal();
+                showDependenciesVisualization();
             });
+
+
+            /***********************************************/
+            /* USAGE VISUALIZATIONS                        */
+            /***********************************************/
+            $("#btn-visualize-activities-using").on("click", function () {
+                $('#modal-visualize-activities-using').modal();
+            });
+
+            $("#btn-visualize-workflows-using").on("click", function () {
+                $('#modal-visualize-workflows-using').modal();
+            });
+
+            $("#btn-visualize-experiments-using").on("click", function () {
+                $('#modal-visualize-experiments-using').modal();
+            });
+
+            $("#btn-visualize-researchers-using").on("click", function () {
+                $('#modal-visualize-researchers-using').modal();
+            });
+
         </script>
     </jsp:attribute>
 
@@ -131,26 +199,51 @@
                             <div class="panel-body">
                                 <ul class="list-group lst-data-value">
                                     <li class="list-group-item">
-                                        <span>Experiments</span>
-                                        <span>3 <button class="btn btn-xs btn-info" type="button">View all</button></span>
+                                        <span>Activities Using</span>
+                                        <span>${componentContextInfo.activitiesUsingCount}
+                                            <button id="btn-visualize-activities-using" class="btn btn-xs btn-info"
+                                                    type="button">View all</button>
+                                        </span>
                                     </li>
                                     <li class="list-group-item">
-                                        <span>Cientists</span>
-                                        <span>2 <button class="btn btn-xs btn-info" type="button">View all</button></span>
+                                        <span>Workflows Using</span>
+                                        <span>${componentContextInfo.workflowsUsingCount}
+                                            <button id="btn-visualize-workflows-using" class="btn btn-xs btn-info"
+                                                    type="button">View all</button>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>Experiments Using</span>
+                                        <span>${componentContextInfo.experimentsUsingCount}
+                                            <button id="btn-visualize-experiments-using" class="btn btn-xs btn-info"
+                                                    type="button">View all</button>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>Researchers Using</span>
+                                        <span>${componentContextInfo.researchersUsingCount}
+                                            <button id="btn-visualize-researchers-using" class="btn btn-xs btn-info"
+                                                    type="button">View all</button>
+                                        </span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Most Common Area</span>
-                                        <span>Biology</span>
+                                        <span>${componentContextInfo.mostCommonArea}</span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Date Last Used</span>
-                                        <span>2017-09-22</span>
+                                        <span>
+                                            <c:choose>
+                                                <c:when test="${componentContextInfo.dateLastUsed}">
+                                                <span><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                      value="${componentContextInfo.dateLastUsed}"/></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>Never Used</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
                                     </li>
-                                    <li class="list-group-item">
-                                        <span>Most Used Version</span>
-                                        <span>1</span>
-                                    </li>
-
                                 </ul>
 
                                 <div class="text-center">
@@ -171,15 +264,24 @@
                                 <ul class="list-group lst-data-value">
                                     <li class="list-group-item">
                                         <span>Total Ratings </span>
-                                        <span>3 <button class="btn btn-xs btn-info" type="button">View all</button></span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <span>Problems Related</span>
-                                        <span>8</span>
+                                        <span>${componentContextInfo.totalRatings}
+                                            <button class="btn btn-xs btn-info" type="button">View all</button>
+                                        </span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Approvals</span>
-                                        <span>3</span>
+                                        <span>${componentContextInfo.totalApprovals}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>Documentation</span>
+                                        <span>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar"
+                                                    aria-valuenow="40" aria-valuemin="0"
+                                                    aria-valuemax="100" style="width: 40%">
+                                                </div>
+                                            </div>
+                                        </span>
                                     </li>
                                 </ul>
 
@@ -207,19 +309,23 @@
                                             </li>
                                             <li class="list-group-item">
                                                 <span>Parameters</span>
-                                                <span>${componentContextInfo.wsClassParameterCount}</span>
+                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.parametersCount}</span>
                                             </li>
                                             <li class="list-group-item">
                                                 <span>Methods</span>
-                                                <span>${componentContextInfo.wsClassMethodCount}</span>
+                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.methodsCount}</span>
                                             </li>
                                             <li class="list-group-item">
-                                                <span>Atomic Services</span>
-                                                <span>2</span>
+                                                <span>Total Services Used</span>
+                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.servicesCount}</span>
                                             </li>
                                             <li class="list-group-item">
-                                                <span>E-Seco Classes</span>
-                                                <span>5</span>
+                                                <span>E-Seco Core Services Used</span>
+                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesCount}</span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span>E-Seco Workflow Services Used</span>
+                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesCount}</span>
                                             </li>
                                         </ul>
                                         <div class="text-center">
@@ -240,14 +346,16 @@
         </div>
 
 
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!-- MODAL VISUALIZE DEPENDENCIES -->
+        <div class="modal fade" id="modal-visualize-dependencies" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-dependencies-label">
             <div class="modal-dialog width-95" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Dependencies of <strong>${component.name}</strong>
+                        <h4 class="modal-title" id="modal-visualize-dependencies-label">Dependencies of
+                            <strong>${component.name}</strong>
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -255,9 +363,6 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-8">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Dependencies</h3>
-                                    </div>
                                     <div class="panel-body">
                                         <div style="overflow: auto;width: 850px;height: 550px;">
                                             <div id="chart"></div>
@@ -280,7 +385,186 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Export</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL VISUALIZE ACTIVITIES USING -->
+        <div class="modal fade" id="modal-visualize-activities-using" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-activities-using-label">
+            <div class="modal-dialog width-95" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-visualize-activities-using-label">Activities Using
+                            <strong>${component.name}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="activity" items="${activitiesList}">
+                                                <tr>
+                                                    <td>${activity.name}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL VISUALIZE WORKFLOWS USING -->
+        <div class="modal fade" id="modal-visualize-workflows-using" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-workflows-using-label">
+            <div class="modal-dialog width-95" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-visualize-workflows-using-label">Workflows Using
+                            <strong>${component.name}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="experiment" items="${workflowsList}">
+                                                <tr>
+                                                    <td>${experiment.name}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL VISUALIZE EXPERIMENTS USING -->
+        <div class="modal fade" id="modal-visualize-experiments-using" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-experiments-using-label">
+            <div class="modal-dialog width-95" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-visualize-experiments-using-label">Experiments Using
+                            <strong>${component.name}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="experiment" items="${experimentsList}">
+                                                <tr>
+                                                    <td>${experiment.name}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL VISUALIZE ACTIVITIES USING -->
+        <div class="modal fade" id="modal-visualize-researchers-using" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-researchers-using-label">
+            <div class="modal-dialog width-95" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-visualize-researchers-using-label">Researchers Using
+                            <strong>${component.name}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="researcher" items="${researchersList}">
+                                                <tr>
+                                                    <td>${researcher.displayName}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

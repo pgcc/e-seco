@@ -1,8 +1,0 @@
-[
-    [
-        {"area": "Number of Methods", "value": 9},
-        {"area": "Fan-In", "value": 9},
-        {"area": "Number of Attributes", "value": 0},
-        {"area": "Fan-Out", "value": 2}
-    ]
-]

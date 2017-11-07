@@ -2,6 +2,7 @@ package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ExperimentDAO;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,4 +41,21 @@ public class ExperimentService {
         return experimentDAO.findAll();
     }
 
+    public List<Experiment> findByWorkflowId(int workflowID) {
+
+        List<Experiment> experiments = findAll();
+        ArrayList<Experiment> experimentsFound = new ArrayList<>();
+
+        for(Experiment experiment: experiments){
+            for(Workflow workflow: experiment.getWorkflows()){
+                if(workflow.getId() == workflowID){
+                    if(!experimentsFound.contains(experiment)){
+                        experimentsFound.add(experiment);
+                    }
+                }
+            }
+        }
+
+        return experimentsFound;
+    }
 }

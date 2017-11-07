@@ -1,5 +1,8 @@
 package br.ufjf.pgcc.eseco.services.sample;
 
+import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
+
+@EsecoWorkflowService
 public class Service01 {
 
     private String attribute01;

@@ -26,7 +26,7 @@ public class WorkflowService {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "internal_class")
+    @Column(name = "internal_class", unique = true)
     private String internalClass;
 
 

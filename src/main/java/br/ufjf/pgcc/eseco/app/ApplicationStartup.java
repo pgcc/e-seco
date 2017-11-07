@@ -22,10 +22,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent e) {
-        /*
         countryService.populateCountries();
         stateService.populateBrazilStates();
         roleService.populateRoles();
-        */
     }
 }

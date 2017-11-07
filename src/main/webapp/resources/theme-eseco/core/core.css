@@ -2,35 +2,36 @@
  * E-SECO THEME CORE STYLESHEET
  */
 
-html{
+html {
     height: 100%;
     margin: 0;
     padding: 0;
 }
-body{
+
+body {
     min-height: 100%;
     display: flex;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
 }
 
-
 @media (min-width: 768px) {
     .container {
         width: 520px;
     }
 }
+
 @media (min-width: 992px) {
     .container {
         width: 740px;
     }
 }
+
 @media (min-width: 1200px) {
     .container {
         width: 940px;
     }
 }
-
 
 /**********************************************************************************************************************/
 /*** LOGIN STRUCTURE                                                                                                  */
@@ -41,81 +42,91 @@ body.structure-login {
     justify-content: center;
 }
 
-
 /* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
-@media only screen and (max-width : 480px) {
-    .structure-login main{
+@media only screen and (max-width: 480px) {
+    .structure-login main {
         width: 100%;
     }
 }
-
-
 
 /**********************************************************************************************************************/
 /*** APP INNER STRUCTURE                                                                                              */
 /**********************************************************************************************************************/
 
-.structure-app-inner header{
+.structure-app-inner header {
     background: #006064;
 }
-.structure-app-inner header h1{
+
+.structure-app-inner header h1 {
     margin: 0;
     padding: 20px 0;
     font-weight: 300;
     color: #fff;
 }
-.structure-app-inner header .top-header{
+
+.structure-app-inner header .top-header {
     background-image: url('../../../resources/images/eseco-top-bg.jpg');
     height: 120px;
 }
-.structure-app-inner header .top-header img{
+
+.structure-app-inner header .top-header img {
     height: 100px;
     position: relative;
     top: 10px;
     left: 30px;
 }
-.structure-app-inner header nav.top-menu{
+
+.structure-app-inner header nav.top-menu {
     display: flex;
     justify-content: space-between;
     background: #00838f;
 }
-.structure-app-inner header nav.top-menu ul{
+
+.structure-app-inner header nav.top-menu ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
-.structure-app-inner header nav.top-menu ul li{
+
+.structure-app-inner header nav.top-menu ul li {
     display: inline-block;
 }
-.structure-app-inner header nav.top-menu ul li a{
+
+.structure-app-inner header nav.top-menu ul li a {
     padding: 15px;
     display: block;
     color: #fff;
 }
-.structure-app-inner header nav.top-menu ul li a:hover{
+
+.structure-app-inner header nav.top-menu ul li a:hover {
     text-decoration: none;
     background-color: #0097a7;
 }
-.structure-app-inner header nav.top-menu .dropdown ul{
+
+.structure-app-inner header nav.top-menu .dropdown ul {
     min-width: 0;
     padding: 5px 0;
     background-color: #00838f;
 }
-.structure-app-inner header nav.top-menu .dropdown ul li{
+
+.structure-app-inner header nav.top-menu .dropdown ul li {
     display: block;
 }
-.structure-app-inner header nav.top-menu .dropdown ul li.divider{
+
+.structure-app-inner header nav.top-menu .dropdown ul li.divider {
     margin: 5px 0;
     background: #0097a7;
 }
-.structure-app-inner header nav.top-menu .dropdown ul li a{
+
+.structure-app-inner header nav.top-menu .dropdown ul li a {
     padding: 3px 20px;
 }
-.structure-app-inner header nav.breadcrumbs{
+
+.structure-app-inner header nav.breadcrumbs {
     padding: 5px;
 }
 
-.structure-app-inner .breadcrumb{
+.structure-app-inner .breadcrumb {
     margin-bottom: 0;
 }
 
@@ -128,41 +139,49 @@ body.structure-login {
     flex: 0 0 230px;
     background: #eeeeee;
 }
-.structure-app-inner .main-menu ul{
+
+.structure-app-inner .main-menu ul {
     margin: 20px 0 0 0;
     padding: 0;
     list-style: none;
 }
-.structure-app-inner .main-menu ul li{
+
+.structure-app-inner .main-menu ul li {
 
 }
-.structure-app-inner .main-menu ul li a{
+
+.structure-app-inner .main-menu ul li a {
     padding: 10px;
     display: block;
 }
-.structure-app-inner .main-menu ul li a:hover{
+
+.structure-app-inner .main-menu ul li a:hover {
     text-decoration: none;
     background-color: #ddd;
 }
-.structure-app-inner .main-menu ul li ul{
+
+.structure-app-inner .main-menu ul li ul {
     margin: 0 !important;
 }
-.structure-app-inner .main-menu ul li ul li{
+
+.structure-app-inner .main-menu ul li ul li {
     padding: 0 0 0 30px !important;
 }
 
 .structure-app-inner .main-content {
     flex: 100%;
 }
+
 .structure-app-inner .main-content h2 {
     font-weight: 300;
 }
 
-.structure-app-inner footer{
+.structure-app-inner footer {
     padding: 20px;
     background: #006064;
 }
-.structure-app-inner footer p{
+
+.structure-app-inner footer p {
     margin: 0;
     font-weight: 100;
     color: #fff;
@@ -177,21 +196,23 @@ body.structure-login {
     border-color: #006064;
 }
 
-
 /* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
-@media only screen and (max-width : 480px) {
-    .structure-app-inner header nav.top-menu ul li a{
+@media only screen and (max-width: 480px) {
+    .structure-app-inner header nav.top-menu ul li a {
         padding: 10px;
         display: block;
         color: #fff;
     }
-    .structure-app-inner header nav.top-menu ul li a i{
+
+    .structure-app-inner header nav.top-menu ul li a i {
         font-size: 2em;
     }
-    .structure-app-inner header nav.top-menu ul li a span{
+
+    .structure-app-inner header nav.top-menu ul li a span {
         display: none;
     }
-    .structure-app-inner header nav.top-menu .dropdown ul li a{
+
+    .structure-app-inner header nav.top-menu .dropdown ul li a {
         padding: 0 6px;
         text-align: center;
     }
@@ -203,30 +224,32 @@ body.structure-login {
     .structure-app-inner .main-menu {
         border-bottom: 1px solid #ccc;
     }
-    .structure-app-inner .main-menu ul{
+
+    .structure-app-inner .main-menu ul {
         margin: 0;
     }
 }
-
-
 
 /**********************************************************************************************************************/
 /*** COMPONENTS                                                                                                       */
 /**********************************************************************************************************************/
 
 /* Panel Heading Buttons */
-div.pnl-heading-buttons{
+div.pnl-heading-buttons {
     display: flex;
     justify-content: space-between;
     padding: 0 0 0 15px;
 }
-div.pnl-heading-buttons h3{
+
+div.pnl-heading-buttons h3 {
     margin: 10px;
 }
-div.pnl-heading-buttons-buttons{
+
+div.pnl-heading-buttons-buttons {
     display: flex;
 }
-div.pnl-heading-buttons-buttons a.btn{
+
+div.pnl-heading-buttons-buttons a.btn {
     border-left: 1px solid #ddd;
     align-self: center;
 }
@@ -242,86 +265,138 @@ div.pnl-heading-buttons-buttons a.btn{
 }
 
 /* Data Value List */
-ul.lst-data-value{
+ul.lst-data-value {
     list-style: none;
     overflow: auto;
 }
-ul.lst-data-value li{
+
+ul.lst-data-value li {
     display: flex;
     justify-content: space-between;
 }
-ul.lst-data-value li span:nth-child(1){
+
+ul.lst-data-value li span:nth-child(1) {
 }
-ul.lst-data-value li span:nth-child(2){
+
+ul.lst-data-value li span:nth-child(2) {
     font-weight: bold;
 }
 
+/* Table List Transform */
+@media only screen and (max-width: 800px) {
+
+    /* Force table to not be like tables anymore */
+    table.table-list-transform,
+    table.table-list-transform tbody,
+    table.table-list-transform tr,
+    table.table-list-transform td {
+        display: block;
+    }
+
+    /* Hide table headers */
+    table.table-list-transform thead {
+        display: none !important;
+    }
+
+    table.table-list-transform tr {
+        border: 1px solid #ccc;
+    }
+
+    table.table-list-transform td {
+        /* Behave like a "row" */
+        border: none !important;
+        border-bottom: 1px solid #eee !important;
+        position: relative !important;
+        white-space: normal !important;
+        text-align: left !important;
+    }
+
+    table.table-list-transform td:before {
+        display: block;
+        font-weight: bold;
+        content: attr(data-title); /* Label the data */
+    }
+}
 
 /**********************************************************************************************************************/
 /*** HELPERS                                                                                                          */
 /**********************************************************************************************************************/
 
 /* TEXTS */
-.text-large{
+.text-large {
     font-size: 1.2em !important;
 }
-.text-small{
+
+.text-small {
     font-size: 0.8em !important;
 }
 
 /* MARGINS */
-.no-margin{
+.no-margin {
     margin: 0 !important;
 }
-.no-margin-top{
+
+.no-margin-top {
     margin-top: 0 !important;
 }
-.no-margin-bottom{
+
+.no-margin-bottom {
     margin-bottom: 0 !important;
 }
-.no-margin-left{
+
+.no-margin-left {
     margin-left: 0 !important;
 }
-.no-margin-right{
+
+.no-margin-right {
     margin-right: 0 !important;
 }
 
-.margin-5{
+.margin-5 {
     margin: 5px !important;
 }
-.margin-5-top{
+
+.margin-5-top {
     margin-top: 5px !important;
 }
-.margin-5-bottom{
+
+.margin-5-bottom {
     margin-bottom: 5px !important;
 }
-.margin-5-left{
+
+.margin-5-left {
     margin-left: 5px !important;
 }
-.margin-5-right{
+
+.margin-5-right {
     margin-right: 5px !important;
 }
 
-.margin-10{
+.margin-10 {
     margin: 10px !important;
 }
-.margin-10-top{
+
+.margin-10-top {
     margin-top: 10px !important;
 }
-.margin-10-bottom{
+
+.margin-10-bottom {
     margin-bottom: 10px !important;
 }
-.margin-10-left{
+
+.margin-10-left {
     margin-left: 10px !important;
 }
-.margin-10-right{
+
+.margin-10-right {
     margin-right: 10px !important;
 }
 
 /* WIDTHS */
-.width-100{
+.width-100 {
     width: 100% !important;
 }
-.width-95{
+
+.width-95 {
     width: 95% !important;
 }
