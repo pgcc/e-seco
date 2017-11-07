@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -63,6 +65,7 @@ public class WorkflowExecution {
     private List<ActivityExecution> activityExecutions;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_inputs",
             joinColumns = {
@@ -75,6 +78,7 @@ public class WorkflowExecution {
     private List<Port> inputs;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_outputs",
             joinColumns = {
@@ -151,6 +155,10 @@ public class WorkflowExecution {
 
     public void setActivityExecutions(List<ActivityExecution> activityExecutions) {
         this.activityExecutions = activityExecutions;
+    }
+
+    public boolean isNew() {
+        return (this.id == 0);
     }
 
 }

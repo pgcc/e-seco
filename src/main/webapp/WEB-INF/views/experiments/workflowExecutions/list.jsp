@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Entities
+        E-SECO Workflow Executions
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this entity!",
+                    text: "Your will not be able to recover this workflowExecution!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/entities"/>"> Entities</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments/workflowExecutions"/>"> Workflow Executions</a></li>
         </ol>
     </jsp:attribute>
 
@@ -60,7 +60,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Entities</h2>
+            <h2>All Workflow Executions</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -68,28 +68,26 @@
                         <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Name</th>
+                                <th>Workflow Name</th>
                                 <th>Author</th>
-                                <th>Kind</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="entity" items="${entities}">
+                        <c:forEach var="workflowExecution" items="${workflowExecutions}">
 
-                            <spring:url value="entities/${entity.id}" var="entityUrl" />
-                            <spring:url value="entities/${entity.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="entities/${entity.id}/update" var="updateUrl" />
+                            <spring:url value="workflowExecutions/${workflowExecution.id}" var="workflowExecutionUrl" />
+                            <spring:url value="workflowExecutions/${workflowExecution.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="workflowExecutions/${workflowExecution.id}/update" var="updateUrl" />
 
 
                             <tr>
-                                <td onclick="location.href = '${entityUrl}'">${entity.id}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.name}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.author.displayName}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.kind.name}</td>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.id}</td>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.workflow.name}</td>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.author.displayName}</td>
 
 
                                 <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${entityUrl}'">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${workflowExecutionUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
                                     <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">

@@ -76,11 +76,11 @@ public class Entity {
 
     public EntityKind getKind() {
         if (kind == null) {
-            if (this.getData() != null) {
-                return EntityKind.DATA;
+            if (this.getData() != null && this.getDocument() == null) {
+                kind = EntityKind.DATA;
             }
-            if (this.getDocument() != null) {
-                return EntityKind.DOCUMENT;
+            if (this.getDocument() != null && this.getData() == null) {
+                kind = EntityKind.DOCUMENT;
             }
         }
         return kind;

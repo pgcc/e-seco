@@ -58,4 +58,7 @@ public class Wfms {
         this.link = link;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

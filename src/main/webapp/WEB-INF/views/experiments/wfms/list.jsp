@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Entities
+        E-SECO Wfms
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this entity!",
+                    text: "Your will not be able to recover this wfms!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/entities"/>"> Entities</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments/wfms"/>"> Wfms</a></li>
         </ol>
     </jsp:attribute>
 
@@ -60,7 +60,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Entities</h2>
+            <h2>All Wfms</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -69,27 +69,25 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
-                                <th>Author</th>
-                                <th>Kind</th>
+                                <th>Link1</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="entity" items="${entities}">
+                        <c:forEach var="wfms" items="${wfmss}">
 
-                            <spring:url value="entities/${entity.id}" var="entityUrl" />
-                            <spring:url value="entities/${entity.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="entities/${entity.id}/update" var="updateUrl" />
+                            <spring:url value="wfms/${wfms.id}" var="wfmsUrl" />
+                            <spring:url value="wfms/${wfms.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="wfms/${wfms.id}/update" var="updateUrl" />
 
 
                             <tr>
-                                <td onclick="location.href = '${entityUrl}'">${entity.id}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.name}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.author.displayName}</td>
-                                <td onclick="location.href = '${entityUrl}'">${entity.kind.name}</td>
+                                <td onclick="location.href = '${wfmsUrl}'">${wfms.id}</td>
+                                <td onclick="location.href = '${wfmsUrl}'">${wfms.name}</td>
+                                <td onclick="location.href = '${wfmsUrl}'">${wfms.link}</td>
 
 
                                 <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${entityUrl}'">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${wfmsUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
                                     <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">

@@ -73,6 +73,7 @@ public class ExperimentEntitiesController {
         entity.setData(new Data());
         entity.setDocument(new Document());
         model.addAttribute("entityForm", entity);
+        populateDefaultModel(model);
         return "experiments/entities/entities-form";
     }
 
@@ -82,13 +83,6 @@ public class ExperimentEntitiesController {
         LOGGER.log(Level.INFO, "showUpdateEntityForm() : {0}", id);
 
         Entity entity = entityService.find(id);
-        if (entity.getData() == null) {
-            entity.setData(new Data());
-        }
-        if (entity.getDocument() == null) {
-            entity.setDocument(new Document());
-        }
-
         model.addAttribute("entityForm", entity);
 
         populateDefaultModel(model);
@@ -113,11 +107,10 @@ public class ExperimentEntitiesController {
             }
 
             try {
-                if (entity.getData() != null) {
+                if (entity.getKind().equals(EntityKind.DATA)) {
                     Data data = dataService.saveOrUpdate(entity.getData());
                     entity.setData(data);
-                }
-                if (entity.getDocument() != null) {
+                } else if (entity.getKind().equals(EntityKind.DOCUMENT)) {
                     Document document = documentService.saveOrUpdate(entity.getDocument());
                     entity.setDocument(document);
                 }
