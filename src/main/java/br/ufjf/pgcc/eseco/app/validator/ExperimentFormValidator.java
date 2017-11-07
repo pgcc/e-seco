@@ -13,11 +13,7 @@ import org.springframework.validation.Validator;
 public class ExperimentFormValidator implements Validator {
 
     @Autowired
-    @Qualifier("emailValidator")
-    EmailValidator emailValidator;
-
-    @Autowired
-    ExperimentService experimentService;
+    private ExperimentService experimentService;
 
     @Override
     public boolean supports(Class<?> clazz) {

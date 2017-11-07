@@ -36,7 +36,7 @@ public class Workflow {
     @Column(name = "link")
     private String link;
 
-    @Column(name = "value")
+    @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
     @ManyToOne
@@ -54,7 +54,8 @@ public class Workflow {
     @Column(name = "version")
     private String version;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_activity",
             joinColumns = {

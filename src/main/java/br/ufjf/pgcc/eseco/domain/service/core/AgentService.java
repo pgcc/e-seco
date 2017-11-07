@@ -18,6 +18,9 @@ public class AgentService {
         this.agentDao = agentDao;
     }
 
+    public Agent find(int agentId) {
+        return agentDao.find(agentId);
+    }
 
     public List<Agent> findAll() {
         return agentDao.findAll();

@@ -27,16 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -56,11 +52,6 @@ public class ExperimentsController {
     @Autowired
     ExperimentFormValidator experimentFormValidator;
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(experimentFormValidator);
-    }
-
     private ExperimentService experimentService;
     private DisciplineService disciplineService;
     private InstitutionService institutionService;
@@ -68,6 +59,11 @@ public class ExperimentsController {
     private ResearchGroupService researchGroupService;
     private WorkflowService workflowService;
     private ImportProvenanceDataService importProvenanceDataService;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(experimentFormValidator);
+    }
 
     @Autowired
     public void setExperimentService(ExperimentService experimentService, DisciplineService disciplineService,
@@ -86,9 +82,41 @@ public class ExperimentsController {
     public String showAllExperiments(Model model) {
 
         LOGGER.info("showAllExperiments()");
+
         model.addAttribute("experiments", experimentService.findAll());
         return "experiments/list";
+    }
 
+    @RequestMapping(value = "/experiments/add", method = RequestMethod.GET)
+    public String showAddExperimentForm(Model model, HttpSession session) {
+
+        LOGGER.info("showAddExperimentForm()");
+
+        User user = (User) session.getAttribute("logged_user");
+        Experiment experiment = new Experiment();
+
+        // set default value
+        experiment.setAuthor(user.getAgent().getResearcher());
+        experiment.setDateCreated(new Date());
+        experiment.setStatus(ExperimentStatus.IN_PROGRESS);
+        experiment.setCurrentPhase(ExperimentPhase.PROBLEM_INVESTIGATION);
+        experiment.setVersion("1.0.0");
+
+        model.addAttribute("experimentForm", experiment);
+        populateDefaultModel(model);
+        return "experiments/experiments-form";
+    }
+
+    @RequestMapping(value = "/experiments/{id}/update", method = RequestMethod.GET)
+    public String showUpdateExperimentForm(@PathVariable("id") int id, Model model) {
+
+        LOGGER.log(Level.INFO, "showUpdateExperimentForm() : {0}", id);
+
+        Experiment experiment = experimentService.find(id);
+        model.addAttribute("experimentForm", experiment);
+
+        populateDefaultModel(model);
+        return "experiments/experiments-form";
     }
 
     @RequestMapping(value = "/experiments", method = RequestMethod.POST)
@@ -106,6 +134,7 @@ public class ExperimentsController {
                 redirectAttributes.addFlashAttribute("msg", "Experiment added successfully!");
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Experiment updated successfully!");
+                experiment.setDateUpdated(new Date());
             }
 
             try {
@@ -116,47 +145,7 @@ public class ExperimentsController {
                 populateDefaultModel(model);
                 return "experiments/experiments-form";
             }
-
         }
-
-    }
-
-    @RequestMapping(value = "/experiments/add", method = RequestMethod.GET)
-    public String showAddExperimentForm(Model model, HttpSession session) {
-
-        LOGGER.info("showAddExperimentForm()");
-
-        User user = (User) session.getAttribute("logged_user");
-
-        Experiment experiment = new Experiment();
-
-        // set default value
-        experiment.setAuthor(user.getAgent().getResearcher());
-        experiment.setDateCreated(new Date());
-        experiment.setStatus(ExperimentStatus.IN_PROGRESS);
-        experiment.setCurrentPhase(ExperimentPhase.PROBLEM_INVESTIGATION);
-        experiment.setVersion("1.0.0");
-
-        model.addAttribute("experimentForm", experiment);
-
-        populateDefaultModel(model);
-
-        return "experiments/experiments-form";
-
-    }
-
-    @RequestMapping(value = "/experiments/{id}/update", method = RequestMethod.GET)
-    public String showUpdateExperimentForm(@PathVariable("id") int id, Model model) {
-
-        LOGGER.log(Level.INFO, "showUpdateExperimentForm() : {0}", id);
-
-        Experiment experiment = experimentService.find(id);
-        model.addAttribute("experimentForm", experiment);
-
-        populateDefaultModel(model);
-
-        return "experiments/experiments-form";
-
     }
 
     @RequestMapping(value = "/experiments/{id}/delete", method = RequestMethod.POST)
@@ -168,6 +157,8 @@ public class ExperimentsController {
         try {
             experimentService.delete(experiment);
         } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", ex.getMessage());
             Logger.getLogger(ExperimentsController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -175,7 +166,6 @@ public class ExperimentsController {
         redirectAttributes.addFlashAttribute("msg", "Experiment is deleted!");
 
         return "redirect:/experiments";
-
     }
 
     @RequestMapping(value = "/experiments/{id}", method = RequestMethod.GET)
@@ -190,11 +180,8 @@ public class ExperimentsController {
         }
 
         model.addAttribute("experiment", experiment);
-
         setSessionCurrentPhase(session, experiment);
-
         return "experiments/show";
-
     }
 
     @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.GET)
@@ -204,11 +191,8 @@ public class ExperimentsController {
 
         Experiment experiment = experimentService.find(id);
         model.addAttribute("experimentForm", experiment);
-
         model.addAttribute("workflowsList", experiment.getWorkflows());
-
         return "experiments/experiments-add-provenance-data-form";
-
     }
 
     @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.POST)
@@ -228,29 +212,31 @@ public class ExperimentsController {
         fileDialog.setFocusable(true);
         fileDialog.setVisible(true);
         fileDialog.toFront();
+
         model.addAttribute("file", fileDialog.getDirectory() + fileDialog.getFile());
         model.addAttribute("workflowsList", experimentService.find(id).getWorkflows());
         return "experiments/experiments-add-provenance-data-form";
-
     }
 
     @RequestMapping(value = "/experiments/saveProvenance", method = RequestMethod.POST)
-    public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment, @RequestParam(value = "file") String file, Model model, final RedirectAttributes redirectAttributes) {
+    public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment,
+            @RequestParam(value = "file") String file, Model model,
+            final RedirectAttributes redirectAttributes, HttpSession session) {
 
         LOGGER.log(Level.INFO, "saveProvenanceData() : {0}", experiment);
+        User user = (User) session.getAttribute("logged_user");
 
         if (experiment.getWorkflows().size() == 1 && !file.isEmpty()) {
             Workflow workflow = workflowService.find(experiment.getWorkflows().get(0).getId());
             try {
-                importProvenanceDataService.importProvenanceData(experiment, workflow, file);
+                importProvenanceDataService.importProvenanceData(workflow, file, user.getAgent().getResearcher());
                 redirectAttributes.addFlashAttribute("css", "success");
-                redirectAttributes.addFlashAttribute("msg", "Prevenance data successfully imported!");
+                redirectAttributes.addFlashAttribute("msg", "Provenance Data successfully imported!");
                 return "redirect:/experiments/" + experiment.getId();
 
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage());
             }
-
         }
         model.addAttribute("file", file);
         model.addAttribute("experimentForm", experiment);
@@ -280,21 +266,6 @@ public class ExperimentsController {
 
         List<Workflow> workflows = workflowService.findAll();
         model.addAttribute("workflowsList", workflows);
-
-    }
-
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ModelAndView handleEmptyData(HttpServletRequest req, Exception ex) {
-
-        LOGGER.info("handleEmptyData()");
-        LOGGER.log(Level.INFO, "Request: {0}, error {1}", new Object[]{req.getRequestURL(), ex});
-
-        ModelAndView model = new ModelAndView();
-        model.setViewName("experiment/show");
-        model.addObject("msg", "experiment not found");
-
-        return model;
-
     }
 
     private void setSessionCurrentPhase(HttpSession session, Experiment experiment) {

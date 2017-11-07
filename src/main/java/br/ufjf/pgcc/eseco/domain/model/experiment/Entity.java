@@ -5,7 +5,6 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
-import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,8 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -32,11 +34,18 @@ public class Entity {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Researcher researcher;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Researcher author;
 
-    @OneToOne(mappedBy = "agent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Developer developer;
+    @Transient
+    private EntityKind kind;
+
+    @OneToOne(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Data data;
+
+    @OneToOne(mappedBy = "entity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Document document;
 
     public Entity() {
     }
@@ -57,20 +66,47 @@ public class Entity {
         this.name = name;
     }
 
-    public Researcher getResearcher() {
-        return researcher;
+    public Researcher getAuthor() {
+        return author;
     }
 
-    public void setResearcher(Researcher researcher) {
-        this.researcher = researcher;
+    public void setAuthor(Researcher author) {
+        this.author = author;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public EntityKind getKind() {
+        if (kind == null) {
+            if (this.getData() != null && this.getDocument() == null) {
+                kind = EntityKind.DATA;
+            }
+            if (this.getDocument() != null && this.getData() == null) {
+                kind = EntityKind.DOCUMENT;
+            }
+        }
+        return kind;
     }
 
-    public void setDeveloper(Developer developer) {
-        this.developer = developer;
+    public void setKind(EntityKind kind) {
+        this.kind = kind;
     }
 
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

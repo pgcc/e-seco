@@ -12,7 +12,7 @@ import org.springframework.validation.Validator;
 public class ExperimentWorkflowFormValidator implements Validator {
 
     @Autowired
-    WorkflowService workflowService;
+    private WorkflowService workflowService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -26,7 +26,10 @@ public class ExperimentWorkflowFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.experimentWorkflowForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "NotEmpty.experimentWorkflowForm.description");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "version", "NotEmpty.experimentWorkflowForm.version");
-
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "wfms.id", "NotEmpty.experimentWorkflowForm.wfms");
+        if (workflow.getWfms().getId() == 0) {
+            errors.rejectValue("wfms.id", "NotEmpty.experimentWorkflowForm.wfms");
+        }
     }
 
 }

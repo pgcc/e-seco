@@ -27,6 +27,9 @@ public class Researcher {
     @Column(name = "mendeley_id")
     private String mendeleyId;
 
+    @Column(name = "kepler_id")
+    private String keplerId;
+
     @OneToOne(fetch = FetchType.EAGER)
     private Agent agent;
 
@@ -83,6 +86,14 @@ public class Researcher {
 
     public void setMendeleyId(String mendeleyId) {
         this.mendeleyId = mendeleyId;
+    }
+
+    public String getKeplerId() {
+        return keplerId;
+    }
+
+    public void setKeplerId(String keplerId) {
+        this.keplerId = keplerId;
     }
 
     public Agent getAgent() {

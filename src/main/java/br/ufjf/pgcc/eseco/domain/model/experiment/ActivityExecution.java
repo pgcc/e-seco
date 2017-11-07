@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -36,7 +38,6 @@ public class ActivityExecution {
     @ManyToOne
     @JoinColumn(name = "activity", nullable = false)
     private Activity activity;
-   
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
@@ -51,6 +52,7 @@ public class ActivityExecution {
     private Date endTime;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_activity_inputs",
             joinColumns = {
@@ -63,6 +65,7 @@ public class ActivityExecution {
     private List<Port> inputs;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_activity_outputs",
             joinColumns = {
@@ -133,4 +136,7 @@ public class ActivityExecution {
         this.outputs = outputs;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

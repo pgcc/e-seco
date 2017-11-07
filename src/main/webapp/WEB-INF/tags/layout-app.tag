@@ -39,7 +39,7 @@
         <ul class="top-menu-left">
             <li><a href="<c:url value="/"/>"><i class="fa fa-home"></i> <span>HOME</span></a></li>
             <li><a href="<c:url value="/experiments"/>"><i class="fa fa-flask"></i> <span>EXPERIMENTS</span></a></li>
-            <li><a href="<c:url value="/members"/>"><i class="fa fa-id-card"></i> <span>MEMBERS</span></a></li>
+            <li><a href="<c:url value="/agents"/>"><i class="fa fa-id-card"></i> <span>MEMBERS</span></a></li>
             <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
             <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
 

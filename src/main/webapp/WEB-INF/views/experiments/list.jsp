@@ -20,9 +20,21 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             function post(id) {
-                $.post(id, function (data) {
-                    alert(data)
-                });
+                swal({
+                    title: "Are you sure?",
+                    text: "Your will not be able to recover this experiment!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: true
+                },
+                        function () {
+                            var form = $('<form action="' + id + '" method="post">' +
+                                    '</form>');
+                            $('body').append(form);
+                            form.submit();
+                        });
             }
         </script>
     </jsp:attribute>
@@ -72,7 +84,7 @@
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
-                                <td>${experiment.currentPhase.name}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
 
                                 <td class="text-center">
                                     <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
