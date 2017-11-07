@@ -70,7 +70,7 @@
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button" onclick="type = 'post', action = '${chooseFileUrl}'">Choose File</button>
                             </span>
-                            <input id="file" name="file" type="text" class="form-control" placeholder="File Name" value="C:\Users\YURI\Desktop\Provenance.json">
+                            <input id="file" name="file" type="text" class="form-control" placeholder="File Name" value="C:\Users\LenitaMA\Downloads\Provenance.json">
                         </div>
                     </div>                
                 </div>

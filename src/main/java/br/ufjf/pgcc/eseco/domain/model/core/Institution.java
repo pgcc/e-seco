@@ -1,6 +1,5 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
-import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -46,6 +45,10 @@ public class Institution {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public boolean isNew() {
+        return (this.id == 0);
     }
 
 }

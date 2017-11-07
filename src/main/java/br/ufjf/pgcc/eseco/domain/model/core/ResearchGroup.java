@@ -100,4 +100,7 @@ public class ResearchGroup {
         this.members = members;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
 }

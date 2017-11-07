@@ -71,4 +71,8 @@ public class Discipline {
         this.subdisciplines = subdisciplines;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
+
 }

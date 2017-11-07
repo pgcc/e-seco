@@ -4,7 +4,7 @@ import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
-import br.ufjf.pgcc.eseco.domain.service.component.ServiceWorkflowService;
+import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +35,7 @@ public class ExperimentActivitiesController {
     ExperimentActivityFormValidator activityFormValidator;
 
     private ActivityService activityService;
-    private ServiceWorkflowService serviceWorkflowService;
+    private WorkflowServiceService serviceWorkflowService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -43,7 +43,7 @@ public class ExperimentActivitiesController {
     }
 
     @Autowired
-    public void setActivityService(ActivityService activityService, ServiceWorkflowService serviceWorkflowService) {
+    public void setActivityService(ActivityService activityService, WorkflowServiceService serviceWorkflowService) {
         this.activityService = activityService;
         this.serviceWorkflowService = serviceWorkflowService;
     }

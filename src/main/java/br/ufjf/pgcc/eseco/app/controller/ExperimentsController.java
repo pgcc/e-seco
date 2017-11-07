@@ -235,6 +235,8 @@ public class ExperimentsController {
                 return "redirect:/experiments/" + experiment.getId();
 
             } catch (Exception ex) {
+                redirectAttributes.addFlashAttribute("css", "danger");
+                redirectAttributes.addFlashAttribute("msg", ex.getMessage());
                 LOGGER.log(Level.SEVERE, ex.getMessage());
             }
         }
