@@ -90,7 +90,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateCreated" class="form-control mask-date" id="dateCreated" placeholder="Created in" disabled="true"/>
+                            <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
                         </div>                        
                     </div>
                 </spring:bind>
@@ -100,7 +100,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Updated in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateUpdated" class="form-control mask-date" id="dateUpdated" placeholder="Updated in" disabled="true"/>
+                            <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -109,7 +109,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Ended in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateEnded" class="form-control mask-date" id="dateEnded" placeholder="Ended in" disabled="true"/>
+                            <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -145,7 +145,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Disciplines</label>
                         <div class="col-sm-10">
-                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3" class="form-control"/>
+                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3" itemLabel="name" itemValue="id" class="form-control"/>
                             <f:errors path="disciplines" class="control-label" />
                         </div>
                     </div>

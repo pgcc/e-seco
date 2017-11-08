@@ -7,8 +7,16 @@
  *
  * @param jQuery
  */
-function setInputMasks(jQuery){
-    jQuery(".mask-date").mask("aaa aaa 99 99:99:99 aaaa 9999",{placeholder:"___ ___ __ __:__:__ ____ ____"});
+function setInputMasks(jQuery) {
+    jQuery(".datepicker").mask("9999/99/99", {placeholder: "yyyy/mm/dd"});
+    jQuery('.datepicker').datetimepicker({
+        'format': 'Y/m/d'
+    });
+
+    jQuery(".datetimepicker").mask("9999/99/99 99:99", {placeholder: "yyyy/mm/dd hh:mm"});
+    jQuery('.datetimepicker').datetimepicker({
+        'format': 'Y/m/d h:m'
+    });
 }
 
 /**
@@ -16,7 +24,7 @@ function setInputMasks(jQuery){
  *
  * @param jQuery
  */
-function setTooltips(jQuery){
+function setTooltips(jQuery) {
     jQuery('[data-toggle="tooltip"]').tooltip();
 }
 
@@ -25,7 +33,7 @@ function setTooltips(jQuery){
 /**
  * Init Core Plugins Initialization
  */
-(function(){
+(function () {
     setInputMasks($);
     setTooltips($);
 })();

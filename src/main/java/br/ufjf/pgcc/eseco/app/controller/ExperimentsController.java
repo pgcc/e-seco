@@ -251,24 +251,11 @@ public class ExperimentsController {
 
         model.addAttribute("statusList", ExperimentStatus.getList());
         model.addAttribute("phaseList", ExperimentPhase.getList());
-
-        Map<Integer, String> disciplines = new HashMap<>();
-        for (Discipline discipline : disciplineService.findAll()) {
-            disciplines.put(discipline.getId(), discipline.getName());
-        }
-        model.addAttribute("disciplinesList", disciplines);
-
-        List<Institution> institutions = institutionService.findAll();
-        model.addAttribute("institutionsList", institutions);
-
-        List<Researcher> researches = researcherService.findAll();
-        model.addAttribute("researchesList", researches);
-
-        List<ResearchGroup> researchGroups = researchGroupService.findAll();
-        model.addAttribute("researchGroupsList", researchGroups);
-
-        List<Workflow> workflows = workflowService.findAll();
-        model.addAttribute("workflowsList", workflows);
+        model.addAttribute("disciplinesList", disciplineService.findAll());
+        model.addAttribute("institutionsList", institutionService.findAll());
+        model.addAttribute("researchesList", researcherService.findAll());
+        model.addAttribute("researchGroupsList", researchGroupService.findAll());
+        model.addAttribute("workflowsList", workflowService.findAll());
     }
 
     private void setSessionCurrentPhase(HttpSession session, Experiment experiment) {

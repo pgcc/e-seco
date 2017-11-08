@@ -34,7 +34,7 @@ public class ResearchGroup {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT" )
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "web_page")
@@ -105,5 +105,10 @@ public class ResearchGroup {
 
     public boolean isNew() {
         return (this.id == 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }

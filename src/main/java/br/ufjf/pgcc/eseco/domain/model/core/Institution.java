@@ -51,4 +51,9 @@ public class Institution {
         return (this.id == 0);
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
 }

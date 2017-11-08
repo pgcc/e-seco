@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -42,14 +43,17 @@ public class Experiment {
 
     @Column(name = "date_created", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateCreated;
 
     @Column(name = "date_updated", columnDefinition = "DATE")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Temporal(value = TemporalType.DATE)
     private Date dateUpdated;
 
     @Column(name = "date_ended", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateEnded;
 
     @Column(name = "status")
@@ -62,7 +66,7 @@ public class Experiment {
     private String version;
 
     @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE) 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_experiment_discipline",
             joinColumns = {
@@ -262,5 +266,10 @@ public class Experiment {
 
     public boolean isNew() {
         return (this.id == 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }
