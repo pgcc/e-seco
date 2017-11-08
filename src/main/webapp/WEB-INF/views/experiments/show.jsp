@@ -125,7 +125,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${experiment.institutions}" var="institution">
-                                        <li class="list-group-item">${institution.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/institutions/${institution.id}"/>">${institution.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -145,7 +145,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${experiment.researchGroups}" var="researchGroup">
-                                        <li class="list-group-item">${researchGroup.displayName}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/researchGroups/${researchGroup.id}"/>">${researchGroup.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -165,7 +165,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${experiment.researchers}" var="researcher">
-                                        <li class="list-group-item">${researcher.displayName}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/researchers/${researcher.id}"/>">${researcher.displayName}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -185,7 +185,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${experiment.workflows}" var="workflow">
-                                        <li class="list-group-item">${workflow.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">${workflow.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>

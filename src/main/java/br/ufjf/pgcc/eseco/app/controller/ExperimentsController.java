@@ -181,6 +181,7 @@ public class ExperimentsController {
 
         model.addAttribute("experiment", experiment);
         setSessionCurrentPhase(session, experiment);
+        session.setAttribute("current_experiment_id", id);
         return "experiments/show";
     }
 

@@ -42,15 +42,16 @@
                     <li><a href="<c:url value="/agents"/>"><i class="fa fa-id-card"></i> <span>MEMBERS</span></a></li>
                     <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
                     <li class="dropdown">
-
                         <a href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-plus"></i> <span>INSERT</span></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li>
-                            <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/disciplines"/>">DISCIPLINES</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/institutions"/>">INSTITUTIONS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/researchGroups"/>">RESEARCH GROUPS</a></li> 
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li>                            
                         </ul>
                     </li>
 

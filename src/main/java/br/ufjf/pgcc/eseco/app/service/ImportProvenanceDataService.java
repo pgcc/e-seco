@@ -81,6 +81,8 @@ public class ImportProvenanceDataService {
      *
      * @param workflow
      * @param filePath
+     * @param researcher
+     * @throws java.lang.Exception
      */
     public void importProvenanceData(Workflow workflow, String filePath, Researcher researcher) throws Exception {
         switch (workflow.getWfms().getName()) {
@@ -172,6 +174,7 @@ public class ImportProvenanceDataService {
 
                 Entity entity = new Entity();
                 entity.setName(key);
+                entity.setAuthor(loggedResearcher);
                 entity = entityService.saveOrUpdate(entity);
                 if (value.getAsJsonObject().get("kepler:tokenClass").getAsJsonObject().get("$").getAsString()
                         .equalsIgnoreCase("ptolemy.data.StringToken")) {

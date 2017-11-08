@@ -68,7 +68,7 @@ public class ResearchGroupsController {
         model.addAttribute("researchGroupForm", researchGroup);
         populateDefaultModel(model);
 
-        return "researchGroups/researchGroups-form";
+        return "researchGroups/research-groups-form";
     }
 
     @RequestMapping(value = "/researchGroups/{id}/update", method = RequestMethod.GET)
@@ -80,7 +80,7 @@ public class ResearchGroupsController {
         model.addAttribute("researchGroupForm", researchGroup);
 
         populateDefaultModel(model);
-        return "researchGroups/researchGroups-form";
+        return "researchGroups/research-groups-form";
     }
 
     @RequestMapping(value = "/researchGroups", method = RequestMethod.POST)
@@ -91,7 +91,7 @@ public class ResearchGroupsController {
 
         if (result.hasErrors()) {
             populateDefaultModel(model);
-            return "researchGroups/researchGroups-form";
+            return "researchGroups/research-groups-form";
         } else {
             redirectAttributes.addFlashAttribute("css", "success");
             if (researchGroup.isNew()) {
@@ -106,7 +106,7 @@ public class ResearchGroupsController {
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
                 populateDefaultModel(model);
-                return "researchGroups/researchGroups-form";
+                return "researchGroups/research-groups-form";
             }
         }
     }

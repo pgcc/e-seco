@@ -24,9 +24,16 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/workflows/add"/>">Add Workflow</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments ${sessionScope.current_experiment_id}</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+                <c:choose>
+                    <c:when test="${workflowForm['new']}">
+                    <li><a href="<c:url value="/experiments/workflows/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/experiments/workflows/${workflowForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 

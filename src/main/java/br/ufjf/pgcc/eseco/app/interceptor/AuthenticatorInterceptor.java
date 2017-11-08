@@ -89,7 +89,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "agents":
                 case "disciplines":
                 case "institutions":
-                case "ResearchGroups":
+                case "researchGroups":
                     isAuthorized = true;
                     break;
             }
@@ -110,7 +110,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
                 case "agents":
                 case "disciplines":
                 case "institutions":
-                case "ResearchGroups":
+                case "researchGroups":
                     isAuthorized = true;
                     break;
             }

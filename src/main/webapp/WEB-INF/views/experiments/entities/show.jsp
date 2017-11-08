@@ -61,8 +61,30 @@
                         <label class="col-sm-2">Author</label>
                         <div class="col-sm-10">${entity.author.displayName}</div>
                     </div>
-                </div>
 
+                    <c:choose>
+                        <c:when test="${entity['kind']=='DATA'}">
+                            <div class="row">
+                                <label class="col-sm-2">Type</label>
+                                <div class="col-sm-10">${entity.data.type}</div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-2">Value</label>
+                                <div class="col-sm-10">${entity.data.value}</div>
+                            </div>
+                        </c:when>
+                        <c:when test="${entity['kind']=='DOCUMENT'}">
+                            <div class="row">
+                                <label class="col-sm-2">Link</label>
+                                <div class="col-sm-10">${entity.document.link}</div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-2">Value</label>
+                                <div class="col-sm-10">${entity.document.value}</div>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </div>
                 <br/>
                 <spring:url value="/experiments/entities" var="urlEntities" />
                 <nav class="navbar navbar-inverse">

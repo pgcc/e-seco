@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Activity Executions
+        E-SECO Research Groups
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this activity execution!",
+                    text: "Your will not be able to recover this Research Group!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,10 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
-            <li><a href="<c:url value="/experiments/activities"/>"> Activities</a></li>
-            <li><a href="<c:url value="/experiments/activityExecutions"/>">Activity Executions</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/researchGroups"/>"> Research Groups</a></li>
         </ol>
     </jsp:attribute>
 
@@ -63,7 +60,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Activity Executions</h2>
+            <h2>All ResearchGroups</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -71,26 +68,24 @@
                         <thead>
                             <tr>
                                 <th>#ID</th>
-                                <th>Activity Name</th>
-                                <th>Author</th>
+                                <th>Name</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="activityExecution" items="${activityExecutions}">
+                        <c:forEach var="researchGroup" items="${researchGroups}">
 
-                            <spring:url value="activityExecutions/${activityExecution.id}" var="activityExecutionUrl" />
-                            <spring:url value="activityExecutions/${activityExecution.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="activityExecutions/${activityExecution.id}/update" var="updateUrl" />
+                            <spring:url value="researchGroups/${researchGroup.id}" var="researchGroupUrl" />
+                            <spring:url value="researchGroups/${researchGroup.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="researchGroups/${researchGroup.id}/update" var="updateUrl" />
 
 
                             <tr>
-                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.id}</td>
-                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.activity.name}</td>
-                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.author.displayName}</td>
+                                <td onclick="location.href = '${researchGroupUrl}'">${researchGroup.id}</td>
+                                <td onclick="location.href = '${researchGroupUrl}'">${researchGroup.name}</td>
 
 
                                 <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${activityExecutionUrl}'">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${researchGroupUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
                                     <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">

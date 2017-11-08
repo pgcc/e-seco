@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Activities
+        E-SECO Research Groups
     </jsp:attribute>
 
 
@@ -24,10 +24,8 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
-            <li><a href="<c:url value="/experiments/activities"/>"> Activities</a></li>
-            <li><a href="<c:url value="/experiments/activities/${activity.id}"/>">View</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/researchGroups"/>"> ResearchGroups</a></li>
+            <li><a href="<c:url value="/researchGroups/${researchGroup.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
 
@@ -45,67 +43,59 @@
                 </div>
             </c:if>
 
-            <h2>Activity Detail</h2>
+            <h2>Research Group Detail</h2>
             <br />
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">
                         <label class="col-sm-2">ID</label>
-                        <div class="col-sm-10">${activity.id}</div>
+                        <div class="col-sm-10">${researchGroup.id}</div>
                     </div>
 
                     <div class="row">
                         <label class="col-sm-2">Name</label>
-                        <div class="col-sm-10">${activity.name}</div>
+                        <div class="col-sm-10">${researchGroup.name}</div>
                     </div>
-
                     <div class="row">
                         <label class="col-sm-2">Description</label>
-                        <div class="col-sm-10">${activity.description}</div>
+                        <div class="col-sm-10">${researchGroup.description}</div>
                     </div>
-
                     <div class="row">
-                        <label class="col-sm-2">Author</label>
-                        <div class="col-sm-10">${activity.author.displayName}</div>
+                        <label class="col-sm-2">Web Page</label>
+                        <div class="col-sm-10">${researchGroup.webPage}</div>
                     </div>
-
-                    <div class="row">
-                        <label class="col-sm-2">Created in</label>
-                        <div class="col-sm-10">${activity.dateCreated}</div>
-                    </div>
-
-                </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
+                        <div class="panel-heading" role="tab" id="headingThree">
                             <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Workflow Services                                
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                    Members                                
                                 </a>
-                                <span class="badge">${activity.workflowServices.size()}</span>
+                                <span class="badge">${researchGroup.members.size()}</span>
                             </h4>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
                             <div class="panel-body">
                                 <ul class="list-group" >
-                                    <c:forEach items="${activity.workflowServices}" var="service">
-                                        <li class="list-group-item">${service.description}</li>
+                                    <c:forEach items="${researchGroup.members}" var="member">
+                                        <li class="list-group-item"><a href="<c:url value="/researchers/${member.id}"/>">${member.displayName}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
                         </div>
                     </div>
+
                 </div>
+
                 <br/>
-                <spring:url value="/experiments/activities" var="urlActivities" />
+                <spring:url value="/researchGroups" var="urlresearchGroups" />
                 <nav class="navbar navbar-inverse">
-                <div>
-                    <ul class="nav navbar-nav navbar-left">
-                        <button onclick="location.href = '${urlActivities}'" class="btn btn-link">
-                            <span class="glyphicon glyphicon-arrow-left"></span> Back
-                        </button>
-                    </ul>
-                </div>
+                    <div>
+                        <ul class="nav navbar-nav navbar-left">
+                            <button onclick="location.href = '${urlresearchGroups}'" class="btn btn-link">
+                                <span class="glyphicon glyphicon-arrow-left"></span> Back
+                            </button>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </jsp:body>

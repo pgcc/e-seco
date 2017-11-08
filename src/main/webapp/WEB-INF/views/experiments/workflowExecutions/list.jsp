@@ -8,7 +8,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Workflow Executions
+        E-SECO Workflows Executions
     </jsp:attribute>
 
 
@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this workflowExecution!",
+                    text: "Your will not be able to recover this workflow execution!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,9 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/workflowExecutions"/>"> Workflow Executions</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+            <li><a href="<c:url value="/experiments/workflowExecutions"/>">Workflow Executions</a></li>
         </ol>
     </jsp:attribute>
 
@@ -60,7 +62,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Workflow Executions</h2>
+            <h2>All Workflows Executions</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
