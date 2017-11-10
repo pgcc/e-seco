@@ -75,8 +75,12 @@
                         </c:when>
                         <c:when test="${entity['kind']=='DOCUMENT'}">
                             <div class="row">
+                                <label class="col-sm-2">Type</label>
+                                <div class="col-sm-10">${entity.document.type}</div>
+                            </div>
+                            <div class="row">
                                 <label class="col-sm-2">Link</label>
-                                <div class="col-sm-10">${entity.document.link}</div>
+                                <div class="col-sm-10">${entity.document.file}</div>
                             </div>
                             <div class="row">
                                 <label class="col-sm-2">Value</label>

@@ -32,8 +32,11 @@ public class Document {
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
-    @Column(name = "link")
-    private String link;
+    @Column(name = "file")
+    private String file;
+
+    @Column(name = "type")
+    private String type;
 
     public Document() {
     }
@@ -62,12 +65,20 @@ public class Document {
         this.value = value;
     }
 
-    public String getLink() {
-        return link;
+    public String getFile() {
+        return file;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

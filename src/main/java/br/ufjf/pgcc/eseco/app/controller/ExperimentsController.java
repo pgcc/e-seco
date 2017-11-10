@@ -113,6 +113,7 @@ public class ExperimentsController {
         LOGGER.log(Level.INFO, "showUpdateExperimentForm() : {0}", id);
 
         Experiment experiment = experimentService.find(id);
+        experiment.setDateUpdated(new Date());
         model.addAttribute("experimentForm", experiment);
 
         populateDefaultModel(model);
@@ -134,7 +135,6 @@ public class ExperimentsController {
                 redirectAttributes.addFlashAttribute("msg", "Experiment added successfully!");
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Experiment updated successfully!");
-                experiment.setDateUpdated(new Date());
             }
 
             try {

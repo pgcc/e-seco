@@ -67,7 +67,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Activity Name</label>
                         <div class="col-sm-10">
-                            <f:input path="activity.name" class="form-control" rows="5" id="name" placeholder="Activity Name" disabled="true"/>
+                            <f:input path="activity.name" class="form-control" id="name" placeholder="Activity Name" disabled="true"/>
                             <f:errors path="activity.name" class="control-label" />
                         </div>
                     </div>

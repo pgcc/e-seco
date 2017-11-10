@@ -15,6 +15,9 @@ public class Researcher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private Agent agent;
+
     @Column(name = "display_name")
     private String displayName;
 
@@ -30,10 +33,36 @@ public class Researcher {
     @Column(name = "kepler_id")
     private String keplerId;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Agent agent;
+    @Column(name = "photo")
+    private String photo;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "core_agents_researchers_interests",
+            joinColumns = {
+                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "interest_id", referencedColumnName = "id", nullable = false)
+            }
+    )
+    private List<Interest> researchInterests;
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "core_agents_researchers_disciplines",
+            joinColumns = {
+                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "discipline_id", referencedColumnName = "id", nullable = false)
+            }
+    )
+    private List<Discipline> disciplines;
+
+    @OneToMany
     @JoinTable(
             name = "core_agents_researchers_institutions",
             joinColumns = {
@@ -54,6 +83,14 @@ public class Researcher {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public String getDisplayName() {
@@ -96,12 +133,28 @@ public class Researcher {
         this.keplerId = keplerId;
     }
 
-    public Agent getAgent() {
-        return agent;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setAgent(Agent agent) {
-        this.agent = agent;
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public List<Interest> getResearchInterests() {
+        return researchInterests;
+    }
+
+    public void setResearchInterests(List<Interest> researchInterests) {
+        this.researchInterests = researchInterests;
+    }
+
+    public List<Discipline> getDisciplines() {
+        return disciplines;
+    }
+
+    public void setDisciplines(List<Discipline> disciplines) {
+        this.disciplines = disciplines;
     }
 
     public List<Institution> getInstitutions() {

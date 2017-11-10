@@ -85,22 +85,30 @@
                     </div>
                 </spring:bind>
 
-
                 <spring:bind path="dateCreated">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
-                        </div>                        
+                            <div class="input-group">
+                                <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                 </spring:bind>
-
 
                 <spring:bind path="dateUpdated">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Updated in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
+                            <div class="input-group">
+                                <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </spring:bind>
@@ -109,7 +117,12 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Ended in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
+                            <div class="input-group">
+                                <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </spring:bind>
@@ -136,7 +149,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Version</label>
                         <div class="col-sm-10">
-                            <f:input path="version" type="text" class="form-control" id="version" placeholder="Version" disabled="true"/>
+                            <f:input path="version" type="text" class="form-control" id="version" placeholder="Version"/>
                         </div>
                     </div>
                 </spring:bind>

@@ -4,18 +4,19 @@
 
 /**
  * Set Input Masks throught jquery.maskedinput
- *
+ * EXEMPLES http://xdsoft.net/jqplugins/datetimepicker/
  * @param jQuery
  */
 function setInputMasks(jQuery) {
-    jQuery(".datepicker").mask("9999/99/99", {placeholder: "yyyy/mm/dd"});
     jQuery('.datepicker').datetimepicker({
-        'format': 'Y/m/d'
+        format: 'Y/m/d',
+        timepicker: false,
+        mask: true
     });
 
-    jQuery(".datetimepicker").mask("9999/99/99 99:99", {placeholder: "yyyy/mm/dd hh:mm"});
     jQuery('.datetimepicker').datetimepicker({
-        'format': 'Y/m/d h:m'
+        format: 'Y/m/d H:i',
+        mask: true
     });
 }
 

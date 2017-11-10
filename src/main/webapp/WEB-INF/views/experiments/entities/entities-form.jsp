@@ -81,7 +81,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
-                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name" />
+                            <f:input path="name" class="form-control" id="name" placeholder="Name" />
                             <f:errors path="name" class="control-label" />
                         </div>
                     </div>
@@ -110,17 +110,7 @@
                             <f:input path="author.displayName" class="form-control" id="author" placeholder="Author" disabled="true"/>
                         </div>
                     </div>
-                </spring:bind>
-
-                <spring:bind path="data.value">
-                    <div id="datavalue" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DATA'? '' : 'hidden'}">
-                        <label class="col-sm-2 control-label">Value</label>
-                        <div class="col-sm-10">
-                            <f:textarea path="data.value" class="form-control" rows="5" id="value" placeholder="Value"/>
-                            <f:errors path="data.value" class="control-label" />
-                        </div>
-                    </div>
-                </spring:bind>
+                </spring:bind>            
 
                 <spring:bind path="data.type">
                     <div id="datatype" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DATA'? '' : 'hidden'}">
@@ -132,22 +122,42 @@
                     </div>
                 </spring:bind>
 
+                <spring:bind path="data.value">
+                    <div id="datavalue" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DATA'? '' : 'hidden'}">
+                        <label class="col-sm-2 control-label">Value</label>
+                        <div class="col-sm-10">
+                            <f:textarea path="data.value" class="form-control" rows="5" id="value" placeholder="Value"/>
+                            <f:errors path="data.value" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>               
+
+                <spring:bind path="document.type">
+                    <div id="datatype" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DATA'? '' : 'hidden'}">
+                        <label class="col-sm-2 control-label">Type</label>
+                        <div class="col-sm-10">
+                            <f:input path="document.type" class="form-control" id="type" placeholder="Type" />
+                            <f:errors path="document.type" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="document.file">
+                    <div id="documentlink" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}" >
+                        <label class="col-sm-2 control-label">Link</label>
+                        <div class="col-sm-10">
+                            <f:input path="document.file" class="form-control" id="link" placeholder="Link" />
+                            <f:errors path="document.file" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
+
                 <spring:bind path="document.value">
                     <div id="documentvalue" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}">
                         <label class="col-sm-2 control-label">Value</label>
                         <div class="col-sm-10">
                             <f:textarea path="document.value" class="form-control" rows="5" id="value" placeholder="Value" />
                             <f:errors path="document.value" class="control-label" />
-                        </div>
-                    </div>
-                </spring:bind>
-
-                <spring:bind path="document.link">
-                    <div id="documentlink" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}" >
-                        <label class="col-sm-2 control-label">Link</label>
-                        <div class="col-sm-10">
-                            <f:input path="document.link" class="form-control" id="link" placeholder="Link" />
-                            <f:errors path="document.link" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>

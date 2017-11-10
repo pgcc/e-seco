@@ -56,7 +56,34 @@
                         <label class="col-sm-2">Name</label>
                         <div class="col-sm-10">${discipline.name}</div>
                     </div>
+                    
+                    <div class="row">
+                        <label class="col-sm-2">Parent</label>
+                        <div class="col-sm-10">${discipline.parent.name}</div>
+                    </div>
 
+                </div>
+
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    Subdisciplines                                
+                                </a>
+                                <span class="badge">${discipline.subdisciplines.size()}</span>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <ul class="list-group" >
+                                    <c:forEach items="${discipline.subdisciplines}" var="subdiscipline">
+                                        <li class="list-group-item"><a href="<c:url value="/disciplines/${subdiscipline.id}"/>">${subdiscipline.name}</a></li>
+                                        </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <br/>

@@ -67,7 +67,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Workflow Name</label>
                         <div class="col-sm-10">
-                            <f:input path="workflow.name" class="form-control" rows="5" id="name" placeholder="Workflow Name" disabled="true"/>
+                            <f:input path="workflow.name" class="form-control" id="name" placeholder="Workflow Name" disabled="true"/>
                             <f:errors path="workflow.name" class="control-label" />
                         </div>
                     </div>

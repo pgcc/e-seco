@@ -14,7 +14,7 @@
         <ul>
             <li><a href="<c:url value="/experiments/workflows/add"/>"><i class="fa fa-plus-circle"></i> Add Workflow</a></li>
                 <c:if test="${experiment != null && sessionScope.experiment_execution && experiment.workflows.size() > 0}">
-                <li><a href="<c:url value="/experiments/${experiment.id}/addProvenance"/>"><i class="fa fa-book"></i> Import Prevenance Data</a></li>
+                <li><a href="<c:url value="/experiments/${experiment.id}/addProvenance"/>"><i class="fa fa-book"></i> Import Provenance Data</a></li>
                 </c:if>
             <li><a href="<c:url value="/experiments/workflowExecutions"/>"><i class="fa fa-list"></i> Workflow Executions</a></li>
         </ul>

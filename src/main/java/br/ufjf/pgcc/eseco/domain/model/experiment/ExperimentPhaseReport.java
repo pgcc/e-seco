@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -46,6 +47,7 @@ public class ExperimentPhaseReport {
 
     @Column(name = "date_created", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateCreated;
 
     public ExperimentPhaseReport() {

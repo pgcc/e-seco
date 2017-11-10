@@ -69,6 +69,7 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
+                                <th>Parent</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
@@ -82,6 +83,7 @@
                             <tr>
                                 <td onclick="location.href = '${disciplineUrl}'">${discipline.id}</td>
                                 <td onclick="location.href = '${disciplineUrl}'">${discipline.name}</td>
+                                <td onclick="location.href = '${disciplineUrl}'">${discipline.parent.name}</td>
 
 
                                 <td class="text-center">

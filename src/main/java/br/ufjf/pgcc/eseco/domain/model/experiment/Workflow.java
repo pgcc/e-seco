@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -49,6 +50,7 @@ public class Workflow {
 
     @Column(name = "date_created", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateCreated;
 
     @Column(name = "version")

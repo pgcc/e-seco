@@ -5,9 +5,11 @@
  */
 package br.ufjf.pgcc.eseco.app.service;
 
+import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.service.core.CityService;
 import br.ufjf.pgcc.eseco.domain.service.core.CountryService;
+import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.core.StateService;
@@ -42,6 +44,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MendeleyService {
 
+    private static final Logger LOGGER = Logger.getLogger(MendeleyService.class.getName());
+
     private final CountryService countryService;
     private final StateService stateService;
     private final CityService cityService;
@@ -56,6 +60,11 @@ public class MendeleyService {
      * Mendeley profiles endpoint
      */
     private static final String PROFILES_URL = "https://api.mendeley.com/profiles";
+
+    /**
+     * Mendeley profiles endpoint
+     */
+    private static final String DISCIPLINES_URL = "https://api.mendeley.com/subject_areas";
 
     /**
      * Mendeley search profiles endpoint
@@ -88,7 +97,7 @@ public class MendeleyService {
         try {
             getAccessTokenSecret();
         } catch (IOException ex) {
-            Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -142,8 +151,9 @@ public class MendeleyService {
      *
      * @param email
      * @return
+     * @throws java.io.IOException
      */
-    public ArrayList<Researcher> searchByEmail(String email) {
+    public ArrayList<Researcher> searchByEmail(String email) throws IOException {
 
         StringBuilder url = new StringBuilder(PROFILES_URL);
         url.append("?");
@@ -151,14 +161,9 @@ public class MendeleyService {
         url.append("&");
         url.append("email=").append(email);
 
-        try {
-            String response = searchGET(url.toString());
-            System.out.println(response);
-            return parseResearcherList(response);
-        } catch (IOException ex) {
-            Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new ArrayList<>();
+        String response = searchGET(url.toString());
+        System.out.println(response);
+        return parseResearcherList(response);
     }
 
     /**
@@ -167,7 +172,7 @@ public class MendeleyService {
      * @param scopusId
      * @return
      */
-    public ArrayList<Researcher> searchByScopusId(String scopusId) {
+    public ArrayList<Researcher> searchByScopusId(String scopusId) throws IOException {
 
         StringBuilder url = new StringBuilder(PROFILES_URL);
         url.append("?");
@@ -175,13 +180,8 @@ public class MendeleyService {
         url.append("&");
         url.append("scopus_author_id=").append(scopusId);
 
-        try {
-            String response = searchGET(url.toString());
-            return parseResearcherList(response);
-        } catch (IOException ex) {
-            Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new ArrayList<>();
+        String response = searchGET(url.toString());
+        return parseResearcherList(response);
     }
 
     /**
@@ -190,7 +190,7 @@ public class MendeleyService {
      * @param parameters
      * @return
      */
-    public ArrayList<Researcher> searchByParameters(List<String> parameters) {
+    public ArrayList<Researcher> searchByParameters(List<String> parameters) throws IOException {
 
         StringBuilder url = new StringBuilder(SEARCH_PROFILES_URL);
         url.append("?");
@@ -207,13 +207,24 @@ public class MendeleyService {
         url.append("&");
         url.append("limit=").append(10);
 
-        try {
-            String response = searchGET(url.toString());
-            return parseResearcherList(response);
-        } catch (IOException ex) {
-            Logger.getLogger(MendeleyService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new ArrayList<>();
+        String response = searchGET(url.toString());
+        return parseResearcherList(response);
+    }
+
+    /**
+     * Find the Disciplines
+     *
+     * @return
+     */
+    public ArrayList<Discipline> searchDisciplines() throws IOException {
+
+        StringBuilder url = new StringBuilder(DISCIPLINES_URL);
+        url.append("?");
+        url.append("access_token=").append(accessToken.getAccessToken());
+
+        String response = searchGET(url.toString());
+        System.out.println(response);
+        return parseDisciplineList(response);
     }
 
     /**
@@ -261,6 +272,27 @@ public class MendeleyService {
         ArrayList<Researcher> list = new ArrayList<>();
         for (Object obj : array) {
             list.add((Researcher) obj);
+        }
+        return list;
+    }
+
+    /**
+     * Convert the string result into a Discipline list
+     *
+     * @param response
+     * @return
+     */
+    private ArrayList<Discipline> parseDisciplineList(String response) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Discipline.class, DisciplineService.getDeserialiser());
+        Gson gson = gsonBuilder.create();
+        JsonElement json = new JsonParser().parse(response);
+
+        Object[] array = (Object[]) java.lang.reflect.Array.newInstance(Discipline.class, 1);
+        array = gson.fromJson(json, array.getClass());
+        ArrayList<Discipline> list = new ArrayList<>();
+        for (Object obj : array) {
+            list.add((Discipline) obj);
         }
         return list;
     }
@@ -322,7 +354,7 @@ public class MendeleyService {
                     at.expiresIn = object.get("expires_in").getAsInt();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, null, e);
                 }
                 return at;
             }

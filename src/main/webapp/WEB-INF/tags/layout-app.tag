@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.css" />">
         <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/core.css" />">
+        <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/jquery-datetimepicker/jquery.datetimepicker.min.css" />">
         <!-- CORE STYLESHEETS END -->
 
         <!-- GLOBAL LEVEL STYLESHEETS START -->

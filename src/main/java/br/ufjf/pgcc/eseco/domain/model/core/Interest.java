@@ -5,26 +5,20 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.core;
 
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
  * @author Lenita
  */
 @Entity
-@Table(name = "core_disciplines")
-public class Discipline {
+@Table(name = "core_interests")
+public class Interest {
 
     @Id
     @Column(name = "id")
@@ -34,15 +28,7 @@ public class Discipline {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "parent")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Discipline> subdisciplines;
-
-    @ManyToOne
-    @JoinColumn(name = "parent")
-    private Discipline parent;
-
-    public Discipline() {
+    public Interest() {
     }
 
     public int getId() {
@@ -59,22 +45,6 @@ public class Discipline {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Discipline> getSubdisciplines() {
-        return subdisciplines;
-    }
-
-    public void setSubdisciplines(List<Discipline> subdisciplines) {
-        this.subdisciplines = subdisciplines;
-    }
-
-    public Discipline getParent() {
-        return parent;
-    }
-
-    public void setParent(Discipline parent) {
-        this.parent = parent;
     }
 
     public boolean isNew() {

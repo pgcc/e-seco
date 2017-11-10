@@ -57,7 +57,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
-                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name"/>
+                            <f:input path="name" class="form-control" id="name" placeholder="Name"/>
                             <f:errors path="name" class="control-label" />
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Web Page</label>
                         <div class="col-sm-10">
-                            <f:input path="webPage" class="form-control" rows="5" id="webPage" placeholder="Web Page"/>
+                            <f:input path="webPage" class="form-control" id="webPage" placeholder="Web Page"/>
                             <f:errors path="webPage" class="control-label" />
                         </div>
                     </div>
