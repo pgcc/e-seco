@@ -159,27 +159,27 @@
 
                 // Workflow Service Average Value for Documentation
                 tbl_tbody.find("tr.row-compare-info-wsvaluedocumentation").append(
-                    $("<td>").text(item.totalValueDocumentation)
+                    $("<td>").text(item.avgValueDocumentation)
                 );
 
                 // Workflow Service Average Value for Ease of Use
                 tbl_tbody.find("tr.row-compare-info-wsvalueeaseofuse").append(
-                    $("<td>").text(item.totalValueEaseOfUse)
+                    $("<td>").text(item.avgValueEaseOfUse)
                 );
 
                 // Workflow Service Average Value for Reliability
                 tbl_tbody.find("tr.row-compare-info-wsvaluereliability").append(
-                    $("<td>").text(item.totalValueReliability)
+                    $("<td>").text(item.avgValueReliability)
                 );
 
                 // Workflow Service Average Value for Performance
                 tbl_tbody.find("tr.row-compare-info-wsvaluePerformance").append(
-                    $("<td>").text(item.totalValuePerformance)
+                    $("<td>").text(item.avgValuePerformance)
                 );
 
                 // Workflow Service Average Value for Disponibility
                 tbl_tbody.find("tr.row-compare-info-wsvalueDisponibility").append(
-                    $("<td>").text(item.totalValueDisponibility)
+                    $("<td>").text(item.avgValueDisponibility)
                 );
             }
 
@@ -274,27 +274,27 @@
                     itemData.push({
                         "item_id": item.name,
                         "area": "Documentation",
-                        "value": item.totalValueDocumentation
+                        "value": item.avgValueDocumentation
                     });
                     itemData.push({
                         "item_id": item.name,
                         "area": "Ease of Use",
-                        "value": item.totalValueEaseOfUse
+                        "value": item.avgValueEaseOfUse
                     });
                     itemData.push({
                         "item_id": item.name,
                         "area": "Reliability",
-                        "value": item.totalValueReliability
+                        "value": item.avgValueReliability
                     });
                     itemData.push({
                         "item_id": item.name,
                         "area": "Performance",
-                        "value": item.totalValuePerformance
+                        "value": item.avgValuePerformance
                     });
                     itemData.push({
                         "item_id": item.name,
                         "area": "Disponibility",
-                        "value": item.totalValueDisponibility
+                        "value": item.avgValueDisponibility
                     });
 
                     radarData.push(itemData);

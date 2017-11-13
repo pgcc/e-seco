@@ -12,6 +12,15 @@
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet"
               href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+        <style type="text/css">
+            #tbl-rating-avg-values {
+                border-radius: 4px !important;
+            }
+
+            #tbl-rating-avg-values .progress {
+                margin-bottom: 0 !important;
+            }
+        </style>
     </jsp:attribute>
 
 
@@ -20,14 +29,14 @@
         <script type="text/javascript"
                 src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
-            // Get Items
-            var itemsToCompare = JSON.parse('${componentContextInfoJSON}');
+            // Get JSON Data for visualizations
+            var componentContextJson = JSON.parse('${componentContextInfoJSON}');
 
             /***********************************************/
             /* DEPENDENCIES VISUALIZATION                  */
             /***********************************************/
             function showDependenciesVisualization() {
-                var treemapData = mountDataToTreemap(itemsToCompare);
+                var treemapData = mountDataToTreemap(componentContextJson);
                 drawTreemap(treemapData);
             };
 
@@ -96,6 +105,23 @@
                 $('#modal-visualize-researchers-using').modal();
             });
 
+
+            /***********************************************/
+            /* RATINGS VISUALIZATIONS                      */
+            /***********************************************/
+            $("#btn-visualize-ratings").on("click", function () {
+                $('#modal-visualize-ratings').modal();
+            });
+
+            $("#tbl-rating-avg-values").find(".progress-bar").each(function () {
+                if (parseInt($(this).data("value")) <= 3) {
+                    $(this).addClass("progress-bar-danger");
+                } else if (parseInt($(this).data("value")) > 3 && parseInt($(this).data("value")) < 7) {
+                    $(this).addClass("progress-bar-warning");
+                } else if (parseInt($(this).data("value")) >= 7) {
+                    $(this).addClass("progress-bar-success");
+                }
+            });
         </script>
     </jsp:attribute>
 
@@ -103,7 +129,7 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
-            <li><a href="<c:url value="/components/details/${component.id}"/>">Details of ${component.name}</a></li>
+            <li><a href="<c:url value="/components/details/${type}/${component.id}"/>">Details of ${component.name}</a></li>
         </ol>
     </jsp:attribute>
 
@@ -265,30 +291,98 @@
                                     <li class="list-group-item">
                                         <span>Total Ratings </span>
                                         <span>${componentContextInfo.totalRatings}
-                                            <button class="btn btn-xs btn-info" type="button">View all</button>
+                                            <button id="btn-visualize-ratings" class="btn btn-xs btn-info"
+                                                    type="button">View all</button>
                                         </span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Approvals</span>
                                         <span>${componentContextInfo.totalApprovals}</span>
                                     </li>
-                                    <li class="list-group-item">
-                                        <span>Documentation</span>
-                                        <span>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-danger" role="progressbar"
-                                                    aria-valuenow="40" aria-valuemin="0"
-                                                    aria-valuemax="100" style="width: 40%">
-                                                </div>
-                                            </div>
-                                        </span>
-                                    </li>
                                 </ul>
 
-                                <div class="text-center">
-                                    <button class="btn btn-info" type="button">Visualize</button>
+                                <table id="tbl-rating-avg-values" class="table table-bordered">
+                                    <tr>
+                                        <td width="60px;">Documentation</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                     data-value="${componentContextInfo.avgValueDocumentation}"
+                                                     aria-valuenow="${componentContextInfo.avgValueDocumentation}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="10"
+                                                     style="width: ${componentContextInfo.avgValueDocumentation}0%">
+                                                        ${componentContextInfo.avgValueDocumentation}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60px;">Ease of Use</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                     data-value="${componentContextInfo.avgValueEaseOfUse}"
+                                                     aria-valuenow="${componentContextInfo.avgValueEaseOfUse}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="10"
+                                                     style="width: ${componentContextInfo.avgValueEaseOfUse}0%">
+                                                        ${componentContextInfo.avgValueEaseOfUse}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60px;">Reliability</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                     data-value="${componentContextInfo.avgValueReliability}"
+                                                     aria-valuenow="${componentContextInfo.avgValueReliability}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="10"
+                                                     style="width: ${componentContextInfo.avgValueReliability}0%">
+                                                        ${componentContextInfo.avgValueReliability}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60px;">Performance</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                     data-value="${componentContextInfo.avgValuePerformance}"
+                                                     aria-valuenow="${componentContextInfo.avgValuePerformance}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="10"
+                                                     style="width: ${componentContextInfo.avgValuePerformance}0%">
+                                                        ${componentContextInfo.avgValuePerformance}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="60px;">Disponibility</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                     data-value="${componentContextInfo.avgValueDisponibility}"
+                                                     aria-valuenow="${componentContextInfo.avgValueDisponibility}"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="10"
+                                                     style="width: ${componentContextInfo.avgValueDisponibility}0%">
+                                                        ${componentContextInfo.avgValueDisponibility}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
 
-                                    <button class="btn btn-info" type="button">Invite for Rating</button>
+                                <div class="text-center">
+                                    <a class="btn btn-info" href="<c:url value="/components/details/${type}/${component.id}/ratings-visualization"/>">Visualize</a>
+
+                                    <a class="btn btn-info" href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite for Rating</a>
                                 </div>
                             </div>
                         </div>
@@ -361,23 +455,12 @@
                     <div class="modal-body">
 
                         <div class="row">
-                            <div class="col-xs-12 col-sm-8">
+                            <div class="col-xs-12">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div style="overflow: auto;width: 850px;height: 550px;">
                                             <div id="chart"></div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-12 col-sm-4">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">Filters</h3>
-                                    </div>
-                                    <div class="panel-body">
-
                                     </div>
                                 </div>
                             </div>
@@ -570,5 +653,66 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODAL VISUALIZE RATINGS -->
+        <div class="modal fade" id="modal-visualize-ratings" tabindex="-1" role="dialog"
+             aria-labelledby="modal-visualize-ratings-label">
+            <div class="modal-dialog width-95" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modal-visualize-ratings-label">Ratings for
+                            <strong>${component.name}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th class="text-center" style="width:150px;">Date</th>
+                                                <th class="text-center" style="width:60px;">Approved?</th>
+                                                <th class="text-center" style="width:100px;">Documentation</th>
+                                                <th class="text-center" style="width:100px;">Ease of Use</th>
+                                                <th class="text-center" style="width:100px;">Reliability</th>
+                                                <th class="text-center" style="width:100px;">Performance</th>
+                                                <th class="text-center" style="width:100px;">Disponibility</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="rating" items="${ratingsList}">
+                                                <tr>
+                                                    <td>${rating.rater.displayName}</td>
+                                                    <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                        value="${rating.date}"/></td>
+                                                    <td class="text-center">${rating.approved}</td>
+                                                    <td class="text-center">${rating.valueDocumentation}</td>
+                                                    <td class="text-center">${rating.valueEaseOfUse}</td>
+                                                    <td class="text-center">${rating.valueReliability}</td>
+                                                    <td class="text-center">${rating.valuePerformance}</td>
+                                                    <td class="text-center">${rating.valueDisponibility}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </jsp:body>
 </t:layout-app>

@@ -4,15 +4,18 @@ import br.ufjf.biocatalogue.exception.BioCatalogueException;
 import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
 import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
+import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceRatingContextModel;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
 import br.ufjf.pgcc.eseco.domain.service.component.ComponentService;
 import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
+import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceRatingContextModelService;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,15 +39,18 @@ public class ComponentsController {
     private WorkflowServiceService workflowServiceService;
     private BioCatalogueService bioCatalogueService;
     private WorkflowServiceContextModelService workflowServiceContextModelService;
+    private WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService;
 
     @Autowired
     public ComponentsController(ComponentService componentService, WorkflowServiceService workflowServiceService,
                                 BioCatalogueService bioCatalogueService,
-                                WorkflowServiceContextModelService workflowServiceContextModelService) {
+                                WorkflowServiceContextModelService workflowServiceContextModelService,
+                                WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService) {
         this.componentService = componentService;
         this.workflowServiceService = workflowServiceService;
         this.bioCatalogueService = bioCatalogueService;
         this.workflowServiceContextModelService = workflowServiceContextModelService;
+        this.workflowServiceRatingContextModelService = workflowServiceRatingContextModelService;
     }
 
     @RequestMapping(value = "/components")
@@ -82,6 +88,7 @@ public class ComponentsController {
                     List<Workflow> workflowsList = new ArrayList<>();
                     List<Experiment> experimentsList = new ArrayList<>();
                     List<Researcher> researchersList = new ArrayList<>();
+                    List<WorkflowServiceRating> ratingsList = new ArrayList<>();
 
                     if (componentContextInfo != null) {
                         activitiesList = componentContextInfo.getActivitiesUsing();
@@ -95,6 +102,9 @@ public class ComponentsController {
 
                         researchersList = componentContextInfo.getResearchersUsing();
                         componentContextInfo.setResearchersUsing(null);
+
+                        ratingsList = componentContextInfo.getWsRatings();
+                        componentContextInfo.setWsRatings(null);
                     }
 
                     // Transform context info into JSON String
@@ -108,6 +118,7 @@ public class ComponentsController {
                     model.addAttribute("workflowsList", workflowsList);
                     model.addAttribute("experimentsList", experimentsList);
                     model.addAttribute("researchersList", researchersList);
+                    model.addAttribute("ratingsList", ratingsList);
                 }
                 break;
 
@@ -117,6 +128,49 @@ public class ComponentsController {
         }
 
         return "components/details";
+    }
+
+    @RequestMapping(value = "/components/details/{type}/{id}/ratings-visualization")
+    public String serviceDetailsRatingsVisualization(Model model,
+                                                     @PathVariable(value = "type") int type,
+                                                     @PathVariable(value = "id") int id) throws ClassNotFoundException {
+
+        model.addAttribute("type", type);
+
+        if (type == DETAIL_WORKFLOW_SERVICE_INTERNAL) {
+            Component component = componentService.find(id);
+            if (null != component) {
+                // Create context info for this component
+                WorkflowServiceContextModel componentContextInfo = null;
+                try {
+                    componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (componentContextInfo != null) {
+                    // Create context model for ratings
+                    List<WorkflowServiceRatingContextModel> workflowServiceRatingContextInfo = new ArrayList<>();
+                    for (WorkflowServiceRating wsr : componentContextInfo.getWsRatings()) {
+                        try {
+                            workflowServiceRatingContextInfo.add(workflowServiceRatingContextModelService.createModelInfo(wsr));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Transform context info into JSON String
+                    Gson gson = new GsonBuilder().create();
+                    String workflowServiceRatingContextInfoJSON = gson.toJson(workflowServiceRatingContextInfo);
+
+                    model.addAttribute("component", component);
+                    model.addAttribute("componentContextInfo", componentContextInfo);
+                    model.addAttribute("workflowServiceRatingContextInfoJSON", workflowServiceRatingContextInfoJSON);
+                }
+            }
+        }
+
+        return "components/details-ratings-visualization";
     }
 
 
@@ -193,6 +247,7 @@ public class ComponentsController {
             componentContextInfo.setWorkflowsUsing(null);
             componentContextInfo.setExperimentsUsing(null);
             componentContextInfo.setResearchersUsing(null);
+            componentContextInfo.setWsRatings(null);
 
             componentsContextModelList.add(componentContextInfo);
         }
@@ -204,6 +259,18 @@ public class ComponentsController {
         model.addAttribute("componentsContextInfo", componentsContextInfoJSON);
 
         return "components/actions-workflow-services-compare";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/invite-rating/{id}")
+    public String actionsWorkflowServicesInviteRating(Model model,
+                                                      @PathVariable(value = "id") int id,
+                                                      HttpServletRequest request) {
+
+        Component component = componentService.find(id);
+        if (null != component) {
+            model.addAttribute("component", component);
+        }
+        return "components/actions-workflow-services-invite-rating";
     }
 
 

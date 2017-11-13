@@ -10,10 +10,12 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
 import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.metrics.ClassInternalMetricsModelService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,13 +90,13 @@ public class WorkflowServiceContextModelService {
 
                     // Verify if it is a ESECO Workflow Service
                     EsecoWorkflowService esecoWorkflowServiceAnnotation = serviceClass.getAnnotation(EsecoWorkflowService.class);
-                    if(null != esecoWorkflowServiceAnnotation){
+                    if (null != esecoWorkflowServiceAnnotation) {
                         WorkflowService ws = workflowServiceService.findByInternalClass(serviceClass.getName());
                         if (null != ws) {
                             WorkflowServiceContextModel wscm = createModelInfo(ws.getComponent());
                             usedEsecoWorkflowServicesList.add(wscm);
                         }
-                    }else{
+                    } else {
                         usedEsecoCoreServicesList.add(serviceClass.getName());
                     }
                 }
@@ -113,63 +115,63 @@ public class WorkflowServiceContextModelService {
         ArrayList<Researcher> researchersFound = new ArrayList<>();
 
         // Workflows
-        for(Activity activity: ccm.getActivitiesUsing()){
+        for (Activity activity : ccm.getActivitiesUsing()) {
             List<Workflow> workflowsUsingActivity = experimentWorkflowService.findByActivityId(activity.getId());
-            for(Workflow wf: workflowsUsingActivity){
+            for (Workflow wf : workflowsUsingActivity) {
 
                 boolean insertWsIntoFoundList = true;
 
-                for(Workflow wsInWorkflowsFoundList: workflowsFound){
-                    if(wsInWorkflowsFoundList.getId() == wf.getId()){
+                for (Workflow wsInWorkflowsFoundList : workflowsFound) {
+                    if (wsInWorkflowsFoundList.getId() == wf.getId()) {
                         insertWsIntoFoundList = false;
                     }
                 }
 
-                if(insertWsIntoFoundList){
+                if (insertWsIntoFoundList) {
                     workflowsFound.add(wf);
                 }
             }
         }
 
         // Experiments
-        for(Workflow wf: workflowsFound){
+        for (Workflow wf : workflowsFound) {
             List<Experiment> experimentsUsingActivity = experimentService.findByWorkflowId(wf.getId());
-            for(Experiment exp: experimentsUsingActivity){
+            for (Experiment exp : experimentsUsingActivity) {
 
                 boolean insertIntoFoundList = true;
 
-                for(Experiment expInFoundList: experimentsFound){
-                    if(expInFoundList.getId() == exp.getId()){
+                for (Experiment expInFoundList : experimentsFound) {
+                    if (expInFoundList.getId() == exp.getId()) {
                         insertIntoFoundList = false;
                     }
                 }
 
-                if(insertIntoFoundList){
+                if (insertIntoFoundList) {
                     experimentsFound.add(exp);
                 }
             }
         }
 
         // Researchers
-        for(Experiment experiment: experimentsFound){
+        for (Experiment experiment : experimentsFound) {
             // Author of experiment
             Researcher experimentAuthor = experiment.getAuthor();
-            if(!researchersFound.contains(experimentAuthor)){
+            if (!researchersFound.contains(experimentAuthor)) {
                 researchersFound.add(experimentAuthor);
             }
 
             // Others researchers
-            for(Researcher experimentResearcher: experiment.getResearchers()) {
+            for (Researcher experimentResearcher : experiment.getResearchers()) {
 
                 boolean insertIntoFoundList = true;
 
-                for(Researcher researcherInFoundList: researchersFound){
-                    if(researcherInFoundList.getId() == experimentResearcher.getId()){
+                for (Researcher researcherInFoundList : researchersFound) {
+                    if (researcherInFoundList.getId() == experimentResearcher.getId()) {
                         insertIntoFoundList = false;
                     }
                 }
 
-                if(insertIntoFoundList){
+                if (insertIntoFoundList) {
                     researchersFound.add(experimentResearcher);
                 }
             }
@@ -188,12 +190,12 @@ public class WorkflowServiceContextModelService {
         String mostUsedAreaName = "";
         int mostUsedAreaQuantity = 0;
         HashMap<String, Integer> experimentsAreas = new HashMap<>();
-        for(Experiment experiment: experimentsFound){
-            for(Discipline discipline: experiment.getDisciplines()){
+        for (Experiment experiment : experimentsFound) {
+            for (Discipline discipline : experiment.getDisciplines()) {
 
-                if(!experimentsAreas.containsKey(discipline.getName())){
+                if (!experimentsAreas.containsKey(discipline.getName())) {
                     experimentsAreas.put(discipline.getName(), 1);
-                }else{
+                } else {
                     experimentsAreas.put(discipline.getName(), experimentsAreas.get(discipline.getName()) + 1);
                 }
             }
@@ -203,7 +205,7 @@ public class WorkflowServiceContextModelService {
             String key = entry.getKey();
             int value = entry.getValue();
 
-            if(value > mostUsedAreaQuantity){
+            if (value > mostUsedAreaQuantity) {
                 mostUsedAreaName = key;
                 mostUsedAreaQuantity = value;
             }
@@ -212,7 +214,40 @@ public class WorkflowServiceContextModelService {
         ccm.setMostCommonArea(mostUsedAreaName);
 
         // Ratings
+        int totalRatings = 0;
+        int totalApprovals = 0;
+        double avgDocumentation = 0;
+        double avgEaseOfUse = 0;
+        double avgReliability = 0;
+        double avgPerformance = 0;
+        double avgDisponibility = 0;
+        List<WorkflowServiceRating> workflowServiceRatingList = workflowService.getWorkflowServiceRatingList();
+        for (WorkflowServiceRating wsr : workflowServiceRatingList) {
+            totalRatings++;
+            if (wsr.isApproved()) {
+                totalApprovals++;
+            }
+            avgDocumentation += wsr.getValueDocumentation();
+            avgEaseOfUse += wsr.getValueEaseOfUse();
+            avgReliability += wsr.getValueReliability();
+            avgPerformance += wsr.getValuePerformance();
+            avgDisponibility += wsr.getValueDisponibility();
+        }
 
+        avgDocumentation = avgDocumentation / totalRatings;
+        avgEaseOfUse = avgEaseOfUse / totalRatings;
+        avgReliability = avgReliability / totalRatings;
+        avgPerformance = avgPerformance / totalRatings;
+        avgDisponibility = avgDisponibility / totalRatings;
+
+        ccm.setWsRatings(workflowServiceRatingList);
+        ccm.setTotalRatings(totalRatings);
+        ccm.setTotalApprovals(totalApprovals);
+        ccm.setAvgValueDocumentation(Math.round(avgDocumentation));
+        ccm.setAvgValueEaseOfUse(Math.round(avgEaseOfUse));
+        ccm.setAvgValueReliability(Math.round(avgReliability));
+        ccm.setAvgValuePerformance(Math.round(avgPerformance));
+        ccm.setAvgValueDisponibility(Math.round(avgDisponibility));
 
         return ccm;
     }
