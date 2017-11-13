@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.domain.service.component;
+package br.ufjf.pgcc.eseco.domain.service.resource;
 
 import br.ufjf.pgcc.eseco.domain.dao.resource.ComponentDAO;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;

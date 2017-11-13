@@ -8,41 +8,36 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "res_workflow_services_ratings")
-public class WorkflowServiceRating {
+@Table(name = "res_workflow_services_ratings_invitations")
+public class WorkflowServiceRatingInvitation {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
     private WorkflowService workflowService;
 
-    @Column(name = "date")
-    private Date date;
-
     @ManyToOne
-    @JoinColumn(name = "rater_id", nullable = false)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Researcher rater;
 
-    @Column(name = "approved")
-    private boolean approved;
+    @Column(name = "date_invited")
+    private Date dateInvited;
 
-    @Column(name = "value_documentation")
-    private int valueDocumentation;
+    @Column(name = "date_completed")
+    private Date dateCompleted;
 
-    @Column(name = "value_ease_of_use")
-    private int valueEaseOfUse;
+    @Column(name = "date_chat")
+    private Date dateChat;
 
-    @Column(name = "value_reliability")
-    private int valueReliability;
+    @Column(name = "completed")
+    private boolean completed;
 
-    @Column(name = "value_performance")
-    private int valuePerformance;
-
-    @Column(name = "value_disponibility")
-    private int valueDisponibility;
+    @Column(name = "participated_in_chat")
+    private boolean participatedInChat;
 
 
     /* GETTERS/SETTERS */
@@ -63,14 +58,6 @@ public class WorkflowServiceRating {
         this.workflowService = workflowService;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Researcher getRater() {
         return rater;
     }
@@ -79,51 +66,43 @@ public class WorkflowServiceRating {
         this.rater = rater;
     }
 
-    public int getValueDocumentation() {
-        return valueDocumentation;
+    public Date getDateInvited() {
+        return dateInvited;
     }
 
-    public void setValueDocumentation(int valueDocumentation) {
-        this.valueDocumentation = valueDocumentation;
+    public void setDateInvited(Date dateInvited) {
+        this.dateInvited = dateInvited;
     }
 
-    public int getValueEaseOfUse() {
-        return valueEaseOfUse;
+    public Date getDateCompleted() {
+        return dateCompleted;
     }
 
-    public void setValueEaseOfUse(int valueEaseOfUse) {
-        this.valueEaseOfUse = valueEaseOfUse;
+    public void setDateCompleted(Date dateCompleted) {
+        this.dateCompleted = dateCompleted;
     }
 
-    public int getValueReliability() {
-        return valueReliability;
+    public Date getDateChat() {
+        return dateChat;
     }
 
-    public void setValueReliability(int valueReliability) {
-        this.valueReliability = valueReliability;
+    public void setDateChat(Date dateChat) {
+        this.dateChat = dateChat;
     }
 
-    public int getValuePerformance() {
-        return valuePerformance;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public void setValuePerformance(int valuePerformance) {
-        this.valuePerformance = valuePerformance;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    public int getValueDisponibility() {
-        return valueDisponibility;
+    public boolean isParticipatedInChat() {
+        return participatedInChat;
     }
 
-    public void setValueDisponibility(int valueDisponibility) {
-        this.valueDisponibility = valueDisponibility;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
+    public void setParticipatedInChat(boolean participatedInChat) {
+        this.participatedInChat = participatedInChat;
     }
 }

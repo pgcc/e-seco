@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/font-awesome/css/font-awesome.min.css" />">
     <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.css" />">
     <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/core.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/theme-eseco/core/jquery-datetimepicker/jquery.datetimepicker.min.css" />">
     <!-- CORE STYLESHEETS END -->
 
     <!-- GLOBAL LEVEL STYLESHEETS START -->
@@ -38,6 +39,7 @@
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/bootstrap/js/bootstrap.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/sweetalert/sweetalert.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery-maskedinput/jquery.maskedinput.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/jquery-datetimepicker/jquery.datetimepicker.full.min.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/theme-eseco/core/core.js" />"></script>
 <!-- CORE JAVASCRIPTS END -->
 

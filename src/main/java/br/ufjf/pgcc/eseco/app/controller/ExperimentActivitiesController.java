@@ -4,7 +4,7 @@ import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
-import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import java.util.Date;
 import java.util.List;

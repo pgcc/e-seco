@@ -1,7 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.resource;
 
-import br.ufjf.pgcc.eseco.domain.dao.resource.WorkflowServiceRatingDAO;
-import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
+import br.ufjf.pgcc.eseco.domain.dao.resource.WorkflowServiceRatingInvitationDAO;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,21 +9,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class WorkflowServiceRatingService {
+public class WorkflowServiceRatingInvitationService {
 
-    private WorkflowServiceRatingDAO workflowServiceRatingDAO;
+    private WorkflowServiceRatingInvitationDAO workflowServiceRatingInvitationDAO;
 
     @Autowired
-    public WorkflowServiceRatingService(WorkflowServiceRatingDAO workflowServiceRatingDAO) {
-        this.workflowServiceRatingDAO = workflowServiceRatingDAO;
+    public WorkflowServiceRatingInvitationService(WorkflowServiceRatingInvitationDAO workflowServiceRatingInvitationDAO) {
+        this.workflowServiceRatingInvitationDAO = workflowServiceRatingInvitationDAO;
     }
 
     @Transactional
-    public WorkflowServiceRating add(WorkflowServiceRating workflowServiceRating) throws Exception{
-        return workflowServiceRatingDAO.add(workflowServiceRating);
+    public WorkflowServiceRatingInvitation add(WorkflowServiceRatingInvitation workflowServiceRatingInvitation) throws Exception {
+        return workflowServiceRatingInvitationDAO.add(workflowServiceRatingInvitation);
     }
 
-    public List<WorkflowServiceRating> findAll() {
-        return workflowServiceRatingDAO.findAll();
+    @Transactional
+    public WorkflowServiceRatingInvitation update(WorkflowServiceRatingInvitation workflowServiceRatingInvitation) throws Exception {
+        return workflowServiceRatingInvitationDAO.update(workflowServiceRatingInvitation);
     }
-}
+
+    public WorkflowServiceRatingInvitation find(int workflowServiceRatingInvitationId) {
+        return workflowServiceRatingInvitationDAO.find(workflowServiceRatingInvitationId);
+    }
+
+    public List<WorkflowServiceRatingInvitation> findAll() {
+        return workflowServiceRatingInvitationDAO.findAll();
+    }
+
+ }

@@ -1,22 +1,28 @@
 package br.ufjf.pgcc.eseco.domain.model.analysis;
 
-import java.util.ArrayList;
+public class ReseacherRelevance {
 
-public class ServiceDependency {
-
+    private int id;
     private String name;
-    private int size;
-    private ArrayList<ServiceDependency> children;
+    private double relevance;
 
 
     /* CONSTRUCTORS */
 
-    public ServiceDependency() {
-        this.children = new ArrayList<ServiceDependency>();
+    public ReseacherRelevance() {
+
     }
 
 
     /* GETTERS/SETTERS */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -26,26 +32,11 @@ public class ServiceDependency {
         this.name = name;
     }
 
-    public int getSize() {
-        return size;
+    public double getRelevance() {
+        return relevance;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public ArrayList<ServiceDependency> getChildren() {
-        return children;
-    }
-
-    public void setChildren(ArrayList<ServiceDependency> children) {
-        this.children = children;
-    }
-
-
-    /* OTHER METHODS */
-
-    public void addChild(ServiceDependency child){
-        this.children.add(child);
+    public void setRelevance(double relevance) {
+        this.relevance = relevance;
     }
 }

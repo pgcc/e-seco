@@ -3,8 +3,10 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.biocatalogue.exception.BioCatalogueException;
 import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
 import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
+import br.ufjf.pgcc.eseco.domain.model.analysis.ReseacherRelevance;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceRatingContextModel;
+import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
@@ -12,10 +14,16 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
-import br.ufjf.pgcc.eseco.domain.service.component.ComponentService;
-import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
+import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.analysis.ResearcherRelevanceService;
+import br.ufjf.pgcc.eseco.domain.service.resource.ComponentService;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingInvitationService;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingService;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceRatingContextModelService;
+import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +33,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -40,17 +51,29 @@ public class ComponentsController {
     private BioCatalogueService bioCatalogueService;
     private WorkflowServiceContextModelService workflowServiceContextModelService;
     private WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService;
+    private ResearcherService researcherService;
+    private ResearcherRelevanceService researcherRelevanceService;
+    private WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService;
+    private WorkflowServiceRatingService workflowServiceRatingService;
 
     @Autowired
     public ComponentsController(ComponentService componentService, WorkflowServiceService workflowServiceService,
                                 BioCatalogueService bioCatalogueService,
                                 WorkflowServiceContextModelService workflowServiceContextModelService,
-                                WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService) {
+                                WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService,
+                                ResearcherService researcherService,
+                                ResearcherRelevanceService researcherRelevanceService,
+                                WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService,
+                                WorkflowServiceRatingService workflowServiceRatingService) {
         this.componentService = componentService;
         this.workflowServiceService = workflowServiceService;
         this.bioCatalogueService = bioCatalogueService;
         this.workflowServiceContextModelService = workflowServiceContextModelService;
         this.workflowServiceRatingContextModelService = workflowServiceRatingContextModelService;
+        this.researcherService = researcherService;
+        this.researcherRelevanceService = researcherRelevanceService;
+        this.workflowServiceRatingInvitationService = workflowServiceRatingInvitationService;
+        this.workflowServiceRatingService = workflowServiceRatingService;
     }
 
     @RequestMapping(value = "/components")
@@ -75,7 +98,7 @@ public class ComponentsController {
             case DETAIL_WORKFLOW_SERVICE_INTERNAL:
                 Component component = componentService.find(id);
                 if (null != component) {
-                    // Create context info for this component
+                    // Create context info for this resource
                     WorkflowServiceContextModel componentContextInfo = null;
                     try {
                         componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
@@ -140,7 +163,7 @@ public class ComponentsController {
         if (type == DETAIL_WORKFLOW_SERVICE_INTERNAL) {
             Component component = componentService.find(id);
             if (null != component) {
-                // Create context info for this component
+                // Create context info for this resource
                 WorkflowServiceContextModel componentContextInfo = null;
                 try {
                     componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
@@ -234,7 +257,7 @@ public class ComponentsController {
         for (String id : idsList) {
             Component component = componentService.find(Integer.parseInt(id));
 
-            // Create context info for this component
+            // Create context info for this resource
             WorkflowServiceContextModel componentContextInfo = null;
             try {
                 componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
@@ -270,7 +293,151 @@ public class ComponentsController {
         if (null != component) {
             model.addAttribute("component", component);
         }
+
+        // Get most indicated reseachers for invitation
+        List<ReseacherRelevance> reseacherRelevanceList = null;
+        try {
+            reseacherRelevanceList = researcherRelevanceService.analyseReseachersForWorkflowService(component);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Transform data info into JSON String
+        Gson gson = new GsonBuilder().create();
+        String reseacherRelevanceListJSON = gson.toJson(reseacherRelevanceList);
+
+        model.addAttribute("reseacherRelevanceList", reseacherRelevanceList);
+        model.addAttribute("reseacherRelevanceListJSON", reseacherRelevanceListJSON);
+
         return "components/actions-workflow-services-invite-rating";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/invite-rating/{id}", method = RequestMethod.POST)
+    public String actionsWorkflowServicesInviteRatingPost(Model model,
+                                                          @PathVariable(value = "id") int id,
+                                                          HttpServletRequest request) {
+
+        Component component = componentService.find(id);
+        if (null == component) {
+            return "";
+        }
+
+        model.addAttribute("component", component);
+
+        String datechat = request.getParameter("datechat");
+        String ids = request.getParameter("actions-ids");
+        String[] idsList = ids.split(",");
+
+        int totalInvitations = 0;
+
+        for (String researcherIdString : idsList) {
+            int researcherId = Integer.parseInt(researcherIdString);
+            totalInvitations++;
+            Researcher researcher = researcherService.find(researcherId);
+
+            // Send Invitation
+            try {
+                workflowServiceService.inviteResearcherForRating(component.getWorkflowService(), researcher, datechat);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        model.addAttribute("totalInvitations", totalInvitations);
+
+        return "components/actions-workflow-services-invite-rating-result";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/rating")
+    public String actionsWorkflowServicesRating(Model model, HttpServletRequest request) {
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User user = (User) session.getAttribute("logged_user");
+
+        // Get Researcher
+        Researcher researcher = researcherService.find(user.getAgent().getId());
+
+        List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationListOpen = new ArrayList<>();
+        List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationListCompleted = new ArrayList<>();
+
+        for (WorkflowServiceRatingInvitation wfri : researcher.getWorkflowServiceRatingInvitations()) {
+            if (wfri.isCompleted()) {
+                workflowServiceRatingInvitationListCompleted.add(wfri);
+            } else {
+                workflowServiceRatingInvitationListOpen.add(wfri);
+            }
+        }
+
+        model.addAttribute("workflowServiceRatingInvitationListOpen", workflowServiceRatingInvitationListOpen);
+        model.addAttribute("workflowServiceRatingInvitationListCompleted", workflowServiceRatingInvitationListCompleted);
+
+        return "components/actions-workflow-services-rating";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/rating/{id}")
+    public String actionsWorkflowServicesRating(Model model,
+                                                @PathVariable(value = "id") int id,
+                                                HttpServletRequest request) {
+
+        WorkflowServiceRatingInvitation workflowServiceRatingInvitation = workflowServiceRatingInvitationService.find(id);
+
+        if (null != workflowServiceRatingInvitation) {
+            if(workflowServiceRatingInvitation.isCompleted()){
+                return "redirect:/components/actions/workflow-services/rating";
+            }
+
+            model.addAttribute("invitation", workflowServiceRatingInvitation);
+        }
+
+        return "components/actions-workflow-services-rating-form";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/rating/{id}", method = RequestMethod.POST)
+    public String actionsWorkflowServicesRatingPost(Model model,
+                                                @PathVariable(value = "id") int id,
+                                                HttpServletRequest request) {
+
+        WorkflowServiceRatingInvitation workflowServiceRatingInvitation = workflowServiceRatingInvitationService.find(id);
+
+        if (null == workflowServiceRatingInvitation) {
+            return null;
+        }
+
+        model.addAttribute("invitation", workflowServiceRatingInvitation);
+
+        boolean approved = false;
+        if(null != request.getParameter("approved")){
+            approved = true;
+        }
+        String documentation = request.getParameter("documentation");
+        String ease_of_use = request.getParameter("ease_of_use");
+        String performance = request.getParameter("performance");
+        String reliability = request.getParameter("reliability");
+        String disponibility = request.getParameter("disponibility");
+
+        WorkflowServiceRating workflowServiceRating = new WorkflowServiceRating();
+        workflowServiceRating.setWorkflowService(workflowServiceRatingInvitation.getWorkflowService());
+        workflowServiceRating.setRater(workflowServiceRatingInvitation.getRater());
+        workflowServiceRating.setDate(new Date());
+        workflowServiceRating.setApproved(approved);
+        workflowServiceRating.setValueDocumentation(Integer.parseInt(documentation));
+        workflowServiceRating.setValueEaseOfUse(Integer.parseInt(ease_of_use));
+        workflowServiceRating.setValuePerformance(Integer.parseInt(performance));
+        workflowServiceRating.setValueReliability(Integer.parseInt(reliability));
+        workflowServiceRating.setValueDisponibility(Integer.parseInt(disponibility));
+
+        try {
+            workflowServiceRatingInvitation.setCompleted(true);
+            workflowServiceRatingInvitation.setDateCompleted(new Date());
+            workflowServiceRatingInvitationService.update(workflowServiceRatingInvitation);
+            workflowServiceRatingService.add(workflowServiceRating);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "components/actions-workflow-services-rating-form-result";
     }
 
 

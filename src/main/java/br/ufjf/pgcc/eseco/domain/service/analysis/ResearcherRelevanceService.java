@@ -1,28 +1,55 @@
-package br.ufjf.pgcc.eseco.domain.service.context;
+package br.ufjf.pgcc.eseco.domain.service.analysis;
 
+import br.ufjf.pgcc.eseco.domain.model.analysis.ReseacherRelevance;
 import br.ufjf.pgcc.eseco.domain.model.context.ResearcherContextModel;
-import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceRatingContextModel;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
-import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
+import br.ufjf.pgcc.eseco.domain.model.resource.Component;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
+import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class ResearcherContextModelService {
+public class ResearcherRelevanceService {
+
+    private ResearcherService researcherService;
 
     @Autowired
-    public ResearcherContextModelService() {
-
+    public ResearcherRelevanceService(ResearcherService researcherService) {
+        this.researcherService = researcherService;
     }
 
 
-    public ResearcherContextModel createModelInfo(Researcher researcher) throws Exception {
+    public List<ReseacherRelevance> analyseReseachersForWorkflowService(Component component) throws Exception {
 
-        ResearcherContextModel rcm = new ResearcherContextModel();
+        // Get the workflow service of this resource
+        WorkflowService workflowService = component.getWorkflowService();
 
-        rcm.setId(researcher.getId());
+        if (null == workflowService) {
+            return null;
+        }
 
-        return rcm;
+        // Get all researchers of the network
+        List<Researcher> researcherList = researcherService.findAll();
+
+
+        List<ReseacherRelevance> reseacherRelevanceList = new ArrayList<>();
+        for(Researcher r: researcherList){
+            ReseacherRelevance r1 = new ReseacherRelevance();
+            r1.setId(r.getId());
+            r1.setName(r.getDisplayName());
+            r1.setRelevance(784.65);
+
+            reseacherRelevanceList.add(r1);
+        }
+
+
+
+
+        return reseacherRelevanceList;
     }
 
 }

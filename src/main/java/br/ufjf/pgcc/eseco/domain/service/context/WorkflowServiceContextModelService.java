@@ -11,11 +11,10 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
-import br.ufjf.pgcc.eseco.domain.service.component.WorkflowServiceService;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.metrics.ClassInternalMetricsModelService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,7 @@ public class WorkflowServiceContextModelService {
 
 
     public WorkflowServiceContextModel createModelInfo(Component component) throws Exception {
-        // Get the workflow service of this component
+        // Get the workflow service of this resource
         WorkflowService workflowService = component.getWorkflowService();
 
         if (null == workflowService) {

@@ -24,7 +24,10 @@
             <li><a href="#">Actions</a></li>
             <li><a href="#">Workflow Services</a></li>
             <li><a href="<c:url value="/components/actions/workflow-services/rating"/>">Rating Invitations</a></li>
-            <li><a href="<c:url value="/components/actions/workflow-services/rating/${invitation.id}"/>">Rating ${invitation.workflowService.component.name}</a></li>
+            <li>
+                <a href="<c:url value="/components/actions/workflow-services/rating/${invitation.id}"/>">Rating ${invitation.workflowService.component.name}</a>
+            </li>
+            <li><a href="#">Result</a></li>
         </ol>
     </jsp:attribute>
 
@@ -36,125 +39,10 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Rating Form</h3>
+                        <h3 class="panel-title">Rating Successfully</h3>
                     </div>
                     <div class="panel-body">
-
-                        <form action="<c:url value="/components/actions/workflow-services/rating/${invitation.id}"/>" method="post">
-
-                            <div class="row">
-                                <div class="col col-xs-12">
-                                    <div class="form-group">
-                                        <label class="checkbox-inline" for="approved">
-                                            <input id="approved" name="approved" type="checkbox">
-                                            Approved
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col col-xs-12 col-md-4">
-                                    <div class="form-group">
-                                        <label for="documentation">Documentation</label>
-                                        <select id="documentation" name="documentation" class="form-control" required>
-                                            <option value="">Choose</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col col-xs-12 col-md-4">
-                                    <div class="form-group">
-                                        <label for="ease_of_use">Ease of Use</label>
-                                        <select id="ease_of_use" name="ease_of_use" class="form-control" required>
-                                            <option value="">Choose</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col col-xs-12 col-md-4">
-                                    <div class="form-group">
-                                        <label for="performance">Performance</label>
-                                        <select id="performance" name="performance" class="form-control" required>
-                                            <option value="">Choose</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col col-xs-12 col-md-4">
-                                    <div class="form-group">
-                                        <label for="reliability">Reliability</label>
-                                        <select id="reliability" name="reliability" class="form-control" required>
-                                            <option value="">Choose</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col col-xs-12 col-md-4">
-                                    <div class="form-group">
-                                        <label for="disponibility">Disponibility</label>
-                                        <select id="disponibility" name="disponibility" class="form-control" required>
-                                            <option value="">Choose</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="text-center">
-                                <button class="btn btn-block btn-success">Confirm</button>
-                            </div>
-                        </form>
-
+                        <p>Rated!</p>
                     </div>
                 </div>
 

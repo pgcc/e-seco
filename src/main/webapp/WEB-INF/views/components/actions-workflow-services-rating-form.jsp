@@ -9,58 +9,12 @@
 
 
     <jsp:attribute name="stylesheets">
-        <link rel="stylesheet"
-              href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
-        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
-        <script type="text/javascript"
-                src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
-        <script type="text/javascript">
-            /*********************************************************/
-            /* FORM BEHAVIORS                                        */
-            /*********************************************************/
-            function updateActionsButtons() {
-                $("#fld-actions-invite").prop("disabled", $(".cbx-actions-item:checked").length < 1);
-            }
 
-            function updateFldActionsIds() {
-                var ids = "";
-                $(".cbx-actions-item:checked").each(function () {
-                    ids += $(this).val() + ",";
-                });
-
-                ids = ids.slice(0, -1);
-
-                $('input[name="actions-ids"]').val(ids);
-            }
-
-            function updateTxtActionsInfo() {
-                var selected = $(".cbx-actions-item:checked").length;
-                var text = "With <strong>" + selected + "</strong> selected, do: ";
-                $(".txt-actions-info").html(text);
-            };
-
-            // Pre-Actions
-            updateTxtActionsInfo();
-            updateActionsButtons();
-
-            // Event Actions
-            $("#cbx-actions-select-all").on("click", function () {
-                $(".cbx-actions-item").prop("checked", $(this).prop("checked"));
-                updateFldActionsIds();
-                updateActionsButtons();
-                updateTxtActionsInfo();
-            });
-
-            $(".cbx-actions-item").on("click", function () {
-                updateFldActionsIds();
-                updateActionsButtons();
-                updateTxtActionsInfo();
-            });
-        </script>
     </jsp:attribute>
 
 
@@ -69,10 +23,10 @@
             <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
             <li><a href="#">Actions</a></li>
             <li><a href="#">Workflow Services</a></li>
-            <li><a href="<c:url value="/components/details/2/${component.id}"/>">${component.name}</a>
+            <li><a href="<c:url value="/components/actions/workflow-services/rating"/>">Rating Invitations</a></li>
+            <li>
+                <a href="<c:url value="/components/actions/workflow-services/rating/${invitation.id}"/>">Rating ${invitation.workflowService.component.name}</a>
             </li>
-            <li><a href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
-                for Rating</a></li>
         </ol>
     </jsp:attribute>
 
@@ -80,67 +34,128 @@
     <jsp:body>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Actions - Workflow Services - <strong>${component.name}</strong> - Invite for Rating</h2>
+                <h2>Actions - Workflow Services - Rating ${invitation.workflowService.component.name}</h2>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Find Researchers</h3>
+                        <h3 class="panel-title">Rating Form</h3>
                     </div>
                     <div class="panel-body">
 
-                        <form id="frm-actions"
-                              action="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>" method="post">
+                        <form action="<c:url value="/components/actions/workflow-services/rating/${invitation.id}"/>"
+                              method="post">
 
-                            <input name="actions-ids" type="hidden">
-
-
-                            <div class="form-group">
-                                <label for="datechat">Chat Date
-                                    <i class="fa fa-info-circle text-info"
-                                       data-toggle="tooltip" data-placement="top"
-                                       title="Format: yyyy/mm/dd"></i>
-                                </label>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                    <input id="datechat" name="datechat" class="form-control datepicker">
+                            <div class="row">
+                                <div class="col col-xs-12">
+                                    <div class="form-group">
+                                        <label class="checkbox-inline" for="approved">
+                                            <input id="approved" name="approved" type="checkbox" value="1">
+                                            Approved
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label for="documentation">Documentation</label>
+                                        <select id="documentation" name="documentation" class="form-control" required>
+                                            <option value="">Choose</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
 
+                                <div class="col col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label for="ease_of_use">Ease of Use</label>
+                                        <select id="ease_of_use" name="ease_of_use" class="form-control" required>
+                                            <option value="">Choose</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <div class="form-group">
-                                <span class="txt-actions-info"></span>
-                                <input id="fld-actions-invite" name="actions-invite"
-                                       class="btn btn-primary" type="submit" value="Invite for Rating">
+                                <div class="col col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label for="performance">Performance</label>
+                                        <select id="performance" name="performance" class="form-control" required>
+                                            <option value="">Choose</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label for="reliability">Reliability</label>
+                                        <select id="reliability" name="reliability" class="form-control" required>
+                                            <option value="">Choose</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label for="disponibility">Disponibility</label>
+                                        <select id="disponibility" name="disponibility" class="form-control" required>
+                                            <option value="">Choose</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
-
-
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="text-center" style="width:40px;">
-                                        <input id="cbx-actions-select-all" title="Select All"
-                                               type="checkbox">
-                                    </th>
-                                    <th>Name</th>
-                                    <th class="text-center" style="width:130px;">Relevance</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="researcher" items="${reseacherRelevanceList}">
-                                    <tr>
-                                        <td class="text-center">
-                                            <input name="actions-item-${researcher.id}"
-                                                   class="cbx-actions-item" title="Select This"
-                                                   type="checkbox" value="${researcher.id}">
-                                        </td>
-                                        <td><c:out value="${researcher.name}"/></td>
-                                        <td class="text-center"><c:out value="${researcher.relevance}"/></td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                            <div class="text-center">
+                                <button class="btn btn-block btn-success">Confirm</button>
+                            </div>
                         </form>
 
                     </div>

@@ -2,7 +2,9 @@ package br.ufjf.pgcc.eseco.app.interceptor;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.app.model.Notification;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingInvitationService;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotificationsInterceptor implements HandlerInterceptor {
 
@@ -69,6 +72,27 @@ public class NotificationsInterceptor implements HandlerInterceptor {
                 notification.setImportant(true);
                 notificationsList.add(notification);
             }
+        }
+
+        //////////////////////////////////////////////////////////////////////
+        // UNCOMPLETED COMPONENT RATINGS NOTIFICATIONS                      //
+        //////////////////////////////////////////////////////////////////////
+
+        List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationList = agent.getResearcher().getWorkflowServiceRatingInvitations();
+        int openInvitationsCount = 0;
+        for(WorkflowServiceRatingInvitation wfri:workflowServiceRatingInvitationList){
+            if(!wfri.isCompleted()){
+                openInvitationsCount++;
+            }
+        }
+
+        if (openInvitationsCount > 0) {
+            Notification notification = new Notification();
+            notification.setText("You have Invitations for Rating on one or more Workflow Services Components");
+            notification.setLink("/components/actions/workflow-services/rating");
+            notification.setIcon("fa-id-card-o");
+            notification.setImportant(true);
+            notificationsList.add(notification);
         }
 
 

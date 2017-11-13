@@ -271,10 +271,6 @@
                                         </span>
                                     </li>
                                 </ul>
-
-                                <div class="text-center">
-                                    <button class="btn btn-info" type="button">Visualize</button>
-                                </div>
                             </div>
                         </div>
                     </div>

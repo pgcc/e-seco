@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.model.core;
 
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -41,10 +42,10 @@ public class Researcher {
     @JoinTable(
             name = "core_agents_researchers_interests",
             joinColumns = {
-                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
             },
             inverseJoinColumns = {
-                @JoinColumn(name = "interest_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "interest_id", referencedColumnName = "id", nullable = false)
             }
     )
     private List<Interest> researchInterests;
@@ -54,10 +55,10 @@ public class Researcher {
     @JoinTable(
             name = "core_agents_researchers_disciplines",
             joinColumns = {
-                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
             },
             inverseJoinColumns = {
-                @JoinColumn(name = "discipline_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "discipline_id", referencedColumnName = "id", nullable = false)
             }
     )
     private List<Discipline> disciplines;
@@ -66,14 +67,18 @@ public class Researcher {
     @JoinTable(
             name = "core_agents_researchers_institutions",
             joinColumns = {
-                @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "researcher_id", referencedColumnName = "id", nullable = false)
             },
             inverseJoinColumns = {
-                @JoinColumn(name = "institution_id", referencedColumnName = "id", nullable = false)
+                    @JoinColumn(name = "institution_id", referencedColumnName = "id", nullable = false)
             }
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Institution> institutions;
+
+    @OneToMany(mappedBy = "rater")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations;
 
 
     /* GETTERS/SETTERS */
@@ -172,5 +177,13 @@ public class Researcher {
     @Override
     public String toString() {
         return String.valueOf(id);
+    }
+
+    public List<WorkflowServiceRatingInvitation> getWorkflowServiceRatingInvitations() {
+        return workflowServiceRatingInvitations;
+    }
+
+    public void setWorkflowServiceRatingInvitations(List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations) {
+        this.workflowServiceRatingInvitations = workflowServiceRatingInvitations;
     }
 }

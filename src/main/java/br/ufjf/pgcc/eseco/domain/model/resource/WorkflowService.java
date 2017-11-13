@@ -46,6 +46,10 @@ public class WorkflowService {
     )
     private List<WorkflowServiceRating> workflowServiceRatingList;
 
+    @OneToMany(mappedBy = "workflowService")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations;
+
 
     /* GETTERS/SETTERS */
 
@@ -111,6 +115,14 @@ public class WorkflowService {
 
     public void setWorkflowServiceRatingList(List<WorkflowServiceRating> workflowServiceRatingList) {
         this.workflowServiceRatingList = workflowServiceRatingList;
+    }
+
+    public List<WorkflowServiceRatingInvitation> getWorkflowServiceRatingInvitations() {
+        return workflowServiceRatingInvitations;
+    }
+
+    public void setWorkflowServiceRatingInvitations(List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations) {
+        this.workflowServiceRatingInvitations = workflowServiceRatingInvitations;
     }
 
     /* OTHER METHODS */
