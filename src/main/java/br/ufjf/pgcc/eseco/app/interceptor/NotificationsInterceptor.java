@@ -74,25 +74,28 @@ public class NotificationsInterceptor implements HandlerInterceptor {
             }
         }
 
+
         //////////////////////////////////////////////////////////////////////
         // UNCOMPLETED COMPONENT RATINGS NOTIFICATIONS                      //
         //////////////////////////////////////////////////////////////////////
 
-        List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationList = agent.getResearcher().getWorkflowServiceRatingInvitations();
-        int openInvitationsCount = 0;
-        for(WorkflowServiceRatingInvitation wfri:workflowServiceRatingInvitationList){
-            if(!wfri.isCompleted()){
-                openInvitationsCount++;
+        if(null != agent.getResearcher()) {
+            List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationList = agent.getResearcher().getWorkflowServiceRatingInvitations();
+            int openInvitationsCount = 0;
+            for (WorkflowServiceRatingInvitation wfri : workflowServiceRatingInvitationList) {
+                if (!wfri.isCompleted()) {
+                    openInvitationsCount++;
+                }
             }
-        }
 
-        if (openInvitationsCount > 0) {
-            Notification notification = new Notification();
-            notification.setText("You have Invitations for Rating on one or more Workflow Services Components");
-            notification.setLink("/components/actions/workflow-services/rating");
-            notification.setIcon("fa-id-card-o");
-            notification.setImportant(true);
-            notificationsList.add(notification);
+            if (openInvitationsCount > 0) {
+                Notification notification = new Notification();
+                notification.setText("You have Invitations for Rating on one or more Workflow Services Components");
+                notification.setLink("/components/actions/workflow-services/rating");
+                notification.setIcon("fa-id-card-o");
+                notification.setImportant(true);
+                notificationsList.add(notification);
+            }
         }
 
 
