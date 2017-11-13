@@ -25,8 +25,16 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/activities/add"/>">Add Activity</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+            <li><a href="<c:url value="/experiments/activities"/>"> Activities</a></li>
+                <c:choose>
+                    <c:when test="${activityForm['new']}">
+                    <li><a href="<c:url value="/experiments/activities/add"/>">Add Activity</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/experiments/activities/${activityForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 
@@ -56,7 +64,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
-                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name" />
+                            <f:input path="name" class="form-control" id="name" placeholder="Name" />
                             <f:errors path="name" class="control-label" />
                         </div>
                     </div>

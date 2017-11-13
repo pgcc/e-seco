@@ -24,7 +24,10 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/activityExecutions"/>"> Activity Executions</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+            <li><a href="<c:url value="/experiments/activities"/>"> Activities</a></li>
+            <li><a href="<c:url value="/experiments/activityExecutions"/>">Activity Executions</a></li>
             <li><a href="<c:url value="/experiments/activityExecutions/${activityExecution.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
@@ -88,7 +91,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${activityExecution.inputs}" var="input">
-                                        <li class="list-group-item">${input.entity.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/entities/${input.entity.id}"/>">${input.entity.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -108,7 +111,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${activityExecution.outputs}" var="output">
-                                        <li class="list-group-item">${output.entity.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/entities/${output.entity.id}"/>">${output.entity.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>

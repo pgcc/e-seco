@@ -57,6 +57,13 @@
                     </div>
 
                     <div class="row">
+                        <label class="col-sm-2">Photo</label>
+                        <div class="col-sm-10">
+                            <img src="${researcher.photo}" class="img-rounded img-responsive" alt="" style="max-width: 200px;">
+                        </div>
+                    </div>
+                        
+                    <div class="row">
                         <label class="col-sm-2">Academic Status</label>
                         <div class="col-sm-10">${researcher.academicStatus}</div>
                     </div>
@@ -64,12 +71,7 @@
                     <div class="row">
                         <label class="col-sm-2">Title</label>
                         <div class="col-sm-10">${researcher.title}</div>
-                    </div>
-
-                    <div class="row">
-                        <label class="col-sm-2">Mendeley Id</label>
-                        <div class="col-sm-10">${researcher.mendeleyId}</div>
-                    </div>
+                    </div>                    
 
                     <div class="row">
                         <label class="col-sm-2">Institutions</label>
@@ -78,6 +80,34 @@
                                 ${institution.name},
                             </c:forEach>                    
                         </div>
+                    </div>
+                    
+                    <div class="row">
+                        <label class="col-sm-2">Disciplines</label>
+                        <div class="col-sm-10">
+                            <c:forEach var="discipline" items="${researcher.disciplines}">
+                                ${discipline.name},
+                            </c:forEach>                    
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <label class="col-sm-2">Research Interests</label>
+                        <div class="col-sm-10">
+                            <c:forEach var="interest" items="${researcher.researchInterests}">
+                                ${interest.name},
+                            </c:forEach>                    
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <label class="col-sm-2">Mendeley Id</label>
+                        <div class="col-sm-10">${researcher.mendeleyId}</div>
+                    </div>
+                    
+                    <div class="row">
+                        <label class="col-sm-2">Kepler Id</label>
+                        <div class="col-sm-10">${researcher.keplerId}</div>
                     </div>
                 </div>
             </div>

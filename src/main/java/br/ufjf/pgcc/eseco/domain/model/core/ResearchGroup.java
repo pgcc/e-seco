@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -32,13 +34,14 @@ public class ResearchGroup {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "web_page")
     private String webPage;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "core_research_group_researcher",
             joinColumns = {
@@ -100,4 +103,12 @@ public class ResearchGroup {
         this.members = members;
     }
 
+    public boolean isNew() {
+        return (this.id == 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
 }

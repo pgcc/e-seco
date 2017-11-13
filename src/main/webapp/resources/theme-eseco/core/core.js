@@ -4,11 +4,20 @@
 
 /**
  * Set Input Masks throught jquery.maskedinput
- *
+ * EXEMPLES http://xdsoft.net/jqplugins/datetimepicker/
  * @param jQuery
  */
-function setInputMasks(jQuery){
-    jQuery(".mask-date").mask("aaa aaa 99 99:99:99 aaaa 9999",{placeholder:"___ ___ __ __:__:__ ____ ____"});
+function setInputMasks(jQuery) {
+    jQuery('.datepicker').datetimepicker({
+        format: 'Y/m/d',
+        timepicker: false,
+        mask: true
+    });
+
+    jQuery('.datetimepicker').datetimepicker({
+        format: 'Y/m/d H:i',
+        mask: true
+    });
 }
 
 /**
@@ -16,7 +25,7 @@ function setInputMasks(jQuery){
  *
  * @param jQuery
  */
-function setTooltips(jQuery){
+function setTooltips(jQuery) {
     jQuery('[data-toggle="tooltip"]').tooltip();
 }
 
@@ -25,7 +34,7 @@ function setTooltips(jQuery){
 /**
  * Init Core Plugins Initialization
  */
-(function(){
+(function () {
     setInputMasks($);
     setTooltips($);
 })();

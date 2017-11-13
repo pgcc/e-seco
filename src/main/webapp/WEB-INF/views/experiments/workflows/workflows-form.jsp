@@ -24,9 +24,16 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View</a></li>
-            <li><a href="<c:url value="/experiments/${sessionScope.current_experiment_id}/workflows/add"/>">Add Workflow</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments ${sessionScope.current_experiment_id}</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+                <c:choose>
+                    <c:when test="${workflowForm['new']}">
+                    <li><a href="<c:url value="/experiments/workflows/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/experiments/workflows/${workflowForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 
@@ -56,7 +63,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-10">
-                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name" />
+                            <f:input path="name" class="form-control" id="name" placeholder="Name" />
                             <f:errors path="name" class="control-label" />
                         </div>
                     </div>
@@ -84,7 +91,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Link</label>
                         <div class="col-sm-10">
-                            <f:input path="link" class="form-control" rows="5" id="link" placeholder="Link" />
+                            <f:input path="link" class="form-control" id="link" placeholder="Link" />
                             <f:errors path="link" class="control-label" />
                         </div>
                     </div>
@@ -99,13 +106,17 @@
                     </div>
                 </spring:bind>
 
-
                 <spring:bind path="dateCreated">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateCreated" class="form-control mask-date" id="dateCreated" placeholder="Created in" disabled="true"/>
-                        </div>                        
+                            <div class="input-group">
+                                <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                 </spring:bind>
 
@@ -113,7 +124,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Version</label>
                         <div class="col-sm-10">
-                            <f:input path="version" class="form-control" rows="5" id="version" placeholder="Version" />
+                            <f:input path="version" class="form-control" id="version" placeholder="Version" />
                             <f:errors path="version" class="control-label" />
                         </div>
                     </div>

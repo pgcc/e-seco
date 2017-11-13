@@ -48,7 +48,7 @@ public class ExperimentWorkflowsController {
     }
 
     @Autowired
-    public void setWorkflowService(ExperimentService experimentService, WorkflowService workflowService, 
+    public void setWorkflowService(ExperimentService experimentService, WorkflowService workflowService,
             WfmsService wfmsService) {
         this.experimentService = experimentService;
         this.workflowService = workflowService;
@@ -65,29 +65,32 @@ public class ExperimentWorkflowsController {
 
     }
 
-    @RequestMapping(value = "/experiments/{experimentId}/workflows/add", method = RequestMethod.GET)
-    public String showAddWorkflowForm(Model model, @PathVariable("experimentId") int experimentId,
-            HttpSession session) {
+    @RequestMapping(value = "/experiments/workflows/add", method = RequestMethod.GET)
+    public String showAddWorkflowForm(Model model, HttpSession session) {
 
         LOGGER.info("showAddWorkflowForm()");
 
-        User user = (User) session.getAttribute("logged_user");
-        Experiment experiment = experimentService.find(experimentId);
         Workflow workflow = new Workflow();
 
         // set default value
+        User user = (User) session.getAttribute("logged_user");
         workflow.setAuthor(user.getAgent().getResearcher());
+        int experimentId = (Integer) session.getAttribute("current_experiment_id");
+        if (experimentId != 0) {
+            Experiment experiment = experimentService.find(experimentId);
+            ArrayList<Experiment> experiments = new ArrayList<>();
+            experiments.add(experiment);
+            workflow.setExperiments(experiments);
+        }
         workflow.setDateCreated(new Date());
         workflow.setVersion("1.0.0");
         Wfms wfms = new Wfms();
         workflow.setWfms(wfms);
-        ArrayList<Experiment> experiments = new ArrayList<>();
-        experiments.add(experiment);
-        workflow.setExperiments(experiments);
+
         model.addAttribute("workflowForm", workflow);
         session.setAttribute("current_experiment_id", experimentId);
-
         populateDefaultModel(model);
+
         return "experiments/workflows/workflows-form";
     }
 

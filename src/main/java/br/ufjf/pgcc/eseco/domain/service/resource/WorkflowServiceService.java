@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.component;
 
 import br.ufjf.pgcc.eseco.domain.dao.resource.WorkflowServiceDAO;
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,9 @@ public class WorkflowServiceService {
         } else {
             return null;
         }
+    }
+
+    public void inviteResearcherForRating(WorkflowService workflowService, Researcher researcher){
+
     }
 }

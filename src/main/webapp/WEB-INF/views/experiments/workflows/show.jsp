@@ -24,7 +24,8 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/workflows"/>"> Workflows</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
             <li><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
@@ -102,7 +103,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${workflow.activities}" var="activity">
-                                        <li class="list-group-item">${activity.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -122,7 +123,7 @@
                             <div class="panel-body">
                                 <ul class="list-group" >
                                     <c:forEach items="${workflow.experiments}" var="experiment">
-                                        <li class="list-group-item">${experiment.name}</li>
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/${experiment.id}"/>">${experiment.name}</a></li>
                                         </c:forEach>
                                 </ul>
                             </div>
@@ -132,13 +133,13 @@
                 <br/>
                 <spring:url value="/experiments/workflows" var="urlWorkflows" />
                 <nav class="navbar navbar-inverse">
-                <div>
-                    <ul class="nav navbar-nav navbar-left">
-                        <button onclick="location.href = '${urlWorkflows}'" class="btn btn-link">
-                            <span class="glyphicon glyphicon-arrow-left"></span> Back
-                        </button>
-                    </ul>
-                </div>
+                    <div>
+                        <ul class="nav navbar-nav navbar-left">
+                            <button onclick="location.href = '${urlWorkflows}'" class="btn btn-link">
+                                <span class="glyphicon glyphicon-arrow-left"></span> Back
+                            </button>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </jsp:body>

@@ -48,7 +48,7 @@
                         <label class = "col-sm-2 control-label"> Name </label>
                         <div
                             class = "col-sm-10">
-                            <f:input path="name" class="form-control" rows="5" id="name" placeholder="Name" disabled="true"/>
+                            <f:input path="name" class="form-control" id="name" placeholder="Name" disabled="true"/>
                             <f:errors path="name" class="control-label" />
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="button" onclick="type = 'post', action = '${chooseFileUrl}'">Choose File</button>
                             </span>
-                            <input id="file" name="file" type="text" class="form-control" placeholder="File Name" value="C:\Users\YURI\Desktop\Provenance.json">
+                            <input id="file" name="file" type="text" class="form-control" placeholder="File Name" value="${file}">
                         </div>
                     </div>                
                 </div>

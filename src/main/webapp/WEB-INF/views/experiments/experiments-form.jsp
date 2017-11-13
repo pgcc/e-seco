@@ -25,7 +25,14 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
-            <li><a href="<c:url value="/experiments/add"/>">Add</a></li>
+                <c:choose>
+                    <c:when test="${experimentForm['new']}">
+                    <li><a href="<c:url value="/experiments/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/experiments/${experimentForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 
@@ -78,22 +85,30 @@
                     </div>
                 </spring:bind>
 
-
                 <spring:bind path="dateCreated">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateCreated" class="form-control mask-date" id="dateCreated" placeholder="Created in" disabled="true"/>
-                        </div>                        
+                            <div class="input-group">
+                                <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>    
+                        </div>
                     </div>
                 </spring:bind>
-
 
                 <spring:bind path="dateUpdated">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Updated in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateUpdated" class="form-control mask-date" id="dateUpdated" placeholder="Updated in" disabled="true"/>
+                            <div class="input-group">
+                                <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </spring:bind>
@@ -102,7 +117,12 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Ended in</label>
                         <div class="col-sm-10">
-                            <f:input path="dateEnded" class="form-control mask-date" id="dateEnded" placeholder="Ended in" disabled="true"/>
+                            <div class="input-group">
+                                <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </spring:bind>
@@ -129,7 +149,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Version</label>
                         <div class="col-sm-10">
-                            <f:input path="version" type="text" class="form-control" id="version" placeholder="Version" disabled="true"/>
+                            <f:input path="version" type="text" class="form-control" id="version" placeholder="Version"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -138,7 +158,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Disciplines</label>
                         <div class="col-sm-10">
-                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3" class="form-control"/>
+                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3" itemLabel="name" itemValue="id" class="form-control"/>
                             <f:errors path="disciplines" class="control-label" />
                         </div>
                     </div>

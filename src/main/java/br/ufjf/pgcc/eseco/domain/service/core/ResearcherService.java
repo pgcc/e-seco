@@ -1,10 +1,13 @@
 package br.ufjf.pgcc.eseco.domain.service.core;
 
 import br.ufjf.pgcc.eseco.domain.dao.core.ResearcherDAO;
+import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
+import br.ufjf.pgcc.eseco.domain.model.core.Interest;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -16,9 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class ResearcherService {
+
+    private static final Logger LOGGER = Logger.getLogger(ResearcherService.class.getName());
 
     private final ResearcherDAO researcherDAO;
 
@@ -48,7 +55,7 @@ public class ResearcherService {
     public List<Researcher> findAll() {
         return researcherDAO.findAll();
     }
-    
+
     public Researcher findByKeplerId(String keplerId) {
         if (keplerId != null) {
             Map<String, String> map = new HashMap<>();
@@ -89,9 +96,39 @@ public class ResearcherService {
                         r.setTitle(object.get("title").getAsString());
                     }
 
+                    if (object.get("research_interests_list") != null) {
+                        JsonArray jsonArray = object.get("research_interests_list").getAsJsonArray();
+                        List<Interest> interests = new ArrayList<>();
+                        for (JsonElement jsonElement : jsonArray) {
+                            Interest i = new Interest();
+                            i.setName(jsonElement.getAsString());
+                            interests.add(i);
+                        }
+                        r.setResearchInterests(interests);
+                    }
+
                     if (object.get("academic_status") != null) {
                         r.setAcademicStatus(object.get("academic_status").getAsString());
                     }
+
+                    if (object.get("disciplines") != null) {
+                        List<Discipline> disciplines = new ArrayList<>();
+                        JsonArray jsonArray = object.get("disciplines").getAsJsonArray();
+                        for (JsonElement jsonElement : jsonArray) {
+                            JsonObject obj = jsonElement.getAsJsonObject();
+                            if (obj.get("name") != null) {
+                                Discipline s = new Discipline();
+                                s.setName(obj.get("name").getAsString());
+                                disciplines.add(s);
+                            }
+                        }
+                        r.setDisciplines(disciplines);
+                    }
+
+                    if (object.get("photo") != null && object.get("photo").getAsJsonObject().get("original") != null) {
+                        r.setPhoto(object.get("photo").getAsJsonObject().get("original").getAsString());
+                    }
+
 
                     if (object.get("institution") != null) {
                         ArrayList<Institution> institutionsList = new ArrayList<>();
@@ -109,7 +146,7 @@ public class ResearcherService {
                     }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, null, e);
                 }
                 return r;
             }

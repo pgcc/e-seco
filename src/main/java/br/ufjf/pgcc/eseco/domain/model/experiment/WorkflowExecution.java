@@ -22,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -46,10 +47,12 @@ public class WorkflowExecution {
 
     @Column(name = "start_time", columnDefinition = "DATETIME")
     @Temporal(value = TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
     private Date startTime;
 
     @Column(name = "end_time", columnDefinition = "DATETIME")
     @Temporal(value = TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
     private Date endTime;
 
     @OneToMany

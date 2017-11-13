@@ -22,7 +22,7 @@
             function post(id) {
                 swal({
                     title: "Are you sure?",
-                    text: "Your will not be able to recover this activityExecution!",
+                    text: "Your will not be able to recover this activity execution!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
@@ -42,7 +42,10 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments/activityExecutions"/>"> Activity Executions</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
+            <li><a href="<c:url value="/experiments/activities"/>"> Activities</a></li>
+            <li><a href="<c:url value="/experiments/activityExecutions"/>">Activity Executions</a></li>
         </ol>
     </jsp:attribute>
 

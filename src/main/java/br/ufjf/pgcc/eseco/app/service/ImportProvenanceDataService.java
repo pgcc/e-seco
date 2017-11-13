@@ -55,6 +55,8 @@ public class ImportProvenanceDataService {
     private PortService portService;
     private WorkflowService workflowService;
 
+    private Map<String, String> primitiveTypes = new HashMap<>();
+
     private static final Logger LOGGER = Logger.getLogger(ImportProvenanceDataService.class.getName());
 
     @Autowired
@@ -71,6 +73,14 @@ public class ImportProvenanceDataService {
         this.workflowExecutionService = workflowExecutionService;
         this.portService = portService;
         this.workflowService = workflowService;
+
+        primitiveTypes.put("ptolemy.data.BooleanToken", "Boolean");
+        primitiveTypes.put("ptolemy.data.DoubleToken", "Double");
+        primitiveTypes.put("ptolemy.data.FloatToken", "Float");
+        primitiveTypes.put("ptolemy.data.IntToken", "Int");
+        primitiveTypes.put("ptolemy.data.LongToken", "Long");
+        primitiveTypes.put("ptolemy.data.StringToken", "String");
+
     }
 
     public ImportProvenanceDataService() {
@@ -81,6 +91,8 @@ public class ImportProvenanceDataService {
      *
      * @param workflow
      * @param filePath
+     * @param researcher
+     * @throws java.lang.Exception
      */
     public void importProvenanceData(Workflow workflow, String filePath, Researcher researcher) throws Exception {
         switch (workflow.getWfms().getName()) {
@@ -118,25 +130,23 @@ public class ImportProvenanceDataService {
                 String keplerId = value.getAsJsonObject().get("prov:label").getAsString();
                 System.out.println("agent: " + key + " name: " + keplerId);
 
-                if (loggedResearcher.getKeplerId() != null && !loggedResearcher.getKeplerId().equalsIgnoreCase(keplerId)) {
-                    Researcher findByKeplerId = researcherService.findByKeplerId(keplerId);
-                    if (findByKeplerId != null) {
-                        mapResearchers.put(key, findByKeplerId);
-                        continue;
-                    }
-                }
-                if (loggedResearcher.getKeplerId() == null || loggedResearcher.getKeplerId().isEmpty()) {
+                Researcher findByKeplerId = researcherService.findByKeplerId(keplerId);
+                if (findByKeplerId != null) {
+                    loggedResearcher = findByKeplerId;
+                    mapResearchers.put(key, findByKeplerId);
+
+                } else if (loggedResearcher.getKeplerId() == null || loggedResearcher.getKeplerId().isEmpty()) {
                     loggedResearcher.setKeplerId(keplerId);
                     loggedResearcher = researcherService.saveOrUpdate(loggedResearcher);
                     mapResearchers.put(key, loggedResearcher);
-                    continue;
+
+                } else {
+                    Researcher r = new Researcher();
+                    r.setKeplerId(keplerId);
+                    r.setDisplayName(keplerId);
+                    r = researcherService.saveOrUpdate(r);
+                    mapResearchers.put(key, r);
                 }
-                
-                Researcher r = new Researcher();
-                r.setKeplerId(keplerId);
-                r.setDisplayName(keplerId);
-                r = researcherService.saveOrUpdate(r);
-                mapResearchers.put(key, r);
             }
 
             //Import the Entities
@@ -173,19 +183,20 @@ public class ImportProvenanceDataService {
                 Entity entity = new Entity();
                 entity.setName(key);
                 entity = entityService.saveOrUpdate(entity);
-                if (value.getAsJsonObject().get("kepler:tokenClass").getAsJsonObject().get("$").getAsString()
-                        .equalsIgnoreCase("ptolemy.data.StringToken")) {
+                if (!primitiveTypes.containsKey(value.getAsJsonObject().get("kepler:tokenClass").getAsJsonObject().get("$").getAsString())) {
                     Document document = new Document();
                     document.setValue(value.getAsJsonObject().get("prov:value").getAsJsonObject().get("$").getAsString());
                     document.setEntity(entity);
+                    String type = value.getAsJsonObject().get("kepler:tokenClass").getAsJsonObject().get("$").getAsString();
+                    type = type.split("\\.")[type.split("\\.").length - 1];
+                    document.setType(type);
                     document = documentService.saveOrUpdate(document);
                     entity.setDocument(document);
                 } else {
                     Data data = new Data();
                     data.setValue(value.getAsJsonObject().get("prov:value").getAsJsonObject().get("$").getAsString());
                     String type = value.getAsJsonObject().get("kepler:tokenClass").getAsJsonObject().get("$").getAsString();
-                    type = type.split("\\.")[type.split("\\.").length - 1].replace("Token", "");
-                    data.setType(type);
+                    data.setType(primitiveTypes.get(type));
                     data.setEntity(entity);
                     data = dataService.saveOrUpdate(data);
                     entity.setData(data);
@@ -208,7 +219,6 @@ public class ImportProvenanceDataService {
                 name = name.split("\\.")[name.split("\\.").length - 1];
                 activity.setName(name);
                 activity.setDateCreated(Date.from(startDateTime.toInstant()));
-                activity.setAuthor(loggedResearcher);
 
                 if (workflow.getActivities() != null && !workflow.getActivities().isEmpty()) {
                     for (Activity ac : workflow.getActivities()) {

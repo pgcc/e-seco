@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -38,6 +39,7 @@ public class Activity {
 
     @Column(name = "date_created", columnDefinition = "DATE")
     @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateCreated;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -105,5 +107,10 @@ public class Activity {
 
     public boolean isNew() {
         return (this.id == 0);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }
