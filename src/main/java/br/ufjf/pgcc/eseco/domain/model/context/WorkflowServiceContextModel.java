@@ -49,11 +49,11 @@ public class WorkflowServiceContextModel {
     private List<WorkflowServiceRating> wsRatings;
     private int totalRatings;
     private int totalApprovals;
-    private int totalValueDocumentation;
-    private int totalValueEaseOfUse;
-    private int totalValueReliability;
-    private int totalValuePerformance;
-    private int totalValueDisponibility;
+    private long avgValueDocumentation;
+    private long avgValueEaseOfUse;
+    private long avgValueReliability;
+    private long avgValuePerformance;
+    private long avgValueDisponibility;
 
 
     /* CONSTRUCTORS */
@@ -201,22 +201,6 @@ public class WorkflowServiceContextModel {
         this.workflowsUsingCount = workflowsUsingCount;
     }
 
-    public List<Researcher> getResearchersUsing() {
-        return researchersUsing;
-    }
-
-    public void setResearchersUsing(List<Researcher> researchersUsing) {
-        this.researchersUsing = researchersUsing;
-    }
-
-    public int getResearchersUsingCount() {
-        return researchersUsingCount;
-    }
-
-    public void setResearchersUsingCount(int researchersUsingCount) {
-        this.researchersUsingCount = researchersUsingCount;
-    }
-
     public List<Experiment> getExperimentsUsing() {
         return experimentsUsing;
     }
@@ -231,6 +215,22 @@ public class WorkflowServiceContextModel {
 
     public void setExperimentsUsingCount(int experimentsUsingCount) {
         this.experimentsUsingCount = experimentsUsingCount;
+    }
+
+    public List<Researcher> getResearchersUsing() {
+        return researchersUsing;
+    }
+
+    public void setResearchersUsing(List<Researcher> researchersUsing) {
+        this.researchersUsing = researchersUsing;
+    }
+
+    public int getResearchersUsingCount() {
+        return researchersUsingCount;
+    }
+
+    public void setResearchersUsingCount(int researchersUsingCount) {
+        this.researchersUsingCount = researchersUsingCount;
     }
 
     public String getMostCommonArea() {
@@ -273,43 +273,43 @@ public class WorkflowServiceContextModel {
         this.totalApprovals = totalApprovals;
     }
 
-    public int getTotalValueDocumentation() {
-        return totalValueDocumentation;
+    public long getAvgValueDocumentation() {
+        return avgValueDocumentation;
     }
 
-    public void setTotalValueDocumentation(int totalValueDocumentation) {
-        this.totalValueDocumentation = totalValueDocumentation;
+    public void setAvgValueDocumentation(long avgValueDocumentation) {
+        this.avgValueDocumentation = avgValueDocumentation;
     }
 
-    public int getTotalValueEaseOfUse() {
-        return totalValueEaseOfUse;
+    public long getAvgValueEaseOfUse() {
+        return avgValueEaseOfUse;
     }
 
-    public void setTotalValueEaseOfUse(int totalValueEaseOfUse) {
-        this.totalValueEaseOfUse = totalValueEaseOfUse;
+    public void setAvgValueEaseOfUse(long avgValueEaseOfUse) {
+        this.avgValueEaseOfUse = avgValueEaseOfUse;
     }
 
-    public int getTotalValueReliability() {
-        return totalValueReliability;
+    public long getAvgValueReliability() {
+        return avgValueReliability;
     }
 
-    public void setTotalValueReliability(int totalValueReliability) {
-        this.totalValueReliability = totalValueReliability;
+    public void setAvgValueReliability(long avgValueReliability) {
+        this.avgValueReliability = avgValueReliability;
     }
 
-    public int getTotalValuePerformance() {
-        return totalValuePerformance;
+    public long getAvgValuePerformance() {
+        return avgValuePerformance;
     }
 
-    public void setTotalValuePerformance(int totalValuePerformance) {
-        this.totalValuePerformance = totalValuePerformance;
+    public void setAvgValuePerformance(long avgValuePerformance) {
+        this.avgValuePerformance = avgValuePerformance;
     }
 
-    public int getTotalValueDisponibility() {
-        return totalValueDisponibility;
+    public long getAvgValueDisponibility() {
+        return avgValueDisponibility;
     }
 
-    public void setTotalValueDisponibility(int totalValueDisponibility) {
-        this.totalValueDisponibility = totalValueDisponibility;
+    public void setAvgValueDisponibility(long avgValueDisponibility) {
+        this.avgValueDisponibility = avgValueDisponibility;
     }
 }

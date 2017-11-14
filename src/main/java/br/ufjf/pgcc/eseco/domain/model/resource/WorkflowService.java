@@ -1,6 +1,10 @@
 package br.ufjf.pgcc.eseco.domain.model.resource;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "res_workflow_services")
@@ -28,6 +32,23 @@ public class WorkflowService {
 
     @Column(name = "internal_class", unique = true)
     private String internalClass;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "res_workflow_services_ratings",
+            joinColumns = {
+                    @JoinColumn(name = "workflowService_id", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "id")
+            }
+    )
+    private List<WorkflowServiceRating> workflowServiceRatingList;
+
+    @OneToMany(mappedBy = "workflowService")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations;
 
 
     /* GETTERS/SETTERS */
@@ -88,6 +109,21 @@ public class WorkflowService {
         this.internalClass = internalClass;
     }
 
+    public List<WorkflowServiceRating> getWorkflowServiceRatingList() {
+        return workflowServiceRatingList;
+    }
+
+    public void setWorkflowServiceRatingList(List<WorkflowServiceRating> workflowServiceRatingList) {
+        this.workflowServiceRatingList = workflowServiceRatingList;
+    }
+
+    public List<WorkflowServiceRatingInvitation> getWorkflowServiceRatingInvitations() {
+        return workflowServiceRatingInvitations;
+    }
+
+    public void setWorkflowServiceRatingInvitations(List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations) {
+        this.workflowServiceRatingInvitations = workflowServiceRatingInvitations;
+    }
 
     /* OTHER METHODS */
 

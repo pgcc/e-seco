@@ -237,7 +237,7 @@ public class UacController extends CommonController {
                 Agent agent = user.getAgent();
                 agent.setGender(gender);
                 if (birthday != null) {
-                    agent.setBirthday(new SimpleDateFormat("dd/MM/yyyy").parse(birthday));
+                    agent.setBirthday(new SimpleDateFormat("yyyy/MM/dd").parse(birthday));
                 }
                 agentService.updateAgent(agent);
 

@@ -1,6 +1,8 @@
 package br.ufjf.pgcc.eseco.domain.model.resource;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,8 +22,12 @@ public class WorkflowServiceRating {
     @Column(name = "date")
     private Date date;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "rater_id", nullable = false)
     private Researcher rater;
+
+    @Column(name = "approved")
+    private boolean approved;
 
     @Column(name = "value_documentation")
     private int valueDocumentation;
@@ -111,5 +117,13 @@ public class WorkflowServiceRating {
 
     public void setValueDisponibility(int valueDisponibility) {
         this.valueDisponibility = valueDisponibility;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }

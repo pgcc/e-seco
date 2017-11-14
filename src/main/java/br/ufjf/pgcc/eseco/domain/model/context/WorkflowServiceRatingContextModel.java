@@ -9,6 +9,7 @@ public class WorkflowServiceRatingContextModel {
     private String workflowServiceName;
     private String authorName;
     private Date dateCreated;
+    private String isApproved;
     private int valueDocumentation;
     private int valueEaseOfUse;
     private int valueReliability;
@@ -103,5 +104,13 @@ public class WorkflowServiceRatingContextModel {
 
     public void setValueDisponibility(int valueDisponibility) {
         this.valueDisponibility = valueDisponibility;
+    }
+
+    public String getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(String isApproved) {
+        this.isApproved = isApproved;
     }
 }

@@ -18,6 +18,8 @@ function setInputMasks(jQuery) {
         format: 'Y/m/d H:i',
         mask: true
     });
+
+    //jQuery(".mask-date").mask("99/99/9999");
 }
 
 /**

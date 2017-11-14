@@ -6,12 +6,12 @@
 /* GRAPH                                     */
 /*********************************************/
 
-function drawGraph(data){
+function drawGraph(data) {
     // Call function to draw the Radar chart
-    if(data.constructor === Object){
+    if (data.constructor === Object) {
         GraphChart.draw(data);
 
-    }else if(typeof data === "string"){
+    } else if (typeof data === "string") {
         d3.json(data, function (error, data) {
             if (error) throw error;
             GraphChart.draw(data);
@@ -27,17 +27,16 @@ var GraphChart = {
 };
 
 
-
 /*********************************************/
 /* TREEMAP                                   */
 /*********************************************/
 function drawTreemap(datFn01) {
 
     // Call function to draw the Radar chart
-    if(datFn01.constructor === Object){
+    if (datFn01.constructor === Object) {
         TreemapChart.draw(datFn01);
 
-    }else if(typeof datFn01 === "string"){
+    } else if (typeof datFn01 === "string") {
         d3.json(datFn01, function (error, data) {
             if (error) throw error;
             TreemapChart.draw(data);
@@ -82,7 +81,6 @@ var TreemapChart = {
             .paddingTop(19)
             .paddingInner(1)
             .round(true);
-
 
 
         var root = d3.hierarchy(data)
@@ -172,13 +170,13 @@ function drawRadar(data, targetId) {
     };
 
     // Call function to draw the Radar chart
-    if(data.constructor === Array){
-        RadarChart.draw("#"+targetId, data, config);
+    if (data.constructor === Array) {
+        RadarChart.draw("#" + targetId, data, config);
 
-    }else if(typeof data === "string"){
+    } else if (typeof data === "string") {
         d3.json(data, function (error, data) {
             if (error) throw error;
-            RadarChart.draw("#"+targetId, data, config);
+            RadarChart.draw("#" + targetId, data, config);
         });
     }
 
@@ -415,3 +413,367 @@ var RadarChart = {
         });
     }
 };
+
+
+/*********************************************/
+/* PARALLEL COORDINATES                      */
+/*********************************************/
+function drawParallelCoordinates(data, targetId) {
+    var width = 800,
+        height = 500;
+
+    var options = {};
+
+    // Call function to draw the Radar chart
+    if (data.constructor === Array) {
+        ParallelCoordinatesChart.draw(data, targetId, options);
+
+    } else if (typeof data === "string") {
+        d3.json(data, function (error, data) {
+            if (error) throw error;
+            ParallelCoordinatesChart.draw(data, targetId, options);
+        });
+    }
+
+    var svg = d3.select('body')
+        .selectAll('svg')
+        .append('svg')
+        .attr("width", width)
+        .attr("height", height);
+}
+
+var ParallelCoordinatesChart = {
+    draw: function (data, targetId, options) {
+        var margin = {top: 50, right: 160, bottom: 20, left: 120},
+            width = 1000,
+            height = 340;
+
+        var devicePixelRatio = window.devicePixelRatio || 1;
+
+        var color = d3.scale.ordinal()
+            .range(["#5DA5B3", "#D58323", "#DD6CA7", "#54AF52", "#8C92E8", "#E15E5A", "#725D82", "#776327", "#50AB84", "#954D56", "#AB9C27", "#517C3F", "#9D5130", "#357468", "#5E9ACF", "#C47DCB", "#7D9E33", "#DB7F85", "#BA89AD", "#4C6C86", "#B59248", "#D8597D", "#944F7E", "#D67D4B", "#8F86C2"]);
+
+        var types = {
+            "Number": {
+                key: "Number",
+                coerce: function (d) {
+                    return +d;
+                },
+                extent: d3.extent,
+                within: function (d, extent) {
+                    return extent[0] <= d && d <= extent[1];
+                },
+                defaultScale: d3.scale.linear().range([height, 0])
+            },
+            "String": {
+                key: "String",
+                coerce: String,
+                extent: function (data) {
+                    return data.sort();
+                },
+                within: function (d, extent, dim) {
+                    return extent[0] <= dim.scale(d) && dim.scale(d) <= extent[1];
+                },
+                defaultScale: d3.scale.ordinal().rangePoints([0, height])
+            },
+            "Date": {
+                key: "Date",
+                coerce: function (d) {
+                    return new Date(d);
+                },
+                extent: d3.extent,
+                within: function (d, extent) {
+                    return extent[0] <= d && d <= extent[1];
+                },
+                defaultScale: d3.time.scale().range([0, height])
+            }
+        };
+
+        var dimensions = [
+            {
+                key: "researcher",
+                description: "Researcher",
+                type: types["String"],
+                axis: d3.svg.axis().orient("left")
+            },{
+                key: "date",
+                description: "Date",
+                type: types["String"],
+                axis: d3.svg.axis().orient("left")
+            },{
+                key: "approved",
+                description: "Approved?",
+                type: types["String"],
+                axis: d3.svg.axis().orient("left")
+            },{
+                key: "documentation",
+                description: "Documentation",
+                type: types["Number"],
+                domain: [0, 10]
+            },{
+                key: "ease_of_use",
+                description: "Ease of Use",
+                type: types["Number"],
+                domain: [0, 10]
+            },{
+                key: "reliability",
+                description: "Reliability",
+                type: types["Number"],
+                domain: [0, 10]
+            },{
+                key: "performance",
+                description: "Performance",
+                type: types["Number"],
+                domain: [0, 10]
+            },{
+                key: "disponibility",
+                description: "Disponibility",
+                type: types["Number"],
+                domain: [0, 10]
+            }
+        ];
+
+        var xscale = d3.scale.ordinal()
+            .domain(d3.range(dimensions.length))
+            .rangePoints([0, width]);
+
+        var yAxis = d3.svg.axis()
+            .orient("left");
+
+        var container = d3.select("#"+targetId).append("div")
+            .attr("class", "parcoords")
+            .style("width", width + margin.left + margin.right + "px")
+            .style("height", height + margin.top + margin.bottom + "px");
+
+        var svg = container.append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var canvas = container.append("canvas")
+            .attr("width", (width + 1) * devicePixelRatio)
+            .attr("height", (height + 1) * devicePixelRatio)
+            .style("width", (width + 1) + "px")
+            .style("height", (height + 1) + "px")
+            .style("margin-top", margin.top + "px")
+            .style("margin-left", margin.left + "px");
+
+        var ctx = canvas.node().getContext("2d");
+        ctx.globalCompositeOperation = 'darken';
+        ctx.globalAlpha = 0.15;
+        ctx.lineWidth = 1.5;
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+
+        var axes = svg.selectAll(".axis")
+            .data(dimensions)
+            .enter().append("g")
+            .attr("class", function (d) {
+                return "axis " + d.key;
+            })
+            .attr("transform", function (d, i) {
+                return "translate(" + xscale(i) + ")";
+            });
+
+
+
+        // type/dimension default setting happens here
+        dimensions.forEach(function (dim) {
+            if (!("domain" in dim)) {
+                // detect domain using dimension type's extent function
+                dim.domain = d3.functor(dim.type.extent)(data.map(function (d) {
+                    return d[dim.key];
+                }));
+
+                // TODO - this line only works because the data encodes data with integers
+                // Sorting/comparing should be defined at the type/dimension level
+                dim.domain.sort(function (a, b) {
+                    return a - b;
+                });
+            }
+            if (!("scale" in dim)) {
+                // use type's default scale for dimension
+                dim.scale = dim.type.defaultScale.copy();
+            }
+            dim.scale.domain(dim.domain);
+        });
+
+        var render = renderQueue(draw).rate(30);
+
+        ctx.clearRect(0, 0, width + 1, height + 1);
+        ctx.globalAlpha = d3.min([0.75 / Math.pow(data.length, 0.3), 1]);
+        render(data);
+
+        axes.append("g")
+            .each(function (d) {
+                var renderAxis = "axis" in d
+                    ? d.axis.scale(d.scale)  // custom axis
+                    : yAxis.scale(d.scale);  // default axis
+                d3.select(this).call(renderAxis);
+            })
+            .append("text")
+            .attr("class", "title")
+            .attr("text-anchor", "start")
+            .text(function (d) {
+                return "description" in d ? d.description : d.key;
+            });
+
+        // Add and store a brush for each axis.
+        axes.append("g")
+            .attr("class", "brush")
+            .each(function (d) {
+                d3.select(this).call(d.brush = d3.svg.brush()
+                    .y(d.scale)
+                    .on("brushstart", brushstart)
+                    .on("brush", brush));
+            })
+            .selectAll("rect")
+            .attr("x", -8)
+            .attr("width", 16);
+
+        d3.selectAll(".axis.food_group .tick text")
+            .style("fill", color);
+
+
+        function project(d) {
+            return dimensions.map(function (p, i) {
+                if (d[p.key] === null) return null;
+                return [xscale(i), p.scale(d[p.key])];
+            });
+        };
+
+        function draw(d) {
+            ctx.strokeStyle = color(d.food_group);
+            ctx.beginPath();
+            var coords = project(d);
+            coords.forEach(function (p, i) {
+                // this tricky bit avoids rendering null values as 0
+                if (p === null) {
+                    // this bit renders horizontal lines on the previous/next
+                    // dimensions, so that sandwiched null values are visible
+                    if (i > 0) {
+                        var prev = coords[i - 1];
+                        if (prev !== null) {
+                            ctx.moveTo(prev[0], prev[1]);
+                            ctx.lineTo(prev[0] + 6, prev[1]);
+                        }
+                    }
+                    if (i < coords.length - 1) {
+                        var next = coords[i + 1];
+                        if (next !== null) {
+                            ctx.moveTo(next[0] - 6, next[1]);
+                        }
+                    }
+                    return;
+                }
+
+                if (i == 0) {
+                    ctx.moveTo(p[0], p[1]);
+                    return;
+                }
+
+                ctx.lineTo(p[0], p[1]);
+            });
+            ctx.stroke();
+        }
+
+        function brushstart() {
+            d3.event.sourceEvent.stopPropagation();
+        }
+
+        // Handles a brush event, toggling the display of foreground lines.
+        function brush() {
+            var actives = dimensions.filter(function (p) {
+                    return !p.brush.empty();
+                }),
+                extents = actives.map(function (p) {
+                    return p.brush.extent();
+                });
+
+            var selected = data.filter(function (d) {
+                if (actives.every(function (dim, i) {
+                        // test if point is within extents for each active brush
+                        return dim.type.within(d[dim.key], extents[i], dim);
+                    })) {
+                    return true;
+                }
+            });
+
+            ctx.clearRect(0, 0, width + 1, height + 1);
+            ctx.globalAlpha = d3.min([0.75 / Math.pow(selected.length, 0.3), 1]);
+            render(selected);
+        }
+
+    }
+};
+
+var renderQueue = (function(func) {
+    var _queue = [],                  // data to be rendered
+        _rate = 1000,                 // number of calls per frame
+        _invalidate = function() {},  // invalidate last render queue
+        _clear = function() {};       // clearing function
+
+    var rq = function(data) {
+        if (data) rq.data(data);
+        _invalidate();
+        _clear();
+        rq.render();
+    };
+
+    rq.render = function() {
+        var valid = true;
+        _invalidate = rq.invalidate = function() {
+            valid = false;
+        };
+
+        function doFrame() {
+            if (!valid) return true;
+            var chunk = _queue.splice(0,_rate);
+            chunk.map(func);
+            timer_frame(doFrame);
+        }
+
+        doFrame();
+    };
+
+    rq.data = function(data) {
+        _invalidate();
+        _queue = data.slice(0);   // creates a copy of the data
+        return rq;
+    };
+
+    rq.add = function(data) {
+        _queue = _queue.concat(data);
+    };
+
+    rq.rate = function(value) {
+        if (!arguments.length) return _rate;
+        _rate = value;
+        return rq;
+    };
+
+    rq.remaining = function() {
+        return _queue.length;
+    };
+
+    // clear the canvas
+    rq.clear = function(func) {
+        if (!arguments.length) {
+            _clear();
+            return rq;
+        }
+        _clear = func;
+        return rq;
+    };
+
+    rq.invalidate = _invalidate;
+
+    var timer_frame = window.requestAnimationFrame
+        || window.webkitRequestAnimationFrame
+        || window.mozRequestAnimationFrame
+        || window.oRequestAnimationFrame
+        || window.msRequestAnimationFrame
+        || function(callback) { setTimeout(callback, 17); };
+
+    return rq;
+});

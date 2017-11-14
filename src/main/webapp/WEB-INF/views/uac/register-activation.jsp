@@ -70,11 +70,11 @@
                                         <label for="birthday">Birthday
                                             <i class="fa fa-info-circle text-info"
                                                data-toggle="tooltip" data-placement="top"
-                                               title="Format: dd/mm/yyyy"></i>
+                                               title="Format: yyyy/mm/dd"></i>
                                         </label>
                                         <div class="input-group">
                                             <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                            <input id="birthday" name="birthday" class="form-control mask-date">
+                                            <input id="birthday" name="birthday" class="form-control datepicker">
                                         </div>
                                     </div>
                                 </div>
