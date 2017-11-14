@@ -56,7 +56,7 @@
                         <label class="col-sm-2">Name</label>
                         <div class="col-sm-10">${discipline.name}</div>
                     </div>
-                    
+
                     <div class="row">
                         <label class="col-sm-2">Parent</label>
                         <div class="col-sm-10">${discipline.parent.name}</div>
@@ -88,12 +88,14 @@
 
                 <br/>
                 <spring:url value="/disciplines" var="urldisciplines" />
+                <spring:url value="/disciplines/${subdiscipline.id}/update" var="urlUpdate" />
                 <nav class="navbar navbar-inverse">
                     <div>
                         <ul class="nav navbar-nav navbar-left">
                             <button onclick="location.href = '${urldisciplines}'" class="btn btn-link">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Back
                             </button>
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
                         </ul>
                     </div>
                 </nav>

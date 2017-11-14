@@ -88,12 +88,12 @@
 
                 <br/>
                 <spring:url value="/researchGroups" var="urlresearchGroups" />
+                <spring:url value="/researchGroups/${researchGroup.id}/update" var="urlUpdate" />
                 <nav class="navbar navbar-inverse">
                     <div>
                         <ul class="nav navbar-nav navbar-left">
-                            <button onclick="location.href = '${urlresearchGroups}'" class="btn btn-link">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Back
-                            </button>
+                            <button onclick="location.href = '${urlresearchGroups}'" class="btn btn-link"><span class="glyphicon glyphicon-arrow-left"></span> Back </button>
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
                         </ul>
                     </div>
                 </nav>

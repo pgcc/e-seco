@@ -6,11 +6,13 @@
 package br.ufjf.pgcc.eseco.app.service;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
+import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.service.core.CityService;
 import br.ufjf.pgcc.eseco.domain.service.core.CountryService;
 import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
+import br.ufjf.pgcc.eseco.domain.service.core.ResearchGroupService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.core.StateService;
 import com.google.gson.Gson;
@@ -64,7 +66,12 @@ public class MendeleyService {
     /**
      * Mendeley profiles endpoint
      */
-    private static final String DISCIPLINES_URL = "https://api.mendeley.com/subject_areas";
+    private static final String SEARCH_DISCIPLINES_URL = "https://api.mendeley.com/subject_areas";
+
+    /**
+     * Mendeley profiles endpoint
+     */
+    private static final String SEARCH_GROUPS_URL = "https://api.mendeley.com/groups/v2";
 
     /**
      * Mendeley search profiles endpoint
@@ -161,7 +168,7 @@ public class MendeleyService {
         url.append("&");
         url.append("email=").append(email);
 
-        String response = searchGET(url.toString());
+        String response = searchGET(url.toString(), false);
         System.out.println(response);
         return parseResearcherList(response);
     }
@@ -180,7 +187,7 @@ public class MendeleyService {
         url.append("&");
         url.append("scopus_author_id=").append(scopusId);
 
-        String response = searchGET(url.toString());
+        String response = searchGET(url.toString(), false);
         return parseResearcherList(response);
     }
 
@@ -207,7 +214,7 @@ public class MendeleyService {
         url.append("&");
         url.append("limit=").append(10);
 
-        String response = searchGET(url.toString());
+        String response = searchGET(url.toString(), false);
         return parseResearcherList(response);
     }
 
@@ -218,13 +225,30 @@ public class MendeleyService {
      */
     public ArrayList<Discipline> searchDisciplines() throws IOException {
 
-        StringBuilder url = new StringBuilder(DISCIPLINES_URL);
+        StringBuilder url = new StringBuilder(SEARCH_DISCIPLINES_URL);
         url.append("?");
         url.append("access_token=").append(accessToken.getAccessToken());
 
-        String response = searchGET(url.toString());
+        String response = searchGET(url.toString(), false);
         System.out.println(response);
         return parseDisciplineList(response);
+    }
+
+    /**
+     * Find the Disciplines
+     *
+     * @return
+     * @throws java.io.IOException
+     */
+    public ArrayList<ResearchGroup> searchResearchGroups() throws IOException {
+
+        StringBuilder url = new StringBuilder(SEARCH_GROUPS_URL);
+        url.append("?");
+        url.append("access_token=").append(accessToken.getAccessToken());
+
+        String response = searchGET(url.toString(), true);
+        System.out.println(response);
+        return parseResearchGroupList(response);
     }
 
     /**
@@ -235,13 +259,17 @@ public class MendeleyService {
      * @throws MalformedURLException
      * @throws IOException
      */
-    private String searchGET(String url) throws MalformedURLException, IOException {
+    private String searchGET(String url, boolean acceptMendeleyGroup) throws MalformedURLException, IOException {
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("GET");
         con.setDoOutput(true);
+        if (acceptMendeleyGroup) {
+            con.setRequestProperty("Accept", "application/vnd.mendeley-group-list+json");
+            con.setRequestProperty("Authorization", "Bearer "+accessToken.getAccessToken());
+        }
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), "UTF-8"))) {
             String output;
@@ -293,6 +321,27 @@ public class MendeleyService {
         ArrayList<Discipline> list = new ArrayList<>();
         for (Object obj : array) {
             list.add((Discipline) obj);
+        }
+        return list;
+    }
+
+    /**
+     * Convert the string result into a Discipline list
+     *
+     * @param response
+     * @return
+     */
+    private ArrayList<ResearchGroup> parseResearchGroupList(String response) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ResearchGroup.class, ResearchGroupService.getDeserialiser());
+        Gson gson = gsonBuilder.create();
+        JsonElement json = new JsonParser().parse(response);
+
+        Object[] array = (Object[]) java.lang.reflect.Array.newInstance(ResearchGroup.class, 1);
+        array = gson.fromJson(json, array.getClass());
+        ArrayList<ResearchGroup> list = new ArrayList<>();
+        for (Object obj : array) {
+            list.add((ResearchGroup) obj);
         }
         return list;
     }

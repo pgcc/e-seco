@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.app.config;
 import br.ufjf.pgcc.eseco.app.interceptor.AuthenticatorInterceptor;
 import br.ufjf.pgcc.eseco.app.interceptor.NotificationsInterceptor;
 import br.ufjf.pgcc.eseco.app.converter.DisciplineIdToDisciplineConverter;
+import br.ufjf.pgcc.eseco.app.converter.ExperimentIdToExperientConverter;
 import br.ufjf.pgcc.eseco.app.converter.InstitutionIdToInstitutionConverter;
 import br.ufjf.pgcc.eseco.app.converter.InterestIdToInterestConverter;
 import br.ufjf.pgcc.eseco.app.converter.ResearchGroupIdToResearchGroupConverter;
@@ -62,6 +63,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new WorkflowServiceIdToWorkflowServiceConverter());
         registry.addConverter(new StringToDateConverter());
         registry.addConverter(new InterestIdToInterestConverter());
+        registry.addConverter(new ExperimentIdToExperientConverter());
     }
     
 }

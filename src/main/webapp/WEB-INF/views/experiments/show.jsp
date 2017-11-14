@@ -110,91 +110,94 @@
                         <label class="col-sm-2">Ended in</label>
                         <div class="col-sm-10">${experiment.dateEnded}</div>
                     </div>
-                </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Institutions                                
-                                </a>
-                                <span class="badge">${experiment.institutions.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${experiment.institutions}" var="institution">
-                                        <li class="list-group-item"><a href="<c:url value="/institutions/${institution.id}"/>">${institution.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Institutions                                
+                                    </a>
+                                    <span class="badge">${experiment.institutions.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.institutions}" var="institution">
+                                            <li class="list-group-item"><a href="<c:url value="/institutions/${institution.id}"/>">${institution.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    Research Groups
-                                </a>
-                                <span class="badge">${experiment.researchGroups.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${experiment.researchGroups}" var="researchGroup">
-                                        <li class="list-group-item"><a href="<c:url value="/researchGroups/${researchGroup.id}"/>">${researchGroup.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingFour">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        Research Groups
+                                    </a>
+                                    <span class="badge">${experiment.researchGroups.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.researchGroups}" var="researchGroup">
+                                            <li class="list-group-item"><a href="<c:url value="/researchGroups/${researchGroup.id}"/>">${researchGroup.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Researchers
-                                </a>
-                                <span class="badge">${experiment.researchers.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${experiment.researchers}" var="researcher">
-                                        <li class="list-group-item"><a href="<c:url value="/researchers/${researcher.id}"/>">${researcher.displayName}</a></li>
-                                        </c:forEach>
-                                </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Researchers
+                                    </a>
+                                    <span class="badge">${experiment.researchers.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.researchers}" var="researcher">
+                                            <li class="list-group-item"><a href="<c:url value="/researchers/${researcher.id}"/>">${researcher.displayName}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                    Workflows                                
-                                </a>
-                                <span class="badge">${experiment.workflows.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${experiment.workflows}" var="workflow">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">${workflow.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        Workflows                                
+                                    </a>
+                                    <span class="badge">${experiment.workflows.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.workflows}" var="workflow">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">${workflow.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>
+                </div>                
                 <br/>
                 <spring:url value="/experiments" var="urlExperiments" />
+                <spring:url value="/experiments/${experiment.id}/update" var="urlUpdate" />
+                <spring:url value="/experiments/${experiment.id}/workflows/add" var="urlAddWorkflow" />
+                <spring:url value="/experiments/${experiment.id}/addProvenance" var="urlAddProvenance" />
                 <spring:url value="/experiments/${experiment.id}/experimentPhaseReport/add" var="urlExperimentPhaseReport" />
                 <nav class="navbar navbar-inverse">
                     <div>
@@ -202,10 +205,18 @@
                             <button onclick="location.href = '${urlExperiments}'" class="btn btn-link">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Back
                             </button>
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
+                            <c:if test="${experiment != null && sessionScope.problem_investigation}">
+                                <a href = "https://parsif.al/" target="_blank" class="btn btn-link"><span class="glyphicon glyphicon-book"></span> Systematic Literature Review</a>
+                            </c:if>
+                            <c:if test="${experiment != null && sessionScope.experiment_execution}">
+                                <button onclick="location.href = '${urlAddWorkflow}'" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span> Add Workflow</button>
+                            </c:if>
+                            <c:if test="${experiment != null && sessionScope.experiment_execution && experiment.workflows.size() > 0}">
+                                <button onclick="location.href = '${urlAddProvenance}'" class="btn btn-link"><span class="glyphicon glyphicon-import"></span> Import Provenance Data</button>
+                            </c:if>
                             <c:if test="${!sessionScope.experiment_finished}">
-                                <button onclick="location.href = '${urlExperimentPhaseReport}'" class="btn btn-link">
-                                    <span class="glyphicon glyphicon-arrow-right"></span> Go To Next Phase
-                                </button>
+                                <button onclick="location.href = '${urlExperimentPhaseReport}'" class="btn btn-link"><span class="glyphicon glyphicon-arrow-right"></span> Go To Next Phase</button>
                             </c:if>
                         </ul>
                     </div>

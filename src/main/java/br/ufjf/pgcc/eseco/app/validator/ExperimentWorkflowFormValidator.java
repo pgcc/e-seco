@@ -26,9 +26,9 @@ public class ExperimentWorkflowFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.experimentWorkflowForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "NotEmpty.experimentWorkflowForm.description");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "version", "NotEmpty.experimentWorkflowForm.version");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "wfms.id", "NotEmpty.experimentWorkflowForm.wfms");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "wfms", "NotEmpty.experimentWorkflowForm.wfms");
         if (workflow.getWfms().getId() == 0) {
-            errors.rejectValue("wfms.id", "NotEmpty.experimentWorkflowForm.wfms");
+            errors.rejectValue("wfms", "NotEmpty.experimentWorkflowForm.wfms");
         }
     }
 

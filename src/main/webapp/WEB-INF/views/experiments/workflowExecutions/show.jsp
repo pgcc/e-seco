@@ -73,59 +73,59 @@
                         <label class="col-sm-2">End Time</label>
                         <div class="col-sm-10">${workflowExecution.endTime}</div>
                     </div>
-                </div>
-
-
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Inputs                                
-                                </a>
-                                <span class="badge">${workflowExecution.inputs.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${workflowExecution.inputs}" var="input">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/entities/${input.entity.id}"/>">${input.entity.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Inputs                                
+                                    </a>
+                                    <span class="badge">${workflowExecution.inputs.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${workflowExecution.inputs}" var="input">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/entities/${input.entity.id}"/>">${input.entity.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    Outputs
-                                </a>
-                                <span class="badge">${workflowExecution.outputs.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${workflowExecution.outputs}" var="output">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/entities/${output.entity.id}"/>">${output.entity.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Outputs
+                                    </a>
+                                    <span class="badge">${workflowExecution.outputs.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${workflowExecution.outputs}" var="output">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/entities/${output.entity.id}"/>">${output.entity.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
                 <br/>
                 <spring:url value="/experiments/workflowExecutions" var="urlWorkflowExecutions" />
+                <spring:url value="/experiments/workflowExecutions/${workflowExecution.id}/update" var="urlUpdate" />
                 <nav class="navbar navbar-inverse">
                     <div>
                         <ul class="nav navbar-nav navbar-left">
                             <button onclick="location.href = '${urlWorkflowExecutions}'" class="btn btn-link">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Back
                             </button>
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
                         </ul>
                     </div>
                 </nav>

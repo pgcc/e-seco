@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.pgcc.eseco.app.validator.InstitutionFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.core.Institution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.core.CityService;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ public class InstitutionsController {
     InstitutionFormValidator institutionFormValidator;
 
     private InstitutionService institutionService;
+    private CityService cityService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -38,8 +40,9 @@ public class InstitutionsController {
     }
 
     @Autowired
-    public void setInstitutionService(InstitutionService institutionService) {
+    public void setInstitutionService(InstitutionService institutionService, CityService cityService) {
         this.institutionService = institutionService;
+        this.cityService = cityService;
     }
 
     @RequestMapping(value = "/institutions", method = RequestMethod.GET)
@@ -146,7 +149,7 @@ public class InstitutionsController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-
+        model.addAttribute("citiesList", cityService.findAll());
     }
 
 }

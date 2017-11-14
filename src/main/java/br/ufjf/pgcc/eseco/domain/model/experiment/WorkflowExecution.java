@@ -45,6 +45,10 @@ public class WorkflowExecution {
     @JoinColumn(name = "author_id", nullable = false)
     private Researcher author;
 
+    @ManyToOne
+    @JoinColumn(name = "experiment_id", nullable = false)
+    private Experiment experiment;
+
     @Column(name = "start_time", columnDefinition = "DATETIME")
     @Temporal(value = TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
@@ -118,6 +122,14 @@ public class WorkflowExecution {
 
     public void setAuthor(Researcher author) {
         this.author = author;
+    }
+
+    public Experiment getExperiment() {
+        return experiment;
+    }
+
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
     }
 
     public Date getStartTime() {

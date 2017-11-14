@@ -60,8 +60,16 @@
                     <strong>${msg}</strong>
                 </div>
             </c:if> 
+            
+            <div class="navbar">
+                <ul class="nav navbar-nav navbar-left">
+                    <h2>All Wfms</h2>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="btn btn-lg btn-link"><a href="<c:url value="/experiments/wfms/add"/>">Add Wfms</a></li>
+                </ul>
+            </div>           
 
-            <h2>All Wfms</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">

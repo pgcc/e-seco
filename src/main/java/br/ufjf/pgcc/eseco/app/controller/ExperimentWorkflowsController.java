@@ -2,11 +2,9 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
-import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
-import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
@@ -65,9 +63,8 @@ public class ExperimentWorkflowsController {
 
     }
 
-    @RequestMapping(value = "/experiments/workflows/add", method = RequestMethod.GET)
-    public String showAddWorkflowForm(Model model, HttpSession session) {
-
+    @RequestMapping(value = "/experiments/{id}/workflows/add", method = RequestMethod.GET)
+    public String showAddWorkflowForm(@PathVariable("id") int experimentId, Model model, HttpSession session) {
         LOGGER.info("showAddWorkflowForm()");
 
         Workflow workflow = new Workflow();
@@ -75,7 +72,6 @@ public class ExperimentWorkflowsController {
         // set default value
         User user = (User) session.getAttribute("logged_user");
         workflow.setAuthor(user.getAgent().getResearcher());
-        int experimentId = (Integer) session.getAttribute("current_experiment_id");
         if (experimentId != 0) {
             Experiment experiment = experimentService.find(experimentId);
             ArrayList<Experiment> experiments = new ArrayList<>();
@@ -88,7 +84,27 @@ public class ExperimentWorkflowsController {
         workflow.setWfms(wfms);
 
         model.addAttribute("workflowForm", workflow);
-        session.setAttribute("current_experiment_id", experimentId);
+        populateDefaultModel(model);
+
+        return "experiments/workflows/workflows-form";
+    }
+    
+    @RequestMapping(value = "/experiments/workflows/add", method = RequestMethod.GET)
+    public String showAddWorkflowForm(Model model, HttpSession session) {
+
+        LOGGER.info("showAddWorkflowForm()");
+
+        Workflow workflow = new Workflow();
+
+        // set default value
+        User user = (User) session.getAttribute("logged_user");
+        workflow.setAuthor(user.getAgent().getResearcher());
+        workflow.setDateCreated(new Date());
+        workflow.setVersion("1.0.0");
+        Wfms wfms = new Wfms();
+        workflow.setWfms(wfms);
+
+        model.addAttribute("workflowForm", workflow);
         populateDefaultModel(model);
 
         return "experiments/workflows/workflows-form";
@@ -125,12 +141,12 @@ public class ExperimentWorkflowsController {
 
             try {
                 workflow = workflowService.saveOrUpdate(workflow);
-                if (session.getAttribute("current_experiment_id") != null) {
-                    int experimentId = (Integer) session.getAttribute("current_experiment_id");
-                    Experiment experiment = experimentService.find(experimentId);
+                for (Experiment experiment : workflow.getExperiments()){
+                    experiment = experimentService.find(experiment.getId());
                     experiment.getWorkflows().add(workflow);
                     experimentService.saveOrUpdate(experiment);
                 }
+               
                 return "redirect:/experiments/workflows/" + workflow.getId();
 
             } catch (Exception ex) {
@@ -178,7 +194,7 @@ public class ExperimentWorkflowsController {
     private void populateDefaultModel(Model model) {
 
         model.addAttribute("wfmsList", wfmsService.findAll());
-
+        model.addAttribute("experimentsList", experimentService.findAll());
     }
 
 }

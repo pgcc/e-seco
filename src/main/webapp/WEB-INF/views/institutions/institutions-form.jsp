@@ -62,6 +62,16 @@
                         </div>
                     </div>
                 </spring:bind>
+                
+                <spring:bind path="city">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-10">
+                            <f:select path="city.id" items="${citiesList}" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="city" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

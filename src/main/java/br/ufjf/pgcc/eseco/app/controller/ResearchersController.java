@@ -1,7 +1,6 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.MendeleyService;
-import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowExecutionFormValidator;
 import br.ufjf.pgcc.eseco.app.validator.ResearcherFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
@@ -15,7 +14,6 @@ import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import br.ufjf.pgcc.eseco.domain.service.core.InterestService;
-import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowExecutionService;
 import java.io.IOException;
 
 import java.util.List;
@@ -152,9 +150,9 @@ public class ResearchersController extends CommonController {
                 model.addAttribute("msg", ex);
             }
         }
-        Agent agent = ((User) session.getAttribute("logged_user")).getAgent();
-        researcher.setAgent(agent);
-        model.addAttribute("researcherForm", researcher);
+//        Agent agent = ((User) session.getAttribute("logged_user")).getAgent();
+//        researcher.setAgent(agent);
+//        model.addAttribute("researcherForm", researcher);
         populateDefaultModel(model);
         return "researchers/researcher-form";
     }

@@ -11,6 +11,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Data;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Document;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
@@ -89,26 +90,29 @@ public class ImportProvenanceDataService {
     /**
      * Imports the execution provenance data extracted from a WfMS
      *
+     * @param experiment
      * @param workflow
      * @param filePath
      * @param researcher
      * @throws java.lang.Exception
      */
-    public void importProvenanceData(Workflow workflow, String filePath, Researcher researcher) throws Exception {
+    public void importProvenanceData(Experiment experiment, Workflow workflow, String filePath, Researcher researcher) throws Exception {
         switch (workflow.getWfms().getName()) {
             case "Kepler":
-                importKeplerData(workflow, filePath, researcher);
+                importKeplerData(experiment, workflow, filePath, researcher);
         }
     }
 
     /**
      * Imports the execution provenance data extracted from Kepler
-     *
+     * 
      * @param experiment
      * @param workflow
      * @param filePath
+     * @param loggedResearcher
+     * @throws Exception 
      */
-    private void importKeplerData(Workflow workflow, String filePath, Researcher loggedResearcher) throws Exception {
+    private void importKeplerData(Experiment experiment, Workflow workflow, String filePath, Researcher loggedResearcher) throws Exception {
 
         LOGGER.log(Level.INFO, "Importing Kepler Provenance Data. ", filePath);
 
@@ -128,7 +132,6 @@ public class ImportProvenanceDataService {
                 String key = en.getKey();
                 JsonElement value = en.getValue();
                 String keplerId = value.getAsJsonObject().get("prov:label").getAsString();
-                System.out.println("agent: " + key + " name: " + keplerId);
 
                 Researcher findByKeplerId = researcherService.findByKeplerId(keplerId);
                 if (findByKeplerId != null) {
@@ -168,6 +171,7 @@ public class ImportProvenanceDataService {
             workflow = workflowService.saveOrUpdate(workflow);
 
             workflowExecution.setWorkflow(workflow);
+            workflowExecution.setExperiment(experiment);
             workflowExecution.setStartTime(Date.from(startDateTime.toInstant()));
             workflowExecution.setEndTime(Date.from(endDateTime.toInstant()));
             workflowExecution.setAuthor(loggedResearcher);
@@ -245,6 +249,9 @@ public class ImportProvenanceDataService {
             }
             if (workflowExecution.getOutputs() == null) {
                 workflowExecution.setOutputs(new ArrayList<Port>());
+            }            
+            if (workflowExecution.getActivityExecutions() == null) {
+                workflowExecution.setActivityExecutions(new ArrayList<ActivityExecution>());
             }
 
             //Imprt the Use relation
@@ -265,6 +272,7 @@ public class ImportProvenanceDataService {
                 activityExecutionService.saveOrUpdate(activityExecution);
 
                 workflowExecution.getInputs().add(port);
+                workflowExecution.getActivityExecutions().add(activityExecution);
                 workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
             }
 

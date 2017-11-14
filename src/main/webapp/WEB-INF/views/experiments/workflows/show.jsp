@@ -87,57 +87,58 @@
                         <label class="col-sm-2">Created in</label>
                         <div class="col-sm-10">${workflow.dateCreated}</div>
                     </div>
-
-                </div>
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    Activities                                
-                                </a>
-                                <span class="badge">${workflow.activities.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${workflow.activities}" var="activity">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Activities                                
+                                    </a>
+                                    <span class="badge">${workflow.activities.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${workflow.activities}" var="activity">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    Experiments
-                                </a>
-                                <span class="badge">${workflow.experiments.size()}</span>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                            <div class="panel-body">
-                                <ul class="list-group" >
-                                    <c:forEach items="${workflow.experiments}" var="experiment">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/${experiment.id}"/>">${experiment.name}</a></li>
-                                        </c:forEach>
-                                </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingFour">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        Experiments
+                                    </a>
+                                    <span class="badge">${workflow.experiments.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${workflow.experiments}" var="experiment">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/${experiment.id}"/>">${experiment.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <br/>
                 <spring:url value="/experiments/workflows" var="urlWorkflows" />
+                <spring:url value="/experiments/workflows/${workflow.id}/update" var="urlUpdate" />
                 <nav class="navbar navbar-inverse">
                     <div>
                         <ul class="nav navbar-nav navbar-left">
                             <button onclick="location.href = '${urlWorkflows}'" class="btn btn-link">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Back
                             </button>
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
                         </ul>
                     </div>
                 </nav>

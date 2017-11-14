@@ -2,10 +2,6 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.ImportProvenanceDataService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
-import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
-import br.ufjf.pgcc.eseco.domain.model.core.Institution;
-import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
@@ -22,9 +18,6 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -181,12 +174,11 @@ public class ExperimentsController {
 
         model.addAttribute("experiment", experiment);
         setSessionCurrentPhase(session, experiment);
-        session.setAttribute("current_experiment_id", id);
         return "experiments/show";
     }
 
     @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.GET)
-    public String showAddProvenanceDataForm(@PathVariable("id") int id, Model model) {
+    public String showAddProvenanceDataForm(@PathVariable("id") int id, Model model, HttpSession session) {
 
         LOGGER.log(Level.INFO, "showAddProvenanceDataForm() : {0}", id);
 
@@ -230,7 +222,7 @@ public class ExperimentsController {
         if (experiment.getWorkflows().size() == 1 && !file.isEmpty()) {
             Workflow workflow = workflowService.find(experiment.getWorkflows().get(0).getId());
             try {
-                importProvenanceDataService.importProvenanceData(workflow, file, user.getAgent().getResearcher());
+                importProvenanceDataService.importProvenanceData(experiment, workflow, file, user.getAgent().getResearcher());
                 redirectAttributes.addFlashAttribute("css", "success");
                 redirectAttributes.addFlashAttribute("msg", "Provenance Data successfully imported!");
                 return "redirect:/experiments/" + experiment.getId();
@@ -239,6 +231,7 @@ public class ExperimentsController {
                 redirectAttributes.addFlashAttribute("css", "danger");
                 redirectAttributes.addFlashAttribute("msg", ex.getMessage());
                 LOGGER.log(Level.SEVERE, ex.getMessage());
+                return "redirect:/experiments/" + experiment.getId() + "/addProvenance";
             }
         }
         model.addAttribute("file", file);

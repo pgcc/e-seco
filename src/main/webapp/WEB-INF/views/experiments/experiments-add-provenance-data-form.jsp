@@ -25,7 +25,7 @@
     <jsp:attribute name="breadcrumbs">
         <ol class = "breadcrumb">
             <li> <a class = "fa fa-street-view" href = "<c:url value="/experiments"/>"> Experiments </a></li>
-            <li> <a href = "<c:url value="/experiments/${sessionScope.current_experiment_id}"/>"> View </a></li>
+            <li> <a href = "<c:url value="/experiments/${experimentForm.id}"/>"> View </a></li>
             <li> <a href = "<c:url value="/experiments/${experimentForm.id}/addProvenance"/>"> Add Provenance </a></li>
         </ol>
     </jsp:attribute>
@@ -35,6 +35,15 @@
 
         <div
             class = "container-fluid">
+
+            <c:if test="${not empty msg}">
+                <div class="alert alert-${css} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>${msg}</strong>
+                </div>
+            </c:if>
             <h2> Import Provenance Data </h2>               
             <br />
             <spring:url value="/experiments/saveProvenance/" var="saveProvenanceUrl" />            

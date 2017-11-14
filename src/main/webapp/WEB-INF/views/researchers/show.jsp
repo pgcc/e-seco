@@ -62,7 +62,7 @@
                             <img src="${researcher.photo}" class="img-rounded img-responsive" alt="" style="max-width: 200px;">
                         </div>
                     </div>
-                        
+
                     <div class="row">
                         <label class="col-sm-2">Academic Status</label>
                         <div class="col-sm-10">${researcher.academicStatus}</div>
@@ -81,7 +81,7 @@
                             </c:forEach>                    
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <label class="col-sm-2">Disciplines</label>
                         <div class="col-sm-10">
@@ -90,7 +90,7 @@
                             </c:forEach>                    
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <label class="col-sm-2">Research Interests</label>
                         <div class="col-sm-10">
@@ -99,15 +99,37 @@
                             </c:forEach>                    
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <label class="col-sm-2">Mendeley Id</label>
                         <div class="col-sm-10">${researcher.mendeleyId}</div>
                     </div>
-                    
+
                     <div class="row">
                         <label class="col-sm-2">Kepler Id</label>
                         <div class="col-sm-10">${researcher.keplerId}</div>
+                    </div>
+
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Research Groups                                
+                                    </a>
+                                    <span class="badge">${researcher.researchGroups.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${researcher.researchGroups}" var="group">
+                                            <li class="list-group-item"><a href="<c:url value="/researchGroups/${group.id}"/>">${group.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

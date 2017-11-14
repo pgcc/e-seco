@@ -1,6 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
 
 <t:layout-app>
@@ -41,7 +44,7 @@
                 <div class="alert alert-${css} alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"
                             aria-label="Close">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">Ã—</span>
                     </button>
                     <strong>${msg}</strong>
                 </div>
@@ -75,7 +78,7 @@
             <f:form class="form form-horizontal" method="post" action="${register}" modelAttribute="researcherForm" >                            
                 <spring:bind path="photo">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Photo</label>
+                        <label class="col-sm-2 control-label">Photo URL</label>
                         <div class="col-sm-10">                 
                             <f:input path="photo" class="form-control" type="text"/>
                         </div>
@@ -138,6 +141,7 @@
                         <label class="col-sm-2 control-label">Institutions</label>
                         <div class="col-sm-10">
                             <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="institutions" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>

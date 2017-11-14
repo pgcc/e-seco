@@ -34,7 +34,7 @@ public class Activity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id")
     private Researcher author;
 
     @Column(name = "date_created", columnDefinition = "DATE")

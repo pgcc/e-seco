@@ -24,7 +24,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments ${sessionScope.current_experiment_id}</a></li>
+            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
             <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
                 <c:choose>
                     <c:when test="${workflowForm['new']}">
@@ -78,11 +78,14 @@
                         </div>
                     </div>
                 </spring:bind>
-                <spring:bind path="wfms.id">
+                <spring:bind path="wfms">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Wfms</label>
                         <div class="col-sm-10">
                             <f:radiobuttons path="wfms.id" items="${wfmsList}" itemLabel="name" itemValue="id" element="label class='radio-inline'" />
+
+                        </div>
+                        <div class="col-sm-10 col-sm-offset-2">
                             <f:errors path="wfms" class="control-label" />
                         </div>
                     </div>
@@ -126,6 +129,16 @@
                         <div class="col-sm-10">
                             <f:input path="version" class="form-control" id="version" placeholder="Version" />
                             <f:errors path="version" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="experiments">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Experiments</label>
+                        <div class="col-sm-10">
+                            <f:select path="experiments" items="${experimentsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="experiments" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
