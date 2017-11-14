@@ -24,7 +24,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments"/>"><i class="fa fa-street-view"></i> Experiments</a></li>
             <li><a href="<c:url value="/experiments/${experiment.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
@@ -204,20 +204,7 @@
                         <ul class="nav navbar-nav navbar-left">
                             <button onclick="location.href = '${urlExperiments}'" class="btn btn-link">
                                 <span class="glyphicon glyphicon-arrow-left"></span> Back
-                            </button>
-                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
-                            <c:if test="${experiment != null && sessionScope.problem_investigation}">
-                                <a href = "https://parsif.al/" target="_blank" class="btn btn-link"><span class="glyphicon glyphicon-book"></span> Systematic Literature Review</a>
-                            </c:if>
-                            <c:if test="${experiment != null && sessionScope.experiment_execution}">
-                                <button onclick="location.href = '${urlAddWorkflow}'" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span> Add Workflow</button>
-                            </c:if>
-                            <c:if test="${experiment != null && sessionScope.experiment_execution && experiment.workflows.size() > 0}">
-                                <button onclick="location.href = '${urlAddProvenance}'" class="btn btn-link"><span class="glyphicon glyphicon-import"></span> Import Provenance Data</button>
-                            </c:if>
-                            <c:if test="${!sessionScope.experiment_finished}">
-                                <button onclick="location.href = '${urlExperimentPhaseReport}'" class="btn btn-link"><span class="glyphicon glyphicon-arrow-right"></span> Go To Next Phase</button>
-                            </c:if>
+                            </button>                            
                         </ul>
                     </div>
                 </nav>

@@ -24,7 +24,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/disciplines"/>"> Disciplines</a></li>
+            <li><a href="<c:url value="/disciplines"/>"><i class="fa fa-street-view"></i> Disciplines</a></li>
             <li><a href="<c:url value="/disciplines/${discipline.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
@@ -88,7 +88,7 @@
 
                 <br/>
                 <spring:url value="/disciplines" var="urldisciplines" />
-                <spring:url value="/disciplines/${subdiscipline.id}/update" var="urlUpdate" />
+                <spring:url value="/disciplines/${discipline.id}/update" var="urlUpdate" />
                 <nav class="navbar navbar-inverse">
                     <div>
                         <ul class="nav navbar-nav navbar-left">

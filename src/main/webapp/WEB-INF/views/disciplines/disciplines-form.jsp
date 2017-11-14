@@ -26,8 +26,15 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/disciplines"/>"> Disciplines</a></li>
-            <li><a href="<c:url value="/disciplines/add"/>">Add Discipline</a></li>
+            <li><a href="<c:url value="/disciplines"/>"><i class="fa fa-street-view"></i> Disciplines</a></li>
+            <c:choose>
+                <c:when test="${disciplineForm['new']}">
+                    <li><a href="<c:url value="/disciplines/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/disciplines/${disciplineForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 
@@ -45,7 +52,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            
+
             <spring:url value="/disciplines" var="disciplinesUrl" />
 
             <f:form class="form form-horizontal" method="post" modelAttribute="disciplineForm" 
@@ -62,9 +69,9 @@
                         </div>
                     </div>
                 </spring:bind>
-                
 
-                
+
+
                 <spring:bind path="parent.id">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Parent</label>
@@ -74,7 +81,7 @@
                         </div>
                     </div>
                 </spring:bind>
-                
+
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

@@ -39,20 +39,34 @@
             <nav class="top-menu">
                 <ul class="top-menu-left">
                     <li><a href="<c:url value="/"/>"><i class="fa fa-home"></i> <span>HOME</span></a></li>
-                    <li><a href="<c:url value="/experiments"/>"><i class="fa fa-flask"></i> <span>EXPERIMENTS</span></a></li>
-                    <li><a href="<c:url value="/agents"/>"><i class="fa fa-id-card"></i> <span>MEMBERS</span></a></li>
+
+                    <li class="dropdown">
+                        <a href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-flask"></i> <span>EXPERIMENTS</span></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<c:url value="/experiments/activities"/>">Activities</a></li> 
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/experiments/entities"/>">Entities</a></li> 
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/experiments"/>">Experiments</a></li>
+                            <li role="separator" class="divider"></li>      
+                            <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li> 
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>                            
+                        </ul>
+                    </li>                    
                     <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
                     <li class="dropdown">
                         <a href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-plus"></i> <span>INSERT</span></span></a>
+                            <i class="fa fa-cog"></i> <span>CONFIG</span></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<c:url value="/disciplines"/>">DISCIPLINES</a></li>
+                            <li><a href="<c:url value="/disciplines"/>">Disciplines</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/institutions"/>">INSTITUTIONS</a></li>
+                            <li><a href="<c:url value="/institutions"/>">Institutions</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/researchGroups"/>">RESEARCH GROUPS</a></li> 
+                            <li><a href="<c:url value="/agents"/>">Members</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li>                            
+                            <li><a href="<c:url value="/researchGroups"/>">Research Groups</a></li>                                                        
                         </ul>
                     </li>
 
@@ -127,12 +141,26 @@
             </nav>
         </header>
         <main>
+
             <div class="main-menu">
                 <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}"/>
                 <c:if test="${urlParts[1] != null}">
-                    <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
+                    <c:choose>
+                        <c:when test="${urlParts[2]!= null}">
+                            <c:catch var="e">
+                                <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[2]}/${urlParts[1]}-${urlParts[2]}-menu.jsp"/>
+                            </c:catch>
+                            <c:if test="${!empty e}">
+                                <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
             </div>
+
             <div class="main-content container-fluid">
                 <jsp:doBody/>
             </div>

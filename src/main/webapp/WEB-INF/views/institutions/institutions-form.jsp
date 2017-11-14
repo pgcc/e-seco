@@ -26,8 +26,15 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/institutions"/>"> Institutions</a></li>
-            <li><a href="<c:url value="/institutions/add"/>">Add Institution</a></li>
+            <li><a href="<c:url value="/institutions"/>"><i class="fa fa-street-view"></i> Institutions</a></li>            
+            <c:choose>
+                    <c:when test="${institutionForm['new']}">
+                    <li><a href="<c:url value="/institutions/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/institutions/${institutionForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 

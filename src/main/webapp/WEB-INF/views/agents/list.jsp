@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/agents"/>"> Agents</a></li>
+            <li><a href="<c:url value="/agents"/>"><i class="fa fa-street-view"></i> Agents</a></li>
         </ol>
     </jsp:attribute>
 
@@ -70,7 +70,7 @@
                                 <th>Name</th>
                                 <th>Gender</th>
                                 <th>Birthday</th>
-<!--                                <th class="text-center" >Action</th>-->
+                                <!--                                <th class="text-center" >Action</th>-->
                             </tr>
                         </thead>
                         <c:forEach var="agent" items="${agents}">
@@ -86,17 +86,17 @@
                                 <td onclick="location.href = '${agentUrl}'">${agent.gender}</td>
                                 <td onclick="location.href = '${agentUrl}'">${agent.birthday}</td>
 
-<!--                                <td class="text-center">
-                                    <button class="btn btn-link" title="view" onclick="location.href = '${agentUrl}'">
-                                        <span class="glyphicon glyphicon-eye-open"/>
-                                    </button>
-                                    <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
-                                        <span class="glyphicon glyphicon-edit"/>
-                                    </button>
-                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
-                                        <span class="glyphicon glyphicon-remove"/>
-                                    </button>
-                                </td>-->
+                                <!--                                <td class="text-center">
+                                                                    <button class="btn btn-link" title="view" onclick="location.href = '${agentUrl}'">
+                                                                        <span class="glyphicon glyphicon-eye-open"/>
+                                                                    </button>
+                                                                    <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
+                                                                        <span class="glyphicon glyphicon-edit"/>
+                                                                    </button>
+                                                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
+                                                                        <span class="glyphicon glyphicon-remove"/>
+                                                                    </button>
+                                                                </td>-->
                             </tr>
                         </c:forEach>
                     </table>

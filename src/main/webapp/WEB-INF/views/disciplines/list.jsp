@@ -42,7 +42,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/disciplines"/>"> Disciplines</a></li>
+            <li><a href="<c:url value="/disciplines"/>"><i class="fa fa-street-view"></i> Disciplines</a></li>
         </ol>
     </jsp:attribute>
 

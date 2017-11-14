@@ -24,7 +24,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/profile"/>"> User Profile</a></li>
+            <li><a href="<c:url value="/profile"/>"><i class="fa fa-street-view"></i> User Profile</a></li>
                 <c:choose>
                     <c:when test="${researcherForm['new']}">
                     <li><a href="<c:url value="/researchers/add"/>">Add</a></li>

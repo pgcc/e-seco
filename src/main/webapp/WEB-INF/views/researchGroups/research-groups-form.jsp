@@ -26,8 +26,15 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/researchGroups"/>"> Research Groups</a></li>
-            <li><a href="<c:url value="/researchGroups/add"/>">Add Research Group</a></li>
+            <li><a href="<c:url value="/researchGroups"/>"><i class="fa fa-street-view"></i> ResearchGroups</a></li>
+                <c:choose>
+                    <c:when test="${researchGroupForm['new']}">
+                    <li><a href="<c:url value="/researchGroups/add"/>">Add</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li><a href="<c:url value="/researchGroups/${researchGroupForm['id']}/update"/>">Update</a></li>
+                    </c:otherwise>
+                </c:choose>
         </ol>
     </jsp:attribute>
 

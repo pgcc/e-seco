@@ -41,7 +41,7 @@
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
-            <li><a class="fa fa-street-view" href="<c:url value="/experiments"/>"> Experiments</a></li>
+            <li><a href="<c:url value="/experiments"/>"><i class="fa fa-street-view"></i> Experiments</a></li>
             <li><a href="<c:url value="/experiments/entities"/>"> Entities</a></li>
                 <c:choose>
                     <c:when test="${entityForm['new']}">
