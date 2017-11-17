@@ -3,7 +3,7 @@
 <ul>
     <li>
         <a href="<c:url value="/experiments"/>">
-            <i class="fa fa-th"></i> Overview
+            <i class="fa fa-th"></i> Experiments
         </a>
     </li>            
     <li>

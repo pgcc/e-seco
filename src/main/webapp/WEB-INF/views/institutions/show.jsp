@@ -63,18 +63,6 @@
                     </div>
 
                 </div>
-
-                <br/>
-                <spring:url value="/institutions" var="urlinstitutions" />
-                <spring:url value="/institutions/${institution.id}/update" var="urlUpdate" />
-                <nav class="navbar navbar-inverse">
-                    <div>
-                        <ul class="nav navbar-nav navbar-left">
-                            <button onclick="location.href = '${urlinstitutions}'" class="btn btn-link"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
-                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
-                        </ul>
-                    </div>
-                </nav>
             </div>
         </jsp:body>
     </t:layout-app>

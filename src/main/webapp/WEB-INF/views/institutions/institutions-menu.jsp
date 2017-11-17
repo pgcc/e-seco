@@ -6,7 +6,14 @@
         </a>
     </li>
     <li><a href="<c:url value="/institutions/add"/>">
-            <i class="glyphicon glyphicon-plus-sign"></i> Add Institutions
+            <i class="glyphicon glyphicon-plus-sign"></i> Add Institution
         </a>
     </li>
+    <c:if test="${institution != null}">
+        <li>
+            <a href="<c:url value="/institutions/${institution.id}/update"/>">
+                <i class="fa fa-refresh"></i> Update
+            </a>
+        </li>  
+    </c:if>
 </ul>

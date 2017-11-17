@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -42,7 +44,8 @@ public class Activity {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date dateCreated;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_activities_workflowservices",
             joinColumns = {
@@ -53,6 +56,9 @@ public class Activity {
             }
     )
     private List<WorkflowService> workflowServices;
+
+    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
+    private List<ActivityExecution> executions;
 
     public Activity() {
     }
@@ -103,6 +109,14 @@ public class Activity {
 
     public void setWorkflowServices(List<WorkflowService> workflowServices) {
         this.workflowServices = workflowServices;
+    }
+
+    public List<ActivityExecution> getExecutions() {
+        return executions;
+    }
+
+    public void setExecutions(List<ActivityExecution> executions) {
+        this.executions = executions;
     }
 
     public boolean isNew() {

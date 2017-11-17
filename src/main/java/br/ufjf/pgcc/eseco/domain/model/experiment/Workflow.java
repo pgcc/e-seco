@@ -73,6 +73,9 @@ public class Workflow {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Experiment> experiments;
 
+    @OneToMany(mappedBy = "workflow", fetch = FetchType.EAGER)
+    private List<WorkflowExecution> executions;
+
     public Workflow() {
     }
 
@@ -162,6 +165,14 @@ public class Workflow {
 
     public void setExperiments(List<Experiment> experiments) {
         this.experiments = experiments;
+    }
+
+    public List<WorkflowExecution> getExecutions() {
+        return executions;
+    }
+
+    public void setExecutions(List<WorkflowExecution> executions) {
+        this.executions = executions;
     }
 
     public boolean isNew() {
