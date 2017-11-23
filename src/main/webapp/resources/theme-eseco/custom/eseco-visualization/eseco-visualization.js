@@ -22,6 +22,10 @@ function drawGraph(data, target, width) {
 var GraphChart = {
     draw: function (data, target, width) {
 
+        if(!window.d3){
+            var d3 = d3version3;
+        }
+
         // get the data
         var nodecolor = d3.scale.category20();
 
@@ -37,9 +41,9 @@ var GraphChart = {
             .links(links)
             .size([width, height])
             .linkDistance(function (d) {
-                return 1 / d.value * 250;
+                return 1 / d.value * 125;
             })
-            .charge(-500)
+            .charge(-250)
             .on("tick", tick)
             .start();
 
@@ -192,6 +196,9 @@ function drawTreemap(datFn01, target, width) {
 
 function hovered(hover) {
     return function (d) {
+        if(!window.d3){
+            var d3 = d3version4;
+        }
         d3.selectAll(d.ancestors().map(function (d) {
             return d.node;
         }))
@@ -208,6 +215,10 @@ function hovered(hover) {
 
 var TreemapChart = {
     draw: function (data, target, width) {
+        if(!window.d3){
+            var d3 = d3version4;
+        }
+
         var paddingAllowance = 2;
 
         var container = d3.select(target).html("");

@@ -26,6 +26,15 @@
 
     <jsp:attribute name="javascripts">
         <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
+        <script type="text/javascript">
+            var d3version4 = d3;
+            window.d3 = null;
+        </script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
+        <script type="text/javascript">
+            var d3version3 = d3;
+            window.d3 = null;
+        </script>
         <script type="text/javascript"
                 src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
@@ -35,6 +44,7 @@
             /***********************************************/
             /* DEPENDENCIES VISUALIZATION                  */
             /***********************************************/
+            // Treemap
             function showDependenciesVisualization() {
                 var width = $("#box-chart-dependencies").css("width");
                 width = width.replace("px", "");
@@ -87,6 +97,71 @@
             });
 
             showDependenciesVisualization();
+
+            // Graph
+            function showDependenciesGraphVisualization() {
+                var target = "#box-chart-dependencies";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+
+                var graphData = mountDataToGraph(componentContextJson);
+
+                drawGraph(graphData, target, width);
+            };
+
+            function mountDataToGraph(itemData) {
+                var data1 = itemData.wsInternalClassInternalMetrics.esecoWorkflowServicesNames;
+                var data2 = itemData.wsInternalClassInternalMetrics.esecoCoreServicesNames;
+
+                var graphData = {
+                    "nodes": [
+                        {
+                            "name": itemData.name,
+                            "group": 0
+                        }
+                    ],
+                    "links": []
+                };
+
+                var groupId = 1;
+
+                $.each(data1, function (i, item) {
+                    graphData.nodes.push({
+                        "name": item,
+                        "group": groupId
+                    });
+                    graphData.links.push({
+                        "source": groupId,
+                        "target": 0,
+                        "value": 1,
+                        "type": "arrow"
+                    });
+
+                    groupId++;
+                });
+
+                $.each(data2, function (i, item) {
+                    graphData.nodes.push({
+                        "name": item,
+                        "group": groupId
+                    });
+                    graphData.links.push({
+                        "source": groupId,
+                        "target": 0,
+                        "value": 1,
+                        "type": "arrow"
+                    });
+
+                    groupId++;
+                });
+
+
+                return graphData;
+            }
+
+            $("#btn-visualize-dependencies-graph").on("click", function () {
+                showDependenciesGraphVisualization();
+            });
 
 
             /***********************************************/

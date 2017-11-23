@@ -11,49 +11,15 @@
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet"
               href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
-        <style type="text/css">
-            path.link {
-                fill: none;
-                stroke: #666;
-                stroke-width: 1.5px;
-            }
-
-            path.link.twofive {
-                opacity: 0.25;
-            }
-
-            path.link.fivezero {
-                opacity: 0.50;
-            }
-
-            path.link.sevenfive {
-                opacity: 0.75;
-            }
-
-            path.link.onezerozero {
-                opacity: 1.0;
-            }
-
-            circle {
-                fill: #ccc;
-                stroke: #fff;
-                stroke-width: 1.5px;
-            }
-
-            text {
-                fill: #000;
-                pointer-events: none;
-            }
-
-            #content {
-                padding: 7px;
-            }
-        </style>
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
         <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
+        <script type="text/javascript">
+            var d3version3 = d3;
+            window.d3 = null;
+        </script>
         <script type="text/javascript"
                 src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
