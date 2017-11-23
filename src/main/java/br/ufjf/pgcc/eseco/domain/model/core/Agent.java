@@ -90,4 +90,33 @@ public class Agent {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+
+    /* OTHER METHODS */
+    public String getPhoto(){
+        String photo = null;
+
+        // Search for researcher photo
+        if(null != getResearcher()){
+            if(null != getResearcher().getPhoto()){
+                photo = getResearcher().getPhoto();
+            }
+        }
+
+        // Search for developer photo
+        if(null == photo){
+            if(null != getDeveloper()){
+                if(null != getDeveloper().getPhoto()){
+                    photo = getDeveloper().getPhoto();
+                }
+            }
+        }
+
+        // If none, use generic empty photo
+        if(null == photo){
+            photo = "empty.png";
+        }
+
+        return photo;
+    }
 }

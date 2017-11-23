@@ -5,6 +5,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.metrics.ClassInternalMetricsModel;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceComment;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
 
 import java.util.Date;
@@ -54,6 +55,10 @@ public class WorkflowServiceContextModel {
     private long avgValueReliability;
     private long avgValuePerformance;
     private long avgValueDisponibility;
+
+    // Comments
+    private List<WorkflowServiceComment> wsComments;
+    private int totalComments;
 
 
     /* CONSTRUCTORS */
@@ -311,5 +316,21 @@ public class WorkflowServiceContextModel {
 
     public void setAvgValueDisponibility(long avgValueDisponibility) {
         this.avgValueDisponibility = avgValueDisponibility;
+    }
+
+    public List<WorkflowServiceComment> getWsComments() {
+        return wsComments;
+    }
+
+    public void setWsComments(List<WorkflowServiceComment> wsComments) {
+        this.wsComments = wsComments;
+    }
+
+    public int getTotalComments() {
+        return totalComments;
+    }
+
+    public void setTotalComments(int totalComments) {
+        this.totalComments = totalComments;
     }
 }

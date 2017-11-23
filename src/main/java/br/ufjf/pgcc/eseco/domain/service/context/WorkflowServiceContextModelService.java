@@ -10,6 +10,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
+import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceComment;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
 import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
@@ -248,6 +249,13 @@ public class WorkflowServiceContextModelService {
         ccm.setAvgValueReliability(Math.round(avgReliability));
         ccm.setAvgValuePerformance(Math.round(avgPerformance));
         ccm.setAvgValueDisponibility(Math.round(avgDisponibility));
+
+
+        // Comments
+        List<WorkflowServiceComment> workflowServiceCommentsList = workflowService.getWorkflowServiceComments();
+
+        ccm.setWsComments(workflowServiceCommentsList);
+        ccm.setTotalComments(workflowServiceCommentsList.size());
 
         return ccm;
     }

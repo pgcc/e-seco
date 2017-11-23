@@ -31,6 +31,9 @@ public class Developer {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Institution> institutions;
 
+    @Column(name = "photo")
+    private String photo;
+
 
     /* GETTERS/SETTERS */
 
@@ -56,5 +59,13 @@ public class Developer {
 
     public void setInstitutions(List<Institution> institutions) {
         this.institutions = institutions;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

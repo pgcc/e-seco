@@ -268,6 +268,10 @@
                 "content": 'How well the service responds the calls, its always on?'
             });
 
+            
+            <c:if test="${not empty comment_inserted}">
+            swal("Success", "Comment Added!", "success");
+            </c:if>
         </script>
     </jsp:attribute>
 
@@ -448,7 +452,8 @@
                                     <tr>
                                         <td style="width:130px;">
                                             Documentation
-                                            <i id="pop-rating-documentation-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                            <i id="pop-rating-documentation-info"
+                                               class="fa fa-info-circle text-info cursor-pointer"></i>
                                         </td>
                                         <td>
                                             <div class="progress">
@@ -466,7 +471,8 @@
                                     <tr>
                                         <td>
                                             Ease of Use
-                                            <i id="pop-rating-ease-of-use-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                            <i id="pop-rating-ease-of-use-info"
+                                               class="fa fa-info-circle text-info cursor-pointer"></i>
                                         </td>
                                         <td>
                                             <div class="progress">
@@ -484,7 +490,8 @@
                                     <tr>
                                         <td>
                                             Reliability
-                                            <i id="pop-rating-reliability-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                            <i id="pop-rating-reliability-info"
+                                               class="fa fa-info-circle text-info cursor-pointer"></i>
                                         </td>
                                         <td>
                                             <div class="progress">
@@ -502,7 +509,8 @@
                                     <tr>
                                         <td>
                                             Performance
-                                            <i id="pop-rating-performance-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                            <i id="pop-rating-performance-info"
+                                               class="fa fa-info-circle text-info cursor-pointer"></i>
                                         </td>
                                         <td>
                                             <div class="progress">
@@ -520,7 +528,8 @@
                                     <tr>
                                         <td>
                                             Availability
-                                            <i id="pop-rating-availability-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                            <i id="pop-rating-availability-info"
+                                               class="fa fa-info-circle text-info cursor-pointer"></i>
                                         </td>
                                         <td>
                                             <div class="progress">
@@ -632,6 +641,55 @@
                                         <p class="text-center">No internal metrics is avaiable to external services</p>
                                     </c:otherwise>
                                 </c:choose>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Comments</h3>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="width:80px;"></th>
+                                        <th style="width:250px;">Author</th>
+                                        <th class="text-center" style="width:150px;">Date</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="comment" items="${commentsList}">
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                            <td>${comment.commenter.name}</td>
+                                            <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                                    value="${comment.date}"/></td>
+                                            <td>${comment.content}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+
+                                <form id="frm-comment"
+                                      action="<c:url value="/components/actions/workflow-services/comment/${componentContextInfo.id}"/>"
+                                      method="post">
+
+                                    <div class="form-group">
+                                        <label for="comment-content">Insert a Comment</label>
+                                        <textarea id="comment-content" name="comment-content" class="form-control"></textarea>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button class="btn btn-success">Confirm</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

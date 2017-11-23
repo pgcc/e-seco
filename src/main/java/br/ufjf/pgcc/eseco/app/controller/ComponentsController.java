@@ -11,16 +11,10 @@ import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
-import br.ufjf.pgcc.eseco.domain.model.resource.Component;
-import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
-import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRating;
-import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
+import br.ufjf.pgcc.eseco.domain.model.resource.*;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.analysis.ResearcherRelevanceService;
-import br.ufjf.pgcc.eseco.domain.service.resource.ComponentService;
-import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingInvitationService;
-import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingService;
-import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
+import br.ufjf.pgcc.eseco.domain.service.resource.*;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceRatingContextModelService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
@@ -53,6 +47,7 @@ public class ComponentsController {
     private ResearcherRelevanceService researcherRelevanceService;
     private WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService;
     private WorkflowServiceRatingService workflowServiceRatingService;
+    private WorkflowServiceCommentService workflowServiceCommentService;
 
     @Autowired
     public ComponentsController(ComponentService componentService, WorkflowServiceService workflowServiceService,
@@ -62,7 +57,8 @@ public class ComponentsController {
                                 ResearcherService researcherService,
                                 ResearcherRelevanceService researcherRelevanceService,
                                 WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService,
-                                WorkflowServiceRatingService workflowServiceRatingService) {
+                                WorkflowServiceRatingService workflowServiceRatingService,
+                                WorkflowServiceCommentService workflowServiceCommentService) {
         this.componentService = componentService;
         this.workflowServiceService = workflowServiceService;
         this.bioCatalogueService = bioCatalogueService;
@@ -72,6 +68,7 @@ public class ComponentsController {
         this.researcherRelevanceService = researcherRelevanceService;
         this.workflowServiceRatingInvitationService = workflowServiceRatingInvitationService;
         this.workflowServiceRatingService = workflowServiceRatingService;
+        this.workflowServiceCommentService = workflowServiceCommentService;
     }
 
     @RequestMapping(value = "/components")
@@ -85,11 +82,19 @@ public class ComponentsController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/components/details/{type}/{id}")
-    public String serviceDetails(Model model,
+    public String serviceDetails(Model model, HttpServletRequest request,
                                  @PathVariable(value = "type") int type,
                                  @PathVariable(value = "id") int id) throws ClassNotFoundException {
 
         model.addAttribute("type", type);
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        if(null != session.getAttribute("comment_inserted")){
+            model.addAttribute("comment_inserted", true);
+            session.removeAttribute("comment_inserted");
+        }
 
         switch (type) {
             case DETAIL_PLUGIN:
@@ -110,6 +115,7 @@ public class ComponentsController {
                     List<Experiment> experimentsList = new ArrayList<>();
                     List<Researcher> researchersList = new ArrayList<>();
                     List<WorkflowServiceRating> ratingsList = new ArrayList<>();
+                    List<WorkflowServiceComment> commentsList = new ArrayList<>();
 
                     if (componentContextInfo != null) {
                         activitiesList = componentContextInfo.getActivitiesUsing();
@@ -126,6 +132,9 @@ public class ComponentsController {
 
                         ratingsList = componentContextInfo.getWsRatings();
                         componentContextInfo.setWsRatings(null);
+
+                        commentsList = componentContextInfo.getWsComments();
+                        componentContextInfo.setWsComments(null);
                     }
 
                     // Transform context info into JSON String
@@ -140,6 +149,7 @@ public class ComponentsController {
                     model.addAttribute("experimentsList", experimentsList);
                     model.addAttribute("researchersList", researchersList);
                     model.addAttribute("ratingsList", ratingsList);
+                    model.addAttribute("commentsList", commentsList);
                 }
                 break;
 
@@ -359,6 +369,46 @@ public class ComponentsController {
         model.addAttribute("totalInvitations", totalInvitations);
 
         return "components/actions-workflow-services-invite-rating-result";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/comment/{id}", method = RequestMethod.POST)
+    public String actionsWorkflowServicesCommentPost(Model model,
+                                                          @PathVariable(value = "id") int id,
+                                                          HttpServletRequest request) {
+
+        Component component = componentService.find(id);
+        if (null == component) {
+            return "";
+        }
+
+        model.addAttribute("component", component);
+
+        String content = request.getParameter("comment-content");
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User user = (User) session.getAttribute("logged_user");
+
+        // Get User Agent
+        Agent agent = user.getAgent();
+
+        // Create comment
+        WorkflowServiceComment workflowServiceComment = new WorkflowServiceComment();
+        workflowServiceComment.setCommenter(agent);
+        workflowServiceComment.setContent(content);
+        workflowServiceComment.setWorkflowService(component.getWorkflowService());
+        workflowServiceComment.setDate(new Date());
+
+        try {
+            workflowServiceCommentService.add(workflowServiceComment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        session.setAttribute("comment_inserted", true);
+        return "redirect:/components/details/2/4";
     }
 
     @RequestMapping(value = "/components/actions/workflow-services/rating")

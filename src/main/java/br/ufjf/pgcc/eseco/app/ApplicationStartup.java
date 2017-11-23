@@ -31,13 +31,11 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Override
     public void onApplicationEvent(ContextRefreshedEvent e) {
         try {
-            /*
             countryService.populateCountries();
             stateService.populateBrazilStates();
             disciplineService.populateDisiplines();
             roleService.populateRoles();
             componentTypeService.populateComponentTypes();
-            */
         } catch (Exception e1) {
             e1.printStackTrace();
         }
