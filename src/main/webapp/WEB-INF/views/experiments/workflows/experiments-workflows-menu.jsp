@@ -2,7 +2,7 @@
 <ul>
     <li>
         <a href="<c:url value="/experiments/workflows"/>">
-            <i class="fa fa-th"></i> Overview
+            <i class="fa fa-th"></i> Workflows
         </a>
     </li>
     <li>
@@ -10,9 +10,11 @@
             <i class="fa fa-plus-circle"></i> Add Workflow
         </a>
     </li>
-    <li>
-        <a href="<c:url value="/experiments/workflowExecutions"/>">
-            <i class="fa fa-list"></i> Workflow Executions
-        </a>
-    </li>
+    <c:if test="${workflow != null}">
+        <li>
+            <a href="<c:url value="/experiments/workflows/${workflow.id}/update"/>">
+                <i class="fa fa-refresh"></i> Update
+            </a>
+        </li>  
+    </c:if>
 </ul>

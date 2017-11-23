@@ -25,6 +25,7 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a href="<c:url value="/experiments"/>"><i class="fa fa-street-view"></i> Experiments</a></li>
+            <li><a href="<c:url value="/experiments/entities"/>">Entities</a></li>
             <li><a href="<c:url value="/experiments/entities/${entity.id}"/>">View</a></li>
         </ol>
     </jsp:attribute>
@@ -88,20 +89,7 @@
                             </div>
                         </c:when>
                     </c:choose>
-                </div>
-                <br/>
-                <spring:url value="/experiments/entities" var="urlEntities" />
-                <spring:url value="/experiments/entities/${entity.id}/update" var="urlUpdate" />
-                <nav class="navbar navbar-inverse">
-                    <div>
-                        <ul class="nav navbar-nav navbar-left">
-                            <button onclick="location.href = '${urlEntities}'" class="btn btn-link">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Back
-                            </button>
-                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
-                        </ul>
-                    </div>
-                </nav>
+                </div>                
             </div>
         </jsp:body>
     </t:layout-app>

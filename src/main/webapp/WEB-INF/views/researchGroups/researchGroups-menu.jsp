@@ -9,4 +9,11 @@
             <i class="glyphicon glyphicon-plus-sign"></i> Add Research Group
         </a>
     </li>
+    <c:if test="${researchGroup != null}">
+        <li>
+            <a href="<c:url value="/researchGroups/${researchGroup.id}/update"/>">
+                <i class="fa fa-refresh"></i> Update
+            </a>
+        </li>  
+    </c:if>
 </ul>

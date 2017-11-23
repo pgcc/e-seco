@@ -89,6 +89,26 @@
                     </div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Executions
+                                    </a>
+                                    <span class="badge">${workflow.executions.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${workflow.executions}" var="execution">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/workflowExecutions/${execution.id}"/>">${execution.startTime}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -97,7 +117,7 @@
                                     <span class="badge">${workflow.activities.size()}</span>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">
                                     <ul class="list-group" >
                                         <c:forEach items="${workflow.activities}" var="activity">
@@ -129,19 +149,6 @@
                         </div>
                     </div>
                 </div>
-                <br/>
-                <spring:url value="/experiments/workflows" var="urlWorkflows" />
-                <spring:url value="/experiments/workflows/${workflow.id}/update" var="urlUpdate" />
-                <nav class="navbar navbar-inverse">
-                    <div>
-                        <ul class="nav navbar-nav navbar-left">
-                            <button onclick="location.href = '${urlWorkflows}'" class="btn btn-link">
-                                <span class="glyphicon glyphicon-arrow-left"></span> Back
-                            </button>
-                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span class="glyphicon glyphicon-refresh"></span> Update</button>
-                        </ul>
-                    </div>
-                </nav>
             </div>
         </jsp:body>
     </t:layout-app>

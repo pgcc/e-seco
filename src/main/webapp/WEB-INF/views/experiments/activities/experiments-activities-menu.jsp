@@ -2,17 +2,19 @@
 <ul>
     <li>
         <a href="<c:url value="/experiments/activities"/>">
-            <i class="fa fa-th"></i> Overview
+            <i class="fa fa-th"></i> Activities
         </a>
     </li>
     <li>
-        <a href="<c:url value="/experiments/activityExecutions"/>">
+        <a href="<c:url value="/experiments/activities/add"/>">
             <i class="fa fa-plus-circle"></i> Add Activity
         </a>
     </li>
-    <li>
-        <a href="<c:url value="/experiments/activityExecutions"/>">
-            <i class="fa fa-list"></i> Activity Executions
-        </a>
-    </li>
+    <c:if test="${activity != null}">
+        <li>
+            <a href="<c:url value="/experiments/activityExecutions/${activity.id}/update"/>">
+                <i class="fa fa-refresh"></i> Update
+            </a>
+        </li>  
+    </c:if>
 </ul>
