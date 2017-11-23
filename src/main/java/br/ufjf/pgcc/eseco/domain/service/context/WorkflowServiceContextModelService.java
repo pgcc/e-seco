@@ -66,7 +66,7 @@ public class WorkflowServiceContextModelService {
 
         // Get Basic info from WorkflowService
         ccm.setWsType(workflowService.getType());
-        ccm.setWsNature(workflowService.getNature());
+        ccm.setWsNature("Atomic");
         ccm.setWsUrl(workflowService.getUrl());
 
         // Get Internal Class information
@@ -94,6 +94,7 @@ public class WorkflowServiceContextModelService {
                         if (null != ws) {
                             WorkflowServiceContextModel wscm = createModelInfo(ws.getComponent());
                             usedEsecoWorkflowServicesList.add(wscm);
+                            ccm.setWsNature("Composed");
                         }
                     } else {
                         usedEsecoCoreServicesList.add(serviceClass.getName());

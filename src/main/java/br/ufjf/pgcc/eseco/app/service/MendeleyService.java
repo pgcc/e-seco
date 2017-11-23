@@ -5,9 +5,8 @@
  */
 package br.ufjf.pgcc.eseco.app.service;
 
-import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
-import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.app.model.MendeleyCatalog;
+import br.ufjf.pgcc.eseco.domain.model.core.*;
 import br.ufjf.pgcc.eseco.domain.service.core.CityService;
 import br.ufjf.pgcc.eseco.domain.service.core.CountryService;
 import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
@@ -23,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -36,11 +36,11 @@ import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author Lenita
  */
 @Service
@@ -77,6 +77,11 @@ public class MendeleyService {
      * Mendeley search profiles endpoint
      */
     private static final String SEARCH_PROFILES_URL = "https://api.mendeley.com/search/profiles";
+
+    /**
+     * Mendeley search catalog endpoint
+     */
+    private static final String SEARCH_CATALOG_URL = "https://api.mendeley.com/catalog";
 
     /**
      * The app's consumer key
@@ -157,7 +162,9 @@ public class MendeleyService {
      * Find a Researcher by email
      *
      * @param email
+     *
      * @return
+     *
      * @throws java.io.IOException
      */
     public ArrayList<Researcher> searchByEmail(String email) throws IOException {
@@ -177,6 +184,7 @@ public class MendeleyService {
      * Find a Researcher by Scopus Id
      *
      * @param scopusId
+     *
      * @return
      */
     public ArrayList<Researcher> searchByScopusId(String scopusId) throws IOException {
@@ -195,6 +203,7 @@ public class MendeleyService {
      * Find a Researcher by name
      *
      * @param parameters
+     *
      * @return
      */
     public ArrayList<Researcher> searchByParameters(List<String> parameters) throws IOException {
@@ -238,6 +247,7 @@ public class MendeleyService {
      * Find the Disciplines
      *
      * @return
+     *
      * @throws java.io.IOException
      */
     public ArrayList<ResearchGroup> searchResearchGroups() throws IOException {
@@ -255,7 +265,9 @@ public class MendeleyService {
      * Execute GET Request
      *
      * @param url
+     *
      * @return
+     *
      * @throws MalformedURLException
      * @throws IOException
      */
@@ -268,7 +280,7 @@ public class MendeleyService {
         con.setDoOutput(true);
         if (acceptMendeleyGroup) {
             con.setRequestProperty("Accept", "application/vnd.mendeley-group-list+json");
-            con.setRequestProperty("Authorization", "Bearer "+accessToken.getAccessToken());
+            con.setRequestProperty("Authorization", "Bearer " + accessToken.getAccessToken());
         }
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), "UTF-8"))) {
@@ -287,6 +299,7 @@ public class MendeleyService {
      * Convert the string result into a Researcher list
      *
      * @param response
+     *
      * @return
      */
     private ArrayList<Researcher> parseResearcherList(String response) {
@@ -308,6 +321,7 @@ public class MendeleyService {
      * Convert the string result into a Discipline list
      *
      * @param response
+     *
      * @return
      */
     private ArrayList<Discipline> parseDisciplineList(String response) {
@@ -326,9 +340,32 @@ public class MendeleyService {
     }
 
     /**
+     * Convert the string result into a Interest list
+     *
+     * @param response response
+     *
+     * @return return
+     */
+    private ArrayList<MendeleyCatalog> parseCatalogList(String response) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(MendeleyCatalog.class, MendeleyCatalogService.getDeserialiser());
+        Gson gson = gsonBuilder.create();
+        JsonElement json = new JsonParser().parse(response);
+
+        Object[] array = (Object[]) java.lang.reflect.Array.newInstance(MendeleyCatalog.class, 1);
+        array = gson.fromJson(json, array.getClass());
+        ArrayList<MendeleyCatalog> list = new ArrayList<>();
+        for (Object obj : array) {
+            list.add((MendeleyCatalog) obj);
+        }
+        return list;
+    }
+
+    /**
      * Convert the string result into a Discipline list
      *
      * @param response
+     *
      * @return
      */
     private ArrayList<ResearchGroup> parseResearchGroupList(String response) {
@@ -345,6 +382,44 @@ public class MendeleyService {
         }
         return list;
     }
+
+    /**
+     * Find a Researcher Keywords by profile ID
+     *
+     * @param profileId Identifier of profile
+     *
+     * @return list of interests
+     *
+     * @throws java.io.IOException error
+     */
+    public ArrayList<ResearcherKeyword> searchKeywordsByProfileId(String profileId) throws IOException {
+        // Mount Search String
+        StringBuilder url = new StringBuilder(SEARCH_CATALOG_URL);
+        url.append("?");
+        url.append("access_token=").append(accessToken.getAccessToken());
+        url.append("&");
+        url.append("author_profile_id=").append(profileId);
+
+        // Perform GET on Mendeley Server and build the Catalogs list
+        String response = searchGET(url.toString(), false);
+        ArrayList<MendeleyCatalog> mendeleyCatalogs = parseCatalogList(response);
+
+        // Build the Interests list using the Catalogs list
+        ArrayList<ResearcherKeyword> keywordsList = new ArrayList<>();
+        for (MendeleyCatalog mendeleyCatalog : mendeleyCatalogs) {
+            if (null != mendeleyCatalog.getKeywords()) {
+                for (String keyword : mendeleyCatalog.getKeywords()) {
+                    ResearcherKeyword researcherKeyword = new ResearcherKeyword();
+                    researcherKeyword.setYear(mendeleyCatalog.getYear());
+                    researcherKeyword.setName(keyword);
+                    keywordsList.add(researcherKeyword);
+                }
+            }
+        }
+
+        return keywordsList;
+    }
+
 
     private class MendeleyAccessToken {
 

@@ -293,7 +293,7 @@
                     });
                     itemData.push({
                         "item_id": item.name,
-                        "area": "Disponibility",
+                        "area": "Availability",
                         "value": item.avgValueDisponibility
                     });
 
@@ -327,112 +327,131 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Basic Info</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseBasicInfo" class="collapsed" role="button" data-toggle="collapse">
+                                Basic Info <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="tbl-compare-basicinfo" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Info</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="row-compare-info-type">
-                                    <td>Type</td>
-                                </tr>
-                                <tr class="row-compare-info-datecreated">
-                                    <td>Date Created</td>
-                                </tr>
-                                <tr class="row-compare-info-dateupdated">
-                                    <td>Date Last Updated</td>
-                                </tr>
-                                <tr class="row-compare-info-author">
-                                    <td>Author</td>
-                                </tr>
-                                <tr class="row-compare-info-wstype">
-                                    <td>WorkFlow Service Type</td>
-                                </tr>
-                                <tr class="row-compare-info-wsnature">
-                                    <td>WorkFlow Service Nature</td>
-                                </tr>
-                                <tr class="row-compare-info-wslocation">
-                                    <td>WorkFlow Service Location</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div id="collapseBasicInfo" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="tbl-compare-basicinfo" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="row-compare-info-type">
+                                        <td>Type</td>
+                                    </tr>
+                                    <tr class="row-compare-info-datecreated">
+                                        <td>Date Created</td>
+                                    </tr>
+                                    <tr class="row-compare-info-dateupdated">
+                                        <td>Date Last Updated</td>
+                                    </tr>
+                                    <tr class="row-compare-info-author">
+                                        <td>Author</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wstype">
+                                        <td>WorkFlow Service Type</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsnature">
+                                        <td>WorkFlow Service Nature</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wslocation">
+                                        <td>WorkFlow Service Location</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Internal Metrics</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseInternalMetrics" class="collapsed" role="button" data-toggle="collapse">
+                                Internal Metrics <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="tbl-compare-internalmetrics" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Info</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="row-compare-info-wsinternalclass">
-                                    <td>WorkFlow Service Internal Class</td>
-                                </tr>
-                                <tr class="row-compare-info-wsclassparametercount">
-                                    <td>WorkFlow Service Class Parameter Count</td>
-                                </tr>
-                                <tr class="row-compare-info-wsclassmethodcount">
-                                    <td>WorkFlow Service Class Method Count</td>
-                                </tr>
-                                <tr class="row-compare-info-wstotalservicesused">
-                                    <td>WorkFlow Service Total Services Used</td>
-                                </tr>
-                                <tr class="row-compare-info-wsesecocoreservicesused">
-                                    <td>WorkFlow Service E-Seco Core Services Used</td>
-                                </tr>
-                                <tr class="row-compare-info-wsesecoworkflowservicesused">
-                                    <td>WorkFlow Service E-Seco Workflow Services Used</td>
-                                </tr>
-                                <tr class="row-compare-info-wstotalratings">
-                                    <td>WorkFlow Service Total Ratings</td>
-                                </tr>
-                                <tr class="row-compare-info-wstotalapprovals">
-                                    <td>WorkFlow Service Total Approvals</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluedocumentation">
-                                    <td>WorkFlow Service Average Value for Documentation</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvalueeaseofuse">
-                                    <td>WorkFlow Service Average Value for Ease of Use</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluereliability">
-                                    <td>WorkFlow Service Average Value for Reliability</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluePerformance">
-                                    <td>WorkFlow Service Average Value for Performance</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvalueDisponibility">
-                                    <td>WorkFlow Service Average Value for Disponibility</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div id="collapseInternalMetrics" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="tbl-compare-internalmetrics" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="row-compare-info-wsinternalclass">
+                                        <td>WorkFlow Service Internal Class</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsclassparametercount">
+                                        <td>WorkFlow Service Class Parameter Count</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsclassmethodcount">
+                                        <td>WorkFlow Service Class Method Count</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wstotalservicesused">
+                                        <td>WorkFlow Service Total Services Used</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsesecocoreservicesused">
+                                        <td>WorkFlow Service E-Seco Core Services Used</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsesecoworkflowservicesused">
+                                        <td>WorkFlow Service E-Seco Workflow Services Used</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wstotalratings">
+                                        <td>WorkFlow Service Total Ratings</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wstotalapprovals">
+                                        <td>WorkFlow Service Total Approvals</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluedocumentation">
+                                        <td>WorkFlow Service Average Value for Documentation</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueeaseofuse">
+                                        <td>WorkFlow Service Average Value for Ease of Use</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluereliability">
+                                        <td>WorkFlow Service Average Value for Reliability</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluePerformance">
+                                        <td>WorkFlow Service Average Value for Performance</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueDisponibility">
+                                        <td>WorkFlow Service Average Value for Disponibility</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Internal Metrics Visualization</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseInternalMetricsVisualization" class="collapsed" role="button"
+                               data-toggle="collapse">
+                                Internal Metrics Visualization <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div id="chart-internalmetrics"></div>
+                    <div id="collapseInternalMetricsVisualization" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="chart-internalmetrics"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -442,51 +461,64 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Usage</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseUsage" class="collapsed" role="button" data-toggle="collapse">
+                                Service Usage <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="tbl-compare-usage" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Info</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="row-compare-info-usageactivities">
-                                    <td>Activities Using</td>
-                                </tr>
-                                <tr class="row-compare-info-usageworkflows">
-                                    <td>Workflows Using</td>
-                                </tr>
-                                <tr class="row-compare-info-usageexperiments">
-                                    <td>Experiments Using</td>
-                                </tr>
-                                <tr class="row-compare-info-usageresearchers">
-                                    <td>Researchers Using</td>
-                                </tr>
-                                <tr class="row-compare-info-usagemostcommonarea">
-                                    <td>Most Common Area</td>
-                                </tr>
-                                <tr class="row-compare-info-usagedatelastused">
-                                    <td>Date Last Used</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div id="collapseUsage" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="tbl-compare-usage" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="row-compare-info-usageactivities">
+                                        <td>Activities Using</td>
+                                    </tr>
+                                    <tr class="row-compare-info-usageworkflows">
+                                        <td>Workflows Using</td>
+                                    </tr>
+                                    <tr class="row-compare-info-usageexperiments">
+                                        <td>Experiments Using</td>
+                                    </tr>
+                                    <tr class="row-compare-info-usageresearchers">
+                                        <td>Researchers Using</td>
+                                    </tr>
+                                    <tr class="row-compare-info-usagemostcommonarea">
+                                        <td>Most Common Area</td>
+                                    </tr>
+                                    <tr class="row-compare-info-usagedatelastused">
+                                        <td>Date Last Used</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Usage Visualization</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseUsageVisualization" class="collapsed" role="button"
+                               data-toggle="collapse">
+                                Visualization of Service Usage <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div id="chart-usage"></div>
+                    <div id="collapseUsageVisualization" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="chart-usage"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -496,54 +528,67 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Ratings</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseRatings" class="collapsed" role="button" data-toggle="collapse">
+                                Ratings <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="tbl-compare" class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Info</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="row-compare-info-wstotalratings">
-                                    <td>WorkFlow Service Total Ratings</td>
-                                </tr>
-                                <tr class="row-compare-info-wstotalapprovals">
-                                    <td>WorkFlow Service Total Approvals</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluedocumentation">
-                                    <td>WorkFlow Service Average Value for Documentation</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvalueeaseofuse">
-                                    <td>WorkFlow Service Average Value for Ease of Use</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluereliability">
-                                    <td>WorkFlow Service Average Value for Reliability</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvaluePerformance">
-                                    <td>WorkFlow Service Average Value for Performance</td>
-                                </tr>
-                                <tr class="row-compare-info-wsvalueDisponibility">
-                                    <td>WorkFlow Service Average Value for Disponibility</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div id="collapseRatings" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="tbl-compare" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="row-compare-info-wstotalratings">
+                                        <td>WorkFlow Service Total Ratings</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wstotalapprovals">
+                                        <td>WorkFlow Service Total Approvals</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluedocumentation">
+                                        <td>WorkFlow Service Average Value for Documentation</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueeaseofuse">
+                                        <td>WorkFlow Service Average Value for Ease of Use</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluereliability">
+                                        <td>WorkFlow Service Average Value for Reliability</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluePerformance">
+                                        <td>WorkFlow Service Average Value for Performance</td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueDisponibility">
+                                        <td>WorkFlow Service Average Value for Availability</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Ratings Visualization</h3>
+                        <h3 class="panel-title">
+                            <a href="#collapseRatingsVisualization" class="collapsed" role="button"
+                               data-toggle="collapse">
+                                Ratings Visualization <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div id="chart-ratings"></div>
+                    <div id="collapseRatingsVisualization" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="chart-ratings"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

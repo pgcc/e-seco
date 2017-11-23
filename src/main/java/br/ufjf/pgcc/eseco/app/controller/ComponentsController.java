@@ -35,9 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class ComponentsController {
@@ -98,7 +96,7 @@ public class ComponentsController {
             case DETAIL_WORKFLOW_SERVICE_INTERNAL:
                 Component component = componentService.find(id);
                 if (null != component) {
-                    // Create context info for this resource
+                    // Create context info for this component
                     WorkflowServiceContextModel componentContextInfo = null;
                     try {
                         componentContextInfo = workflowServiceContextModelService.createModelInfo(component);
@@ -291,7 +289,9 @@ public class ComponentsController {
 
         Component component = componentService.find(id);
         if (null != component) {
+            WorkflowService workflowService = component.getWorkflowService();
             model.addAttribute("component", component);
+            model.addAttribute("workflowService", workflowService);
         }
 
         // Get most indicated reseachers for invitation
@@ -300,6 +300,19 @@ public class ComponentsController {
             reseacherRelevanceList = researcherRelevanceService.analyseReseachersForWorkflowService(component);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(null != reseacherRelevanceList){
+            Collections.sort(reseacherRelevanceList, new Comparator<ReseacherRelevance>() {
+                @Override public int compare(ReseacherRelevance rr1, ReseacherRelevance rr2) {
+                    if (rr1.getRelevance() > rr2.getRelevance()) {
+                        return -1;
+                    } else if (rr1.getRelevance() < rr2.getRelevance()) {
+                        return 1;
+                    }
+                    return 0;
+                }
+            });
         }
 
         // Transform data info into JSON String

@@ -2,20 +2,14 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.MendeleyService;
 import br.ufjf.pgcc.eseco.app.validator.ResearcherFormValidator;
-import br.ufjf.pgcc.eseco.domain.model.core.Agent;
-import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
-import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
+import br.ufjf.pgcc.eseco.domain.model.core.*;
+import br.ufjf.pgcc.eseco.domain.service.core.*;
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
-import br.ufjf.pgcc.eseco.domain.model.core.Discipline;
-import br.ufjf.pgcc.eseco.domain.model.core.Institution;
-import br.ufjf.pgcc.eseco.domain.model.core.Interest;
-import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
-import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
-import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
-import br.ufjf.pgcc.eseco.domain.service.core.InterestService;
+
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +41,7 @@ public class ResearchersController extends CommonController {
     private final DisciplineService disciplineService;
     private final InterestService interestService;
     private final MendeleyService mendeleyService;
+    private final ResearcherKeywordService researcherKeywordService;
 
     @Autowired
     ResearcherFormValidator researcherFormValidator;
@@ -58,14 +53,15 @@ public class ResearchersController extends CommonController {
 
     @Autowired
     public ResearchersController(ResearcherService researcherService, InstitutionService institutionService,
-            AgentService agentService, DisciplineService disciplineService, InterestService interestService,
-            MendeleyService mendeleyService) {
+                                 AgentService agentService, DisciplineService disciplineService, InterestService interestService,
+                                 MendeleyService mendeleyService, ResearcherKeywordService researcherKeywordService) {
         this.researcherService = researcherService;
         this.institutionService = institutionService;
         this.agentService = agentService;
         this.disciplineService = disciplineService;
         this.interestService = interestService;
         this.mendeleyService = mendeleyService;
+        this.researcherKeywordService = researcherKeywordService;
     }
 
     @RequestMapping(value = "/researchers/add", method = RequestMethod.GET)
@@ -122,7 +118,7 @@ public class ResearchersController extends CommonController {
 
     @RequestMapping(value = "/researchers", method = RequestMethod.POST)
     public String saveOrUpdateResearcher(@ModelAttribute("researcherForm") @Validated Researcher researcher,
-            BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
+                                         BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
 
         LOGGER.log(Level.INFO, "saveOrUpdateResearcher() : {0}", researcher);
 
@@ -143,7 +139,37 @@ public class ResearchersController extends CommonController {
                     researcher.setAgent(agent);
                     researcher = researcherService.saveOrUpdate(researcher);
                 }
+
+                // Add Keywords List
+                List<String> keyList = new ArrayList<>();
+                List<ResearcherKeyword> keywordsList = new ArrayList<>();
+                for (ResearcherKeyword rk : mendeleyService.searchKeywordsByProfileId(researcher.getMendeleyId())) {
+                    String key = rk.getName().toLowerCase() + "-" + rk.getYear();
+                    if(!keyList.contains(key)){
+                        keyList.add(key);
+
+                        rk.setName(rk.getName().toLowerCase());
+                        rk.setResearcher(researcher);
+                        keywordsList.add(rk);
+                    }
+                }
+
+                // Delete previous keywords
+                /*
+                for (ResearcherKeyword rk : researcher.getResearchKeywords()) {
+                    researcherKeywordService.delete(rk);
+                }
+                */
+
+                // Add new keywords
+                researcher.setResearchKeywords(keywordsList);
+                for (ResearcherKeyword rk : researcher.getResearchKeywords()) {
+                    rk.setResearcher(researcher);
+                    researcherKeywordService.saveOrUpdate(rk);
+                }
+
                 return "redirect:/researchers/" + researcher.getId();
+
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
                 model.addAttribute("css", "danger");
@@ -177,6 +203,7 @@ public class ResearchersController extends CommonController {
                 researcher.setInstitutions(res.getInstitutions());
                 researcher.setDisciplines(res.getDisciplines());
                 researcher.setResearchInterests(res.getResearchInterests());
+
             } else {
                 model.addAttribute("css", "warning");
                 model.addAttribute("msg", "Researcher not found!");
@@ -196,6 +223,7 @@ public class ResearchersController extends CommonController {
      * Saves the new objects related to Researcher
      *
      * @param r
+     *
      * @throws Exception
      */
     private Researcher saveNewObjects(Researcher r) {
@@ -224,6 +252,7 @@ public class ResearchersController extends CommonController {
                     i.setId(findByName.getId());
                 }
             }
+
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }

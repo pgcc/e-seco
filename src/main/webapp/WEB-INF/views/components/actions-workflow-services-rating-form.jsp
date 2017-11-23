@@ -4,7 +4,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Components Compositions - Workflow Services
+        E-SECO Components Actions - Workflow Services - Rating ${invitation.workflowService.component.name}
     </jsp:attribute>
 
 
@@ -135,7 +135,7 @@
 
                                 <div class="col col-xs-12 col-md-4">
                                     <div class="form-group">
-                                        <label for="disponibility">Disponibility</label>
+                                        <label for="disponibility">Availability</label>
                                         <select id="disponibility" name="disponibility" class="form-control" required>
                                             <option value="">Choose</option>
                                             <option value="1">1</option>
@@ -154,7 +154,7 @@
                             </div>
 
                             <div class="text-center">
-                                <button class="btn btn-block btn-success">Confirm</button>
+                                <button class="btn btn-success">Confirm</button>
                             </div>
                         </form>
 

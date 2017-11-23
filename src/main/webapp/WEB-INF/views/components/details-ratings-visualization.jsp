@@ -85,7 +85,7 @@
                         "ease_of_use": rating.valueEaseOfUse,
                         "reliability": rating.valueReliability,
                         "performance": rating.valuePerformance,
-                        "disponibility": rating.valueDisponibility
+                        "availability": rating.valueDisponibility
                     };
 
                     parallelCoordinatesData.push(dataObject);

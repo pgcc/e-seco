@@ -20,6 +20,16 @@ public class ComponentType {
     private String name;
 
 
+    /* CONSTRUCTORS */
+
+    public ComponentType() {
+    }
+
+    public ComponentType(String name) {
+        this.name = name;
+    }
+
+
     /* GETTERS/SETTERS */
 
     public int getId() {

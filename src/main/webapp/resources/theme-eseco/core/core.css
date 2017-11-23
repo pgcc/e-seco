@@ -267,7 +267,7 @@ div.pnl-heading-buttons-buttons a.btn {
 /* Data Value List */
 ul.lst-data-value {
     list-style: none;
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 ul.lst-data-value li {
@@ -399,4 +399,9 @@ ul.lst-data-value li span:nth-child(2) {
 
 .width-95 {
     width: 95% !important;
+}
+
+/* MISC */
+.cursor-pointer{
+    cursor: pointer;
 }

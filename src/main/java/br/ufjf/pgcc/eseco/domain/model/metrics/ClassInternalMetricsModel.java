@@ -1,5 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.model.metrics;
 
+import java.util.ArrayList;
+
 public class ClassInternalMetricsModel {
 
     private String name;
@@ -8,6 +10,10 @@ public class ClassInternalMetricsModel {
     private int servicesCount;
     private int esecoCoreServicesCount;
     private int esecoWorkflowServicesCount;
+    private ArrayList<String> parametersNames;
+    private ArrayList<String> methodsNames;
+    private ArrayList<String> esecoCoreServicesNames;
+    private ArrayList<String> esecoWorkflowServicesNames;
 
 
     /* CONSTRUCTORS */
@@ -65,5 +71,37 @@ public class ClassInternalMetricsModel {
 
     public void setEsecoWorkflowServicesCount(int esecoWorkflowServicesCount) {
         this.esecoWorkflowServicesCount = esecoWorkflowServicesCount;
+    }
+
+    public ArrayList<String> getParametersNames() {
+        return parametersNames;
+    }
+
+    public void setParametersNames(ArrayList<String> parametersNames) {
+        this.parametersNames = parametersNames;
+    }
+
+    public ArrayList<String> getMethodsNames() {
+        return methodsNames;
+    }
+
+    public void setMethodsNames(ArrayList<String> methodsNames) {
+        this.methodsNames = methodsNames;
+    }
+
+    public ArrayList<String> getEsecoCoreServicesNames() {
+        return esecoCoreServicesNames;
+    }
+
+    public void setEsecoCoreServicesNames(ArrayList<String> esecoCoreServicesNames) {
+        this.esecoCoreServicesNames = esecoCoreServicesNames;
+    }
+
+    public ArrayList<String> getEsecoWorkflowServicesNames() {
+        return esecoWorkflowServicesNames;
+    }
+
+    public void setEsecoWorkflowServicesNames(ArrayList<String> esecoWorkflowServicesNames) {
+        this.esecoWorkflowServicesNames = esecoWorkflowServicesNames;
     }
 }

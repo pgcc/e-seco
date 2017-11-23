@@ -80,6 +80,11 @@ public class Researcher {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations;
 
+    @OneToMany(mappedBy = "researcher")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OrderBy("year, name")
+    private List<ResearcherKeyword> researchKeywords;
+
 
     /* GETTERS/SETTERS */
     public int getId() {
@@ -185,5 +190,13 @@ public class Researcher {
 
     public void setWorkflowServiceRatingInvitations(List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitations) {
         this.workflowServiceRatingInvitations = workflowServiceRatingInvitations;
+    }
+
+    public List<ResearcherKeyword> getResearchKeywords() {
+        return researchKeywords;
+    }
+
+    public void setResearchKeywords(List<ResearcherKeyword> researchKeywords) {
+        this.researchKeywords = researchKeywords;
     }
 }

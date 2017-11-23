@@ -19,12 +19,20 @@ public class ComponentTypeService {
     }
 
     @Transactional
-    public ComponentType add(ComponentType componentType) throws Exception{
+    public ComponentType add(ComponentType componentType) throws Exception {
         return componentTypeDao.add(componentType);
     }
 
     @Transactional(readOnly = true)
     public List<ComponentType> findAll() {
         return componentTypeDao.findAll();
+    }
+
+    @Transactional
+    public void populateComponentTypes() throws Exception {
+        if (componentTypeDao.findAll().isEmpty()) {
+            componentTypeDao.add(new ComponentType("Plugin"));
+            componentTypeDao.add(new ComponentType("Workflow Service"));
+        }
     }
 }

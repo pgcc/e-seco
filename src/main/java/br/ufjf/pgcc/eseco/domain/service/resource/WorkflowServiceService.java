@@ -52,7 +52,7 @@ public class WorkflowServiceService {
         workflowServiceRatingInvitation.setWorkflowService(workflowService);
         workflowServiceRatingInvitation.setRater(researcher);
         workflowServiceRatingInvitation.setDateInvited(new Date());
-        if (datechat != null) {
+        if (datechat != null && !datechat.equals("____/__/__")) {
             workflowServiceRatingInvitation.setDateChat(new SimpleDateFormat("yyyy/MM/dd").parse(datechat));
         }
 

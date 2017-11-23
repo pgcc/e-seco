@@ -36,8 +36,10 @@
             /* DEPENDENCIES VISUALIZATION                  */
             /***********************************************/
             function showDependenciesVisualization() {
+                var width = $("#box-chart-dependencies").css("width");
+                width = width.replace("px", "");
                 var treemapData = mountDataToTreemap(componentContextJson);
-                drawTreemap(treemapData);
+                drawTreemap(treemapData, "#box-chart-dependencies", width);
             };
 
             function mountDataToTreemap(itemData) {
@@ -80,10 +82,11 @@
                 return treemapData;
             }
 
-            $("#btn-visualize-dependencies").on("click", function () {
-                $('#modal-visualize-dependencies').modal();
+            $("#btn-visualize-dependencies-treemap").on("click", function () {
                 showDependenciesVisualization();
             });
+
+            showDependenciesVisualization();
 
 
             /***********************************************/
@@ -122,6 +125,74 @@
                     $(this).addClass("progress-bar-success");
                 }
             });
+
+
+            /***********************************************/
+            /* POPOVERS                                    */
+            /***********************************************/
+            $('#pop-parameters-names').popover({
+                "title": "Parameters names",
+                "html": true,
+                "placement": "right",
+                "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
+            });
+
+            $('#pop-method-names').popover({
+                "title": "Methods names",
+                "html": true,
+                "placement": "right",
+                "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
+            });
+
+            $('#pop-eseco-core-services-names').popover({
+                "title": "E-Seco Core Services names",
+                "html": true,
+                "placement": "right",
+                "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
+            });
+
+            $('#pop-eseco-workflow-services-names').popover({
+                "title": "E-Seco Workflow Services names",
+                "html": true,
+                "placement": "right",
+                "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
+            });
+
+            $('#pop-rating-documentation-info').popover({
+                "title": "Documentation",
+                "html": true,
+                "placement": "right",
+                "content": 'Quality of the documentation provided by the service to aid its usage'
+            });
+
+            $('#pop-rating-ease-of-use-info').popover({
+                "title": "Ease of Use",
+                "html": true,
+                "placement": "right",
+                "content": 'How easy it is to use the service'
+            });
+
+            $('#pop-rating-reliability-info').popover({
+                "title": "Reliability",
+                "html": true,
+                "placement": "right",
+                "content": 'How correct is the data returned or the processing results of the service'
+            });
+
+            $('#pop-rating-performance-info').popover({
+                "title": "Performance",
+                "html": true,
+                "placement": "right",
+                "content": 'How smoothly the service processes, does it takes short or long time to return the data?'
+            });
+
+            $('#pop-rating-availability-info').popover({
+                "title": "Availability",
+                "html": true,
+                "placement": "right",
+                "content": 'How well the service responds the calls, its always on?'
+            });
+
         </script>
     </jsp:attribute>
 
@@ -129,7 +200,8 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
-            <li><a href="<c:url value="/components/details/${type}/${component.id}"/>">Details of ${component.name}</a></li>
+            <li><a href="<c:url value="/components/details/${type}/${component.id}"/>">Details of ${component.name}</a>
+            </li>
         </ol>
     </jsp:attribute>
 
@@ -140,7 +212,7 @@
                 <h2>Details: <strong>${componentContextInfo.name}</strong></h2>
 
                 <div class="row">
-                    <div class="col col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Component Info</h3>
@@ -185,7 +257,7 @@
                         </div>
                     </div>
 
-                    <div class="col col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Workflow Service Info</h3>
@@ -216,11 +288,13 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col col-xs-12 col-sm-4">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Usage</h3>
+                                <h3 class="panel-title">Service Usage</h3>
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group lst-data-value">
@@ -274,10 +348,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Ratings</h3>
@@ -299,7 +371,10 @@
 
                                 <table id="tbl-rating-avg-values" class="table table-bordered">
                                     <tr>
-                                        <td width="60px;">Documentation</td>
+                                        <td style="width:130px;">
+                                            Documentation
+                                            <i id="pop-rating-documentation-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                        </td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
@@ -314,7 +389,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="60px;">Ease of Use</td>
+                                        <td>
+                                            Ease of Use
+                                            <i id="pop-rating-ease-of-use-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                        </td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
@@ -329,7 +407,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="60px;">Reliability</td>
+                                        <td>
+                                            Reliability
+                                            <i id="pop-rating-reliability-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                        </td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
@@ -344,7 +425,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="60px;">Performance</td>
+                                        <td>
+                                            Performance
+                                            <i id="pop-rating-performance-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                        </td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
@@ -359,7 +443,10 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td width="60px;">Disponibility</td>
+                                        <td>
+                                            Availability
+                                            <i id="pop-rating-availability-info" class="fa fa-info-circle text-info cursor-pointer"></i>
+                                        </td>
                                         <td>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
@@ -376,15 +463,20 @@
                                 </table>
 
                                 <div class="text-center">
-                                    <a class="btn btn-info" href="<c:url value="/components/details/${type}/${component.id}/ratings-visualization"/>">Visualize</a>
+                                    <a class="btn btn-info"
+                                       href="<c:url value="/components/details/${type}/${component.id}/ratings-visualization"/>">Visualize</a>
 
-                                    <a class="btn btn-info" href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite for Rating</a>
+                                    <a class="btn btn-info"
+                                       href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
+                                        for Rating</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col col-xs-12 col-sm-4">
+                <div class="row">
+                    <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Internal Metrics</h3>
@@ -392,36 +484,73 @@
                             <div class="panel-body">
                                 <c:choose>
                                     <c:when test="${type == 2}">
-                                        <ul class="list-group lst-data-value">
-                                            <li class="list-group-item">
-                                                <span>Internal Class</span>
-                                                <span>${componentContextInfo.wsInternalClass}</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span>Parameters</span>
-                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.parametersCount}</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span>Methods</span>
-                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.methodsCount}</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span>Total Services Used</span>
-                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.servicesCount}</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span>E-Seco Core Services Used</span>
-                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesCount}</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span>E-Seco Workflow Services Used</span>
-                                                <span>${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesCount}</span>
-                                            </li>
-                                        </ul>
-                                        <div class="text-center">
-                                            <button id="btn-visualize-dependencies" class="btn btn-info" type="button">
-                                                Visualize Dependencies
-                                            </button>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6">
+                                                <ul class="list-group lst-data-value">
+                                                    <li class="list-group-item">
+                                                        <span>Internal Class</span>
+                                                        <span>${componentContextInfo.wsInternalClass}</span>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span>Parameters</span>
+                                                        <span>
+                                                            ${componentContextInfo.wsInternalClassInternalMetrics.parametersCount}
+                                                            <i id="pop-parameters-names"
+                                                               class="fa fa-info-circle text-info cursor-pointer"
+                                                               data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.parametersNames}">${name}<br></c:forEach>"
+                                                            ></i>
+                                                        </span>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span>Methods</span>
+                                                        <span>
+                                                            ${componentContextInfo.wsInternalClassInternalMetrics.methodsCount}
+                                                            <i id="pop-method-names"
+                                                               class="fa fa-info-circle text-info cursor-pointer"
+                                                               data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.methodsNames}">${name}<br></c:forEach>"
+                                                            ></i>
+                                                        </span>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span>Total Services Used</span>
+                                                        <span>${componentContextInfo.wsInternalClassInternalMetrics.servicesCount}</span>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span>E-Seco Core Services Used</span>
+                                                        <span>
+                                                            ${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesCount}
+                                                            <i id="pop-eseco-core-services-names"
+                                                               class="fa fa-info-circle text-info cursor-pointer"
+                                                               data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesNames}">${name}<br></c:forEach>"
+                                                            ></i>
+                                                        </span>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span>E-Seco Workflow Services Used</span>
+                                                        <span>
+                                                            ${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesCount}
+                                                            <i id="pop-eseco-workflow-services-names"
+                                                               class="fa fa-info-circle text-info cursor-pointer"
+                                                               data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesNames}">${name}<br></c:forEach>"
+                                                            ></i>
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6">
+                                                <div class="text-center margin-10-bottom">
+                                                    <button id="btn-visualize-dependencies-treemap" class="btn btn-info"
+                                                            type="button">
+                                                        View Treemap
+                                                    </button>
+                                                    <button id="btn-visualize-dependencies-graph" class="btn btn-info"
+                                                            type="button">
+                                                        View Graph
+                                                    </button>
+                                                </div>
+                                                <div id="box-chart-dependencies"></div>
+                                            </div>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
@@ -430,41 +559,6 @@
                                 </c:choose>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- MODAL VISUALIZE DEPENDENCIES -->
-        <div class="modal fade" id="modal-visualize-dependencies" tabindex="-1" role="dialog"
-             aria-labelledby="modal-visualize-dependencies-label">
-            <div class="modal-dialog width-95" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal-visualize-dependencies-label">Dependencies of
-                            <strong>${component.name}</strong>
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <div style="overflow: auto;width: 850px;height: 550px;">
-                                            <div id="chart"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -686,7 +780,7 @@
                                                 <tr>
                                                     <td>${rating.rater.displayName}</td>
                                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
-                                                                        value="${rating.date}"/></td>
+                                                                                            value="${rating.date}"/></td>
                                                     <td class="text-center">${rating.approved}</td>
                                                     <td class="text-center">${rating.valueDocumentation}</td>
                                                     <td class="text-center">${rating.valueEaseOfUse}</td>
