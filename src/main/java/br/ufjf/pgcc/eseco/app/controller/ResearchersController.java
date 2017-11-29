@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,9 +100,23 @@ public class ResearchersController extends CommonController {
             model.addAttribute("researcherForm", researcher);
             return "researchers/researcher-form";
         }
-        model.addAttribute("researcher", researcher);
-        return "researchers/show";
 
+        // Transform context info into JSON String
+        List<ResearcherKeyword> researcherKeywordList = new ArrayList<>();
+
+        for(ResearcherKeyword rk: researcher.getResearchKeywords()){
+            ResearcherKeyword newRk = new ResearcherKeyword();
+            newRk.setName(rk.getName());
+            researcherKeywordList.add(newRk);
+        }
+
+        Gson gson = new GsonBuilder().create();
+        String researcherKeywordsJSON = gson.toJson(researcherKeywordList);
+
+        model.addAttribute("researcher", researcher);
+        model.addAttribute("researcherKeywordsJSON", researcherKeywordsJSON);
+
+        return "researchers/show";
     }
 
     @RequestMapping(value = "/researchers/{id}/update", method = RequestMethod.GET)

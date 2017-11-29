@@ -23,6 +23,10 @@ public class WorkflowServiceCommentService {
         return workflowServiceCommentDAO.add(workflowServiceComment);
     }
 
+    public WorkflowServiceComment find(int workflowServiceCommentId) {
+        return workflowServiceCommentDAO.find(workflowServiceCommentId);
+    }
+
     public List<WorkflowServiceComment> findAll() {
         return workflowServiceCommentDAO.findAll();
     }

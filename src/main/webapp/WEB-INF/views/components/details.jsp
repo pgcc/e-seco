@@ -268,7 +268,131 @@
                 "content": 'How well the service responds the calls, its always on?'
             });
 
-            
+
+            /***********************************************/
+            /* COMMENTS                                    */
+            /***********************************************/
+
+            // Populate Comments Table
+            function addCommentToTable(tbody, data, isChild) {
+                var photoWidth = isChild ? "50px" : "80px";
+                var tr = null;
+                tr = $("<tr>").append(
+                    $("<td>").css("width", photoWidth).append(
+                        $("<img>").addClass("img-responsive img-circle")
+                            .attr("src", data.photo)
+                            .attr("alt", "Author Photo")
+                    ),
+                    $("<td>").append(
+                        $("<p>").append(
+                            $("<strong>").text(data.author),
+                            $("<span>").addClass("text-muted text-small").text(" (" + data.date + ")")
+                        ),
+                        $("<p>").text(data.comment),
+                        $("<p>").append(
+                            $("<button>").addClass("btn btn-xs btn-info btn-comment-reply")
+                                .attr("type", "button")
+                                .attr("data-comment_id", data.id)
+                                .text("Reply")
+                        ),
+                        $("<p>").append(
+                            $("<table>").addClass("table").attr("id", "tbl-comment-replies-" + data.id)
+                                .append(
+                                    $("<tbody>").addClass("replies-tbody-" + data.id)
+                                )
+                        )
+                    )
+                );
+
+                $(tbody).append(tr);
+            }
+
+            <c:forEach var="comment" items="${rootCommentsList}">
+            addCommentToTable("#tbl-comments tbody.comments-tbody", {
+                "id": "${comment.id}",
+                "author": "${comment.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${comment.date}"/>",
+                "photo": "${comment.commenter.photo}",
+                "comment": "${comment.content}"
+            }, false);
+
+                <c:forEach var="response1" items="${comment.responses}">
+                addCommentToTable("#tbl-comment-replies-${response1.parent.id} tbody.replies-tbody-${response1.parent.id}", {
+                    "id": "${response1.id}",
+                    "author": "${response1.commenter.name}",
+                    "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response1.date}"/>",
+                    "photo": "${response1.commenter.photo}",
+                    "comment": "${response1.content}"
+                }, true);
+
+                    <c:forEach var="response2" items="${response1.responses}">
+                    addCommentToTable("#tbl-comment-replies-${response2.parent.id} tbody.replies-tbody-${response2.parent.id}", {
+                        "id": "${response2.id}",
+                        "author": "${response2.commenter.name}",
+                        "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response2.date}"/>",
+                        "photo": "${response2.commenter.photo}",
+                        "comment": "${response2.content}"
+                    }, true);
+
+                        <c:forEach var="response3" items="${response2.responses}">
+                        addCommentToTable("#tbl-comment-replies-${response3.parent.id} tbody.replies-tbody-${response3.parent.id}", {
+                            "id": "${response3.id}",
+                            "author": "${response3.commenter.name}",
+                            "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response3.date}"/>",
+                            "photo": "${response3.commenter.photo}",
+                            "comment": "${response3.content}"
+                        }, true);
+
+                            <c:forEach var="response4" items="${response3.responses}">
+                            addCommentToTable("#tbl-comment-replies-${response4.parent.id} tbody.replies-tbody-${response4.parent.id}", {
+                                "id": "${response4.id}",
+                                "author": "${response4.commenter.name}",
+                                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response4.date}"/>",
+                                "photo": "${response4.commenter.photo}",
+                                "comment": "${response4.content}"
+                            }, true);
+
+                                <c:forEach var="response5" items="${response4.responses}">
+                                addCommentToTable("#tbl-comment-replies-${response5.parent.id} tbody.replies-tbody-${response5.parent.id}", {
+                                    "id": "${response5.id}",
+                                    "author": "${response5.commenter.name}",
+                                    "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response5.date}"/>",
+                                    "photo": "${response5.commenter.photo}",
+                                    "comment": "${response5.content}"
+                                }, true);
+                                </c:forEach>
+
+                            </c:forEach>
+
+                        </c:forEach>
+
+                    </c:forEach>
+
+                </c:forEach>
+
+            </c:forEach>
+
+            // Reply Comment
+            $(".btn-comment-reply").on("click", function () {
+                $("#comment-reply-to").val($(this).data("comment_id"));
+
+                $(".btn-comment-reply").show();
+                $(".reply-group").remove();
+                $(this).hide();
+
+                var form_group = $("<div>").addClass("form-group reply-group");
+                var textarea = $("<textarea>").attr("name", "comment-reply").addClass("form-control");
+                var button = $("<button>").addClass("btn btn-success margin-10-top")
+                    .text("Confirm")
+                    .attr("name", "submit-comment-reply")
+                ;
+
+                form_group.append(textarea, button);
+
+                $(this).parent("p").append(form_group);
+            });
+
+            // Comment Added
             <c:if test="${not empty comment_inserted}">
             swal("Success", "Comment Added!", "success");
             </c:if>
@@ -653,41 +777,23 @@
                                 <h3 class="panel-title">Comments</h3>
                             </div>
                             <div class="panel-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th style="width:80px;"></th>
-                                        <th style="width:250px;">Author</th>
-                                        <th class="text-center" style="width:150px;">Date</th>
-                                        <th>Comment</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach var="comment" items="${commentsList}">
-                                        <tr>
-                                            <td>
-
-                                            </td>
-                                            <td>${comment.commenter.name}</td>
-                                            <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
-                                                                                    value="${comment.date}"/></td>
-                                            <td>${comment.content}</td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-
                                 <form id="frm-comment"
                                       action="<c:url value="/components/actions/workflow-services/comment/${componentContextInfo.id}"/>"
                                       method="post">
+                                    <input id="comment-reply-to" name="comment-reply-to" type="hidden">
+
+                                    <table id="tbl-comments" class="table">
+                                        <tbody class="comments-tbody"></tbody>
+                                    </table>
 
                                     <div class="form-group">
                                         <label for="comment-content">Insert a Comment</label>
-                                        <textarea id="comment-content" name="comment-content" class="form-control"></textarea>
+                                        <textarea id="comment-content" name="comment-content"
+                                                  class="form-control"></textarea>
                                     </div>
 
-                                    <div class="text-center">
-                                        <button class="btn btn-success">Confirm</button>
+                                    <div>
+                                        <button name="submit-comment" class="btn btn-success">Confirm Comment</button>
                                     </div>
                                 </form>
                             </div>

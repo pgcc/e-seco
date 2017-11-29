@@ -11,12 +11,63 @@
 
 
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            .sort {
+                border: none;
+                color: #286090;
+                background-color: #fff;
+            }
 
+            .sort:after {
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                content: "";
+                position: relative;
+                top: -10px;
+                right: -5px;
+            }
+
+            .sort.asc:after {
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #286090;
+                content: "";
+                position: relative;
+                top: 4px;
+                right: -5px;
+            }
+
+            .sort.desc:after {
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #286090;
+                content: "";
+                position: relative;
+                top: -4px;
+                right: -5px;
+            }
+        </style>
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/list.js" />"></script>
+        <script type="text/javascript">
+            // Table Search
+            var options = {
+                valueNames: ['service_name', 'service_repository', 'service_type', 'service_description']
+            };
 
+            var servicesList = new List('services', options);
+        </script>
     </jsp:attribute>
 
 
@@ -59,32 +110,48 @@
 
                         <c:if test="${searchResults != null}">
                             <hr>
-                            <p>
-                                <strong>${fn:length(searchResults)}</strong>
-                                Results for term
-                                <strong>${searchString}</strong>
-                            </p>
+
+                        <div id="services" class="table-responsive">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <p>
+                                        <strong>${fn:length(searchResults)}</strong>
+                                        Results for term
+                                        <strong>${searchString}</strong>
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <input class="search form-control" placeholder="Search">
+                                    </div>
+                                </div>
+                            </div>
+
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th class="text-center" style="width:130px;">Repository</th>
-                                    <th class="text-center" style="width:130px;">Type</th>
+                                    <th><button class="sort" data-sort="service_name">Name</button></th>
+                                    <th class="text-center" style="width:130px;">
+                                        <button class="sort" data-sort="service_repository">Repository</button></th>
+                                    <th class="text-center" style="width:130px;">
+                                        <button class="sort" data-sort="service_type">Type</button></th>
                                     <th style="width:300px;">Description</th>
                                     <th class="text-center" style="width:60px;">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="list">
                                 <c:forEach var="service" items="${searchResults}">
                                     <tr>
-                                        <td>${service.name}</td>
-                                        <td class="text-center">${service.repositoryName}</td>
-                                        <td class="text-center">${service.componentType}</td>
+                                        <td class="service_name">${service.name}</td>
+                                        <td class="service_repository text-center">${service.repositoryName}</td>
+                                        <td class="service_type text-center">${service.componentType}</td>
                                         <td>
-                                            <p class="text-justify">${service.shortDescription}</p>
+                                            <p class="service_description text-justify">${service.shortDescription}</p>
                                         </td>
                                         <td class="text-center">
-                                            <a class="btn btn-xs btn-info" href="<c:url value="/components/details/3/${service.serviceIdRepository}"/>">More Details</a>
+                                            <a class="btn btn-xs btn-info"
+                                               href="<c:url value="/components/details/3/${service.serviceIdRepository}"/>">More
+                                                Details</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

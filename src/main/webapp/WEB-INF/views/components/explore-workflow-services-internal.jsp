@@ -10,11 +10,55 @@
 
 
     <jsp:attribute name="stylesheets">
+        <style type="text/css">
+            .sort {
+                border: none;
+                color: #286090;
+                background-color: #fff;
+            }
 
+            .sort:after {
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid transparent;
+                content: "";
+                position: relative;
+                top: -10px;
+                right: -5px;
+            }
+
+            .sort.asc:after {
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #286090;
+                content: "";
+                position: relative;
+                top: 4px;
+                right: -5px;
+            }
+
+            .sort.desc:after {
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #286090;
+                content: "";
+                position: relative;
+                top: -4px;
+                right: -5px;
+            }
+        </style>
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/list.js" />"></script>
         <script type="text/javascript">
             function updateActionsButtons() {
                 $("#fld-actions-compare").prop("disabled", $(".cbx-actions-item:checked").length <= 1);
@@ -54,6 +98,14 @@
                 updateActionsButtons();
                 updateTxtActionsInfo();
             });
+
+
+            // Table Search
+            var options = {
+                valueNames: ['service_name', 'service_type', 'service_author', 'service_description']
+            };
+
+            var servicesList = new List('services', options);
         </script>
     </jsp:attribute>
 
@@ -79,59 +131,78 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="table-responsive">
-                            <form id="frm-actions"
-                                  action="<c:url value="/components/actions/workflow-services/compare"/>" method="post">
-                                <input name="actions-ids" type="hidden">
-                                <div class="form-group">
-                                    <span class="txt-actions-info"></span>
-                                    <input id="fld-actions-compare" name="actions-compare"
-                                           class="btn btn-primary btn-xs" type="submit" value="Compare Services">
+                        <div id="services" class="table-responsive">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <form id="frm-actions"
+                                          action="<c:url value="/components/actions/workflow-services/compare"/>"
+                                          method="post">
+                                        <input name="actions-ids" type="hidden">
+                                        <div class="form-group">
+                                            <span class="txt-actions-info"></span>
+                                            <input id="fld-actions-compare" name="actions-compare"
+                                                   class="btn btn-primary btn-xs" type="submit"
+                                                   value="Compare Services">
+                                        </div>
+                                    </form>
                                 </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <input class="search form-control" placeholder="Search">
+                                    </div>
+                                </div>
+                            </div>
 
-                                <table class="table table-bordered">
-                                    <thead>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" style="width:40px;">
+                                        <input id="cbx-actions-select-all" title="Select All"
+                                               type="checkbox">
+                                    </th>
+                                    <th>
+                                        <button class="sort" data-sort="service_name">Name</button>
+                                    </th>
+                                    <th class="text-center" style="width:130px;">
+                                        <button class="sort" data-sort="service_type">Type</button>
+                                    </th>
+                                    <th style="width:130px;">
+                                        <button class="sort" data-sort="service_author">Author</button>
+                                    </th>
+                                    <th class="text-center" style="width:130px;">Date Created</th>
+                                    <th style="width:300px;">Description</th>
+                                    <th class="text-center" style="width:60px;">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="list">
+                                <c:forEach var="service" items="${services_workflow_list}">
                                     <tr>
-                                        <th class="text-center" style="width:40px;">
-                                            <input id="cbx-actions-select-all" title="Select All"
-                                                   type="checkbox">
-                                        </th>
-                                        <th>Name</th>
-                                        <th class="text-center" style="width:130px;">Type</th>
-                                        <th style="width:130px;">Author</th>
-                                        <th class="text-center" style="width:130px;">Date Created</th>
-                                        <th style="width:300px;">Description</th>
-                                        <th class="text-center" style="width:60px;">Actions</th>
+                                        <td class="text-center">
+                                            <input name="actions-item-${service.component.id}"
+                                                   class="cbx-actions-item" title="Select This"
+                                                   type="checkbox" value="${service.component.id}">
+                                        </td>
+                                        <td class="service_name"><c:out value="${service.component.name}"/></td>
+                                        <td class="service_type text-center"><c:out value="${service.type}"/></td>
+                                        <td class="service_author"><c:out
+                                                value="${service.component.author.agent.name}"/></td>
+                                        <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                                value="${service.component.dateCreated}"/></td>
+                                        <td class="service_description text-justify"><c:out value="${service.shortDescription}"/></td>
+                                        <td>
+                                            <a class="btn btn-xs btn-primary"
+                                               href="<c:url value="/components/details/2/${service.component.id}"/>">Explore</a>
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach var="service" items="${services_workflow_list}">
-                                        <tr>
-                                            <td class="text-center">
-                                                <input name="actions-item-${service.component.id}"
-                                                       class="cbx-actions-item" title="Select This"
-                                                       type="checkbox" value="${service.component.id}">
-                                            </td>
-                                            <td><c:out value="${service.component.name}"/></td>
-                                            <td class="text-center"><c:out value="${service.type}"/></td>
-                                            <td><c:out value="${service.component.author.agent.name}"/></td>
-                                            <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
-                                                                                    value="${service.component.dateCreated}"/></td>
-                                            <td><c:out value="${service.shortDescription}"/></td>
-                                            <td>
-                                                <a class="btn btn-xs btn-primary"
-                                                   href="<c:url value="/components/details/2/${service.component.id}"/>">Explore</a>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </form>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
-
                     </div>
+
                 </div>
             </div>
+        </div>
         </div>
     </jsp:body>
 </t:layout-app>

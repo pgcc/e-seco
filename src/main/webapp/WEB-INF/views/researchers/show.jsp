@@ -13,12 +13,61 @@
 
 
     <jsp:attribute name="stylesheets">
-
+<link rel="stylesheet"
+      href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+        <style type="text/css">
+            .bld {
+                font-weight: bold;
+            }
+        </style>
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
+<script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
+        <script type="text/javascript"
+                src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
+        <script type="text/javascript">
+            // Get JSON Data for visualizations
+            var researcherKeywordsJson = JSON.parse('${researcherKeywordsJSON}');
 
+            /***********************************************/
+            /* KEYWORDS VISUALIZATION                      */
+            /***********************************************/
+            // WordCount
+            function showKeywordsVisualization() {
+                var width = $("#box-chart-keywords").css("width");
+                width = width.replace("px", "");
+                var wordCountData = mountDataToWordCount(researcherKeywordsJson);
+                drawWordCount(wordCountData, "#box-chart-keywords", width);
+            };
+
+            function mountDataToWordCount(itemData) {
+                var wordCountData = [];
+
+                $.each(itemData, function(i, keyword){
+                    var foundKeywordInList = false;
+                    $.each(wordCountData, function(i, keywordInList){
+                        if(keywordInList.text === keyword.name){
+                            foundKeywordInList = true;
+                            if(keywordInList.size <= 60){
+                                keywordInList.size += 5;
+                            }
+                        }
+                    });
+                    if(!foundKeywordInList){
+                        wordCountData.push({
+                            "text": keyword.name,
+                            "size": 15
+                        })
+                    }
+                });
+
+                return wordCountData;
+            }
+
+            showKeywordsVisualization();
+        </script>
     </jsp:attribute>
 
 
@@ -115,6 +164,8 @@
                             <h3 class="panel-title">Researcher Keywords</h3>
                         </div>
                         <div class="panel-body">
+                            <div id="box-chart-keywords"></div>
+
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>

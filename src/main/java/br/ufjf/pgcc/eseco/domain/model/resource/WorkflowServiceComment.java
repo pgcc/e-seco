@@ -32,11 +32,13 @@ public class WorkflowServiceComment {
     @Column(name = "content", columnDefinition="TEXT")
     private String content;
 
-    /*
-    @OneToMany(mappedBy = "id")
+    @ManyToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private WorkflowServiceComment parent;
+
+    @OneToMany(mappedBy="parent")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<WorkflowServiceComment> responses;
-    */
 
 
     /* GETTERS/SETTERS */
@@ -79,5 +81,21 @@ public class WorkflowServiceComment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public WorkflowServiceComment getParent() {
+        return parent;
+    }
+
+    public void setParent(WorkflowServiceComment parent) {
+        this.parent = parent;
+    }
+
+    public List<WorkflowServiceComment> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(List<WorkflowServiceComment> responses) {
+        this.responses = responses;
     }
 }

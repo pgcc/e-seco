@@ -116,6 +116,7 @@ public class ComponentsController {
                     List<Researcher> researchersList = new ArrayList<>();
                     List<WorkflowServiceRating> ratingsList = new ArrayList<>();
                     List<WorkflowServiceComment> commentsList = new ArrayList<>();
+                    List<WorkflowServiceComment> rootCommentsList = new ArrayList<>();
 
                     if (componentContextInfo != null) {
                         activitiesList = componentContextInfo.getActivitiesUsing();
@@ -137,6 +138,13 @@ public class ComponentsController {
                         componentContextInfo.setWsComments(null);
                     }
 
+                    // Comments
+                    for(WorkflowServiceComment comment: commentsList){
+                        if(comment.getParent() == null){
+                            rootCommentsList.add(comment);
+                        }
+                    }
+
                     // Transform context info into JSON String
                     Gson gson = new GsonBuilder().create();
                     String componentContextInfoJSON = gson.toJson(componentContextInfo);
@@ -150,6 +158,7 @@ public class ComponentsController {
                     model.addAttribute("researchersList", researchersList);
                     model.addAttribute("ratingsList", ratingsList);
                     model.addAttribute("commentsList", commentsList);
+                    model.addAttribute("rootCommentsList", rootCommentsList);
                 }
                 break;
 
@@ -383,7 +392,11 @@ public class ComponentsController {
 
         model.addAttribute("component", component);
 
+        String submitComment = request.getParameter("submit-comment");
+        String submitCommentReply = request.getParameter("submit-comment-reply");
         String content = request.getParameter("comment-content");
+        String reply = request.getParameter("comment-reply");
+        String replyTo = request.getParameter("comment-reply-to");
 
         // Get Session
         HttpSession session = request.getSession();
@@ -397,9 +410,20 @@ public class ComponentsController {
         // Create comment
         WorkflowServiceComment workflowServiceComment = new WorkflowServiceComment();
         workflowServiceComment.setCommenter(agent);
-        workflowServiceComment.setContent(content);
+
         workflowServiceComment.setWorkflowService(component.getWorkflowService());
         workflowServiceComment.setDate(new Date());
+
+        if(submitComment != null){
+            workflowServiceComment.setContent(content);
+
+        }else if(submitCommentReply != null){
+            WorkflowServiceComment workflowServiceCommentParent = workflowServiceCommentService.find(Integer.parseInt(replyTo));
+            if(null != workflowServiceCommentParent){
+                workflowServiceComment.setContent(reply);
+                workflowServiceComment.setParent(workflowServiceCommentParent);
+            }
+        }
 
         try {
             workflowServiceCommentService.add(workflowServiceComment);

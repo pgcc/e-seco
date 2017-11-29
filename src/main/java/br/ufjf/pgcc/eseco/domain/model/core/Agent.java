@@ -98,7 +98,7 @@ public class Agent {
 
         // Search for researcher photo
         if(null != getResearcher()){
-            if(null != getResearcher().getPhoto()){
+            if(!getResearcher().getPhoto().equals("") && null != getResearcher().getPhoto()){
                 photo = getResearcher().getPhoto();
             }
         }
@@ -114,7 +114,7 @@ public class Agent {
 
         // If none, use generic empty photo
         if(null == photo){
-            photo = "empty.png";
+            photo = "/eseco/resources/images/agent-photo-blank.png";
         }
 
         return photo;
