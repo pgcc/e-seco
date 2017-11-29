@@ -46,10 +46,10 @@
             /***********************************************/
             // Treemap
             function showDependenciesVisualization() {
-                var width = $("#box-chart-dependencies").css("width");
+                var width = $("#box-chart-dependencies-treemap").css("width");
                 width = width.replace("px", "");
                 var treemapData = mountDataToTreemap(componentContextJson);
-                drawTreemap(treemapData, "#box-chart-dependencies", width);
+                drawTreemap(treemapData, "#box-chart-dependencies-treemap", width);
             };
 
             function mountDataToTreemap(itemData) {
@@ -100,7 +100,7 @@
 
             // Graph
             function showDependenciesGraphVisualization() {
-                var target = "#box-chart-dependencies";
+                var target = "#box-chart-dependencies-graph";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
 
@@ -117,7 +117,8 @@
                     "nodes": [
                         {
                             "name": itemData.name,
-                            "group": 0
+                            "group": 0,
+                            "kind": 1 // Kind 1 = Principal item
                         }
                     ],
                     "links": []
@@ -128,7 +129,8 @@
                 $.each(data1, function (i, item) {
                     graphData.nodes.push({
                         "name": item,
-                        "group": groupId
+                        "group": groupId,
+                        "kind": 2 // kind 2 = Eseco Workflow Services
                     });
                     graphData.links.push({
                         "source": groupId,
@@ -143,7 +145,8 @@
                 $.each(data2, function (i, item) {
                     graphData.nodes.push({
                         "name": item,
-                        "group": groupId
+                        "group": groupId,
+                        "kind": 3 // kind 3 = Eseco Core Services
                     });
                     graphData.links.push({
                         "source": groupId,
@@ -155,6 +158,25 @@
                     groupId++;
                 });
 
+                console.log(graphData);
+
+                if(itemData.id == 4){
+                    graphData.links.push({
+                        "source": 4,
+                        "target": 3,
+                        "value": 2,
+                        "type": "arrow"
+                    });
+
+                    graphData.links.push({
+                        "source": 1,
+                        "target": 2,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+                }
+
 
                 return graphData;
             }
@@ -162,6 +184,8 @@
             $("#btn-visualize-dependencies-graph").on("click", function () {
                 showDependenciesGraphVisualization();
             });
+
+            showDependenciesGraphVisualization();
 
 
             /***********************************************/
@@ -747,6 +771,7 @@
                                             </div>
 
                                             <div class="col-xs-12 col-sm-6">
+                                                <!--
                                                 <div class="text-center margin-10-bottom">
                                                     <button id="btn-visualize-dependencies-treemap" class="btn btn-info"
                                                             type="button">
@@ -757,7 +782,13 @@
                                                         View Graph
                                                     </button>
                                                 </div>
-                                                <div id="box-chart-dependencies"></div>
+                                                -->
+                                                <div id="box-chart-dependencies-treemap"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div id="box-chart-dependencies-graph"></div>
                                             </div>
                                         </div>
                                     </c:when>

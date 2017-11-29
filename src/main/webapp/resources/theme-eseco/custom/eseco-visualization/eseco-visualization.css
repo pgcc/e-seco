@@ -33,6 +33,17 @@ path.link {
     stroke-width: 1.5px;
 }
 
+path.link.composed {
+    stroke: #ff0000;
+}
+
+path.link.interoperate {
+    stroke-dasharray: 10px;
+}
+path.link.large {
+    stroke-width: 3px;
+}
+
 path.link.twofive {
     opacity: 0.25;
 }
