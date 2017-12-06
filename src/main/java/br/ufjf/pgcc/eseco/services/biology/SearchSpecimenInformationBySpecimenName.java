@@ -3,6 +3,8 @@ package br.ufjf.pgcc.eseco.services.biology;
 import br.ufjf.pgcc.eseco.domain.annotation.ComposedOf;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
 import br.ufjf.pgcc.eseco.scientificModels.biology.Specimen;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @EsecoWorkflowService
 @ComposedOf(servicesClasses = {
@@ -32,8 +34,21 @@ public class SearchSpecimenInformationBySpecimenName {
         specimen.setScientificName(scientificName);
         specimen.setBarCode(barCode);
 
-        String specimenJson = "specimen object converted to JSON";
+        Gson gson = new GsonBuilder().create();
+        String specimenJson = gson.toJson(specimen);
 
         return specimenJson;
+    }
+
+    public Specimen getSpecimenByName(String commonName){
+        String scientificName = getSpecimenScientificName(commonName);
+        String barCode = getSpecimenBarCode(scientificName);
+
+        Specimen specimen = new Specimen();
+        specimen.setCommonName(commonName);
+        specimen.setScientificName(scientificName);
+        specimen.setBarCode(barCode);
+
+        return specimen;
     }
 }

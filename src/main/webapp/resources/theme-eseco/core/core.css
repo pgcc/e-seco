@@ -267,13 +267,11 @@ div.pnl-heading-buttons-buttons a.btn {
 /* Data Value List */
 ul.lst-data-value {
     list-style: none;
-    /*overflow: auto;*/
 }
 
 ul.lst-data-value li {
     display: flex;
     justify-content: space-between;
-    overflow: auto;
 }
 
 ul.lst-data-value li span:nth-child(1) {

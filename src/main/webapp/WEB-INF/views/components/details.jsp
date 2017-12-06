@@ -181,8 +181,47 @@
                         "type": "arrow",
                         "way": "interoperate"
                     });
-                }
 
+                    graphData.links.push({
+                        "source": 2,
+                        "target": 1,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+
+                    graphData.links.push({
+                        "source": 1,
+                        "target": 3,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+
+                    graphData.links.push({
+                        "source": 3,
+                        "target": 1,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+
+                    graphData.links.push({
+                        "source": 3,
+                        "target": 2,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+
+                    graphData.links.push({
+                        "source": 2,
+                        "target": 3,
+                        "value": 1,
+                        "type": "arrow",
+                        "way": "interoperate"
+                    });
+                }
 
                 return graphData;
             }
@@ -476,7 +515,7 @@
                                     <li class="list-group-item">
                                         <span>Date Last Updated</span>
                                         <c:choose>
-                                            <c:when test="${componentContextInfo.dateUpdated}">
+                                            <c:when test="${not empty componentContextInfo.dateUpdated}">
                                                 <span><fmt:formatDate pattern="yyyy-MM-dd"
                                                                       value="${componentContextInfo.dateUpdated}"/></span>
                                             </c:when>
@@ -732,7 +771,7 @@
                                                         <h3 class="panel-title">Attributes</h3>
                                                     </div>
                                                     <ul class="list-group lst-data-value">
-                                                        <li class="list-group-item">
+                                                        <li class="list-group-item" style="overflow:auto;">
                                                             <span>Internal Class</span>
                                                             <span>${componentContextInfo.wsInternalClass}</span>
                                                         </li>
