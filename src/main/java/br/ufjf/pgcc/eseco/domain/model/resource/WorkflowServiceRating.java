@@ -29,6 +29,9 @@ public class WorkflowServiceRating {
     @Column(name = "approved")
     private boolean approved;
 
+    @Column(name = "reproved_text", columnDefinition="TEXT")
+    private String reprovedText;
+
     @Column(name = "value_documentation")
     private int valueDocumentation;
 
@@ -125,5 +128,13 @@ public class WorkflowServiceRating {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public String getReprovedText() {
+        return reprovedText;
+    }
+
+    public void setReprovedText(String reprovedText) {
+        this.reprovedText = reprovedText;
     }
 }

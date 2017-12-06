@@ -11,6 +11,13 @@
     <jsp:attribute name="stylesheets">
         <link rel="stylesheet"
               href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+        <style type="text/css">
+            .img-graph-legend{
+                position: absolute;
+                top: 20px;
+                left: 20px;
+            }
+        </style>
     </jsp:attribute>
 
 
@@ -47,7 +54,8 @@
                     "nodes": [
                         {
                             "name": "${component.name}",
-                            "group": 0
+                            "group": 0,
+                            "kind": 1 // Kind 1 = Principal item
                         }
                     ],
                     "links": []
@@ -59,7 +67,8 @@
                     console.log(researcherRelevance);
                     graphData.nodes.push({
                         "name": researcherRelevance.name,
-                        "group": groupId
+                        "group": groupId,
+                        "kind": 4 // Kind 4 = Researcher
                     });
                     graphData.links.push({
                         "source": groupId,
@@ -144,7 +153,8 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Select Researchers</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="position: relative;">
+                        <img class="img-graph-legend" src="<c:url value="/resources/images/invite-rating-graph-legend.png" />">
 
                         <div id="chart"></div>
 

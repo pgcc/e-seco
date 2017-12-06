@@ -339,30 +339,30 @@
                                 <table id="tbl-compare-basicinfo" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Info</th>
+                                        <th class="text-center">Info / Service</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="row-compare-info-type">
-                                        <td>Type</td>
+                                        <td><strong>Type</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-datecreated">
-                                        <td>Date Created</td>
+                                        <td><strong>Date Created</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-dateupdated">
-                                        <td>Date Last Updated</td>
+                                        <td><strong>Date Last Updated</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-author">
-                                        <td>Author</td>
+                                        <td><strong>Author</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstype">
-                                        <td>WorkFlow Service Type</td>
+                                        <td><strong>WorkFlow Service Type</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsnature">
-                                        <td>WorkFlow Service Nature</td>
+                                        <td><strong>WorkFlow Service Nature</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wslocation">
-                                        <td>WorkFlow Service Location</td>
+                                        <td><strong>WorkFlow Service Location</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -385,48 +385,48 @@
                                 <table id="tbl-compare-internalmetrics" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Info</th>
+                                        <th class="text-center">Info / Service</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="row-compare-info-wsinternalclass">
-                                        <td>WorkFlow Service Internal Class</td>
+                                        <td><strong>WorkFlow Service Internal Class</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsclassparametercount">
-                                        <td>WorkFlow Service Class Parameter Count</td>
+                                        <td><strong>WorkFlow Service Class Parameter Count</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsclassmethodcount">
-                                        <td>WorkFlow Service Class Method Count</td>
+                                        <td><strong>WorkFlow Service Class Method Count</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalservicesused">
-                                        <td>WorkFlow Service Total Services Used</td>
+                                        <td><strong>WorkFlow Service Total Services Used</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsesecocoreservicesused">
-                                        <td>WorkFlow Service E-Seco Core Services Used</td>
+                                        <td><strong>WorkFlow Service E-Seco Core Services Used</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsesecoworkflowservicesused">
-                                        <td>WorkFlow Service E-Seco Workflow Services Used</td>
+                                        <td><strong>WorkFlow Service E-Seco Workflow Services Used</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalratings">
-                                        <td>WorkFlow Service Total Ratings</td>
+                                        <td><strong>WorkFlow Service Total Ratings</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalapprovals">
-                                        <td>WorkFlow Service Total Approvals</td>
+                                        <td><strong>WorkFlow Service Total Approvals</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluedocumentation">
-                                        <td>WorkFlow Service Average Value for Documentation</td>
+                                        <td><strong>WorkFlow Service Average Value for Documentation</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvalueeaseofuse">
-                                        <td>WorkFlow Service Average Value for Ease of Use</td>
+                                        <td><strong>WorkFlow Service Average Value for Ease of Use</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluereliability">
-                                        <td>WorkFlow Service Average Value for Reliability</td>
+                                        <td><strong>WorkFlow Service Average Value for Reliability</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluePerformance">
-                                        <td>WorkFlow Service Average Value for Performance</td>
+                                        <td><strong>WorkFlow Service Average Value for Performance</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvalueDisponibility">
-                                        <td>WorkFlow Service Average Value for Disponibility</td>
+                                        <td><strong>WorkFlow Service Average Value for Disponibility</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -473,27 +473,27 @@
                                 <table id="tbl-compare-usage" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Info</th>
+                                        <th class="text-center">Info / Service</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="row-compare-info-usageactivities">
-                                        <td>Activities Using</td>
+                                        <td><strong>Activities Using</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-usageworkflows">
-                                        <td>Workflows Using</td>
+                                        <td><strong>Workflows Using</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-usageexperiments">
-                                        <td>Experiments Using</td>
+                                        <td><strong>Experiments Using</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-usageresearchers">
-                                        <td>Researchers Using</td>
+                                        <td><strong>Researchers Using</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-usagemostcommonarea">
-                                        <td>Most Common Area</td>
+                                        <td><strong>Most Common Area</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-usagedatelastused">
-                                        <td>Date Last Used</td>
+                                        <td><strong>Date Last Used</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -540,30 +540,30 @@
                                 <table id="tbl-compare" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Info</th>
+                                        <th class="text-center">Info / Service</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr class="row-compare-info-wstotalratings">
-                                        <td>WorkFlow Service Total Ratings</td>
+                                        <td><strong>WorkFlow Service Total Ratings</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalapprovals">
-                                        <td>WorkFlow Service Total Approvals</td>
+                                        <td><strong>WorkFlow Service Total Approvals</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluedocumentation">
-                                        <td>WorkFlow Service Average Value for Documentation</td>
+                                        <td><strong>WorkFlow Service Average Value for Documentation</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvalueeaseofuse">
-                                        <td>WorkFlow Service Average Value for Ease of Use</td>
+                                        <td><strong>WorkFlow Service Average Value for Ease of Use</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluereliability">
-                                        <td>WorkFlow Service Average Value for Reliability</td>
+                                        <td><strong>WorkFlow Service Average Value for Reliability</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvaluePerformance">
-                                        <td>WorkFlow Service Average Value for Performance</td>
+                                        <td><strong>WorkFlow Service Average Value for Performance</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsvalueDisponibility">
-                                        <td>WorkFlow Service Average Value for Availability</td>
+                                        <td><strong>WorkFlow Service Average Value for Availability</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>

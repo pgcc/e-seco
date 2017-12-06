@@ -104,7 +104,8 @@ public class Researcher {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return agent.getName();
+        //return displayName;
     }
 
     public void setDisplayName(String displayName) {

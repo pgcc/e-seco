@@ -42,7 +42,7 @@
 
                     <li class="dropdown">
                         <a href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-flask"></i> <span>EXPERIMENTS</span></span></a>
+                            <i class="fa fa-flask"></i> <span>EXPERIMENTS</span></a>
                         <ul class="dropdown-menu">
                             <li><a href="<c:url value="/experiments/activities"/>">Activities</a></li> 
                             <li role="separator" class="divider"></li>

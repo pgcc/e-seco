@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.model.resource;
 
+import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -19,6 +20,10 @@ public class WorkflowServiceRatingInvitation {
     @ManyToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     private WorkflowService workflowService;
+
+    @ManyToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Developer asker;
 
     @ManyToOne
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -56,6 +61,14 @@ public class WorkflowServiceRatingInvitation {
 
     public void setWorkflowService(WorkflowService workflowService) {
         this.workflowService = workflowService;
+    }
+
+    public Developer getAsker() {
+        return asker;
+    }
+
+    public void setAsker(Developer asker) {
+        this.asker = asker;
     }
 
     public Researcher getRater() {

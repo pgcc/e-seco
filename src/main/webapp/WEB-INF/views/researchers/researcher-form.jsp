@@ -1,10 +1,10 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form" %>
 
 <t:layout-app>
     <jsp:attribute name="title">
@@ -18,14 +18,22 @@
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript">
+            $("#btn-search-dblp").on("click", function () {
+                alert("Not implemeted yet!");
+            });
 
+            $("#btn-search-researchgate").on("click", function () {
+                alert("Not implemeted yet!");
+            });
+        </script>
     </jsp:attribute>
 
 
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a href="<c:url value="/profile"/>"><i class="fa fa-street-view"></i> User Profile</a></li>
-                <c:choose>
+            <c:choose>
                     <c:when test="${researcherForm['new']}">
                     <li><a href="<c:url value="/researchers/add"/>">Add</a></li>
                     </c:when>
@@ -48,7 +56,7 @@
                     </button>
                     <strong>${msg}</strong>
                 </div>
-            </c:if> 
+            </c:if>
 
             <c:choose>
                 <c:when test="${researcherForm['new']}">
@@ -58,10 +66,11 @@
                     <h2>Update Researcher</h2>
                 </c:otherwise>
             </c:choose>
-            <br />
+            <br/>
 
-            <c:url var="mendeleySearch" value="/researchers/mendeleySearch" />
-            <f:form class="form form-horizontal" method="get" action="${mendeleySearch}"  modelAttribute="researcherForm">
+            <c:url var="mendeleySearch" value="/researchers/mendeleySearch"/>
+            <f:form class="form form-horizontal" method="get" action="${mendeleySearch}"
+                    modelAttribute="researcherForm">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-sm-2 control-label">E-mail</label>
                     <div class="col-sm-10">
@@ -70,23 +79,26 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
-                        <f:button type="submit" class="btn btn-block btn-primary">Mendeley Search</f:button>
-                        </div>
+                        <f:button type="submit" class="btn btn-primary">Mendeley Search</f:button>
+                        <f:button type="button" class="btn btn-primary" id="btn-search-dblp">DBLP Search</f:button>
+                        <f:button type="button" class="btn btn-primary" id="btn-search-researchgate">ResearchGate Search</f:button>
                     </div>
+                </div>
             </f:form>
-            <c:url var="register" value="/researchers" />
-            <f:form class="form form-horizontal" method="post" action="${register}" modelAttribute="researcherForm" >                            
+            <c:url var="register" value="/researchers"/>
+            <f:form class="form form-horizontal" method="post" action="${register}" modelAttribute="researcherForm">
                 <spring:bind path="photo">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Photo URL</label>
-                        <div class="col-sm-10">                 
+                        <div class="col-sm-10">
                             <f:input path="photo" class="form-control" type="text"/>
                         </div>
-                    </div>   
+                    </div>
                 </spring:bind>
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2">
-                        <img src="${researcherForm['photo']}" class="img-rounded img-responsive center-block" alt="" style="max-width: 200px;">
+                        <img src="${researcherForm['photo']}" class="img-rounded img-responsive center-block" alt=""
+                             style="max-width: 200px;">
                     </div>
                 </div>
 
@@ -94,18 +106,18 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Display Name</label>
                         <div class="col-sm-10">
-                            <f:input path="displayName" class="form-control" type="text" />
+                            <f:input path="displayName" class="form-control" type="text"/>
                         </div>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="title">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Title</label>    
+                        <label class="col-sm-2 control-label">Title</label>
                         <div class="col-sm-10">
                             <f:input path="title" class="form-control" type="text"/>
                         </div>
-                    </div>   
+                    </div>
                 </spring:bind>
 
                 <spring:bind path="academicStatus">
@@ -114,14 +126,15 @@
                         <div class="col-sm-10">
                             <f:input path="academicStatus" class="form-control" type="text"/>
                         </div>
-                    </div>  
+                    </div>
                 </spring:bind>
 
                 <spring:bind path="researchInterests">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Research Interests</label>
                         <div class="col-sm-10">
-                            <f:select path="researchInterests" items="${interestsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:select path="researchInterests" items="${interestsList}" multiple="true" size="3"
+                                      class="form-control" itemLabel="name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -130,8 +143,9 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Disciplines</label>
                         <div class="col-sm-10">
-                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3" itemLabel="name" itemValue="id" class="form-control"/>
-                            <f:errors path="disciplines" class="control-label" />
+                            <f:select path="disciplines" items="${disciplinesList}" multiple="true" size="3"
+                                      itemLabel="name" itemValue="id" class="form-control"/>
+                            <f:errors path="disciplines" class="control-label"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -140,8 +154,9 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Institutions</label>
                         <div class="col-sm-10">
-                            <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
-                            <f:errors path="institutions" class="control-label" />
+                            <f:select path="institutions" items="${institutionsList}" multiple="true" size="3"
+                                      class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="institutions" class="control-label"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -150,7 +165,9 @@
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
                             <c:when test="${researcherForm['new']}">
-                                <button type="submit" cc:when test="${researcherForm['new']}" class="btn btn-primary pull-right">Add</button>
+                                <button type="submit" cc:when test="${researcherForm['new']}"
+                                        class="btn btn-primary pull-right">Add
+                                </button>
                             </c:when>
                             <c:otherwise>
                                 <button type="submit" class="btn btn-primary pull-right">Update</button>

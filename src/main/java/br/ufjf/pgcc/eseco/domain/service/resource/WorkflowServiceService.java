@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.resource;
 
 import br.ufjf.pgcc.eseco.domain.dao.resource.WorkflowServiceDAO;
+import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
@@ -47,9 +48,11 @@ public class WorkflowServiceService {
         }
     }
 
-    public void inviteResearcherForRating(WorkflowService workflowService, Researcher researcher, String datechat) throws Exception {
+    public void inviteResearcherForRating(WorkflowService workflowService, Researcher researcher, String datechat,
+                                          Developer developer) throws Exception {
         WorkflowServiceRatingInvitation workflowServiceRatingInvitation = new WorkflowServiceRatingInvitation();
         workflowServiceRatingInvitation.setWorkflowService(workflowService);
+        workflowServiceRatingInvitation.setAsker(developer);
         workflowServiceRatingInvitation.setRater(researcher);
         workflowServiceRatingInvitation.setDateInvited(new Date());
         if (datechat != null && !datechat.equals("____/__/__")) {

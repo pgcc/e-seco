@@ -273,6 +273,7 @@ ul.lst-data-value {
 ul.lst-data-value li {
     display: flex;
     justify-content: space-between;
+    overflow: auto;
 }
 
 ul.lst-data-value li span:nth-child(1) {

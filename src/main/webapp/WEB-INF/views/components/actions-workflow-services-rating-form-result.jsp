@@ -43,6 +43,11 @@
                     </div>
                     <div class="panel-body">
                         <p>Rated!</p>
+                        <p>
+                            <a href="<c:url value="/components/details/${invitation.workflowService.component.type.id}/${invitation.workflowService.component.id}"/>">
+                                Go to details of the Service
+                            </a>
+                        </p>
                     </div>
                 </div>
 

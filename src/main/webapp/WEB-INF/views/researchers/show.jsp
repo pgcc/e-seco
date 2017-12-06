@@ -159,40 +159,65 @@
                 </div>
 
                 <div class="col-xs-12 col-sm-6">
+
+
+
+
+
+
+
+
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Researcher Keywords</h3>
+                            <h3 class="panel-title">Keywords Cloud</h3>
                         </div>
                         <div class="panel-body">
                             <div id="box-chart-keywords"></div>
 
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Keyword</th>
-                                    <th class="text-center" style="width:100px;">Year</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:choose>
-                                    <c:when test="${not empty researcher.researchKeywords}">
-                                        <c:forEach var="keyword" items="${researcher.researchKeywords}">
+
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="#collapseRatingsVisualization" class="collapsed" role="button"
+                                   data-toggle="collapse">
+                                    Keywords List <i class="fa fa-plus-circle"></i>
+                                </a>
+                            </h3>
+                        </div>
+                        <div id="collapseRatingsVisualization" class="panel-collapse collapse out">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Keyword</th>
+                                        <th class="text-center" style="width:100px;">Year</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:choose>
+                                        <c:when test="${not empty researcher.researchKeywords}">
+                                            <c:forEach var="keyword" items="${researcher.researchKeywords}">
+                                                <tr>
+                                                    <td>${keyword.name}</td>
+                                                    <td class="text-center">${keyword.year}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
                                             <tr>
-                                                <td>${keyword.name}</td>
-                                                <td class="text-center">${keyword.year}</td>
+                                                <td class="text-center" colspan="2">
+                                                    No keywords found
+                                                </td>
                                             </tr>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr>
-                                            <td class="text-center" colspan="2">
-                                                No keywords found
-                                            </td>
-                                        </tr>
-                                    </c:otherwise>
-                                </c:choose>
-                                </tbody>
-                            </table>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </tbody>
+                                </table>
+
                         </div>
                     </div>
                 </div>

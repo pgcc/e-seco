@@ -14,7 +14,19 @@
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript">
+            $("#rad-approved").on("click", function () {
+                if ($(this).prop("checked")) {
+                    $("#box-text-reprove").fadeOut();
+                }
+            });
 
+            $("#rad-reproved").on("click", function () {
+                if ($(this).prop("checked")) {
+                    $("#box-text-reprove").fadeIn();
+                }
+            });
+        </script>
     </jsp:attribute>
 
 
@@ -48,10 +60,23 @@
                             <div class="row">
                                 <div class="col col-xs-12">
                                     <div class="form-group">
-                                        <label class="checkbox-inline" for="approved">
-                                            <input id="approved" name="approved" type="checkbox" value="1">
-                                            Approved
-                                        </label>
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input id="rad-approved" name="approved" type="radio" value="1" checked>
+                                                Approved
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input id="rad-reproved" name="approved" type="radio" value="0">
+                                                Reproved
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="box-text-reprove" class="form-group" style="display: none;">
+                                        <label for="text-reproved">Reason for the reprove</label>
+                                        <textarea id="text-reproved" name="text-reproved"
+                                                  class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>

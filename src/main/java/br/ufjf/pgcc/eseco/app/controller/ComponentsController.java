@@ -7,6 +7,7 @@ import br.ufjf.pgcc.eseco.domain.model.analysis.ReseacherRelevance;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceRatingContextModel;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
+import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
@@ -91,7 +92,7 @@ public class ComponentsController {
         // Get Session
         HttpSession session = request.getSession();
 
-        if(null != session.getAttribute("comment_inserted")){
+        if (null != session.getAttribute("comment_inserted")) {
             model.addAttribute("comment_inserted", true);
             session.removeAttribute("comment_inserted");
         }
@@ -139,8 +140,8 @@ public class ComponentsController {
                     }
 
                     // Comments
-                    for(WorkflowServiceComment comment: commentsList){
-                        if(comment.getParent() == null){
+                    for (WorkflowServiceComment comment : commentsList) {
+                        if (comment.getParent() == null) {
                             rootCommentsList.add(comment);
                         }
                     }
@@ -288,6 +289,7 @@ public class ComponentsController {
             componentContextInfo.setExperimentsUsing(null);
             componentContextInfo.setResearchersUsing(null);
             componentContextInfo.setWsRatings(null);
+            componentContextInfo.setWsComments(null);
 
             componentsContextModelList.add(componentContextInfo);
         }
@@ -321,9 +323,10 @@ public class ComponentsController {
             e.printStackTrace();
         }
 
-        if(null != reseacherRelevanceList){
+        if (null != reseacherRelevanceList) {
             Collections.sort(reseacherRelevanceList, new Comparator<ReseacherRelevance>() {
-                @Override public int compare(ReseacherRelevance rr1, ReseacherRelevance rr2) {
+                @Override
+                public int compare(ReseacherRelevance rr1, ReseacherRelevance rr2) {
                     if (rr1.getRelevance() > rr2.getRelevance()) {
                         return -1;
                     } else if (rr1.getRelevance() < rr2.getRelevance()) {
@@ -354,6 +357,13 @@ public class ComponentsController {
             return "";
         }
 
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User userOnSession = (User) session.getAttribute("logged_user");
+        Developer developer = userOnSession.getAgent().getDeveloper();
+
         model.addAttribute("component", component);
 
         String datechat = request.getParameter("datechat");
@@ -369,7 +379,7 @@ public class ComponentsController {
 
             // Send Invitation
             try {
-                workflowServiceService.inviteResearcherForRating(component.getWorkflowService(), researcher, datechat);
+                workflowServiceService.inviteResearcherForRating(component.getWorkflowService(), researcher, datechat, developer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -382,8 +392,8 @@ public class ComponentsController {
 
     @RequestMapping(value = "/components/actions/workflow-services/comment/{id}", method = RequestMethod.POST)
     public String actionsWorkflowServicesCommentPost(Model model,
-                                                          @PathVariable(value = "id") int id,
-                                                          HttpServletRequest request) {
+                                                     @PathVariable(value = "id") int id,
+                                                     HttpServletRequest request) {
 
         Component component = componentService.find(id);
         if (null == component) {
@@ -414,12 +424,12 @@ public class ComponentsController {
         workflowServiceComment.setWorkflowService(component.getWorkflowService());
         workflowServiceComment.setDate(new Date());
 
-        if(submitComment != null){
+        if (submitComment != null) {
             workflowServiceComment.setContent(content);
 
-        }else if(submitCommentReply != null){
+        } else if (submitCommentReply != null) {
             WorkflowServiceComment workflowServiceCommentParent = workflowServiceCommentService.find(Integer.parseInt(replyTo));
-            if(null != workflowServiceCommentParent){
+            if (null != workflowServiceCommentParent) {
                 workflowServiceComment.setContent(reply);
                 workflowServiceComment.setParent(workflowServiceCommentParent);
             }
@@ -444,7 +454,7 @@ public class ComponentsController {
         User user = (User) session.getAttribute("logged_user");
 
         // Get Researcher
-        Researcher researcher = researcherService.find(user.getAgent().getId());
+        Researcher researcher = researcherService.find(user.getAgent().getResearcher().getId());
 
         List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationListOpen = new ArrayList<>();
         List<WorkflowServiceRatingInvitation> workflowServiceRatingInvitationListCompleted = new ArrayList<>();
@@ -471,7 +481,7 @@ public class ComponentsController {
         WorkflowServiceRatingInvitation workflowServiceRatingInvitation = workflowServiceRatingInvitationService.find(id);
 
         if (null != workflowServiceRatingInvitation) {
-            if(workflowServiceRatingInvitation.isCompleted()){
+            if (workflowServiceRatingInvitation.isCompleted()) {
                 return "redirect:/components/actions/workflow-services/rating";
             }
 
@@ -483,8 +493,8 @@ public class ComponentsController {
 
     @RequestMapping(value = "/components/actions/workflow-services/rating/{id}", method = RequestMethod.POST)
     public String actionsWorkflowServicesRatingPost(Model model,
-                                                @PathVariable(value = "id") int id,
-                                                HttpServletRequest request) {
+                                                    @PathVariable(value = "id") int id,
+                                                    HttpServletRequest request) {
 
         WorkflowServiceRatingInvitation workflowServiceRatingInvitation = workflowServiceRatingInvitationService.find(id);
 
@@ -495,20 +505,26 @@ public class ComponentsController {
         model.addAttribute("invitation", workflowServiceRatingInvitation);
 
         boolean approved = false;
-        if(null != request.getParameter("approved")){
+        if (request.getParameter("approved").equals("1")) {
             approved = true;
+        }else if (request.getParameter("approved").equals("0")) {
+            approved = false;
         }
         String documentation = request.getParameter("documentation");
         String ease_of_use = request.getParameter("ease_of_use");
         String performance = request.getParameter("performance");
         String reliability = request.getParameter("reliability");
         String disponibility = request.getParameter("disponibility");
+        String reprovedText = request.getParameter("text-reproved");
 
         WorkflowServiceRating workflowServiceRating = new WorkflowServiceRating();
         workflowServiceRating.setWorkflowService(workflowServiceRatingInvitation.getWorkflowService());
         workflowServiceRating.setRater(workflowServiceRatingInvitation.getRater());
         workflowServiceRating.setDate(new Date());
         workflowServiceRating.setApproved(approved);
+        if(!approved){
+            workflowServiceRating.setReprovedText(reprovedText);
+        }
         workflowServiceRating.setValueDocumentation(Integer.parseInt(documentation));
         workflowServiceRating.setValueEaseOfUse(Integer.parseInt(ease_of_use));
         workflowServiceRating.setValuePerformance(Integer.parseInt(performance));

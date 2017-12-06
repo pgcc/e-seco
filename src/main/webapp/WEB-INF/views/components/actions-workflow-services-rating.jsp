@@ -43,7 +43,7 @@
                             <thead>
                             <tr>
                                 <th>Workflow Service</th>
-                                <th>Researcher</th>
+                                <th>Invited By</th>
                                 <th class="text-center" style="width:130px;">Date Invited</th>
                                 <th class="text-center" style="width:130px;">Date Chat</th>
                                 <th class="text-center" style="width:60px;">Actions</th>
@@ -52,8 +52,12 @@
                             <tbody>
                             <c:forEach var="invitation" items="${workflowServiceRatingInvitationListOpen}">
                                 <tr>
-                                    <td><c:out value="${invitation.workflowService.component.name}"/></td>
-                                    <td><c:out value="${invitation.rater.displayName}"/></td>
+                                    <td>
+                                        <a href="<c:url value="/components/details/${invitation.workflowService.component.type.id}/${invitation.workflowService.component.id}"/>">
+                                            <c:out value="${invitation.workflowService.component.name}"/>
+                                        </a>
+                                    </td>
+                                    <td><c:out value="${invitation.asker.agent.name}"/></td>
                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
                                                                             value="${invitation.dateInvited}"/></td>
                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"

@@ -20,6 +20,12 @@
             #tbl-rating-avg-values .progress {
                 margin-bottom: 0 !important;
             }
+
+            .img-graph-legend{
+                position: absolute;
+                top: 20px;
+                left: 20px;
+            }
         </style>
     </jsp:attribute>
 
@@ -160,7 +166,7 @@
 
                 console.log(graphData);
 
-                if(itemData.id == 4){
+                if (itemData.id == 4) {
                     graphData.links.push({
                         "source": 4,
                         "target": 3,
@@ -340,59 +346,59 @@
                 "comment": "${comment.content}"
             }, false);
 
-                <c:forEach var="response1" items="${comment.responses}">
-                addCommentToTable("#tbl-comment-replies-${response1.parent.id} tbody.replies-tbody-${response1.parent.id}", {
-                    "id": "${response1.id}",
-                    "author": "${response1.commenter.name}",
-                    "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response1.date}"/>",
-                    "photo": "${response1.commenter.photo}",
-                    "comment": "${response1.content}"
-                }, true);
+            <c:forEach var="response1" items="${comment.responses}">
+            addCommentToTable("#tbl-comment-replies-${response1.parent.id} tbody.replies-tbody-${response1.parent.id}", {
+                "id": "${response1.id}",
+                "author": "${response1.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response1.date}"/>",
+                "photo": "${response1.commenter.photo}",
+                "comment": "${response1.content}"
+            }, true);
 
-                    <c:forEach var="response2" items="${response1.responses}">
-                    addCommentToTable("#tbl-comment-replies-${response2.parent.id} tbody.replies-tbody-${response2.parent.id}", {
-                        "id": "${response2.id}",
-                        "author": "${response2.commenter.name}",
-                        "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response2.date}"/>",
-                        "photo": "${response2.commenter.photo}",
-                        "comment": "${response2.content}"
-                    }, true);
+            <c:forEach var="response2" items="${response1.responses}">
+            addCommentToTable("#tbl-comment-replies-${response2.parent.id} tbody.replies-tbody-${response2.parent.id}", {
+                "id": "${response2.id}",
+                "author": "${response2.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response2.date}"/>",
+                "photo": "${response2.commenter.photo}",
+                "comment": "${response2.content}"
+            }, true);
 
-                        <c:forEach var="response3" items="${response2.responses}">
-                        addCommentToTable("#tbl-comment-replies-${response3.parent.id} tbody.replies-tbody-${response3.parent.id}", {
-                            "id": "${response3.id}",
-                            "author": "${response3.commenter.name}",
-                            "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response3.date}"/>",
-                            "photo": "${response3.commenter.photo}",
-                            "comment": "${response3.content}"
-                        }, true);
+            <c:forEach var="response3" items="${response2.responses}">
+            addCommentToTable("#tbl-comment-replies-${response3.parent.id} tbody.replies-tbody-${response3.parent.id}", {
+                "id": "${response3.id}",
+                "author": "${response3.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response3.date}"/>",
+                "photo": "${response3.commenter.photo}",
+                "comment": "${response3.content}"
+            }, true);
 
-                            <c:forEach var="response4" items="${response3.responses}">
-                            addCommentToTable("#tbl-comment-replies-${response4.parent.id} tbody.replies-tbody-${response4.parent.id}", {
-                                "id": "${response4.id}",
-                                "author": "${response4.commenter.name}",
-                                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response4.date}"/>",
-                                "photo": "${response4.commenter.photo}",
-                                "comment": "${response4.content}"
-                            }, true);
+            <c:forEach var="response4" items="${response3.responses}">
+            addCommentToTable("#tbl-comment-replies-${response4.parent.id} tbody.replies-tbody-${response4.parent.id}", {
+                "id": "${response4.id}",
+                "author": "${response4.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response4.date}"/>",
+                "photo": "${response4.commenter.photo}",
+                "comment": "${response4.content}"
+            }, true);
 
-                                <c:forEach var="response5" items="${response4.responses}">
-                                addCommentToTable("#tbl-comment-replies-${response5.parent.id} tbody.replies-tbody-${response5.parent.id}", {
-                                    "id": "${response5.id}",
-                                    "author": "${response5.commenter.name}",
-                                    "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response5.date}"/>",
-                                    "photo": "${response5.commenter.photo}",
-                                    "comment": "${response5.content}"
-                                }, true);
-                                </c:forEach>
+            <c:forEach var="response5" items="${response4.responses}">
+            addCommentToTable("#tbl-comment-replies-${response5.parent.id} tbody.replies-tbody-${response5.parent.id}", {
+                "id": "${response5.id}",
+                "author": "${response5.commenter.name}",
+                "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response5.date}"/>",
+                "photo": "${response5.commenter.photo}",
+                "comment": "${response5.content}"
+            }, true);
+            </c:forEach>
 
-                            </c:forEach>
+            </c:forEach>
 
-                        </c:forEach>
+            </c:forEach>
 
-                    </c:forEach>
+            </c:forEach>
 
-                </c:forEach>
+            </c:forEach>
 
             </c:forEach>
 
@@ -698,9 +704,11 @@
                                     <a class="btn btn-info"
                                        href="<c:url value="/components/details/${type}/${component.id}/ratings-visualization"/>">Visualize</a>
 
-                                    <a class="btn btn-info"
-                                       href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
-                                        for Rating</a>
+                                    <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
+                                        <a class="btn btn-info"
+                                           href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
+                                            for Rating</a>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -718,77 +726,87 @@
                                     <c:when test="${type == 2}">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6">
-                                                <ul class="list-group lst-data-value">
-                                                    <li class="list-group-item">
-                                                        <span>Internal Class</span>
-                                                        <span>${componentContextInfo.wsInternalClass}</span>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <span>Parameters</span>
-                                                        <span>
+
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Attributes</h3>
+                                                    </div>
+                                                    <ul class="list-group lst-data-value">
+                                                        <li class="list-group-item">
+                                                            <span>Internal Class</span>
+                                                            <span>${componentContextInfo.wsInternalClass}</span>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span>Parameters</span>
+                                                            <span>
                                                             ${componentContextInfo.wsInternalClassInternalMetrics.parametersCount}
                                                             <i id="pop-parameters-names"
                                                                class="fa fa-info-circle text-info cursor-pointer"
                                                                data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.parametersNames}">${name}<br></c:forEach>"
                                                             ></i>
                                                         </span>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <span>Methods</span>
-                                                        <span>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span>Methods</span>
+                                                            <span>
                                                             ${componentContextInfo.wsInternalClassInternalMetrics.methodsCount}
                                                             <i id="pop-method-names"
                                                                class="fa fa-info-circle text-info cursor-pointer"
                                                                data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.methodsNames}">${name}<br></c:forEach>"
                                                             ></i>
                                                         </span>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <span>Total Services Used</span>
-                                                        <span>${componentContextInfo.wsInternalClassInternalMetrics.servicesCount}</span>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <span>E-Seco Core Services Used</span>
-                                                        <span>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span>Total Services Used</span>
+                                                            <span>${componentContextInfo.wsInternalClassInternalMetrics.servicesCount}</span>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span>E-Seco Core Services Used</span>
+                                                            <span>
                                                             ${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesCount}
                                                             <i id="pop-eseco-core-services-names"
                                                                class="fa fa-info-circle text-info cursor-pointer"
                                                                data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.esecoCoreServicesNames}">${name}<br></c:forEach>"
                                                             ></i>
                                                         </span>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <span>E-Seco Workflow Services Used</span>
-                                                        <span>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span>E-Seco Workflow Services Used</span>
+                                                            <span>
                                                             ${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesCount}
                                                             <i id="pop-eseco-workflow-services-names"
                                                                class="fa fa-info-circle text-info cursor-pointer"
                                                                data-content="<c:forEach var="name" items="${componentContextInfo.wsInternalClassInternalMetrics.esecoWorkflowServicesNames}">${name}<br></c:forEach>"
                                                             ></i>
                                                         </span>
-                                                    </li>
-                                                </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
 
                                             <div class="col-xs-12 col-sm-6">
-                                                <!--
-                                                <div class="text-center margin-10-bottom">
-                                                    <button id="btn-visualize-dependencies-treemap" class="btn btn-info"
-                                                            type="button">
-                                                        View Treemap
-                                                    </button>
-                                                    <button id="btn-visualize-dependencies-graph" class="btn btn-info"
-                                                            type="button">
-                                                        View Graph
-                                                    </button>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Dependencies Treemap Visualization</h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div id="box-chart-dependencies-treemap"></div>
+                                                    </div>
                                                 </div>
-                                                -->
-                                                <div id="box-chart-dependencies-treemap"></div>
                                             </div>
                                         </div>
+
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <div id="box-chart-dependencies-graph"></div>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Dependencies and Interoperability Graph Visualization</h3>
+                                                    </div>
+                                                    <div class="panel-body" style="position: relative;">
+                                                        <img class="img-graph-legend" src="<c:url value="/resources/images/internal-metrics-graph-legend.png" />">
+                                                        <div id="box-chart-dependencies-graph"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </c:when>
@@ -1038,6 +1056,7 @@
                                                 <th>Name</th>
                                                 <th class="text-center" style="width:150px;">Date</th>
                                                 <th class="text-center" style="width:60px;">Approved?</th>
+                                                <th class="text-center" style="width:200px;">Reason for reprove</th>
                                                 <th class="text-center" style="width:100px;">Documentation</th>
                                                 <th class="text-center" style="width:100px;">Ease of Use</th>
                                                 <th class="text-center" style="width:100px;">Reliability</th>
@@ -1052,6 +1071,7 @@
                                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
                                                                                             value="${rating.date}"/></td>
                                                     <td class="text-center">${rating.approved}</td>
+                                                    <td class="text-justify">${rating.reprovedText}</td>
                                                     <td class="text-center">${rating.valueDocumentation}</td>
                                                     <td class="text-center">${rating.valueEaseOfUse}</td>
                                                     <td class="text-center">${rating.valueReliability}</td>

@@ -5,9 +5,12 @@ import br.ufjf.pgcc.eseco.app.model.Notification;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceRatingInvitation;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceRatingInvitationService;
+import br.ufjf.pgcc.eseco.domain.service.uac.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private UserService userService;
 
     /**
      * @param httpServletRequest  HTTP Request object to be pre handled.
@@ -32,12 +38,16 @@ public class NotificationsInterceptor implements HandlerInterceptor {
         HttpSession session = httpServletRequest.getSession();
 
         // Get Logged User from Session
-        User user = (User) session.getAttribute("logged_user");
+        User userOnSession = (User) session.getAttribute("logged_user");
 
         // If There's no user logged, don't do futher processings
-        if (user == null) {
+        if (userOnSession == null) {
             return true;
         }
+
+        // Update user object
+        User user = userService.find(userOnSession.getId());
+        session.setAttribute("logged_user", user);
 
         // Init Notifications List
         ArrayList<Notification> notificationsList = new ArrayList<>();

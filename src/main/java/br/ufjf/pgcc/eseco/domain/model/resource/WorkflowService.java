@@ -52,6 +52,7 @@ public class WorkflowService {
 
     @OneToMany(mappedBy = "workflowService")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @OrderBy("date DESC")
     private List<WorkflowServiceComment> workflowServiceComments;
 
 
