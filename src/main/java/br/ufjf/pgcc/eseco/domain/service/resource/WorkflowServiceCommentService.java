@@ -19,8 +19,13 @@ public class WorkflowServiceCommentService {
     }
 
     @Transactional
-    public WorkflowServiceComment add(WorkflowServiceComment workflowServiceComment) throws Exception{
+    public WorkflowServiceComment add(WorkflowServiceComment workflowServiceComment) throws Exception {
         return workflowServiceCommentDAO.add(workflowServiceComment);
+    }
+
+    @Transactional
+    public WorkflowServiceComment update(WorkflowServiceComment workflowServiceComment) throws Exception {
+        return workflowServiceCommentDAO.update(workflowServiceComment);
     }
 
     public WorkflowServiceComment find(int workflowServiceCommentId) {

@@ -21,7 +21,7 @@
                 margin-bottom: 0 !important;
             }
 
-            .img-graph-legend{
+            .img-graph-legend {
                 position: absolute;
                 top: 20px;
                 left: 20px;
@@ -342,10 +342,51 @@
             /* COMMENTS                                    */
             /***********************************************/
 
+            function mountBoxCommentStars(data, ommitlink){
+
+                var rateStarsTotal = data.rateStarsTotal;
+                var rateStar1 = data.rateStarsAverage >= 1 ? "fa-star" : "fa-star-o";
+                var rateStar2 = data.rateStarsAverage >= 2 ? "fa-star" : "fa-star-o";
+                var rateStar3 = data.rateStarsAverage >= 3 ? "fa-star" : "fa-star-o";
+                var rateStar4 = data.rateStarsAverage >= 4 ? "fa-star" : "fa-star-o";
+                var rateStar5 = data.rateStarsAverage >= 5 ? "fa-star" : "fa-star-o";
+
+                var rateStarsLink = null;
+                if(!ommitlink){
+                    rateStarsLink = $("<a>")
+                        .addClass("btn-rate-comment text-small")
+                        .data("comment-id", data.id)
+                        .attr("href", "#").text(" rate");
+                }
+
+
+                return $("<div>").addClass("box-comment-stars")
+                    .data("id", data.id)
+                    .data("rateStarsTotal", data.rateStarsTotal)
+                    .data("rateStarsAverage", data.rateStarsAverage)
+                    .append(
+                        $("<span>").addClass("fa " + rateStar1),
+                        $("<span>").addClass("fa " + rateStar2),
+                        $("<span>").addClass("fa " + rateStar3),
+                        $("<span>").addClass("fa " + rateStar4),
+                        $("<span>").addClass("fa " + rateStar5),
+
+                        $("<span>").attr("class", "rateText").append(
+                            $("<span>").addClass("text-small")
+                                .text(" (" + rateStarsTotal + " ratings"),
+                            rateStarsLink,
+                            $("<span>").addClass("text-small").text(")")
+                        )
+                    );
+            }
+
             // Populate Comments Table
             function addCommentToTable(tbody, data, isChild) {
                 var photoWidth = isChild ? "50px" : "80px";
                 var tr = null;
+
+                var boxCommentStars = mountBoxCommentStars(data, false);
+
                 tr = $("<tr>").append(
                     $("<td>").css("width", photoWidth).append(
                         $("<img>").addClass("img-responsive img-circle")
@@ -358,6 +399,9 @@
                             $("<span>").addClass("text-muted text-small").text(" (" + data.date + ")")
                         ),
                         $("<p>").text(data.comment),
+                        $("<p>").addClass("box-comment-rating").append(
+                            boxCommentStars
+                        ),
                         $("<p>").append(
                             $("<button>").addClass("btn btn-xs btn-info btn-comment-reply")
                                 .attr("type", "button")
@@ -382,7 +426,14 @@
                 "author": "${comment.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${comment.date}"/>",
                 "photo": "${comment.commenter.photo}",
-                "comment": "${comment.content}"
+                "comment": "${comment.content}",
+                "rateStarsTotal": "${comment.rateStarsTotal}",
+                "rateStars1": "${comment.rateStar1}",
+                "rateStars2": "${comment.rateStar2}",
+                "rateStars3": "${comment.rateStar3}",
+                "rateStars4": "${comment.rateStar4}",
+                "rateStars5": "${comment.rateStar5}",
+                "rateStarsAverage": "${comment.rateStarsAverage}"
             }, false);
 
             <c:forEach var="response1" items="${comment.responses}">
@@ -391,7 +442,9 @@
                 "author": "${response1.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response1.date}"/>",
                 "photo": "${response1.commenter.photo}",
-                "comment": "${response1.content}"
+                "comment": "${response1.content}",
+                "rateStarsTotal": "${response1.rateStarsTotal}",
+                "rateStarsAverage": "${response1.rateStarsAverage}"
             }, true);
 
             <c:forEach var="response2" items="${response1.responses}">
@@ -400,7 +453,9 @@
                 "author": "${response2.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response2.date}"/>",
                 "photo": "${response2.commenter.photo}",
-                "comment": "${response2.content}"
+                "comment": "${response2.content}",
+                "rateStarsTotal": "${response2.rateStarsTotal}",
+                "rateStarsAverage": "${response2.rateStarsAverage}"
             }, true);
 
             <c:forEach var="response3" items="${response2.responses}">
@@ -409,7 +464,9 @@
                 "author": "${response3.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response3.date}"/>",
                 "photo": "${response3.commenter.photo}",
-                "comment": "${response3.content}"
+                "comment": "${response3.content}",
+                "rateStarsTotal": "${response3.rateStarsTotal}",
+                "rateStarsAverage": "${response3.rateStarsAverage}"
             }, true);
 
             <c:forEach var="response4" items="${response3.responses}">
@@ -418,7 +475,9 @@
                 "author": "${response4.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response4.date}"/>",
                 "photo": "${response4.commenter.photo}",
-                "comment": "${response4.content}"
+                "comment": "${response4.content}",
+                "rateStarsTotal": "${response4.rateStarsTotal}",
+                "rateStarsAverage": "${response4.rateStarsAverage}"
             }, true);
 
             <c:forEach var="response5" items="${response4.responses}">
@@ -427,7 +486,9 @@
                 "author": "${response5.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response5.date}"/>",
                 "photo": "${response5.commenter.photo}",
-                "comment": "${response5.content}"
+                "comment": "${response5.content}",
+                "rateStarsTotal": "${response5.rateStarsTotal}",
+                "rateStarsAverage": "${response5.rateStarsAverage}"
             }, true);
             </c:forEach>
 
@@ -459,6 +520,58 @@
                 form_group.append(textarea, button);
 
                 $(this).parent("p").append(form_group);
+            });
+
+            // Rate Comment
+            $(".btn-rate-comment").on("click", function () {
+                var commentId = $(this).data("comment-id");
+
+                var stars = prompt("Give you rating (1 to 5)");
+
+                if(stars != "1" && stars != "2" && stars != "3" && stars != "4" && stars != "5"){
+                    swal("Error", "The value is out bounds.", "error");
+                    return false;
+                }
+
+                var urlPost = "<c:url value="/components/actions/workflow-services/comment/${component.id}/rate"/>";
+
+                var data = {
+                    "rd-comment-id": commentId,
+                    "rd-stars": stars
+                };
+
+                var thisLink = $(this);
+
+                $.ajax({
+                    method: "post",
+                    url: urlPost,
+                    data: data,
+                    success: function (data) {
+                        if(data !== "error"){
+                            swal("Success", "Comment Rated!", "success");
+
+                            var boxCommentRating = thisLink.parents(".box-comment-rating");
+                            var boxCommentStars = boxCommentRating.find(".box-comment-stars");
+
+                            var newRateStarsTotal = parseInt((boxCommentStars.data("rateStarsTotal"))) + 1;
+
+                            var newCommentStarsData = {
+                                "id" : boxCommentStars.data("id"),
+                                "rateStarsTotal" : newRateStarsTotal,
+                                "rateStarsAverage" : data
+                            };
+
+                            var newBoxCommentStars = mountBoxCommentStars(newCommentStarsData, true);
+
+                            thisLink.parents(".box-comment-rating").html("").append(newBoxCommentStars);
+
+                        }else{
+                            swal("Error", "An error occurred while rating, please try again.", "error");
+                        }
+                    }
+                });
+
+                return false;
             });
 
             // Comment Added
@@ -839,10 +952,12 @@
                                             <div class="col-xs-12">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        <h3 class="panel-title">Dependencies and Interoperability Graph Visualization</h3>
+                                                        <h3 class="panel-title">Dependencies and Interoperability Graph
+                                                            Visualization</h3>
                                                     </div>
                                                     <div class="panel-body" style="position: relative;">
-                                                        <img class="img-graph-legend" src="<c:url value="/resources/images/internal-metrics-graph-legend.png" />">
+                                                        <img class="img-graph-legend"
+                                                             src="<c:url value="/resources/images/internal-metrics-graph-legend.png" />">
                                                         <div id="box-chart-dependencies-graph"></div>
                                                     </div>
                                                 </div>

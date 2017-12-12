@@ -26,10 +26,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -95,6 +95,11 @@ public class ComponentsController {
         if (null != session.getAttribute("comment_inserted")) {
             model.addAttribute("comment_inserted", true);
             session.removeAttribute("comment_inserted");
+        }
+
+        if (null != session.getAttribute("comment_rated")) {
+            model.addAttribute("comment_rated", true);
+            session.removeAttribute("comment_rated");
         }
 
         switch (type) {
@@ -442,7 +447,60 @@ public class ComponentsController {
         }
 
         session.setAttribute("comment_inserted", true);
-        return "redirect:/components/details/2/4";
+        return "redirect:/components/details/" + component.getType() + "/" + component.getId();
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/comment/{id}/rate", method = RequestMethod.POST)
+    public @ResponseBody String actionsWorkflowServicesCommentRatePost(Model model,
+                                                         @PathVariable(value = "id") int id,
+                                                         HttpServletRequest request) {
+        Component component = componentService.find(id);
+        if (null == component) {
+            return "error";
+        }
+
+        model.addAttribute("component", component);
+
+        String commentId = request.getParameter("rd-comment-id");
+        String stars = request.getParameter("rd-stars");
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User user = (User) session.getAttribute("logged_user");
+
+        // Get User Agent
+        Agent agent = user.getAgent();
+
+        // get comment
+        WorkflowServiceComment workflowServiceComment = workflowServiceCommentService.find(Integer.parseInt(commentId));
+
+        switch (stars) {
+            case "1":
+                workflowServiceComment.setRateStar1(workflowServiceComment.getRateStar1() + 1);
+                break;
+            case "2":
+                workflowServiceComment.setRateStar2(workflowServiceComment.getRateStar2() + 1);
+                break;
+            case "3":
+                workflowServiceComment.setRateStar3(workflowServiceComment.getRateStar3() + 1);
+                break;
+            case "4":
+                workflowServiceComment.setRateStar4(workflowServiceComment.getRateStar4() + 1);
+                break;
+            case "5":
+                workflowServiceComment.setRateStar5(workflowServiceComment.getRateStar5() + 1);
+                break;
+        }
+
+        try {
+            workflowServiceCommentService.update(workflowServiceComment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return workflowServiceComment.getRateStarsAverage().toString();
     }
 
     @RequestMapping(value = "/components/actions/workflow-services/rating")
@@ -507,7 +565,7 @@ public class ComponentsController {
         boolean approved = false;
         if (request.getParameter("approved").equals("1")) {
             approved = true;
-        }else if (request.getParameter("approved").equals("0")) {
+        } else if (request.getParameter("approved").equals("0")) {
             approved = false;
         }
         String documentation = request.getParameter("documentation");
@@ -522,7 +580,7 @@ public class ComponentsController {
         workflowServiceRating.setRater(workflowServiceRatingInvitation.getRater());
         workflowServiceRating.setDate(new Date());
         workflowServiceRating.setApproved(approved);
-        if(!approved){
+        if (!approved) {
             workflowServiceRating.setReprovedText(reprovedText);
         }
         workflowServiceRating.setValueDocumentation(Integer.parseInt(documentation));
