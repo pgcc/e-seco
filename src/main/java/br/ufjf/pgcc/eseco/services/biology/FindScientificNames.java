@@ -3,9 +3,9 @@ package br.ufjf.pgcc.eseco.services.biology;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
 
 @EsecoWorkflowService
-public class BiologicalSpecimenScientificNameRetriever {
+public class FindScientificNames {
 
-    public String getSpecimenScientificNameBySpecimenName(String commonName){
+    public String getScientificName(String commonName){
         // Processing here
 
 

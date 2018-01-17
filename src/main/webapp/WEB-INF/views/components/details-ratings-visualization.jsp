@@ -78,9 +78,8 @@
                     dateCreated = year + "/" + month + "/" + day;
 
                     var dataObject = {
-                        "researcher": rating.authorName,
+                        "developer": rating.authorName,
                         "date": dateCreated,
-                        "approved": rating.isApproved,
                         "documentation": rating.valueDocumentation,
                         "ease_of_use": rating.valueEaseOfUse,
                         "reliability": rating.valueReliability,

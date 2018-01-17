@@ -626,18 +626,13 @@ var ParallelCoordinatesChart = {
 
         var dimensions = [
             {
-                key: "researcher",
-                description: "Researcher",
+                key: "developer",
+                description: "Developer",
                 type: types["String"],
                 axis: d3.svg.axis().orient("left")
             }, {
                 key: "date",
                 description: "Date",
-                type: types["String"],
-                axis: d3.svg.axis().orient("left")
-            }, {
-                key: "approved",
-                description: "Approved?",
                 type: types["String"],
                 axis: d3.svg.axis().orient("left")
             }, {
@@ -980,6 +975,7 @@ var WordCountChart = {
 
 // Word cloud layout by Jason Davies, http://www.jasondavies.com/word-cloud/
 // Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
+if(d3){
 (function (exports) {
     function cloud() {
         var size = [256, 256],
@@ -1389,3 +1385,4 @@ var WordCountChart = {
 
     exports.cloud = cloud;
 })(typeof exports === "undefined" ? d3.layout || (d3.layout = {}) : exports);
+}

@@ -4,7 +4,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Components Actions - Workflow Services - <strong>${component.name}</strong> - Invite for Rating - Results
+        E-SECO Components Actions - Workflow Services - Rating ${workflowService.component.name} - Results
     </jsp:attribute>
 
 
@@ -23,11 +23,8 @@
             <li><a href="<c:url value="/components"/>"><i class="fa fa-street-view"></i> Components</a></li>
             <li><a href="#">Actions</a></li>
             <li><a href="#">Workflow Services</a></li>
-            <li><a href="<c:url value="/components/details/2/${component.id}"/>">${component.name}</a>
-            </li>
-            <li><a href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
-                for Rating</a></li>
-            <li><a href="#">Results</a></li>
+            <li><a href="<c:url value="/components/actions/workflow-services/developer-rating/${workflowService.component.id}"/>">Developer Rating</a></li>
+            <li><a href="#">Result</a></li>
         </ol>
     </jsp:attribute>
 
@@ -35,14 +32,19 @@
     <jsp:body>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Actions - Workflow Services - <strong>${component.name}</strong> - Invite for Rating</h2>
+                <h2>Actions - Workflow Services - Rating ${workflowService.component.name}</h2>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Invitation Results</h3>
+                        <h3 class="panel-title">Rating Successfully</h3>
                     </div>
                     <div class="panel-body">
-                        <p>Ok, <strong>${totalInvitations}</strong> researchers were successfully invited.</p>
+                        <p>Rated!</p>
+                        <p>
+                            <a href="<c:url value="/components/details/${workflowService.component.type.id}/${workflowService.component.id}"/>">
+                                Go to details of the Service
+                            </a>
+                        </p>
                     </div>
                 </div>
 

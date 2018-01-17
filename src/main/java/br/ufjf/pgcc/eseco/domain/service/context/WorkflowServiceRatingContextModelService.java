@@ -21,7 +21,8 @@ public class WorkflowServiceRatingContextModelService {
         wsrcm.setId(rating.getId());
         wsrcm.setWorkflowServiceId(rating.getWorkflowService().getId());
         wsrcm.setWorkflowServiceName(rating.getWorkflowService().getComponent().getName());
-        wsrcm.setAuthorName(rating.getRater().getDisplayName());
+        wsrcm.setAuthorName(rating.getRater().getName());
+        wsrcm.setType(rating.getType());
         wsrcm.setDateCreated(rating.getDate());
         wsrcm.setValueDocumentation(rating.getValueDocumentation());
         wsrcm.setValueEaseOfUse(rating.getValueEaseOfUse());

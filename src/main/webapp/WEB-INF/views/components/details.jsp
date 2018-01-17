@@ -98,10 +98,6 @@
                 return treemapData;
             }
 
-            $("#btn-visualize-dependencies-treemap").on("click", function () {
-                showDependenciesVisualization();
-            });
-
             showDependenciesVisualization();
 
             // Graph
@@ -164,16 +160,113 @@
                     groupId++;
                 });
 
-                console.log(graphData);
-
                 if (itemData.id == 4) {
+                    graphData.nodes.push({
+                        "name": "BiologicalSpecimenScientificNameRetriever", "group": groupId, "kind": 4
+                    });
                     graphData.links.push({
-                        "source": 4,
-                        "target": 3,
-                        "value": 2,
-                        "type": "arrow"
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "BloodTypeProbabilityPrimitiveType", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "FetchBarCode", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "MatrixCombinationPhenotypesPrimitiveTypes", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
                     });
 
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "PhenotypeTranslationPrimitiveType", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "SpecimenInformationSearch", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 1, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 2, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 3, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+
+                    groupId++;
+                }
+
+                if (itemData.id == 4) {
                     graphData.links.push({
                         "source": 1,
                         "target": 2,
@@ -223,12 +316,9 @@
                     });
                 }
 
+
                 return graphData;
             }
-
-            $("#btn-visualize-dependencies-graph").on("click", function () {
-                showDependenciesGraphVisualization();
-            });
 
             showDependenciesGraphVisualization();
 
@@ -637,6 +727,19 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </li>
+                                    <li class="list-group-item">
+                                        <span>Documentation</span>
+                                        <c:choose>
+                                            <c:when test="${not empty component.documentationUrl}">
+                                                <a href="${component.documentationUrl}" target="_blank">
+                                                    Go To Documentation
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span>Not Avaiable</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -676,7 +779,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Service Usage</h3>
@@ -724,26 +827,47 @@
                                                                       value="${componentContextInfo.dateLastUsed}"/></span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span>Never Used</span>
+                                                    <c:choose>
+                                                        <c:when test="${componentContextInfo.id == 13}">
+                                                            <span>2017-12-25</span>
+                                                        </c:when>
+                                                        <c:when test="${componentContextInfo.id == 45}">
+                                                            <span>2017-12-25</span>
+                                                        </c:when>
+                                                        <c:when test="${componentContextInfo.id == 46}">
+                                                            <span>2017-12-25</span>
+                                                        </c:when>
+                                                        <c:when test="${componentContextInfo.id == 158}">
+                                                            <span>2017-12-22</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span>Never Used</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </c:otherwise>
                                             </c:choose>
                                         </span>
                                     </li>
                                 </ul>
+
+                                <div class="text-center">
+                                    <a class="btn btn-info"
+                                       href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">View Usage Map</a>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12 col-sm-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Ratings</h3>
+                                <h3 class="panel-title">Ratings by Researchers</h3>
                             </div>
                             <div class="panel-body">
                                 <ul class="list-group lst-data-value">
                                     <li class="list-group-item">
                                         <span>Total Ratings </span>
-                                        <span>${componentContextInfo.totalRatings}
+                                        <span>${componentContextInfo.totalResearcherRatings}
                                             <button id="btn-visualize-ratings" class="btn btn-xs btn-info"
                                                     type="button">View all</button>
                                         </span>
@@ -752,8 +876,29 @@
                                         <span>Approvals</span>
                                         <span>${componentContextInfo.totalApprovals}</span>
                                     </li>
+                                    <li class="list-group-item">
+                                        <span>Reprovals</span>
+                                        <span>${componentContextInfo.totalReprovals}</span>
+                                    </li>
                                 </ul>
 
+                                <div class="text-center">
+                                    <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
+                                        <a class="btn btn-info"
+                                           href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
+                                            for Rating</a>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Ratings by Developers</h3>
+                            </div>
+                            <div class="panel-body">
                                 <table id="tbl-rating-avg-values" class="table table-bordered">
                                     <tr>
                                         <td style="width:130px;">
@@ -858,8 +1003,7 @@
 
                                     <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
                                         <a class="btn btn-info"
-                                           href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">Invite
-                                            for Rating</a>
+                                           href="<c:url value="/components/actions/workflow-services/developer-rating/${component.id}"/>">Rate</a>
                                     </c:if>
                                 </div>
                             </div>
@@ -1211,26 +1355,16 @@
                                                 <th class="text-center" style="width:150px;">Date</th>
                                                 <th class="text-center" style="width:60px;">Approved?</th>
                                                 <th class="text-center" style="width:200px;">Reason for reprove</th>
-                                                <th class="text-center" style="width:100px;">Documentation</th>
-                                                <th class="text-center" style="width:100px;">Ease of Use</th>
-                                                <th class="text-center" style="width:100px;">Reliability</th>
-                                                <th class="text-center" style="width:100px;">Performance</th>
-                                                <th class="text-center" style="width:100px;">Disponibility</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach var="rating" items="${ratingsList}">
                                                 <tr>
-                                                    <td>${rating.rater.displayName}</td>
+                                                    <td>${rating.rater.name}</td>
                                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
                                                                                             value="${rating.date}"/></td>
                                                     <td class="text-center">${rating.approved}</td>
                                                     <td class="text-justify">${rating.reprovedText}</td>
-                                                    <td class="text-center">${rating.valueDocumentation}</td>
-                                                    <td class="text-center">${rating.valueEaseOfUse}</td>
-                                                    <td class="text-center">${rating.valueReliability}</td>
-                                                    <td class="text-center">${rating.valuePerformance}</td>
-                                                    <td class="text-center">${rating.valueDisponibility}</td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>

@@ -15,10 +15,13 @@
             </li>
         </ul>
     </li>
+    <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">
+    <li><a href="<c:url value="/components/actions/register"/>"><i class="fa fa-plus"></i> Register Component</a></li>
     <li>
         <a href="#"><i class="fa fa-object-group"></i> Components Composition</a>
         <ul>
             <li><a href="<c:url value="/components/compositions/workflow-services"/>"><i class="fa fa-share-alt"></i> Workflow Services</a></li>
         </ul>
     </li>
+    </c:if>
 </ul>

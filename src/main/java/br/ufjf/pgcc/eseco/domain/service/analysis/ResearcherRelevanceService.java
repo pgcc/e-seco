@@ -112,6 +112,10 @@ public class ResearcherRelevanceService {
             }
         }
 
+        if(totalSimilarKeywords == 0 && keywords1.size() == 0){
+            return 0;
+        }
+
         return (double) totalSimilarKeywords / (double) keywords1.size();
     }
 

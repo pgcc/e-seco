@@ -4,7 +4,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Components Actions - Workflow Services - Rating ${invitation.workflowService.component.name}
+        E-SECO Components Actions - Workflow Services - Rating ${invitation.workflowService.component.name} - Results
     </jsp:attribute>
 
 

@@ -48,8 +48,10 @@ public class WorkflowServiceContextModel {
 
     // Ratings
     private List<WorkflowServiceRating> wsRatings;
-    private int totalRatings;
+    private int totalDeveloperRatings;
+    private int totalResearcherRatings;
     private int totalApprovals;
+    private int totalReprovals;
     private long avgValueDocumentation;
     private long avgValueEaseOfUse;
     private long avgValueReliability;
@@ -262,12 +264,20 @@ public class WorkflowServiceContextModel {
         this.wsRatings = wsRatings;
     }
 
-    public int getTotalRatings() {
-        return totalRatings;
+    public int getTotalDeveloperRatings() {
+        return totalDeveloperRatings;
     }
 
-    public void setTotalRatings(int totalRatings) {
-        this.totalRatings = totalRatings;
+    public void setTotalDeveloperRatings(int totalDeveloperRatings) {
+        this.totalDeveloperRatings = totalDeveloperRatings;
+    }
+
+    public int getTotalResearcherRatings() {
+        return totalResearcherRatings;
+    }
+
+    public void setTotalResearcherRatings(int totalResearcherRatings) {
+        this.totalResearcherRatings = totalResearcherRatings;
     }
 
     public int getTotalApprovals() {
@@ -276,6 +286,14 @@ public class WorkflowServiceContextModel {
 
     public void setTotalApprovals(int totalApprovals) {
         this.totalApprovals = totalApprovals;
+    }
+
+    public int getTotalReprovals() {
+        return totalReprovals;
+    }
+
+    public void setTotalReprovals(int totalReprovals) {
+        this.totalReprovals = totalReprovals;
     }
 
     public long getAvgValueDocumentation() {

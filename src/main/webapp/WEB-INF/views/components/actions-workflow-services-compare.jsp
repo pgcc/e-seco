@@ -4,7 +4,7 @@
 
 <t:layout-app>
     <jsp:attribute name="title">
-        E-SECO Components Compositions - Workflow Services
+        E-SECO Components Actions - Workflow Services Compare
     </jsp:attribute>
 
 

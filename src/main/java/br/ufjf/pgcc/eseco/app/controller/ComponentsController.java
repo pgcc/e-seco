@@ -40,6 +40,7 @@ public class ComponentsController {
     private static final int DETAIL_WORKFLOW_SERVICE_EXTERNAL_BIOCATALOGUE = 3;
 
     private ComponentService componentService;
+    private ComponentTypeService componentTypeService;
     private WorkflowServiceService workflowServiceService;
     private BioCatalogueService bioCatalogueService;
     private WorkflowServiceContextModelService workflowServiceContextModelService;
@@ -51,7 +52,9 @@ public class ComponentsController {
     private WorkflowServiceCommentService workflowServiceCommentService;
 
     @Autowired
-    public ComponentsController(ComponentService componentService, WorkflowServiceService workflowServiceService,
+    public ComponentsController(ComponentService componentService,
+                                ComponentTypeService componentTypeService,
+                                WorkflowServiceService workflowServiceService,
                                 BioCatalogueService bioCatalogueService,
                                 WorkflowServiceContextModelService workflowServiceContextModelService,
                                 WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService,
@@ -61,6 +64,7 @@ public class ComponentsController {
                                 WorkflowServiceRatingService workflowServiceRatingService,
                                 WorkflowServiceCommentService workflowServiceCommentService) {
         this.componentService = componentService;
+        this.componentTypeService = componentTypeService;
         this.workflowServiceService = workflowServiceService;
         this.bioCatalogueService = bioCatalogueService;
         this.workflowServiceContextModelService = workflowServiceContextModelService;
@@ -198,10 +202,12 @@ public class ComponentsController {
                     // Create context model for ratings
                     List<WorkflowServiceRatingContextModel> workflowServiceRatingContextInfo = new ArrayList<>();
                     for (WorkflowServiceRating wsr : componentContextInfo.getWsRatings()) {
-                        try {
-                            workflowServiceRatingContextInfo.add(workflowServiceRatingContextModelService.createModelInfo(wsr));
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (wsr.getType() == 1) {
+                            try {
+                                workflowServiceRatingContextInfo.add(workflowServiceRatingContextModelService.createModelInfo(wsr));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -269,6 +275,71 @@ public class ComponentsController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // COMPONENTS ACTIONS                                                                                            //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @RequestMapping(value = "/components/actions/register")
+    public String actionsRegister() {
+        return "components/actions-register";
+    }
+
+    @RequestMapping(value = "/components/actions/register", method = RequestMethod.POST)
+    public String actionsRegisterPost(Model model, HttpServletRequest request) {
+        String name = request.getParameter("component-name");
+        String type = request.getParameter("component-type");
+        String documentation = request.getParameter("component-documentation");
+        String wsInternalClass = request.getParameter("ws-internal_class");
+        String wsType = request.getParameter("ws-type");
+        String wsUrl = request.getParameter("ws-url");
+        String wsDescription = request.getParameter("ws-description");
+
+        if (type.equals("1")) {
+
+
+        } else if (type.equals("2")) {
+
+            // Get Session
+            HttpSession session = request.getSession();
+
+            // Get Logged User from Session
+            User user = (User) session.getAttribute("logged_user");
+
+            // Get User Agent
+            Agent agent = user.getAgent();
+
+            ComponentType componentType = componentTypeService.find(Integer.parseInt(type));
+
+            Component component = new Component();
+            component.setName(name);
+            component.setType(componentType);
+            component.setAuthor(agent.getDeveloper());
+            component.setDateCreated(new Date());
+            if (!documentation.equals("")) {
+                component.setDocumentationUrl(documentation);
+            }
+
+            try {
+                component = componentService.add(component);
+
+                WorkflowService workflowService = new WorkflowService();
+                workflowService.setInternalClass(wsInternalClass);
+                workflowService.setType(wsType);
+                workflowService.setUrl(wsUrl);
+                workflowService.setDescription(wsDescription);
+                workflowService.setComponent(component);
+
+                workflowService = workflowServiceService.add(workflowService);
+
+                return "redirect:/components/details/2/" + workflowService.getId();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            model.addAttribute("error", "Invalid Component Type");
+        }
+
+        return "components/actions-register";
+    }
 
     @RequestMapping(value = "/components/actions/workflow-services/compare")
     public String actionsWorkflowServicesCompare(Model model, HttpServletRequest request) {
@@ -428,6 +499,11 @@ public class ComponentsController {
 
         workflowServiceComment.setWorkflowService(component.getWorkflowService());
         workflowServiceComment.setDate(new Date());
+        workflowServiceComment.setRateStar1(0);
+        workflowServiceComment.setRateStar2(0);
+        workflowServiceComment.setRateStar3(0);
+        workflowServiceComment.setRateStar4(0);
+        workflowServiceComment.setRateStar5(0);
 
         if (submitComment != null) {
             workflowServiceComment.setContent(content);
@@ -447,13 +523,14 @@ public class ComponentsController {
         }
 
         session.setAttribute("comment_inserted", true);
-        return "redirect:/components/details/" + component.getType() + "/" + component.getId();
+        return "redirect:/components/details/" + component.getType().getId() + "/" + component.getId();
     }
 
     @RequestMapping(value = "/components/actions/workflow-services/comment/{id}/rate", method = RequestMethod.POST)
-    public @ResponseBody String actionsWorkflowServicesCommentRatePost(Model model,
-                                                         @PathVariable(value = "id") int id,
-                                                         HttpServletRequest request) {
+    public @ResponseBody
+    String actionsWorkflowServicesCommentRatePost(Model model,
+                                                  @PathVariable(value = "id") int id,
+                                                  HttpServletRequest request) {
         Component component = componentService.find(id);
         if (null == component) {
             return "error";
@@ -568,26 +645,18 @@ public class ComponentsController {
         } else if (request.getParameter("approved").equals("0")) {
             approved = false;
         }
-        String documentation = request.getParameter("documentation");
-        String ease_of_use = request.getParameter("ease_of_use");
-        String performance = request.getParameter("performance");
-        String reliability = request.getParameter("reliability");
-        String disponibility = request.getParameter("disponibility");
+
         String reprovedText = request.getParameter("text-reproved");
 
         WorkflowServiceRating workflowServiceRating = new WorkflowServiceRating();
         workflowServiceRating.setWorkflowService(workflowServiceRatingInvitation.getWorkflowService());
-        workflowServiceRating.setRater(workflowServiceRatingInvitation.getRater());
+        workflowServiceRating.setRater(workflowServiceRatingInvitation.getRater().getAgent());
+        workflowServiceRating.setType(2); // Type 2 == Researcher Rating
         workflowServiceRating.setDate(new Date());
         workflowServiceRating.setApproved(approved);
         if (!approved) {
             workflowServiceRating.setReprovedText(reprovedText);
         }
-        workflowServiceRating.setValueDocumentation(Integer.parseInt(documentation));
-        workflowServiceRating.setValueEaseOfUse(Integer.parseInt(ease_of_use));
-        workflowServiceRating.setValuePerformance(Integer.parseInt(performance));
-        workflowServiceRating.setValueReliability(Integer.parseInt(reliability));
-        workflowServiceRating.setValueDisponibility(Integer.parseInt(disponibility));
 
         try {
             workflowServiceRatingInvitation.setCompleted(true);
@@ -599,6 +668,73 @@ public class ComponentsController {
         }
 
         return "components/actions-workflow-services-rating-form-result";
+    }
+
+
+    @RequestMapping(value = "/components/actions/workflow-services/developer-rating/{id}")
+    public String actionsWorkflowServicesDeveloperRating(Model model,
+                                                         @PathVariable(value = "id") int id,
+                                                         HttpServletRequest request) {
+
+        Component component = componentService.find(id);
+        WorkflowService workflowService = component.getWorkflowService();
+
+        if (null == workflowService) {
+            return null;
+        }
+
+        model.addAttribute("workflowService", workflowService);
+
+        return "components/actions-workflow-services-rating-developer-form";
+    }
+
+    @RequestMapping(value = "/components/actions/workflow-services/developer-rating/{id}", method = RequestMethod.POST)
+    public String actionsWorkflowServicesDeveloperRatingPost(Model model,
+                                                             @PathVariable(value = "id") int id,
+                                                             HttpServletRequest request) {
+
+        Component component = componentService.find(id);
+        WorkflowService workflowService = component.getWorkflowService();
+
+        if (null == workflowService) {
+            return null;
+        }
+
+        model.addAttribute("workflowService", workflowService);
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User user = (User) session.getAttribute("logged_user");
+
+        // Get User Agent
+        Agent agent = user.getAgent();
+
+        String documentation = request.getParameter("documentation");
+        String ease_of_use = request.getParameter("ease_of_use");
+        String performance = request.getParameter("performance");
+        String reliability = request.getParameter("reliability");
+        String disponibility = request.getParameter("disponibility");
+
+        WorkflowServiceRating workflowServiceRating = new WorkflowServiceRating();
+        workflowServiceRating.setWorkflowService(workflowService);
+        workflowServiceRating.setRater(agent);
+        workflowServiceRating.setType(1); // Type 1 == Developer Rating
+        workflowServiceRating.setDate(new Date());
+        workflowServiceRating.setValueDocumentation(Integer.parseInt(documentation));
+        workflowServiceRating.setValueEaseOfUse(Integer.parseInt(ease_of_use));
+        workflowServiceRating.setValuePerformance(Integer.parseInt(performance));
+        workflowServiceRating.setValueReliability(Integer.parseInt(reliability));
+        workflowServiceRating.setValueDisponibility(Integer.parseInt(disponibility));
+
+        try {
+            workflowServiceRatingService.add(workflowServiceRating);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "components/actions-workflow-services-rating-developer-form-result";
     }
 
 

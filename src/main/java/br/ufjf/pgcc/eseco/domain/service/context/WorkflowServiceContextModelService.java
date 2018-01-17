@@ -215,8 +215,10 @@ public class WorkflowServiceContextModelService {
         ccm.setMostCommonArea(mostUsedAreaName);
 
         // Ratings
-        int totalRatings = 0;
+        int totalDeveloperRatings = 0;
+        int totalReseacherRatings = 0;
         int totalApprovals = 0;
+        int totalReprovals = 0;
         double avgDocumentation = 0;
         double avgEaseOfUse = 0;
         double avgReliability = 0;
@@ -224,26 +226,36 @@ public class WorkflowServiceContextModelService {
         double avgDisponibility = 0;
         List<WorkflowServiceRating> workflowServiceRatingList = workflowService.getWorkflowServiceRatingList();
         for (WorkflowServiceRating wsr : workflowServiceRatingList) {
-            totalRatings++;
-            if (wsr.isApproved()) {
-                totalApprovals++;
+
+            if (wsr.getType() == 1) { // Developer Ratings
+                totalDeveloperRatings++;
+                avgDocumentation += wsr.getValueDocumentation();
+                avgEaseOfUse += wsr.getValueEaseOfUse();
+                avgReliability += wsr.getValueReliability();
+                avgPerformance += wsr.getValuePerformance();
+                avgDisponibility += wsr.getValueDisponibility();
+
+            } else if (wsr.getType() == 2) { // Researcher Ratings
+                totalReseacherRatings++;
+                if (wsr.isApproved()) {
+                    totalApprovals++;
+                } else {
+                    totalReprovals++;
+                }
             }
-            avgDocumentation += wsr.getValueDocumentation();
-            avgEaseOfUse += wsr.getValueEaseOfUse();
-            avgReliability += wsr.getValueReliability();
-            avgPerformance += wsr.getValuePerformance();
-            avgDisponibility += wsr.getValueDisponibility();
         }
 
-        avgDocumentation = avgDocumentation / totalRatings;
-        avgEaseOfUse = avgEaseOfUse / totalRatings;
-        avgReliability = avgReliability / totalRatings;
-        avgPerformance = avgPerformance / totalRatings;
-        avgDisponibility = avgDisponibility / totalRatings;
+        avgDocumentation = avgDocumentation / totalDeveloperRatings;
+        avgEaseOfUse = avgEaseOfUse / totalDeveloperRatings;
+        avgReliability = avgReliability / totalDeveloperRatings;
+        avgPerformance = avgPerformance / totalDeveloperRatings;
+        avgDisponibility = avgDisponibility / totalDeveloperRatings;
 
         ccm.setWsRatings(workflowServiceRatingList);
-        ccm.setTotalRatings(totalRatings);
+        ccm.setTotalDeveloperRatings(totalDeveloperRatings);
+        ccm.setTotalResearcherRatings(totalReseacherRatings);
         ccm.setTotalApprovals(totalApprovals);
+        ccm.setTotalReprovals(totalReprovals);
         ccm.setAvgValueDocumentation(Math.round(avgDocumentation));
         ccm.setAvgValueEaseOfUse(Math.round(avgEaseOfUse));
         ccm.setAvgValueReliability(Math.round(avgReliability));

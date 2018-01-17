@@ -6,6 +6,7 @@ public class WorkflowServiceRatingContextModel {
 
     private int id;
     private int workflowServiceId;
+    private int type;
     private String workflowServiceName;
     private String authorName;
     private Date dateCreated;
@@ -40,6 +41,14 @@ public class WorkflowServiceRatingContextModel {
 
     public void setWorkflowServiceId(int workflowServiceId) {
         this.workflowServiceId = workflowServiceId;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getWorkflowServiceName() {

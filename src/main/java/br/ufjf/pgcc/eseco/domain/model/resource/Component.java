@@ -38,6 +38,9 @@ public class Component {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "documentation_url", columnDefinition = "TEXT")
+    private String documentationUrl;
+
     @Column(name = "date_created", columnDefinition = "DATETIME")
     private Date dateCreated;
 
@@ -88,6 +91,14 @@ public class Component {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDocumentationUrl() {
+        return documentationUrl;
+    }
+
+    public void setDocumentationUrl(String documentationUrl) {
+        this.documentationUrl = documentationUrl;
     }
 
     public Date getDateCreated() {
