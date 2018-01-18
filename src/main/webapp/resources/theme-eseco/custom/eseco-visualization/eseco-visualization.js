@@ -3,6 +3,83 @@
  */
 
 /*********************************************/
+/* PIE CHART                                 */
+/*********************************************/
+function drawPie(data, target, width) {
+    // Call function to draw the Radar chart
+    if (data.constructor === Object || data.constructor === Array) {
+        PieChart.draw(data, target, width);
+
+    } else if (typeof data === "string") {
+        d3.json(data, function (error, data) {
+            if (error) throw error;
+            PieChart.draw(data, target, width);
+        });
+    }
+}
+
+var PieChart = {
+    draw: function (data, target, width) {
+
+        if (!window.d3) {
+            var d3 = d3version4;
+        }
+
+        const height = "250";
+
+        const container = d3.select(target).html("");
+        const svg = container.append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const pieValue = d => d.quantity;
+        const colorValue = d => d.rating;
+        const margin = { left: 20, right: 400, top: 1, bottom: 1 };
+
+        const pie = d3.pie().value(pieValue);
+        const arc = d3.arc()
+            .innerRadius(40)
+            .outerRadius(80);
+
+        const g = svg.append('g')
+            .attr('transform', "translate(100,90)");
+        const pieG = g.append('g')
+            .attr('transform', "translate(0,0)");
+        const colorLegendG = g.append('g')
+            .attr('transform', "translate(-50, 110)");
+
+        const colorScale = d3.scaleOrdinal()
+            .range(d3.schemeCategory10);
+
+        const colorLegend = d3.legendColor()
+            .scale(colorScale)
+            .shape('circle')
+            .labelOffset(10)
+            .shapePadding(70)
+            .orient('horizontal');
+
+        const row = d => {
+            d.population = +d.population;
+            return d;
+        };
+
+        colorScale.domain(data.map(colorValue));
+
+        const arcs = pie(data);
+
+        pieG.selectAll('path').data(arcs)
+            .enter().append('path')
+            .attr('d', arc)
+            .attr('fill', d => colorScale(colorValue(d.data)));
+
+        colorLegendG.call(colorLegend)
+            .selectAll('.cell text')
+            .attr('dy', '0.1em');
+    }
+};
+
+
+/*********************************************/
 /* GRAPH                                     */
 /*********************************************/
 function drawGraph(data, target, width) {

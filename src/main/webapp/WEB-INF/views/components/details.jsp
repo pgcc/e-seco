@@ -32,6 +32,7 @@
 
     <jsp:attribute name="javascripts">
         <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.legend.min.js" />"></script>
         <script type="text/javascript">
             var d3version4 = d3;
             window.d3 = null;
@@ -47,6 +48,60 @@
             // Get JSON Data for visualizations
             var componentContextJson = JSON.parse('${componentContextInfoJSON}');
 
+
+            /***********************************************/
+            /* USAGE VISUALIZATIONS                        */
+            /***********************************************/
+            $("#btn-visualize-activities-using").on("click", function () {
+                $('#modal-visualize-activities-using').modal();
+            });
+            $("#btn-visualize-workflows-using").on("click", function () {
+                $('#modal-visualize-workflows-using').modal();
+            });
+            $("#btn-visualize-experiments-using").on("click", function () {
+                $('#modal-visualize-experiments-using').modal();
+            });
+            $("#btn-visualize-researchers-using").on("click", function () {
+                $('#modal-visualize-researchers-using').modal();
+            });
+
+
+            /***********************************************/
+            /* RESEARCHER RATINGS VISUALIZATION              */
+            /***********************************************/
+            function showResearcherRatingsVisualization() {
+                var width = "200";
+                var pieData = mountDataToPie(componentContextJson);
+                drawPie(pieData, "#box-chart-researcher-ratings-pie", width)
+            };
+            function mountDataToPie(itemData) {
+                var pieData = [
+                    {"rating": "Approvals", "quantity": componentContextJson.totalApprovals},
+                    {"rating": "Reprovals", "quantity": componentContextJson.totalReprovals}
+                ];
+
+                return pieData;
+            }
+            showResearcherRatingsVisualization();
+
+
+            /***********************************************/
+            /* DEVELOPER RATINGS VISUALIZATIONS            */
+            /***********************************************/
+            $("#btn-visualize-ratings").on("click", function () {
+                $('#modal-visualize-ratings').modal();
+            });
+            $("#tbl-rating-avg-values").find(".progress-bar").each(function () {
+                if (parseInt($(this).data("value")) <= 3) {
+                    $(this).addClass("progress-bar-danger");
+                } else if (parseInt($(this).data("value")) > 3 && parseInt($(this).data("value")) < 7) {
+                    $(this).addClass("progress-bar-warning");
+                } else if (parseInt($(this).data("value")) >= 7) {
+                    $(this).addClass("progress-bar-success");
+                }
+            });
+
+
             /***********************************************/
             /* DEPENDENCIES VISUALIZATION                  */
             /***********************************************/
@@ -57,7 +112,6 @@
                 var treemapData = mountDataToTreemap(componentContextJson);
                 drawTreemap(treemapData, "#box-chart-dependencies-treemap", width);
             };
-
             function mountDataToTreemap(itemData) {
                 var treemapData = {
                     "name": itemData.wsInternalClass,
@@ -97,7 +151,6 @@
 
                 return treemapData;
             }
-
             showDependenciesVisualization();
 
             // Graph
@@ -110,7 +163,6 @@
 
                 drawGraph(graphData, target, width);
             };
-
             function mountDataToGraph(itemData) {
                 var data1 = itemData.wsInternalClassInternalMetrics.esecoWorkflowServicesNames;
                 var data2 = itemData.wsInternalClassInternalMetrics.esecoCoreServicesNames;
@@ -159,6 +211,56 @@
 
                     groupId++;
                 });
+
+                if (itemData.id == 13 || itemData.id == 45 || itemData.id == 46 || itemData.id == 158) {
+                    graphData.nodes.push({
+                        "name": "BiologicalSpecimenScientificNameRetriever", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "BloodTypeProbabilityPrimitiveType", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "FetchBarCode", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "MatrixCombinationPhenotypesPrimitiveTypes", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "PhenotypeTranslationPrimitiveType", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "SpecimenInformationSearch", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+                }
 
                 if (itemData.id == 4) {
                     graphData.nodes.push({
@@ -266,99 +368,12 @@
                     groupId++;
                 }
 
-                if (itemData.id == 4) {
-                    graphData.links.push({
-                        "source": 1,
-                        "target": 2,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
 
-                    graphData.links.push({
-                        "source": 2,
-                        "target": 1,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
-
-                    graphData.links.push({
-                        "source": 1,
-                        "target": 3,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
-
-                    graphData.links.push({
-                        "source": 3,
-                        "target": 1,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
-
-                    graphData.links.push({
-                        "source": 3,
-                        "target": 2,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
-
-                    graphData.links.push({
-                        "source": 2,
-                        "target": 3,
-                        "value": 1,
-                        "type": "arrow",
-                        "way": "interoperate"
-                    });
-                }
 
 
                 return graphData;
             }
-
             showDependenciesGraphVisualization();
-
-
-            /***********************************************/
-            /* USAGE VISUALIZATIONS                        */
-            /***********************************************/
-            $("#btn-visualize-activities-using").on("click", function () {
-                $('#modal-visualize-activities-using').modal();
-            });
-
-            $("#btn-visualize-workflows-using").on("click", function () {
-                $('#modal-visualize-workflows-using').modal();
-            });
-
-            $("#btn-visualize-experiments-using").on("click", function () {
-                $('#modal-visualize-experiments-using').modal();
-            });
-
-            $("#btn-visualize-researchers-using").on("click", function () {
-                $('#modal-visualize-researchers-using').modal();
-            });
-
-
-            /***********************************************/
-            /* RATINGS VISUALIZATIONS                      */
-            /***********************************************/
-            $("#btn-visualize-ratings").on("click", function () {
-                $('#modal-visualize-ratings').modal();
-            });
-
-            $("#tbl-rating-avg-values").find(".progress-bar").each(function () {
-                if (parseInt($(this).data("value")) <= 3) {
-                    $(this).addClass("progress-bar-danger");
-                } else if (parseInt($(this).data("value")) > 3 && parseInt($(this).data("value")) < 7) {
-                    $(this).addClass("progress-bar-warning");
-                } else if (parseInt($(this).data("value")) >= 7) {
-                    $(this).addClass("progress-bar-success");
-                }
-            });
 
 
             /***********************************************/
@@ -370,56 +385,48 @@
                 "placement": "right",
                 "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
             });
-
             $('#pop-method-names').popover({
                 "title": "Methods names",
                 "html": true,
                 "placement": "right",
                 "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
             });
-
             $('#pop-eseco-core-services-names').popover({
                 "title": "E-Seco Core Services names",
                 "html": true,
                 "placement": "right",
                 "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
             });
-
             $('#pop-eseco-workflow-services-names').popover({
                 "title": "E-Seco Workflow Services names",
                 "html": true,
                 "placement": "right",
                 "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
             });
-
             $('#pop-rating-documentation-info').popover({
                 "title": "Documentation",
                 "html": true,
                 "placement": "right",
                 "content": 'Quality of the documentation provided by the service to aid its usage'
             });
-
             $('#pop-rating-ease-of-use-info').popover({
                 "title": "Ease of Use",
                 "html": true,
                 "placement": "right",
                 "content": 'How easy it is to use the service'
             });
-
             $('#pop-rating-reliability-info').popover({
                 "title": "Reliability",
                 "html": true,
                 "placement": "right",
                 "content": 'How correct is the data returned or the processing results of the service'
             });
-
             $('#pop-rating-performance-info').popover({
                 "title": "Performance",
                 "html": true,
                 "placement": "right",
                 "content": 'How smoothly the service processes, does it takes short or long time to return the data?'
             });
-
             $('#pop-rating-availability-info').popover({
                 "title": "Availability",
                 "html": true,
@@ -431,7 +438,6 @@
             /***********************************************/
             /* COMMENTS                                    */
             /***********************************************/
-
             function mountBoxCommentStars(data, ommitlink){
 
                 var rateStarsTotal = data.rateStarsTotal;
@@ -469,8 +475,6 @@
                         )
                     );
             }
-
-            // Populate Comments Table
             function addCommentToTable(tbody, data, isChild) {
                 var photoWidth = isChild ? "50px" : "80px";
                 var tr = null;
@@ -881,6 +885,8 @@
                                         <span>${componentContextInfo.totalReprovals}</span>
                                     </li>
                                 </ul>
+
+                                <div id="box-chart-researcher-ratings-pie" class="text-center"></div>
 
                                 <div class="text-center">
                                     <c:if test="${sessionScope.role_admin || sessionScope.role_developer}">

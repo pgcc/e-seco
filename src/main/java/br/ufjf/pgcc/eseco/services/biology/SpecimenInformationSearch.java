@@ -8,6 +8,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import static org.springframework.http.HttpHeaders.USER_AGENT;
+
 
 @EsecoWorkflowService
 @ComposedOf(servicesClasses = {
@@ -17,9 +25,25 @@ public class SpecimenInformationSearch {
 
     private Specimen specimen;
 
-    private void setSpecimenByBarCode(String barCode){
+    private void setSpecimenByBarCode(String barCode) throws IOException {
+        String url = "http://newbiosystems.com/api/specimen-details/by-barcode/" + barCode;
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
         // Use the bar code to get specimen info
-        String specimenInfoJsonString = "";
+        String specimenInfoJsonString = response.toString();
         JsonParser parser = new JsonParser();
         JsonObject specimenInfoJson = parser.parse(specimenInfoJsonString).getAsJsonObject();
 
@@ -30,7 +54,7 @@ public class SpecimenInformationSearch {
         specimen.setBarCode(barCode);
     }
 
-    public String getSpecimenInfoByBarCode(String barCode){
+    public String getSpecimenInfoByBarCode(String barCode) throws IOException {
         setSpecimenByBarCode(barCode);
 
         Gson gson = new GsonBuilder().create();
