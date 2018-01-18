@@ -1268,12 +1268,20 @@
                                             <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Author</th>
+                                                <th>Date Created</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach var="experiment" items="${experimentsList}">
                                                 <tr>
-                                                    <td>${experiment.name}</td>
+                                                    <td>
+                                                        <a href="<c:url value="/experiments/${experiment.id}"/>" target="_blank">
+                                                                ${experiment.name} <i class="fa fa-external-link"></i></a>
+                                                    </td>
+                                                    <td>${experiment.author.agent.name}</td>
+                                                    <td><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                        value="${experiment.dateCreated}"/></td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
