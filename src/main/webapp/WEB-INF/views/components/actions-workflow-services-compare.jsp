@@ -148,13 +148,22 @@
                 );
 
                 // Workflow Service Total Ratings
-                tbl_tbody.find("tr.row-compare-info-wstotalratings").append(
-                    $("<td>").text(item.totalRatings)
+                tbl_tbody.find("tr.row-compare-info-wstotalresearcherratings").append(
+                    $("<td>").text(item.totalResearcherRatings)
+                );
+
+                tbl_tbody.find("tr.row-compare-info-wstotaldeveloperratings").append(
+                    $("<td>").text(item.totalDeveloperRatings)
                 );
 
                 // Workflow Service Total Approvals
                 tbl_tbody.find("tr.row-compare-info-wstotalapprovals").append(
                     $("<td>").text(item.totalApprovals)
+                );
+
+                // Workflow Service Total Approvals
+                tbl_tbody.find("tr.row-compare-info-wstotalreprovals").append(
+                    $("<td>").text(item.totalReprovals)
                 );
 
                 // Workflow Service Average Value for Documentation
@@ -193,9 +202,28 @@
             /***********************************************/
             function showInternalMetricsVisualization() {
 
+                var higherNumber = 0;
+
                 // Mount Radar Data
                 var radarData = [];
                 $.each(itemsToCompare, function (i, item) {
+                    // Determine Higher Number
+                    if(item.wsInternalClassInternalMetrics.parametersCount > higherNumber){
+                        higherNumber = item.wsInternalClassInternalMetrics.parametersCount;
+                    }
+                    if(item.wsInternalClassInternalMetrics.methodsCount > higherNumber){
+                        higherNumber = item.wsInternalClassInternalMetrics.methodsCount;
+                    }
+                    if(item.wsInternalClassInternalMetrics.servicesCount > higherNumber){
+                        higherNumber = item.wsInternalClassInternalMetrics.servicesCount;
+                    }
+                    if(item.wsInternalClassInternalMetrics.esecoCoreServicesCount > higherNumber){
+                        higherNumber = item.wsInternalClassInternalMetrics.esecoCoreServicesCount;
+                    }
+                    if(item.wsInternalClassInternalMetrics.esecoWorkflowServicesCount > higherNumber){
+                        higherNumber = item.wsInternalClassInternalMetrics.esecoWorkflowServicesCount;
+                    }
+
                     var itemData = [];
 
                     itemData.push({
@@ -227,14 +255,30 @@
                     radarData.push(itemData);
                 });
 
-                drawRadar(radarData, "chart-internalmetrics");
+                drawRadar(radarData, "chart-internalmetrics", higherNumber);
             };
 
             function showUsageVisualization() {
 
+                var higherNumber = 0;
+
                 // Mount Radar Data
                 var radarData = [];
                 $.each(itemsToCompare, function (i, item) {
+                    // Determine Higher Number
+                    if(item.activitiesUsingCount > higherNumber){
+                        higherNumber = item.activitiesUsingCount;
+                    }
+                    if(item.activitiesUsingCount > higherNumber){
+                        higherNumber = item.workflowsUsingCount;
+                    }
+                    if(item.activitiesUsingCount > higherNumber){
+                        higherNumber = item.experimentsUsingCount;
+                    }
+                    if(item.activitiesUsingCount > higherNumber){
+                        higherNumber = item.researchersUsingCount;
+                    }
+
                     var itemData = [];
 
                     itemData.push({
@@ -261,7 +305,7 @@
                     radarData.push(itemData);
                 });
 
-                drawRadar(radarData, "chart-usage");
+                drawRadar(radarData, "chart-usage", higherNumber);
             };
 
             function showRatingsVisualization() {
@@ -300,7 +344,7 @@
                     radarData.push(itemData);
                 });
 
-                drawRadar(radarData, "chart-ratings");
+                drawRadar(radarData, "chart-ratings", 10);
             };
 
             showInternalMetricsVisualization();
@@ -393,40 +437,19 @@
                                         <td><strong>WorkFlow Service Internal Class</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsclassparametercount">
-                                        <td><strong>WorkFlow Service Class Parameter Count</strong></td>
+                                        <td><strong>Class Parameter Count</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsclassmethodcount">
-                                        <td><strong>WorkFlow Service Class Method Count</strong></td>
+                                        <td><strong>Class Method Count</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalservicesused">
-                                        <td><strong>WorkFlow Service Total Services Used</strong></td>
+                                        <td><strong>Total Services Used</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsesecocoreservicesused">
-                                        <td><strong>WorkFlow Service E-Seco Core Services Used</strong></td>
+                                        <td><strong>E-Seco Core Services Used</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wsesecoworkflowservicesused">
-                                        <td><strong>WorkFlow Service E-Seco Workflow Services Used</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wstotalratings">
-                                        <td><strong>WorkFlow Service Total Ratings</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wstotalapprovals">
-                                        <td><strong>WorkFlow Service Total Approvals</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvaluedocumentation">
-                                        <td><strong>WorkFlow Service Average Value for Documentation</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvalueeaseofuse">
-                                        <td><strong>WorkFlow Service Average Value for Ease of Use</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvaluereliability">
-                                        <td><strong>WorkFlow Service Average Value for Reliability</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvaluePerformance">
-                                        <td><strong>WorkFlow Service Average Value for Performance</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvalueDisponibility">
-                                        <td><strong>WorkFlow Service Average Value for Disponibility</strong></td>
+                                        <td><strong>E-Seco Workflow Services Used</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -529,41 +552,29 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <a href="#collapseRatings" class="collapsed" role="button" data-toggle="collapse">
-                                Ratings <i class="fa fa-plus-circle"></i>
+                            <a href="#collapseResearchersRatings" class="collapsed" role="button" data-toggle="collapse">
+                                Reseachers Ratings <i class="fa fa-plus-circle"></i>
                             </a>
                         </h3>
                     </div>
-                    <div id="collapseRatings" class="panel-collapse collapse out">
+                    <div id="collapseResearchersRatings" class="panel-collapse collapse out">
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table id="tbl-compare" class="table table-bordered table-striped">
+                                <table id="tbl-compare-researcher-ratings" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th class="text-center">Info / Service</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="row-compare-info-wstotalratings">
-                                        <td><strong>WorkFlow Service Total Ratings</strong></td>
+                                    <tr class="row-compare-info-wstotalresearcherratings">
+                                        <td><strong>Total Researchers Ratings</strong></td>
                                     </tr>
                                     <tr class="row-compare-info-wstotalapprovals">
-                                        <td><strong>WorkFlow Service Total Approvals</strong></td>
+                                        <td><strong>Total Approvals</strong></td>
                                     </tr>
-                                    <tr class="row-compare-info-wsvaluedocumentation">
-                                        <td><strong>WorkFlow Service Average Value for Documentation</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvalueeaseofuse">
-                                        <td><strong>WorkFlow Service Average Value for Ease of Use</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvaluereliability">
-                                        <td><strong>WorkFlow Service Average Value for Reliability</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvaluePerformance">
-                                        <td><strong>WorkFlow Service Average Value for Performance</strong></td>
-                                    </tr>
-                                    <tr class="row-compare-info-wsvalueDisponibility">
-                                        <td><strong>WorkFlow Service Average Value for Availability</strong></td>
+                                    <tr class="row-compare-info-wstotalreprovals">
+                                        <td><strong>Total Reprovals</strong></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -575,13 +586,56 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <a href="#collapseRatingsVisualization" class="collapsed" role="button"
-                               data-toggle="collapse">
-                                Ratings Visualization <i class="fa fa-plus-circle"></i>
+                            <a href="#collapseDevelopersRatings" class="collapsed" role="button" data-toggle="collapse">
+                                Developers Ratings <i class="fa fa-plus-circle"></i>
                             </a>
                         </h3>
                     </div>
-                    <div id="collapseRatingsVisualization" class="panel-collapse collapse out">
+                    <div id="collapseDevelopersRatings" class="panel-collapse collapse out">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="tbl-compare-developers-ratings" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Info / Service</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="row-compare-info-wstotaldeveloperratings">
+                                        <td><strong>Total Developers Ratings</strong></td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluedocumentation">
+                                        <td><strong>Average Value for Documentation</strong></td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueeaseofuse">
+                                        <td><strong>Average Value for Ease of Use</strong></td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluereliability">
+                                        <td><strong>Average Value for Reliability</strong></td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvaluePerformance">
+                                        <td><strong>Average Value for Performance</strong></td>
+                                    </tr>
+                                    <tr class="row-compare-info-wsvalueDisponibility">
+                                        <td><strong>Average Value for Availability</strong></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a href="#collapseDevelopersRatingsVisualization" class="collapsed" role="button"
+                               data-toggle="collapse">
+                                Developers Ratings Visualization <i class="fa fa-plus-circle"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div id="collapseDevelopersRatingsVisualization" class="panel-collapse collapse out">
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-xs-12">

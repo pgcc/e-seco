@@ -363,7 +363,7 @@ var TreemapChart = {
 /*********************************************/
 /* RADAR                                     */
 /*********************************************/
-function drawRadar(data, targetId) {
+function drawRadar(data, targetId, maxValue) {
     /*
      var svg = d3.select("svg");
      svg.html("");
@@ -376,7 +376,7 @@ function drawRadar(data, targetId) {
     var config = {
         w: width,
         h: height,
-        maxValue: 10,
+        maxValue: maxValue > 0 ? maxValue : 1,
         levels: 10,
         ExtraWidthX: 300
     };
