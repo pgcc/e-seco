@@ -47,7 +47,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         // AUTHORIZATION FOR NON LOGGED USERS                               //
         //////////////////////////////////////////////////////////////////////
         if (userIsLogged == null) {
-            if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
+            if (route.equals("login") || route.equals("register") || route.equals("recovery") || route.equals("api")) {
                 return true;
             } else {
                 httpServletResponse.sendRedirect("/eseco/login");
@@ -76,6 +76,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         // Researchers
         if (roleResearcher) {
             switch (route) {
+                case "api":
                 case "not-authorized":
                 case "logout":
                 case "home":
@@ -98,6 +99,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         // Developers
         if (roleDeveloper) {
             switch (route) {
+                case "api":
                 case "not-authorized":
                 case "logout":
                 case "home":

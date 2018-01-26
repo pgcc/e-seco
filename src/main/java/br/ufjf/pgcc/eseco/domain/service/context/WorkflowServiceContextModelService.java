@@ -83,6 +83,7 @@ public class WorkflowServiceContextModelService {
             ComposedOf composedOfAnnotation = (ComposedOf) internalClass.getAnnotation(ComposedOf.class);
             if (null != composedOfAnnotation) {
                 ArrayList<String> usedEsecoCoreServicesList = new ArrayList<>();
+                ArrayList<String> usedEsecoWorkflowServicesStringList = new ArrayList<>();
                 ArrayList<WorkflowServiceContextModel> usedEsecoWorkflowServicesList = new ArrayList<>();
 
                 Class<?>[] servicesClasses = composedOfAnnotation.servicesClasses();
@@ -95,6 +96,7 @@ public class WorkflowServiceContextModelService {
                         if (null != ws) {
                             WorkflowServiceContextModel wscm = createModelInfo(ws.getComponent());
                             usedEsecoWorkflowServicesList.add(wscm);
+                            usedEsecoWorkflowServicesStringList.add(serviceClass.getName());
                             ccm.setWsNature("Composed");
                         }
                     } else {
@@ -104,6 +106,7 @@ public class WorkflowServiceContextModelService {
 
                 ccm.setUsedEsecoCoreServicesList(usedEsecoCoreServicesList);
                 ccm.setUsedEsecoWorkflowServicesList(usedEsecoWorkflowServicesList);
+                ccm.setUsedEsecoWorkflowServicesStringList(usedEsecoWorkflowServicesStringList);
             }
         }
 

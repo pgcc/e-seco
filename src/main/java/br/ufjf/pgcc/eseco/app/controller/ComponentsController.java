@@ -120,6 +120,7 @@ public class ComponentsController {
                     }
 
                     // Prepare for transformation (reduce the object to avoid stack overflow from gson)
+                    List<WorkflowServiceContextModel> usedEsecoWorkflowServicesList = new ArrayList<>();
                     List<Activity> activitiesList = new ArrayList<>();
                     List<Workflow> workflowsList = new ArrayList<>();
                     List<Experiment> experimentsList = new ArrayList<>();
@@ -129,6 +130,9 @@ public class ComponentsController {
                     List<WorkflowServiceComment> rootCommentsList = new ArrayList<>();
 
                     if (componentContextInfo != null) {
+                        usedEsecoWorkflowServicesList = componentContextInfo.getUsedEsecoWorkflowServicesList();
+                        componentContextInfo.setUsedEsecoWorkflowServicesList(null);
+
                         activitiesList = componentContextInfo.getActivitiesUsing();
                         componentContextInfo.setActivitiesUsing(null);
 
@@ -162,6 +166,7 @@ public class ComponentsController {
                     model.addAttribute("component", component);
                     model.addAttribute("componentContextInfo", componentContextInfo);
                     model.addAttribute("componentContextInfoJSON", componentContextInfoJSON);
+                    model.addAttribute("usedEsecoWorkflowServicesList", usedEsecoWorkflowServicesList);
                     model.addAttribute("activitiesList", activitiesList);
                     model.addAttribute("workflowsList", workflowsList);
                     model.addAttribute("experimentsList", experimentsList);
@@ -328,7 +333,7 @@ public class ComponentsController {
 
                 workflowService = workflowServiceService.add(workflowService);
 
-                return "redirect:/components/details/2/" + workflowService.getId();
+                return "redirect:/components/details/2/" + component.getId();
 
             } catch (Exception e) {
                 e.printStackTrace();

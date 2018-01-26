@@ -70,9 +70,11 @@
             /* RESEARCHER RATINGS VISUALIZATION              */
             /***********************************************/
             function showResearcherRatingsVisualization() {
-                var width = "200";
-                var pieData = mountDataToPie(componentContextJson);
-                drawPie(pieData, "#box-chart-researcher-ratings-pie", width)
+                if(componentContextJson.totalResearcherRatings > 0) {
+                    var width = "200";
+                    var pieData = mountDataToPie(componentContextJson);
+                    drawPie(pieData, "#box-chart-researcher-ratings-pie", width)
+                }
             };
             function mountDataToPie(itemData) {
                 var pieData = [
@@ -120,7 +122,7 @@
                 };
 
                 // If it has childs
-                if (itemData.usedEsecoCoreServicesList || itemData.usedEsecoWorkflowServicesList) {
+                if (itemData.usedEsecoCoreServicesList || itemData.usedEsecoWorkflowServicesStringList) {
                     var children = [];
 
                     // Seek for Eseco Core Services Childs
@@ -136,9 +138,14 @@
                     }
 
                     // Seek for Eseco Workflow Services Childs
-                    if (itemData.usedEsecoWorkflowServicesList && itemData.usedEsecoWorkflowServicesList.length > 0) {
-                        $.each(itemData.usedEsecoWorkflowServicesList, function (i, item) {
-                            var childrenData = mountDataToTreemap(item);
+                    if (itemData.usedEsecoWorkflowServicesStringList && itemData.usedEsecoWorkflowServicesStringList.length > 0) {
+                        $.each(itemData.usedEsecoWorkflowServicesStringList, function (i, item) {
+
+                            var esecoWorkflowServiceData = {
+                                "name": item,
+                                "wsInternalClass": item
+                            };
+                            var childrenData = mountDataToTreemap(esecoWorkflowServiceData);
                             children.push(childrenData);
                         });
                     }
@@ -212,7 +219,7 @@
                     groupId++;
                 });
 
-                if (itemData.id == 13 || itemData.id == 45 || itemData.id == 46 || itemData.id == 158) {
+                if (itemData.id == 13 || itemData.id == 45 || itemData.id == 46 || itemData.id >= 158) {
                     graphData.nodes.push({
                         "name": "BiologicalSpecimenScientificNameRetriever", "group": groupId, "kind": 4
                     });

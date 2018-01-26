@@ -32,6 +32,7 @@ public class WorkflowServiceContextModel {
 
     // Services used to compound this one
     private List<String> usedEsecoCoreServicesList;
+    private List<String> usedEsecoWorkflowServicesStringList;
     private List<WorkflowServiceContextModel> usedEsecoWorkflowServicesList;
 
     // Component Usage
@@ -166,6 +167,14 @@ public class WorkflowServiceContextModel {
 
     public void setUsedEsecoCoreServicesList(List<String> usedEsecoCoreServicesList) {
         this.usedEsecoCoreServicesList = usedEsecoCoreServicesList;
+    }
+
+    public List<String> getUsedEsecoWorkflowServicesStringList() {
+        return usedEsecoWorkflowServicesStringList;
+    }
+
+    public void setUsedEsecoWorkflowServicesStringList(List<String> usedEsecoWorkflowServicesStringList) {
+        this.usedEsecoWorkflowServicesStringList = usedEsecoWorkflowServicesStringList;
     }
 
     public List<WorkflowServiceContextModel> getUsedEsecoWorkflowServicesList() {

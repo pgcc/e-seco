@@ -48,6 +48,17 @@ public class WorkflowServiceService {
         }
     }
 
+    public WorkflowService findOneByUrl(String url) {
+        if (url != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("url", url);
+
+            return workflowServiceDAO.findOneBy(map);
+        } else {
+            return null;
+        }
+    }
+
     public void inviteResearcherForRating(WorkflowService workflowService, Researcher researcher, String datechat,
                                           Developer developer) throws Exception {
         WorkflowServiceRatingInvitation workflowServiceRatingInvitation = new WorkflowServiceRatingInvitation();
