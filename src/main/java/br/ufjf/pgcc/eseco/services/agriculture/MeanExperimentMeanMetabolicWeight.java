@@ -12,15 +12,15 @@ import java.util.Map;
 @ComposedOf(servicesClasses = {
         BovineExperiment.class
 })
-public class MeanExperimentDiaryWeightGain {
+public class MeanExperimentMeanMetabolicWeight {
 
     public String getByExperimentId(int experimentId){
-        double mean = 10;
+        double mean = 12;
 
         Map<String, Double> map = new HashMap<>();
         map.put("mean", mean);
 
-
+        
 
 
 
