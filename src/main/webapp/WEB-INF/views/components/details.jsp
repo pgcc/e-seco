@@ -831,40 +831,16 @@
                                     </li>
                                     <li class="list-group-item">
                                         <span>Date Last Used</span>
-                                        <span>
-                                            <c:choose>
-                                                <c:when test="${componentContextInfo.dateLastUsed}">
-                                                <span><fmt:formatDate pattern="yyyy-MM-dd"
-                                                                      value="${componentContextInfo.dateLastUsed}"/></span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:choose>
-                                                        <c:when test="${componentContextInfo.id == 13}">
-                                                            <span>2017-12-25</span>
-                                                        </c:when>
-                                                        <c:when test="${componentContextInfo.id == 45}">
-                                                            <span>2017-12-25</span>
-                                                        </c:when>
-                                                        <c:when test="${componentContextInfo.id == 46}">
-                                                            <span>2017-12-25</span>
-                                                        </c:when>
-                                                        <c:when test="${componentContextInfo.id == 158}">
-                                                            <span>2017-12-22</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span>Never Used</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </span>
+                                        <span>${componentContextInfo.dateLastUsed}</span>
                                     </li>
                                 </ul>
 
+                                <!--
                                 <div class="text-center">
                                     <a class="btn btn-info"
                                        href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">View Usage Map</a>
                                 </div>
+                                -->
                             </div>
                         </div>
                     </div>
@@ -1185,12 +1161,18 @@
                                             <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Author</th>
+                                                <th>Date Created</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach var="activity" items="${activitiesList}">
                                                 <tr>
-                                                    <td>${activity.name}</td>
+                                                    <td><a href="<c:url value="/experiments/activities/${activity.id}"/>" target="_blank">
+                                                            ${activity.name} <i class="fa fa-external-link"></i></a></td>
+                                                    <td>${workflow.author.agent.name}</td>
+                                                    <td><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                        value="${activity.dateCreated}"/></td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -1230,12 +1212,24 @@
                                             <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>System</th>
+                                                <th>Version</th>
+                                                <th>Author</th>
+                                                <th>Date Created</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <c:forEach var="experiment" items="${workflowsList}">
+                                            <c:forEach var="workflow" items="${workflowsList}">
                                                 <tr>
-                                                    <td>${experiment.name}</td>
+                                                    <td><a href="<c:url value="/experiments/workflows/${workflow.id}"/>" target="_blank">
+                                                            ${workflow.name} <i class="fa fa-external-link"></i></a></td>
+                                                    <td>
+                                                        ${workflow.wfms.name}
+                                                    </td>
+                                                    <td>${workflow.version}</td>
+                                                    <td>${workflow.author.agent.name}</td>
+                                                    <td><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                        value="${workflow.dateCreated}"/></td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -1306,7 +1300,7 @@
             </div>
         </div>
 
-        <!-- MODAL VISUALIZE ACTIVITIES USING -->
+        <!-- MODAL VISUALIZE RESEARCHERS USING -->
         <div class="modal fade" id="modal-visualize-researchers-using" tabindex="-1" role="dialog"
              aria-labelledby="modal-visualize-researchers-using-label">
             <div class="modal-dialog width-95" role="document">
@@ -1328,12 +1322,19 @@
                                             <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Academic Status</th>
+                                                <th>Title</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach var="researcher" items="${researchersList}">
                                                 <tr>
-                                                    <td>${researcher.displayName}</td>
+                                                    <td>
+                                                        <a href="<c:url value="/researchers/${researcher.id}"/>" target="_blank">
+                                                                ${researcher.displayName} <i class="fa fa-external-link"></i></a>
+                                                    </td>
+                                                    <td>${researcher.academicStatus}</td>
+                                                    <td>${researcher.title}</td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -1381,7 +1382,8 @@
                                             <tbody>
                                             <c:forEach var="rating" items="${ratingsList}">
                                                 <tr>
-                                                    <td>${rating.rater.name}</td>
+                                                    <td><a href="<c:url value="/researchers/${rating.rater.researcher.id}"/>" target="_blank">
+                                                            ${rating.rater.researcher.displayName} <i class="fa fa-external-link"></i></a></td>
                                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
                                                                                             value="${rating.date}"/></td>
                                                     <td class="text-center">${rating.approved}</td>

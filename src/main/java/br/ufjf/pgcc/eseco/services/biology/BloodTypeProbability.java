@@ -2,8 +2,8 @@ package br.ufjf.pgcc.eseco.services.biology;
 
 import br.ufjf.pgcc.eseco.domain.annotation.ComposedOf;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
-import br.ufjf.pgcc.eseco.scientificModels.biology.BloodTypeProbabilitiesTable;
-import br.ufjf.pgcc.eseco.scientificModels.biology.PhenotypePiece;
+import br.ufjf.pgcc.eseco.scientificDomain.model.biology.BloodTypeProbabilitiesTable;
+import br.ufjf.pgcc.eseco.scientificDomain.model.biology.PhenotypePiece;
 
 import java.util.List;
 

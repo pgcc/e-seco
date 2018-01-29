@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.scientificModels.biology;
+package br.ufjf.pgcc.eseco.scientificDomain.model.biology;
 
 public class PhenotypePiece {
     private String phenotypePiece;

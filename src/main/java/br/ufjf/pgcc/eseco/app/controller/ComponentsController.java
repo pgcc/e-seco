@@ -145,7 +145,11 @@ public class ComponentsController {
                         researchersList = componentContextInfo.getResearchersUsing();
                         componentContextInfo.setResearchersUsing(null);
 
-                        ratingsList = componentContextInfo.getWsRatings();
+                        for(WorkflowServiceRating workflowServiceRating : componentContextInfo.getWsRatings()){
+                            if(workflowServiceRating.getType() == 2){
+                                ratingsList.add(workflowServiceRating);
+                            }
+                        }
                         componentContextInfo.setWsRatings(null);
 
                         commentsList = componentContextInfo.getWsComments();

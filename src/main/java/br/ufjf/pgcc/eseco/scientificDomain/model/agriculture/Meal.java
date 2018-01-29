@@ -1,10 +1,10 @@
-package br.ufjf.pgcc.eseco.scientificModels.agriculture;
+package br.ufjf.pgcc.eseco.scientificDomain.model.agriculture;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sm_agriculture_animals")
-public class Animal {
+@Table(name = "sm_agriculture_meals")
+public class Meal {
 
     @Id
     @Column(name = "id")

@@ -2,8 +2,8 @@ package br.ufjf.pgcc.eseco.services.biology;
 
 import br.ufjf.pgcc.eseco.domain.annotation.ComposedOf;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
-import br.ufjf.pgcc.eseco.scientificModels.biology.BloodType;
-import br.ufjf.pgcc.eseco.scientificModels.biology.PhenotypeRelation;
+import br.ufjf.pgcc.eseco.scientificDomain.model.biology.BloodType;
+import br.ufjf.pgcc.eseco.scientificDomain.model.biology.PhenotypeRelation;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;

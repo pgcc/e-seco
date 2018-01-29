@@ -45,7 +45,7 @@ public class WorkflowServiceContextModel {
     private List<Researcher> researchersUsing;
     private int researchersUsingCount;
     private String mostCommonArea;
-    private Date dateLastUsed;
+    private String dateLastUsed;
 
     // Ratings
     private List<WorkflowServiceRating> wsRatings;
@@ -257,11 +257,11 @@ public class WorkflowServiceContextModel {
         this.mostCommonArea = mostCommonArea;
     }
 
-    public Date getDateLastUsed() {
+    public String getDateLastUsed() {
         return dateLastUsed;
     }
 
-    public void setDateLastUsed(Date dateLastUsed) {
+    public void setDateLastUsed(String dateLastUsed) {
         this.dateLastUsed = dateLastUsed;
     }
 

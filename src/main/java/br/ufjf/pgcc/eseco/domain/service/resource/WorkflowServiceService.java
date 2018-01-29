@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.service.resource;
 
+import br.ufjf.pgcc.eseco.app.service.MailerService;
 import br.ufjf.pgcc.eseco.domain.dao.resource.WorkflowServiceDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
@@ -20,12 +21,15 @@ public class WorkflowServiceService {
 
     private WorkflowServiceDAO workflowServiceDAO;
     private WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService;
+    private MailerService mailerService;
 
     @Autowired
     public WorkflowServiceService(WorkflowServiceDAO workflowServiceDAO,
-                                  WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService) {
+                                  WorkflowServiceRatingInvitationService workflowServiceRatingInvitationService,
+                                  MailerService mailerService) {
         this.workflowServiceDAO = workflowServiceDAO;
         this.workflowServiceRatingInvitationService = workflowServiceRatingInvitationService;
+        this.mailerService = mailerService;
     }
 
     @Transactional
@@ -71,5 +75,26 @@ public class WorkflowServiceService {
         }
 
         workflowServiceRatingInvitationService.add(workflowServiceRatingInvitation);
+
+        // Set register instructions e-mail content
+        String to = researcher.getAgent().getUser().getEmail();
+        String subject = "Invitation for Rate a Service";
+        String linkToEseco = "http://nenc.ufjf.br:8080/eseco";
+        // @TODO: Remove the hardcoded content by retrieving it from a .jsp file
+        String content = ""
+                + "<p>Hi <strong>" + researcher.getAgent().getName() + "</strong>!</p>"
+                + "<p>You have been invitated to rate a service on E-SECO Platform</p>"
+                + "<p>"
+                + "    Service Name: " + workflowService.getComponent().getName()
+                + "    <br>Invited by: " + developer.getAgent().getName()
+                + "    <br>Chat date: " + datechat
+                + "</p>"
+                + "<p><a href='" + linkToEseco + "'>" + linkToEseco + "</a></p>"
+                + "<br>"
+                + "<br>"
+                + "<p>E-Seco</p>";
+
+        // Send register instructions e-mail
+        mailerService.sendMail(to, subject, content);
     }
 }

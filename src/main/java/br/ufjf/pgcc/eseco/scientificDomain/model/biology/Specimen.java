@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.scientificModels.biology;
+package br.ufjf.pgcc.eseco.scientificDomain.model.biology;
 
 import java.util.ArrayList;
 

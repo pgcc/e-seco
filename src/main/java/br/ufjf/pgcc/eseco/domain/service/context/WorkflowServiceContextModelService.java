@@ -8,6 +8,7 @@ import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.resource.Component;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowServiceComment;
@@ -19,10 +20,8 @@ import br.ufjf.pgcc.eseco.domain.service.metrics.ClassInternalMetricsModelServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class WorkflowServiceContextModelService {
@@ -119,6 +118,8 @@ public class WorkflowServiceContextModelService {
         ArrayList<Researcher> researchersFound = new ArrayList<>();
 
         // Workflows
+        Date dateLastUsed = new GregorianCalendar(2000, Calendar.JANUARY, 1).getTime();
+        boolean hasDate = false;
         for (Activity activity : ccm.getActivitiesUsing()) {
             List<Workflow> workflowsUsingActivity = experimentWorkflowService.findByActivityId(activity.getId());
             for (Workflow wf : workflowsUsingActivity) {
@@ -133,6 +134,13 @@ public class WorkflowServiceContextModelService {
 
                 if (insertWsIntoFoundList) {
                     workflowsFound.add(wf);
+                    for(WorkflowExecution workflowExecution : wf.getExecutions() ){
+                        if(workflowExecution.getEndTime().compareTo(dateLastUsed) > 0){
+                            dateLastUsed = workflowExecution.getEndTime();
+                            hasDate = true;
+                        }
+                    }
+
                 }
             }
         }
@@ -189,6 +197,12 @@ public class WorkflowServiceContextModelService {
 
         ccm.setResearchersUsing(researchersFound);
         ccm.setResearchersUsingCount(researchersFound.size());
+
+        if(hasDate){
+            ccm.setDateLastUsed(dateLastUsed.toString());
+        }else{
+            ccm.setDateLastUsed("Never Used");
+        }
 
         // Most Used Area
         String mostUsedAreaName = "";

@@ -1,4 +1,4 @@
-package br.ufjf.pgcc.eseco.scientificModels.agriculture;
+package br.ufjf.pgcc.eseco.scientificDomain.model.agriculture;
 
 
 import org.hibernate.annotations.LazyCollection;

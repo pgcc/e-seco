@@ -2,7 +2,7 @@ package br.ufjf.pgcc.eseco.services.biology;
 
 import br.ufjf.pgcc.eseco.domain.annotation.ComposedOf;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
-import br.ufjf.pgcc.eseco.scientificModels.biology.Specimen;
+import br.ufjf.pgcc.eseco.scientificDomain.model.biology.Specimen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;

@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +39,7 @@ public class ApiController {
         ApiRestResult apiRestResult = new ApiRestResult();
         Gson gson = new Gson();
 
-        String url = "https://nenc.ufjf.br/eseco/api/" + area + "/" + serviceName;
+        String url = "http://nenc.ufjf.br:8080/eseco/api/" + area + "/" + serviceName;
         WorkflowService workflowService = workflowServiceService.findOneByUrl(url);
 
         if (workflowService == null) {
@@ -50,7 +51,10 @@ public class ApiController {
             Class internalClass = Class.forName(workflowService.getInternalClass());
 
             String requestedMethod = request.getParameter("r");
-            String[] requestedMethodParameters = request.getParameterValues("p");
+            String[] requestedMethodParameters = new String[]{};
+            if(request.getParameterValues("p") != null){
+                requestedMethodParameters = request.getParameterValues("p");
+            }
 
             if (requestedMethod == null) {
                 ArrayList<String> linksList = new ArrayList<>();
@@ -64,8 +68,6 @@ public class ApiController {
             } else {
                 for (Method m : internalClass.getDeclaredMethods()) {
                     if (m.getName().equals(requestedMethod)) {
-                        System.out.println("achou metodo" + m.getName());
-
                         Parameter[] parameters = m.getParameters();
                         List<String> parameterNames = new ArrayList<>();
                         List<Class<?>> parameterTypes = new ArrayList<>();
@@ -75,31 +77,18 @@ public class ApiController {
                             parameterTypes.add(parameter.getType());
                         }
 
-                        System.out.println(parameterNames);
-                        System.out.println(parameterNames.get(0));
-                        System.out.println(parameterTypes);
-                        System.out.println(parameterTypes.get(0));
-                        System.out.println(requestedMethodParameters.length);
-                        for (String s : requestedMethodParameters) {
-                            System.out.println("parametro: " + s);
-                        }
-                        System.out.println(internalClass);
-
                         Constructor ctor = internalClass.getConstructor();
                         Object object = ctor.newInstance();
 
-                        System.out.println(object);
-
-                        System.out.println(m.getReturnType().toString());
-                        if(m.getReturnType().toString().contains("String")){
-                            System.out.println("retorno do metodo eh string");
+                        if(requestedMethodParameters.length != parameterNames.size()){
+                            throw new Exception("Parameter count diverge. Required ["+parameterNames.size()+"] Passed ["+requestedMethodParameters.length+"]");
                         }
 
                         String methodResult = "";
                         if (parameterNames.size() == 1) {
                             if (parameterTypes.get(0).toString().equals("int")) {
                                 methodResult = (String) m.invoke(object, Integer.parseInt(requestedMethodParameters[0]));
-                            } else if (parameterTypes.get(0).toString().equals("string")) {
+                            } else if (parameterTypes.get(0).equals(String.class)) {
                                 methodResult = (String) m.invoke(object, requestedMethodParameters[0]);
                             }
 
@@ -110,18 +99,10 @@ public class ApiController {
                             );
                         }
 
-
-                     //   String methodResultJson = gson.fromJson(methodResult, String.class);
-                    //    System.out.println(methodResultJson);
-
                         JsonParser parser = new JsonParser();
                         JsonObject o = parser.parse(methodResult).getAsJsonObject();
 
-                        System.out.println(o.toString());
-                        System.out.println(methodResult);
-                        //apiRestResult.setData(o.toString());
                         apiRestResult.setJsonData(o);
-                        //apiRestResult.setData(methodResult);
                     }
                 }
             }
@@ -130,7 +111,6 @@ public class ApiController {
             return gson.toJson(apiRestResult);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             apiRestResult.setError(e.getMessage());
             return gson.toJson(apiRestResult);
         }
