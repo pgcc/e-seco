@@ -11,6 +11,15 @@ import java.util.Map;
 public class FoodDryMatterPercentage {
 
     public String getByFoodName(String foodName){
+
+        Map<String, Double> map = new HashMap<>();
+        map.put("percentage", getPercentual(foodName));
+
+        Gson gson = new Gson();
+        return gson.toJson(map);
+    }
+
+    public double getPercentual(String foodName) {
         double percentage = 0;
 
         if(foodName.toLowerCase().equals("corn")){
@@ -21,11 +30,7 @@ public class FoodDryMatterPercentage {
             percentage = 75.0;
         }
 
-        Map<String, Double> map = new HashMap<>();
-        map.put("percentage", percentage);
-
-
-        Gson gson = new Gson();
-        return gson.toJson(map);
+        return percentage;
     }
+
 }

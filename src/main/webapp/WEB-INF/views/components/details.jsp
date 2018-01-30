@@ -269,6 +269,60 @@
                     groupId++;
                 }
 
+                if (itemData.id == 159) {
+                    graphData.nodes.push({
+                        "name": "FoodDryMatterPercentage", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "MeanExperimentMeanMetabolicWeight", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+                }
+
+                if (itemData.id == 160) {
+                    graphData.nodes.push({
+                        "name": "FoodDryMatterPercentage", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "MeanExperimentDiaryWeightGain", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+                }
+
+                if (itemData.id == 161) {
+                    graphData.nodes.push({
+                        "name": "MeanExperimentDiaryWeightGain", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+
+                    graphData.nodes.push({
+                        "name": "MeanExperimentDiaryWeightGain", "group": groupId, "kind": 4
+                    });
+                    graphData.links.push({
+                        "source": groupId, "target": 0, "value": 1, "type": "arrow", "way": "interoperate"
+                    });
+                    groupId++;
+                }
+
                 if (itemData.id == 4) {
                     graphData.nodes.push({
                         "name": "BiologicalSpecimenScientificNameRetriever", "group": groupId, "kind": 4
