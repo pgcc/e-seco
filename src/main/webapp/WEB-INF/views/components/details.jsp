@@ -926,7 +926,7 @@
                                     </li>
                                     <li class="list-group-item">
                                         <span>Author</span>
-                                        <span>${componentContextInfo.author}</span>
+                                        <span><a href="<c:url value="/agents/${component.author.agent.id}"/>" target="_blank">${componentContextInfo.author} <i class="fa fa-external-link"></i></a></span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Date Created</span>

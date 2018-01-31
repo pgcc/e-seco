@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="ws-description">Description</label>
-                                            <textarea id="ws-description" name="ws-description" class="form-control"></textarea>
+                                            <textarea id="ws-description" name="ws-description" class="form-control" required></textarea>
                                         </div>
                                     </div>
 

@@ -31,7 +31,7 @@
                     <br>
                     Federal University of Juiz de Fora
                     <br>
-                    Computer Sciences Department
+                    Computer Science Department
                 </p>
             </div>
         </div>
