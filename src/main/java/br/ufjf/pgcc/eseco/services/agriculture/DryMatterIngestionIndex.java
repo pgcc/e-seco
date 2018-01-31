@@ -20,6 +20,15 @@ public class DryMatterIngestionIndex {
 
     public String getByExperimentId(int experimentId) {
 
+        Map<String, Double> map = new HashMap<>();
+        map.put("index", getIMS(experimentId));
+
+        Gson gson = new Gson();
+        return gson.toJson(map);
+    }
+
+    public double getIMS(int experimentId) {
+
         // Get experiment from database
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PERSISTENCE_LOCAL");
         EntityManager em = emf.createEntityManager();
@@ -50,12 +59,9 @@ public class DryMatterIngestionIndex {
             index = totalAnimalsDryMatterPercentage / bovineExperiment.getExperimentAnimals().size();
         }
 
-
-        Map<String, Double> map = new HashMap<>();
-        map.put("index", index);
-
-        Gson gson = new Gson();
-        return gson.toJson(map);
+        return  index;
     }
+
+
 
 }

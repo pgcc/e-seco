@@ -20,6 +20,16 @@ public class MeanExperimentDiaryWeightGain {
 
     public String getByExperimentId(int experimentId){
 
+        // Prepare json return schema
+        Map<String, Double> map = new HashMap<>();
+        map.put("mean", getGPD(experimentId));
+
+        // Return converted json schema to json string
+        Gson gson = new Gson();
+        return gson.toJson(map);
+    }
+    public double getGPD(int experimentId){
+
         // Get experiment from database
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PERSISTENCE_LOCAL");
         EntityManager em = emf.createEntityManager();
@@ -34,13 +44,7 @@ public class MeanExperimentDiaryWeightGain {
             }
             mean = mean / bovineExperiment.getExperimentAnimals().size();
         }
+        return mean;
 
-        // Prepare json return schema
-        Map<String, Double> map = new HashMap<>();
-        map.put("mean", mean);
-
-        // Return converted json schema to json string
-        Gson gson = new Gson();
-        return gson.toJson(map);
     }
 }

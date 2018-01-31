@@ -19,6 +19,16 @@ import java.util.Map;
 public class MeanExperimentMeanMetabolicWeight {
 
     public String getByExperimentId(int experimentId){
+        // Prepare json return schema
+        Map<String, Double> map = new HashMap<>();
+        map.put("mean", getPmMedio(experimentId));
+
+        // Return converted json schema to json string
+        Gson gson = new Gson();
+        return gson.toJson(map);
+    }
+
+    public double getPmMedio(int experimentId){
         // Get experiment from database
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PERSISTENCE_LOCAL");
         EntityManager em = emf.createEntityManager();
@@ -33,13 +43,7 @@ public class MeanExperimentMeanMetabolicWeight {
             }
             mean = mean / bovineExperiment.getExperimentAnimals().size();
         }
+        return mean;
 
-        // Prepare json return schema
-        Map<String, Double> map = new HashMap<>();
-        map.put("mean", mean);
-
-        // Return converted json schema to json string
-        Gson gson = new Gson();
-        return gson.toJson(map);
     }
 }
