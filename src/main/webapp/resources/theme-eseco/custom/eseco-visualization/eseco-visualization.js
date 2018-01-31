@@ -200,6 +200,10 @@ var GraphChart = {
                     return "green";
                 }else if(d.kind == 4){
                     return "blue";
+                }else if(d.kind == 5){
+                    return "purple";
+                }else if(d.kind == 6){
+                    return "yellow";
                 }
             });
 

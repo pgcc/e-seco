@@ -502,31 +502,17 @@ public class ComponentsController {
         // Get User Agent
         Agent agent = user.getAgent();
 
-        // Create comment
-        WorkflowServiceComment workflowServiceComment = new WorkflowServiceComment();
-        workflowServiceComment.setCommenter(agent);
-
-        workflowServiceComment.setWorkflowService(component.getWorkflowService());
-        workflowServiceComment.setDate(new Date());
-        workflowServiceComment.setRateStar1(0);
-        workflowServiceComment.setRateStar2(0);
-        workflowServiceComment.setRateStar3(0);
-        workflowServiceComment.setRateStar4(0);
-        workflowServiceComment.setRateStar5(0);
-
-        if (submitComment != null) {
-            workflowServiceComment.setContent(content);
-
-        } else if (submitCommentReply != null) {
-            WorkflowServiceComment workflowServiceCommentParent = workflowServiceCommentService.find(Integer.parseInt(replyTo));
-            if (null != workflowServiceCommentParent) {
-                workflowServiceComment.setContent(reply);
-                workflowServiceComment.setParent(workflowServiceCommentParent);
-            }
-        }
-
+        // Register the comment
         try {
-            workflowServiceCommentService.add(workflowServiceComment);
+            WorkflowServiceComment workflowServiceCommentParent = null;
+            if (submitCommentReply != null) {
+                workflowServiceCommentParent = workflowServiceCommentService.find(Integer.parseInt(replyTo));
+                if (null != workflowServiceCommentParent) {
+                    content = reply;
+                }
+            }
+
+            WorkflowServiceComment workflowServiceComment = workflowServiceCommentService.registerComment(agent, component.getWorkflowService(), content, workflowServiceCommentParent);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -57,6 +57,19 @@ public class Activity {
     )
     private List<WorkflowService> workflowServices;
 
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "exp_workflow_activity",
+            joinColumns = {
+                    @JoinColumn(name = "activity_id", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "workflow_id", nullable = false)
+            }
+    )
+    private List<Workflow> workflows;
+
     @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
     private List<ActivityExecution> executions;
 
@@ -126,5 +139,13 @@ public class Activity {
     @Override
     public String toString() {
         return String.valueOf(id);
+    }
+
+    public List<Workflow> getWorkflows() {
+        return workflows;
+    }
+
+    public void setWorkflows(List<Workflow> workflows) {
+        this.workflows = workflows;
     }
 }

@@ -30,6 +30,41 @@ public class ResearcherRelevanceService {
         this.workflowServiceContextModelService = workflowServiceContextModelService;
     }
 
+    private ArrayList<String> extractKeywordsFromWorkflowServiceContext(ArrayList<String> keywords,
+                                                                      WorkflowServiceContextModel wscm) {
+
+        keywords.addAll(extractKeywordsFromExperiments(wscm.getExperimentsUsing()));
+
+        if(wscm.getUsedEsecoWorkflowServicesList() == null || wscm.getUsedEsecoWorkflowServicesList().isEmpty()){
+            return keywords;
+        }
+
+        for(WorkflowServiceContextModel innerWscm : wscm.getUsedEsecoWorkflowServicesList()){
+            extractKeywordsFromWorkflowServiceContext(keywords, innerWscm);
+        }
+
+        return keywords;
+    }
+
+    private ArrayList<String> extractKeywordsFromExperiments(List<Experiment> experimentsList){
+        ArrayList<String> keywords = new ArrayList<>();
+        for (Experiment experiment : experimentsList) {
+            for (String keyword : experiment.getKeywords().split(",")) {
+                String k = keyword.trim().toLowerCase();
+                if (!keywords.contains(k)) {
+                    keywords.add(k);
+                }
+            }
+            for (Discipline discipline : experiment.getDisciplines()) {
+                String k = discipline.getName().toLowerCase();
+                if (!keywords.contains(k)) {
+                    keywords.add(k);
+                }
+            }
+        }
+
+        return keywords;
+    }
 
     public List<ReseacherRelevance> analyseReseachersForWorkflowService(Component component) throws Exception {
 
@@ -47,22 +82,37 @@ public class ResearcherRelevanceService {
             return null;
         }
 
-        // Get list of workflow service keywords
+        // Get list of workflow service keywords By its own Experiments
         ArrayList<String> workflowServiceKeywords = new ArrayList<>();
-        for (Experiment experiment : componentContextInfo.getExperimentsUsing()) {
-            for (String keyword : experiment.getKeywords().split(",")) {
-                String k = keyword.trim().toLowerCase();
-                if (!workflowServiceKeywords.contains(k)) {
-                    workflowServiceKeywords.add(k);
+        extractKeywordsFromWorkflowServiceContext(workflowServiceKeywords, componentContextInfo);
+
+        System.out.println("List of Keywords");
+        for(String kw : workflowServiceKeywords){
+            System.out.println(kw);
+        }
+
+        //workflowServiceKeywords.addAll(extractKeywordsFromExperiments(componentContextInfo.getExperimentsUsing()));
+
+        /*
+        // By used Workflow services (context composition)
+        for(WorkflowServiceContextModel wscm: componentContextInfo.getUsedEsecoWorkflowServicesList()){
+            for (Experiment experiment : wscm.getExperimentsUsing()) {
+                for (String keyword : experiment.getKeywords().split(",")) {
+                    String k = keyword.trim().toLowerCase();
+                    if (!workflowServiceKeywords.contains(k)) {
+                        workflowServiceKeywords.add(k);
+                    }
                 }
-            }
-            for (Discipline discipline : experiment.getDisciplines()) {
-                String k = discipline.getName().toLowerCase();
-                if (!workflowServiceKeywords.contains(k)) {
-                    workflowServiceKeywords.add(k);
+                for (Discipline discipline : experiment.getDisciplines()) {
+                    String k = discipline.getName().toLowerCase();
+                    if (!workflowServiceKeywords.contains(k)) {
+                        workflowServiceKeywords.add(k);
+                    }
                 }
             }
         }
+        */
+
 
         // Get all researchers of the network
         List<Researcher> researcherList = researcherService.findAll();

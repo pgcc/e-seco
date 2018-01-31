@@ -4,6 +4,7 @@ import br.ufjf.pgcc.eseco.domain.annotation.ComposedOf;
 import br.ufjf.pgcc.eseco.domain.annotation.EsecoWorkflowService;
 import br.ufjf.pgcc.eseco.scientificDomain.model.agriculture.BovineExperiment;
 import br.ufjf.pgcc.eseco.scientificDomain.model.agriculture.ExperimentAnimal;
+import br.ufjf.pgcc.eseco.scientificDomain.model.agriculture.ExperimentAnimalMeal;
 import br.ufjf.pgcc.eseco.scientificDomain.model.agriculture.Meal;
 import com.google.gson.Gson;
 
@@ -25,29 +26,33 @@ public class DryMatterIngestionIndex {
         BovineExperiment bovineExperiment = em.find(BovineExperiment.class, experimentId);
         em.close();
 
-        // Obtain mean value
-        double mean = 0;
+        // Obtain index value
+        double index = 0;
+        double totalAnimalsDryMatterPercentage = 0;
+
 
         if(bovineExperiment.getExperimentAnimals().size() > 0){
 
             FoodDryMatterPercentage fdmp = new FoodDryMatterPercentage();
 
             for(ExperimentAnimal experimentAnimal : bovineExperiment.getExperimentAnimals()){
-
-                if (experimentAnimal.getMeals().size() > 0) {
-                    for(Meal meal : experimentAnimal.getMeals()){
-                        String foodName = meal.getName();
+                double animalDryMatterPercentage = 0;
+                if (experimentAnimal.getAnimalsmeals().size() > 0) {
+                    for(ExperimentAnimalMeal experimentAnimalMeal : experimentAnimal.getAnimalsmeals()){
+                        String foodName = experimentAnimalMeal.getMeal().getName();
                         double resultFdmp = fdmp.getPercentual(foodName);
-                        mean += resultFdmp;
+                        animalDryMatterPercentage += resultFdmp;
                     }
+                    animalDryMatterPercentage /= experimentAnimal.getAnimalsmeals().size();
                 }
-
+                totalAnimalsDryMatterPercentage += animalDryMatterPercentage;
             }
-            mean = mean / bovineExperiment.getExperimentAnimals().size();
+            index = totalAnimalsDryMatterPercentage / bovineExperiment.getExperimentAnimals().size();
         }
 
+
         Map<String, Double> map = new HashMap<>();
-        map.put("index", mean);
+        map.put("index", index);
 
         Gson gson = new Gson();
         return gson.toJson(map);

@@ -27,13 +27,13 @@ public class ExperimentAnimal {
     @JoinTable(
             name = "sm_agriculture_experiment_animals_meals",
             joinColumns = {
-                    @JoinColumn(name = "experiment_id", nullable = false)
+                    @JoinColumn(name = "experimentAnimal_id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "meal_id", nullable = false)
+                    @JoinColumn(name = "id", nullable = false)
             }
     )
-    private List<Meal> meals;
+    private List<ExperimentAnimalMeal> animalsmeals;
 
     @Column(name = "diaryWeightGain")
     private double diaryWeightGain;
@@ -68,12 +68,12 @@ public class ExperimentAnimal {
         this.animal = animal;
     }
 
-    public List<Meal> getMeals() {
-        return meals;
+    public List<ExperimentAnimalMeal> getAnimalsmeals() {
+        return animalsmeals;
     }
 
-    public void setMeals(List<Meal> meals) {
-        this.meals = meals;
+    public void setAnimalsmeals(List<ExperimentAnimalMeal> animalsmeals) {
+        this.animalsmeals = animalsmeals;
     }
 
     public double getDiaryWeightGain() {

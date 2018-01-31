@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("lf", "\n"); %>
+<% pageContext.setAttribute("cr", "\r"); %>
 
 <t:layout-app>
     <jsp:attribute name="title">
@@ -50,6 +53,105 @@
 
 
             /***********************************************/
+            /* USAGE AND RELATIONS GRAPH                   */
+            /***********************************************/
+            function showUsageAndRelationsGraphVisualization() {
+                var target = "#box-chart-usage-and-relations-graph";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+
+                var graphData = mountDataToUsageAndRelations(componentContextJson);
+
+                drawGraph(graphData, target, width);
+            };
+            function mountDataToUsageAndRelations(itemData) {
+
+                var graphData = {
+                    "nodes": [
+                        {
+                            "name": itemData.name,
+                            "group": 0,
+                            "kind": 1 // Kind 1 = Principal item
+                        }
+                    ],
+                    "links": []
+                };
+
+                var groupId = 1;
+
+                // Developer Relation
+                graphData.nodes.push({
+                    "name": itemData.author, "group": groupId, "kind": 2
+                });
+                graphData.links.push({
+                    "source": groupId, "target": 0, "value": 1, "type": "arrow"
+                });
+                groupId++;
+
+                <c:forEach var="activity" items="${activitiesList}">
+
+                    graphData.nodes.push({
+                        "name": "${activity.name}", "group": groupId, "kind": 3
+                    });
+                    graphData.links.push({
+                        "source": 0, "target": groupId, "value": 1, "type": "arrow"
+                    });
+
+                    groupIdActivity = groupId;
+                    groupId++;
+
+                    <c:forEach var="workflow" items="${activity.workflows}">
+
+                        graphData.nodes.push({
+                            "name": "${workflow.name}", "group": groupId, "kind": 4
+                        });
+                        graphData.links.push({
+                            "source": groupIdActivity, "target": groupId, "value": 1, "type": "arrow"
+                        });
+
+                        groupIdWorkflow = groupId;
+                        groupId++;
+
+                        <c:forEach var="experiment" items="${workflow.experiments}">
+
+                            graphData.nodes.push({
+                                "name": "${experiment.name}", "group": groupId, "kind": 5
+                            });
+                            graphData.links.push({
+                                "source": groupIdWorkflow, "target": groupId, "value": 1, "type": "arrow"
+                            });
+
+                            groupIdExperiment = groupId;
+                            groupId++;
+
+                                <c:forEach var="researcher" items="${experiment.researchers}">
+
+                                graphData.nodes.push({
+                                    "name": "${researcher.agent.name}", "group": groupId, "kind": 6
+                                });
+                                graphData.links.push({
+                                    "source": groupId, "target": groupIdExperiment, "value": 1, "type": "arrow"
+                                });
+
+                                groupId++;
+
+                                </c:forEach>
+
+                        </c:forEach>
+
+                    </c:forEach>
+
+                </c:forEach>
+
+                console.log(graphData)
+
+
+                return graphData;
+            }
+            showUsageAndRelationsGraphVisualization();
+
+
+            /***********************************************/
             /* USAGE VISUALIZATIONS                        */
             /***********************************************/
             $("#btn-visualize-activities-using").on("click", function () {
@@ -70,7 +172,7 @@
             /* RESEARCHER RATINGS VISUALIZATION              */
             /***********************************************/
             function showResearcherRatingsVisualization() {
-                if(componentContextJson.totalResearcherRatings > 0) {
+                if (componentContextJson.totalResearcherRatings > 0) {
                     var width = "200";
                     var pieData = mountDataToPie(componentContextJson);
                     drawPie(pieData, "#box-chart-researcher-ratings-pie", width)
@@ -430,8 +532,6 @@
                 }
 
 
-
-
                 return graphData;
             }
             showDependenciesGraphVisualization();
@@ -441,7 +541,7 @@
             /* POPOVERS                                    */
             /***********************************************/
             $('#pop-parameters-names').popover({
-                "title": "Parameters names",
+                "title": "Attributes names",
                 "html": true,
                 "placement": "right",
                 "template": '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" style="overflow: auto"></div></div>'
@@ -499,7 +599,60 @@
             /***********************************************/
             /* COMMENTS                                    */
             /***********************************************/
-            function mountBoxCommentStars(data, ommitlink){
+            var Utf8 = {
+                // public method for url encoding
+                encode: function (string) {
+                    string = string.replace(/\r\n/g, "\n");
+                    var utftext = "";
+                    for (var n = 0; n < string.length; n++) {
+                        var c = string.charCodeAt(n);
+                        if (c < 128) {
+                            utftext += String.fromCharCode(c);
+                        } else if ((c > 127) && (c < 2048)) {
+                            utftext += String.fromCharCode((c >> 6) | 192);
+                            utftext += String.fromCharCode((c & 63) | 128);
+                        } else {
+                            utftext += String.fromCharCode((c >> 12) | 224);
+                            utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                            utftext += String.fromCharCode((c & 63) | 128);
+                        }
+                    }
+
+                    return utftext;
+                },
+
+                // public method for url decoding
+                decode: function (utftext) {
+                    var string = "";
+                    var i = 0;
+                    var c = c1 = c2 = 0;
+                    while (i < utftext.length) {
+                        c = utftext.charCodeAt(i);
+                        if (c < 128) {
+                            string += String.fromCharCode(c);
+                            i++;
+                        } else if ((c > 191) && (c < 224)) {
+                            c2 = utftext.charCodeAt(i + 1);
+                            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                            i += 2;
+                        } else {
+                            c2 = utftext.charCodeAt(i + 1);
+                            c3 = utftext.charCodeAt(i + 2);
+                            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                            i += 3;
+                        }
+                    }
+
+                    return string;
+                }
+            }
+            function decodeEntities(encodedString) {
+                var textArea = document.createElement('textarea');
+                textArea.innerHTML = encodedString;
+                var regexp = new RegExp("<br>", 'g');
+                return Utf8.decode(textArea.value.replace(regexp, '\n'));
+            }
+            function mountBoxCommentStars(data, ommitlink) {
 
                 var rateStarsTotal = data.rateStarsTotal;
                 var rateStar1 = data.rateStarsAverage >= 1 ? "fa-star" : "fa-star-o";
@@ -509,7 +662,7 @@
                 var rateStar5 = data.rateStarsAverage >= 5 ? "fa-star" : "fa-star-o";
 
                 var rateStarsLink = null;
-                if(!ommitlink){
+                if (!ommitlink) {
                     rateStarsLink = $("<a>")
                         .addClass("btn-rate-comment text-small")
                         .data("comment-id", data.id)
@@ -553,7 +706,7 @@
                             $("<strong>").text(data.author),
                             $("<span>").addClass("text-muted text-small").text(" (" + data.date + ")")
                         ),
-                        $("<p>").text(data.comment),
+                        $("<p>").text(decodeEntities(data.comment)),
                         $("<p>").addClass("box-comment-rating").append(
                             boxCommentStars
                         ),
@@ -581,7 +734,7 @@
                 "author": "${comment.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${comment.date}"/>",
                 "photo": "${comment.commenter.photo}",
-                "comment": "${comment.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(comment.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${comment.rateStarsTotal}",
                 "rateStars1": "${comment.rateStar1}",
                 "rateStars2": "${comment.rateStar2}",
@@ -597,7 +750,7 @@
                 "author": "${response1.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response1.date}"/>",
                 "photo": "${response1.commenter.photo}",
-                "comment": "${response1.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(response1.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${response1.rateStarsTotal}",
                 "rateStarsAverage": "${response1.rateStarsAverage}"
             }, true);
@@ -608,7 +761,7 @@
                 "author": "${response2.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response2.date}"/>",
                 "photo": "${response2.commenter.photo}",
-                "comment": "${response2.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(response2.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${response2.rateStarsTotal}",
                 "rateStarsAverage": "${response2.rateStarsAverage}"
             }, true);
@@ -619,7 +772,7 @@
                 "author": "${response3.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response3.date}"/>",
                 "photo": "${response3.commenter.photo}",
-                "comment": "${response3.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(response3.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${response3.rateStarsTotal}",
                 "rateStarsAverage": "${response3.rateStarsAverage}"
             }, true);
@@ -630,7 +783,7 @@
                 "author": "${response4.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response4.date}"/>",
                 "photo": "${response4.commenter.photo}",
-                "comment": "${response4.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(response4.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${response4.rateStarsTotal}",
                 "rateStarsAverage": "${response4.rateStarsAverage}"
             }, true);
@@ -641,7 +794,7 @@
                 "author": "${response5.commenter.name}",
                 "date": "<fmt:formatDate pattern="yyyy-MM-dd" value="${response5.date}"/>",
                 "photo": "${response5.commenter.photo}",
-                "comment": "${response5.content}",
+                "comment": '${fn:replace(fn:replace(fn:escapeXml(response5.content), lf, "<br>"), cr, "<br>")}',
                 "rateStarsTotal": "${response5.rateStarsTotal}",
                 "rateStarsAverage": "${response5.rateStarsAverage}"
             }, true);
@@ -683,7 +836,7 @@
 
                 var stars = prompt("Give you rating (1 to 5)");
 
-                if(stars != "1" && stars != "2" && stars != "3" && stars != "4" && stars != "5"){
+                if (stars != "1" && stars != "2" && stars != "3" && stars != "4" && stars != "5") {
                     swal("Error", "The value is out bounds.", "error");
                     return false;
                 }
@@ -702,7 +855,7 @@
                     url: urlPost,
                     data: data,
                     success: function (data) {
-                        if(data !== "error"){
+                        if (data !== "error") {
                             swal("Success", "Comment Rated!", "success");
 
                             var boxCommentRating = thisLink.parents(".box-comment-rating");
@@ -711,16 +864,16 @@
                             var newRateStarsTotal = parseInt((boxCommentStars.data("rateStarsTotal"))) + 1;
 
                             var newCommentStarsData = {
-                                "id" : boxCommentStars.data("id"),
-                                "rateStarsTotal" : newRateStarsTotal,
-                                "rateStarsAverage" : data
+                                "id": boxCommentStars.data("id"),
+                                "rateStarsTotal": newRateStarsTotal,
+                                "rateStarsAverage": data
                             };
 
                             var newBoxCommentStars = mountBoxCommentStars(newCommentStarsData, true);
 
                             thisLink.parents(".box-comment-rating").html("").append(newBoxCommentStars);
 
-                        }else{
+                        } else {
                             swal("Error", "An error occurred while rating, please try again.", "error");
                         }
                     }
@@ -888,13 +1041,6 @@
                                         <span>${componentContextInfo.dateLastUsed}</span>
                                     </li>
                                 </ul>
-
-                                <!--
-                                <div class="text-center">
-                                    <a class="btn btn-info"
-                                       href="<c:url value="/components/actions/workflow-services/invite-rating/${component.id}"/>">View Usage Map</a>
-                                </div>
-                                -->
                             </div>
                         </div>
                     </div>
@@ -1058,6 +1204,23 @@
                     <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Workflow Service Usage and Relations Graph Visualization
+                                </h3>
+                            </div>
+                            <div class="panel-body" style="position: relative;">
+                                <img class="img-graph-legend"
+                                     src="<c:url value="/resources/images/usage-and-relations-graph-legend.png" />">
+                                <div id="box-chart-usage-and-relations-graph"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
                                 <h3 class="panel-title">Internal Metrics</h3>
                             </div>
                             <div class="panel-body">
@@ -1065,7 +1228,6 @@
                                     <c:when test="${type == 2}">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6">
-
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h3 class="panel-title">Attributes</h3>
@@ -1076,7 +1238,7 @@
                                                             <span>${componentContextInfo.wsInternalClass}</span>
                                                         </li>
                                                         <li class="list-group-item">
-                                                            <span>Parameters</span>
+                                                            <span>Attributes</span>
                                                             <span>
                                                             ${componentContextInfo.wsInternalClassInternalMetrics.parametersCount}
                                                             <i id="pop-parameters-names"
@@ -1222,8 +1384,11 @@
                                             <tbody>
                                             <c:forEach var="activity" items="${activitiesList}">
                                                 <tr>
-                                                    <td><a href="<c:url value="/experiments/activities/${activity.id}"/>" target="_blank">
-                                                            ${activity.name} <i class="fa fa-external-link"></i></a></td>
+                                                    <td>
+                                                        <a href="<c:url value="/experiments/activities/${activity.id}"/>"
+                                                           target="_blank">
+                                                                ${activity.name} <i class="fa fa-external-link"></i></a>
+                                                    </td>
                                                     <td>${workflow.author.agent.name}</td>
                                                     <td><fmt:formatDate pattern="yyyy-MM-dd"
                                                                         value="${activity.dateCreated}"/></td>
@@ -1275,10 +1440,12 @@
                                             <tbody>
                                             <c:forEach var="workflow" items="${workflowsList}">
                                                 <tr>
-                                                    <td><a href="<c:url value="/experiments/workflows/${workflow.id}"/>" target="_blank">
-                                                            ${workflow.name} <i class="fa fa-external-link"></i></a></td>
+                                                    <td><a href="<c:url value="/experiments/workflows/${workflow.id}"/>"
+                                                           target="_blank">
+                                                            ${workflow.name} <i class="fa fa-external-link"></i></a>
+                                                    </td>
                                                     <td>
-                                                        ${workflow.wfms.name}
+                                                            ${workflow.wfms.name}
                                                     </td>
                                                     <td>${workflow.version}</td>
                                                     <td>${workflow.author.agent.name}</td>
@@ -1331,8 +1498,10 @@
                                             <c:forEach var="experiment" items="${experimentsList}">
                                                 <tr>
                                                     <td>
-                                                        <a href="<c:url value="/experiments/${experiment.id}"/>" target="_blank">
-                                                                ${experiment.name} <i class="fa fa-external-link"></i></a>
+                                                        <a href="<c:url value="/experiments/${experiment.id}"/>"
+                                                           target="_blank">
+                                                                ${experiment.name} <i
+                                                                class="fa fa-external-link"></i></a>
                                                     </td>
                                                     <td>${experiment.author.agent.name}</td>
                                                     <td><fmt:formatDate pattern="yyyy-MM-dd"
@@ -1384,8 +1553,10 @@
                                             <c:forEach var="researcher" items="${researchersList}">
                                                 <tr>
                                                     <td>
-                                                        <a href="<c:url value="/researchers/${researcher.id}"/>" target="_blank">
-                                                                ${researcher.displayName} <i class="fa fa-external-link"></i></a>
+                                                        <a href="<c:url value="/researchers/${researcher.id}"/>"
+                                                           target="_blank">
+                                                                ${researcher.displayName} <i
+                                                                class="fa fa-external-link"></i></a>
                                                     </td>
                                                     <td>${researcher.academicStatus}</td>
                                                     <td>${researcher.title}</td>
@@ -1436,8 +1607,11 @@
                                             <tbody>
                                             <c:forEach var="rating" items="${ratingsList}">
                                                 <tr>
-                                                    <td><a href="<c:url value="/researchers/${rating.rater.researcher.id}"/>" target="_blank">
-                                                            ${rating.rater.researcher.displayName} <i class="fa fa-external-link"></i></a></td>
+                                                    <td>
+                                                        <a href="<c:url value="/researchers/${rating.rater.researcher.id}"/>"
+                                                           target="_blank">
+                                                                ${rating.rater.researcher.displayName} <i
+                                                                class="fa fa-external-link"></i></a></td>
                                                     <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
                                                                                             value="${rating.date}"/></td>
                                                     <td class="text-center">${rating.approved}</td>
