@@ -73,6 +73,12 @@ public abstract class CommonDAO<T, PK extends Serializable> {
 
         return results.getResultList();
     }
+    
+    public List<T> findByWorkflow() {
+        TypedQuery<T> results = this.getTypedQuery(new HashMap<String, String>());
+
+        return results.getResultList();
+    }
 
     /**
      * Searches the database for entries through their fields values.

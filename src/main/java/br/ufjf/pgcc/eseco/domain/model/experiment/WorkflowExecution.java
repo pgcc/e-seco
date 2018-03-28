@@ -60,6 +60,7 @@ public class WorkflowExecution {
     private Date endTime;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_execution_activity_execution",
             joinColumns = {
