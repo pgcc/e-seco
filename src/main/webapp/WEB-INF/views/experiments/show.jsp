@@ -4,7 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-
+<% pageContext.setAttribute("lf", "\n"); %>
+<% pageContext.setAttribute("cr", "\r");%>
 
 <t:layout-app>
     <jsp:attribute name="title">
@@ -13,12 +14,128 @@
 
 
     <jsp:attribute name="stylesheets">
+        <link rel="stylesheet"
+              href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+        <style type="text/css">
+            #tbl-rating-avg-values {
+                border-radius: 4px !important;
+            }
 
+            #tbl-rating-avg-values .progress {
+                margin-bottom: 0 !important;
+            }
+
+            .img-graph-legend {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+            }
+        </style>
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.legend.min.js" />"></script>
+        <script type="text/javascript">
+            var d3version4 = d3;
+            window.d3 = null;
+        </script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
+        <script type="text/javascript">
+            var d3version3 = d3;
+            window.d3 = null;
+        </script>
+        <script type="text/javascript"
+        src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
+        <script type="text/javascript">
+            // Get JSON Data for visualizations
+            var provenanceJson = JSON.parse('${experimentProvenanceJSON}');
 
+            /***********************************************/
+            /* USAGE AND RELATIONS GRAPH                   */
+            /***********************************************/
+            function showProvenanceGraphVisualization() {
+                var target = "#box-chart-provenance-graph";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+
+                var graphData = mountDataToProvenance(provenanceJson);
+
+                drawGraph(graphData, target, width);
+            }
+            ;
+            function mountDataToProvenance(itemData) {
+
+                var info = "";
+                for (var i in itemData.dataProperties) {
+                    info = info += i + " => " + itemData.dataProperties[i];
+                    info = info += '\n';
+                }
+                var graphData = {
+                    "nodes": [
+                        {
+                            "name": "experiment_" +${experiment.id},
+                            "group": 0,
+                            "kind": 1, // Kind 1 = Principal item
+                            "info": info
+                        }
+                    ],
+                    "links": []
+                };
+
+                var groupId = 1;
+                for (var j in itemData.asserted) {
+                    for (var k = 0; k < itemData.asserted[j].length; k++) {
+                        var name = itemData.asserted[j][k];
+                        name = name.replace(".", "_");
+                        if (graphData.nodes.find(x => x.name == name) == null) {
+                            graphData.nodes.push({
+                                "name": name, "group": groupId, "kind": 4
+                            });
+                            graphData.links.push({
+                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "name": j, "linknum": 1
+                            });
+                            groupId++;
+                        } else {
+                            var target = graphData.nodes.find(x => x.name == name).group;
+                            var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                            graphData.links.push({
+                                "source": 0, "target": target, "value": 1, "type": "arrow", "name": j, "linknum": linknum
+                            });
+                        }
+
+                    }
+
+                }
+                for (var j in itemData.inferred) {
+                    for (var k = 0; k < itemData.inferred[j].length; k++) {
+                        var name = itemData.inferred[j][k];
+                        name = name.replace(".", "_");
+                        if (graphData.nodes.find(x => x.name == name) == null) {
+                            graphData.nodes.push({
+                                "name": name, "group": groupId, "kind": 3
+                            });
+                            graphData.links.push({
+                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j, 
+                            });
+                            groupId++;
+                        } else {
+                            var target = graphData.nodes.find(x => x.name == name).group;
+                            var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                            graphData.links.push({
+                                "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
+                            });
+                        }
+                    }
+
+                }
+                console.log(graphData);
+                return graphData;
+            }
+            showProvenanceGraphVisualization();
+
+        </script>
     </jsp:attribute>
 
 
@@ -110,6 +227,24 @@
                         <label class="col-sm-2">Ended in</label>
                         <div class="col-sm-10">${experiment.dateEnded}</div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Experiment Provenance Graph Visualization
+                                    </h3>
+                                </div>
+                                <div class="panel-body" style="position: relative;">
+                                    <img class="img-graph-legend"
+                                         src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">
+                                    <div id="box-chart-provenance-graph"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
@@ -150,7 +285,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingOne">
                                 <h4 class="panel-title">

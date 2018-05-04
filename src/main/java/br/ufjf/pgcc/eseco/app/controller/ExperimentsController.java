@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.ImportProvenanceDataService;
+import br.ufjf.pgcc.eseco.app.service.ProvSeOGetInferencesService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
@@ -17,10 +18,12 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +55,7 @@ public class ExperimentsController {
     private ResearchGroupService researchGroupService;
     private WorkflowService workflowService;
     private ImportProvenanceDataService importProvenanceDataService;
+    private ProvSeOGetInferencesService provSeOGetInferencesService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -61,7 +65,7 @@ public class ExperimentsController {
     @Autowired
     public void setExperimentService(ExperimentService experimentService, DisciplineService disciplineService,
             InstitutionService institutionService, ResearcherService researcherService, ResearchGroupService researchGroupService,
-            WorkflowService workflowService, ImportProvenanceDataService importProvenanceDataService) {
+            WorkflowService workflowService, ImportProvenanceDataService importProvenanceDataService, ProvSeOGetInferencesService provSeOGetInferencesService) {
         this.experimentService = experimentService;
         this.disciplineService = disciplineService;
         this.institutionService = institutionService;
@@ -69,6 +73,7 @@ public class ExperimentsController {
         this.researchGroupService = researchGroupService;
         this.workflowService = workflowService;
         this.importProvenanceDataService = importProvenanceDataService;
+        this.provSeOGetInferencesService = provSeOGetInferencesService;
     }
 
     @RequestMapping(value = "/experiments", method = RequestMethod.GET)
@@ -170,6 +175,14 @@ public class ExperimentsController {
         if (experiment == null) {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Experiment not found");
+        }
+
+        try {
+            JSONObject experimentProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService("experiment." + experiment.getId());
+            model.addAttribute("experimentProvenanceJSON", experimentProvenanceJSON);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         model.addAttribute("experiment", experiment);

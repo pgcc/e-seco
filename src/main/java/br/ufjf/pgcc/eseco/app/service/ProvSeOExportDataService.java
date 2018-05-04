@@ -117,7 +117,7 @@ public class ProvSeOExportDataService {
         this.workflowServiceService = workflowServiceService;
     }
 
-    public void getData() {
+    public JsonObject getData() {
         jObject = new JsonObject();
         getObjects();
         getRelations();
@@ -132,6 +132,7 @@ public class ProvSeOExportDataService {
         } catch (IOException ex) {
             Logger.getLogger(ProvSeOExportDataService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return jObject;
     }
 
     private void getObjects() {
@@ -204,6 +205,12 @@ public class ProvSeOExportDataService {
 
         JsonArray jObjecthadOutPort = new JsonArray();
         jObject.add("hadOutPort", jObjecthadOutPort);
+
+        JsonArray jObjecthasInPort = new JsonArray();
+        jObject.add("hasInPort", jObjecthasInPort);
+
+        JsonArray jObjecthasOutPort = new JsonArray();
+        jObject.add("hasOutPort", jObjecthasOutPort);
 
         JsonArray jObjecthadEntity = new JsonArray();
         jObject.add("hadEntity", jObjecthadEntity);
@@ -642,6 +649,8 @@ public class ProvSeOExportDataService {
         JsonArray agentRelationJson = jObject.getAsJsonArray("agentRelation");
         JsonArray hadInPortJson = jObject.getAsJsonArray("hadInPort");
         JsonArray hadOutPortJson = jObject.getAsJsonArray("hadOutPort");
+        JsonArray hasInPortJson = jObject.getAsJsonArray("hasInPort");
+        JsonArray hasOutPortJson = jObject.getAsJsonArray("hasOutPort");
         JsonArray hadEntityJson = jObject.getAsJsonArray("hadEntity");
 
         JsonArray qualifiedAssociationJson = jObject.getAsJsonArray("qualifiedAssociation");
@@ -655,10 +664,25 @@ public class ProvSeOExportDataService {
         for (WorkflowExecution we : workflowExecutionService.findAll()) {
 
             for (ActivityExecution ae : we.getActivityExecutions()) {
-                JsonObject wasPartOfJSON = new JsonObject();                
+                JsonObject wasPartOfJSON = new JsonObject();
                 wasPartOfJSON.addProperty("activityExecution", ae.getId());
                 wasPartOfJSON.addProperty("workflowExecution", we.getId());
                 wasPartOfAsJson.add(wasPartOfJSON);
+
+                for (Port input : ae.getInputs()) {
+                    JsonObject hasInPortJSON = new JsonObject();
+                    hasInPortJSON.addProperty("program", ae.getActivity().getId());
+                    hasInPortJSON.addProperty("port", input.getId());
+                    hasInPortJson.add(hasInPortJSON);
+                }
+                
+                for (Port output : ae.getOutputs()) {
+                    JsonObject hasOutPortJSON = new JsonObject();
+                    hasOutPortJSON.addProperty("program", ae.getActivity().getId());
+                    hasOutPortJSON.addProperty("port", output.getId());
+                    hasOutPortJson.add(hasOutPortJSON);
+                }
+
             }
 
             //ASSOCIATION
@@ -685,7 +709,6 @@ public class ProvSeOExportDataService {
 
             //USAGE
             for (Port p : we.getInputs()) {
-//                usageJson.add(new JsonObject());
 
                 JsonObject hadInPortJSON = new JsonObject();
                 hadInPortJSON.addProperty("usage", "e" + we.getId() + "_p" + p.getId());
