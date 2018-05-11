@@ -17,10 +17,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.ws.http.HTTPException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -65,8 +67,10 @@ public class ProvSeOGetInferencesService {
             OutputStream os = conn.getOutputStream();
             os.write(encodedData);
             conn.connect();
-            String responseMessage = conn.getResponseMessage();
-            System.out.println(responseMessage);
+            if (conn.getResponseCode() != HttpStatus.OK.value()) {
+                System.out.println(conn.getResponseMessage() + " === " + conn.getResponseCode());
+                throw new HTTPException(conn.getResponseCode());
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             throw ex;

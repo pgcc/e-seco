@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.ws.http.HTTPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,14 +41,19 @@ public class OntologyController {
 
         JsonObject data = provSeOExportDataService.getData();
         try {
-            provSeOGetInferencesService.callOntologyService(data);           
-            
+            provSeOGetInferencesService.callOntologyService(data);
+
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", "Inferences imported successfully!");
         } catch (IOException ex) {
-            redirectAttributes.addFlashAttribute("css", "danger");
-            redirectAttributes.addFlashAttribute("msg", "Error creating HTTP connection!");
             Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
+            redirectAttributes.addFlashAttribute("msg", ex.getMessage());
+            redirectAttributes.addFlashAttribute("msg", "Error creating HTTP connection!");
+        } catch (HTTPException ex) {
+            Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", "Error in ontology service. Status code = " + ex.getStatusCode() + "!");
+
         }
 
         return "redirect:/experiments";
