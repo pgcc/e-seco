@@ -92,7 +92,7 @@ public class UserService {
     }
 
     @Transactional
-    public User registerNewUser(String email, String name) throws Exception {
+    public User registerNewUser(String email, String name, String path) throws Exception {
         // Instantiate the new User and his respective Agent (every User has an Agent linked to him)
         User new_user = new User();
         Agent new_user_agent = new Agent();
@@ -111,7 +111,7 @@ public class UserService {
         // Create authentication code
         String authentication_code = DigestUtils.sha1Hex(date_tomorrow + "u" + new_user.getEmail());
         // @TODO: Get the actual url, instead of localhost:8888
-        String authentication_uri = "http://localhost:8888/eseco/register/" + authentication_code;
+        String authentication_uri = path + "/" + authentication_code;
 
         // Set new user data
         new_user.setActive(false);

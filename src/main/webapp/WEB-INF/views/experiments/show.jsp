@@ -117,7 +117,7 @@
                                 "name": name, "group": groupId, "kind": 3
                             });
                             graphData.links.push({
-                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j, 
+                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j,
                             });
                             groupId++;
                         } else {
@@ -237,8 +237,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body" style="position: relative;">
-                                    <img class="img-graph-legend"
-                                         src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">
+                                    <img src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">
                                     <div id="box-chart-provenance-graph"></div>
                                 </div>
                             </div>

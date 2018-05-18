@@ -5,9 +5,7 @@
  */
 package br.ufjf.pgcc.eseco.app.service;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,7 +22,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -40,11 +37,12 @@ public class ProvSeOGetInferencesService {
 
     }
 
-    public void testURL() throws IOException {
+    public void testURL(String path) throws IOException {
         try {
-            URL u = new URL("http://localhost:8080/provse-service/webresources/ontology/");
+            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/");
 
             HttpURLConnection urlConn = (HttpURLConnection) u.openConnection();
+            urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
             urlConn.connect();
 //            assertEquals(HttpURLConnection.HTTP_OK, urlConn.getResponseCode());
         } catch (IOException e) {
@@ -54,12 +52,13 @@ public class ProvSeOGetInferencesService {
         }
     }
 
-    public void callOntologyService(JsonObject rawData) throws IOException {
+    public void callOntologyService(String path, JsonObject rawData) throws IOException {
         try {
             String type = "application/json";
             byte[] encodedData = rawData.toString().getBytes(StandardCharsets.UTF_8);
-            URL u = new URL("http://localhost:8080/provse-service/webresources/ontology/");
+            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/");
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
             conn.setDoOutput(true);
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", type);
@@ -77,12 +76,13 @@ public class ProvSeOGetInferencesService {
         }
     }
 
-    public JSONObject getProvenanceOntologyService(String entity) throws IOException {
+    public JSONObject getProvenanceOntologyService(String path, String entity) throws IOException {
         try {
-            URL u = new URL("http://localhost:8080/provse-service/webresources/ontology/?entity=" + entity);
+            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/?entity=" + entity);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("GET");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
             conn.connect();
             String responseMessage = conn.getResponseMessage();
             InputStream in = conn.getInputStream();

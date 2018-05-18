@@ -22,6 +22,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
 
         // Get requested URI
         String uri = httpServletRequest.getRequestURI();
+        String contextPath = httpServletRequest.getContextPath();
 
         // Get the requested Route
         String[] uriParts = uri.split("/");
@@ -50,7 +51,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
             if (route.equals("login") || route.equals("register") || route.equals("recovery") || route.equals("api")) {
                 return true;
             } else {
-                httpServletResponse.sendRedirect("/eseco/login");
+                httpServletResponse.sendRedirect(contextPath+"/login");
                 return false;
             }
         }
@@ -60,7 +61,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         //////////////////////////////////////////////////////////////////////
         // Block logged users from acessing login, register and recovery
         if (route.equals("login") || route.equals("register") || route.equals("recovery")) {
-            httpServletResponse.sendRedirect("/eseco/");
+            httpServletResponse.sendRedirect(contextPath);
             return false;
         }
 
@@ -126,7 +127,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         if (isAuthorized) {
             return true;
         } else {
-            httpServletResponse.sendRedirect("/eseco/not-authorized");
+            httpServletResponse.sendRedirect(contextPath+"/not-authorized");
             return false;
         }
     }

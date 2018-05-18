@@ -34,11 +34,9 @@ public class UacController extends CommonController {
         this.agentService = agentService;
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // LOGIN/LOGOUT                                                                                                  //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "uac/login";
@@ -88,11 +86,9 @@ public class UacController extends CommonController {
         return "redirect:login";
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // REGISTER                                                                                                      //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register() {
         return "uac/register";
@@ -124,14 +120,13 @@ public class UacController extends CommonController {
             }
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // PROCESS VALIDATED DATA                                           //
         //////////////////////////////////////////////////////////////////////
         if (errorsList.isEmpty()) {
             try {
                 // Start the registration process
-                User user = userService.registerNewUser(email, name);
+                User user = userService.registerNewUser(email, name, request.getHeader("referer"));
 
                 // Send new user to model
                 model.addAttribute("new_user", user);
@@ -142,7 +137,6 @@ public class UacController extends CommonController {
                 errorsList.add(e.getMessage());
             }
         }
-
 
         //////////////////////////////////////////////////////////////////////
         // ERROR HANDLING                                                   //
@@ -173,7 +167,7 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/register/{activationCode}", method = RequestMethod.POST)
     public String registerActivation(Model model, HttpServletRequest request,
-                                     @PathVariable(value = "activationCode") String activationCode) {
+            @PathVariable(value = "activationCode") String activationCode) {
 
         // Redirect if the activation code don't return a valid user
         User user = userService.findByActivationCode(activationCode);
@@ -182,7 +176,6 @@ public class UacController extends CommonController {
         } else {
             model.addAttribute("user", user);
         }
-
 
         //////////////////////////////////////////////////////////////////////
         // VALIDATE DATA                                                    //
@@ -214,7 +207,6 @@ public class UacController extends CommonController {
                 errorsList.add("Password confirmation differ from Password.");
             }
         }
-
 
         //////////////////////////////////////////////////////////////////////
         // PROCESS VALIDATED DATA                                           //
@@ -251,7 +243,6 @@ public class UacController extends CommonController {
             }
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // ERROR HANDLING                                                   //
         //////////////////////////////////////////////////////////////////////
@@ -263,11 +254,9 @@ public class UacController extends CommonController {
         return "uac/register-activation";
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // RECOVERY                                                                                                      //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @RequestMapping(value = "/recovery", method = RequestMethod.GET)
     public String recovery() {
         return "uac/recovery";
@@ -294,7 +283,6 @@ public class UacController extends CommonController {
             errorsList.add("We didn't found any user with the provided Email.");
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // PROCESS VALIDATED DATA                                           //
         //////////////////////////////////////////////////////////////////////
@@ -316,7 +304,6 @@ public class UacController extends CommonController {
             }
         }
 
-
         //////////////////////////////////////////////////////////////////////
         // ERROR HANDLING                                                   //
         //////////////////////////////////////////////////////////////////////
@@ -328,11 +315,9 @@ public class UacController extends CommonController {
         return "uac/recovery";
     }
 
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // AUTHORIZATION ERRORS                                                                                          //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @RequestMapping(value = "/not-authorized", method = RequestMethod.GET)
     public String notAuthorized() {
         return "uac/error-not-authorized";

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +168,7 @@ public class ExperimentsController {
     }
 
     @RequestMapping(value = "/experiments/{id}", method = RequestMethod.GET)
-    public String showExperiment(@PathVariable("id") int id, Model model, HttpSession session) {
+    public String showExperiment(@PathVariable("id") int id, Model model, HttpSession session, HttpServletRequest request) {
 
         LOGGER.log(Level.INFO, "showExperiment() id: {0}", id);
 
@@ -176,9 +177,8 @@ public class ExperimentsController {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Experiment not found");
         }
-
         try {
-            JSONObject experimentProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService("experiment." + experiment.getId());
+            JSONObject experimentProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService(request.getHeader("host"), "experiment." + experiment.getId());
             model.addAttribute("experimentProvenanceJSON", experimentProvenanceJSON);
         } catch (IOException ex) {
             ex.printStackTrace();

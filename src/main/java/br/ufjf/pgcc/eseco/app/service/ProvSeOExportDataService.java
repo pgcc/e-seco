@@ -122,7 +122,7 @@ public class ProvSeOExportDataService {
         getObjects();
         getRelations();
 
-        try (FileOutputStream fout = new FileOutputStream("C:\\Users\\Lenita\\Documents\\output\\ProvenanceExport.json")) {
+        try (FileOutputStream fout = new FileOutputStream(System.getProperty("user.home") + "\\AppData\\Local\\Temp\\ProvenanceExport.json")) {
             fout.write(jObject.toString().getBytes(StandardCharsets.UTF_8));
             fout.flush();
             fout.close();
@@ -156,14 +156,6 @@ public class ProvSeOExportDataService {
 
     private void getRelations() {
 
-//        JsonArray jObjectAssociation = new JsonArray();
-//        jObject.add("association", jObjectAssociation);
-//
-//        JsonArray jObjectUsage = new JsonArray();
-//        jObject.add("usage", jObjectUsage);
-//
-//        JsonArray jObjectGeneration = new JsonArray();
-//        jObject.add("generation", jObjectGeneration);
         JsonArray jObjecthadMember = new JsonArray();
         jObject.add("hadMember", jObjecthadMember);
 
@@ -247,7 +239,7 @@ public class ProvSeOExportDataService {
         JsonArray jArrayData = new JsonArray();
         for (Data d : data) {
             JsonObject dataJSON = new JsonObject();
-            dataJSON.addProperty("id", d.getId());
+            dataJSON.addProperty("id", d.getEntity().getId());
             dataJSON.addProperty("type", d.getType());
             dataJSON.addProperty("value", d.getValue());
             if (d.getEntity() != null) {
@@ -262,7 +254,7 @@ public class ProvSeOExportDataService {
         JsonArray jArrayDocuments = new JsonArray();
         for (Document d : documents) {
             JsonObject documentJSON = new JsonObject();
-            documentJSON.addProperty("id", d.getId());
+            documentJSON.addProperty("id", d.getEntity().getId());
             documentJSON.addProperty("type", d.getType());
             documentJSON.addProperty("value", d.getValue());
             documentJSON.addProperty("link", d.getFile());
@@ -661,215 +653,103 @@ public class ProvSeOExportDataService {
         JsonArray usageJson = jObject.getAsJsonArray("usage");
         JsonArray generationJson = jObject.getAsJsonArray("generation");
 
-        for (WorkflowExecution we : workflowExecutionService.findAll()) {
+        for (WorkflowExecution workflowExec : workflowExecutionService.findAll()) {
 
-            for (ActivityExecution ae : we.getActivityExecutions()) {
+            for (ActivityExecution ae : workflowExec.getActivityExecutions()) {
                 JsonObject wasPartOfJSON = new JsonObject();
                 wasPartOfJSON.addProperty("activityExecution", ae.getId());
-                wasPartOfJSON.addProperty("workflowExecution", we.getId());
+                wasPartOfJSON.addProperty("workflowExecution", workflowExec.getId());
                 wasPartOfAsJson.add(wasPartOfJSON);
+
+                //ASSOCIATION
+//            JsonObject wasAssociatedWithJSON = new JsonObject();
+//            wasAssociatedWithJSON.addProperty("workflowExecution", we.getId());
+//            wasAssociatedWithJSON.addProperty("researcher", we.getAuthor().getId());
+//            wasAssociatedWithJson.add(wasAssociatedWithJSON);
+                JsonObject hadPlanJSON = new JsonObject();
+                hadPlanJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
+                hadPlanJSON.addProperty("program", ae.getActivity().getId());
+                hadPlanJson.add(hadPlanJSON);
+
+                JsonObject agentAssocJSON = new JsonObject();
+                agentAssocJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
+                agentAssocJSON.addProperty("researcher", ae.getAuthor().getId());
+                agentRelationJson.add(agentAssocJSON);
+
+                JsonObject qualifieldAssociationJSON = new JsonObject();
+                qualifieldAssociationJSON.addProperty("activityExecution", ae.getId());
+                qualifieldAssociationJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
+                qualifiedAssociationJson.add(qualifieldAssociationJSON);
 
                 for (Port input : ae.getInputs()) {
                     JsonObject hasInPortJSON = new JsonObject();
                     hasInPortJSON.addProperty("program", ae.getActivity().getId());
                     hasInPortJSON.addProperty("port", input.getId());
                     hasInPortJson.add(hasInPortJSON);
+
+                    //USAGE                
+//                JsonObject generatedJSON = new JsonObject();
+//                generatedJSON.addProperty("workflowExecution", ae.getId());
+//                switch (p.getEntity().getKind()) {
+//                    case DATA:
+//                        generatedJSON.addProperty("data", p.getEntity().getId());
+//                    case DOCUMENT:
+//                        generatedJSON.addProperty("document", p.getEntity().getId());
+//                }
+//                usedJson.add(generatedJSON);
+                    JsonObject hadInPortJSON = new JsonObject();
+                    hadInPortJSON.addProperty("usage", "e" + ae.getId() + "_p" + input.getId());
+                    hadInPortJSON.addProperty("port", input.getId());
+                    hadInPortJson.add(hadInPortJSON);
+
+                    JsonObject hadEntityJSON = new JsonObject();
+                    hadEntityJSON.addProperty("usage", "e" + ae.getId() + "_p" + input.getId());
+                    switch (input.getEntity().getKind()) {
+                        case DATA:
+                            hadEntityJSON.addProperty("data", input.getEntity().getId());
+                        case DOCUMENT:
+                            hadEntityJSON.addProperty("document", input.getEntity().getId());
+                    }
+                    hadEntityJson.add(hadEntityJSON);
+
+                    JsonObject qualifieldUsageJSON = new JsonObject();
+                    qualifieldUsageJSON.addProperty("activityExecution", ae.getId());
+                    qualifieldUsageJSON.addProperty("usage", "e" + ae.getId() + "_p" + input.getId());
+                    qualifiedUsageJson.add(qualifieldUsageJSON);
+
                 }
-                
+
                 for (Port output : ae.getOutputs()) {
                     JsonObject hasOutPortJSON = new JsonObject();
                     hasOutPortJSON.addProperty("program", ae.getActivity().getId());
                     hasOutPortJSON.addProperty("port", output.getId());
                     hasOutPortJson.add(hasOutPortJSON);
+
+                    //GENERATION
+                    JsonObject hadOutPortJSON = new JsonObject();
+                    hadOutPortJSON.addProperty("generation", "e" + ae.getId() + "_e" + output.getEntity().getId());
+                    hadOutPortJSON.addProperty("port", output.getId());
+                    hadOutPortJson.add(hadOutPortJSON);
+
+                    JsonObject hadEntityJSON = new JsonObject();
+                    hadEntityJSON.addProperty("generation", "e" + ae.getId() + "_e" + output.getEntity().getId());
+                    switch (output.getEntity().getKind()) {
+                        case DATA:
+                            hadEntityJSON.addProperty("data", output.getEntity().getId());
+                        case DOCUMENT:
+                            hadEntityJSON.addProperty("document", output.getEntity().getId());
+                    }
+                    hadEntityJson.add(hadEntityJSON);
+
+                    JsonObject qualifieldGenerationJSON = new JsonObject();
+                    qualifieldGenerationJSON.addProperty("activityExecution", ae.getId());
+                    qualifieldGenerationJSON.addProperty("generation", "e" + ae.getId() + "_e" + output.getEntity().getId());
+                    qualifiedGenerationJson.add(qualifieldGenerationJSON);
                 }
 
             }
 
-            //ASSOCIATION
-            JsonObject wasAssociatedWithJSON = new JsonObject();
-            wasAssociatedWithJSON.addProperty("workflowExecution", we.getId());
-            wasAssociatedWithJSON.addProperty("researcher", we.getAuthor().getId());
-            wasAssociatedWithJson.add(wasAssociatedWithJSON);
-
-//            associationJson.add(new JsonObject());
-            JsonObject hadPlanJSON = new JsonObject();
-            hadPlanJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
-            hadPlanJSON.addProperty("workflow", we.getWorkflow().getId());
-            hadPlanJson.add(hadPlanJSON);
-
-            JsonObject agentAssocJSON = new JsonObject();
-            agentAssocJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
-            agentAssocJSON.addProperty("researcher", we.getAuthor().getId());
-            agentRelationJson.add(agentAssocJSON);
-
-            JsonObject qualifieldAssociationJSON = new JsonObject();
-            qualifieldAssociationJSON.addProperty("workflowExecution", we.getId());
-            qualifieldAssociationJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
-            qualifiedAssociationJson.add(qualifieldAssociationJSON);
-
-            //USAGE
-            for (Port p : we.getInputs()) {
-
-                JsonObject hadInPortJSON = new JsonObject();
-                hadInPortJSON.addProperty("usage", "e" + we.getId() + "_p" + p.getId());
-                hadInPortJSON.addProperty("port", p.getId());
-                hadInPortJson.add(hadInPortJSON);
-
-                JsonObject hadEntityJSON = new JsonObject();
-                hadEntityJSON.addProperty("usage", "e" + we.getId() + "_p" + p.getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        hadEntityJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        hadEntityJSON.addProperty("document", p.getEntity().getId());
-                }
-                hadEntityJson.add(hadEntityJSON);
-
-                JsonObject qualifieldUsageJSON = new JsonObject();
-                qualifieldUsageJSON.addProperty("workflowExecution", we.getId());
-                qualifieldUsageJSON.addProperty("usage", "e" + we.getId() + "_p" + p.getId());
-                qualifiedUsageJson.add(qualifieldUsageJSON);
-            }
-
-            //GENERATION
-            for (Port p : we.getOutputs()) {
-                JsonObject usedJSON = new JsonObject();
-                usedJSON.addProperty("workflowExecution", we.getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        usedJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        usedJSON.addProperty("document", p.getEntity().getId());
-                }
-                usedJson.add(usedJSON);
-
-//                generationJson.add(new JsonObject());
-                JsonObject hadOutPortJSON = new JsonObject();
-                hadOutPortJSON.addProperty("generation", "e" + we.getId() + "_e" + p.getEntity().getId());
-                hadOutPortJSON.addProperty("port", p.getId());
-                hadOutPortJson.add(hadOutPortJSON);
-
-                JsonObject hadEntityJSON = new JsonObject();
-                hadEntityJSON.addProperty("generation", "e" + we.getId() + "_e" + p.getEntity().getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        hadEntityJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        hadEntityJSON.addProperty("document", p.getEntity().getId());
-                }
-                hadEntityJson.add(hadEntityJSON);
-
-                JsonObject qualifieldGenerationJSON = new JsonObject();
-                qualifieldGenerationJSON.addProperty("workflowExecution", we.getId());
-                qualifieldGenerationJSON.addProperty("generation", "e" + we.getId() + "_e" + p.getEntity().getId());
-
-                qualifiedGenerationJson.add(qualifieldGenerationJSON);
-            }
         }
     }
 
-    private void getActivityExecutionsRelations() {
-        JsonArray wasPartOfAsJson = jObject.getAsJsonArray("wasPartOf");
-        JsonArray wasAssociatedWithJson = jObject.getAsJsonArray("wasAssociatedWith");
-        JsonArray usedJson = jObject.getAsJsonArray("used");
-
-        JsonObject hadPlanJson = jObject.getAsJsonObject("hadPlan");
-        JsonObject agentRelationJson = jObject.getAsJsonObject("agentRelation");
-        JsonObject hadInPortJson = jObject.getAsJsonObject("hadInPort");
-        JsonObject hadOutPortJson = jObject.getAsJsonObject("hadOutPort");
-        JsonObject hadEntityJson = jObject.getAsJsonObject("hadEntity");
-
-        JsonObject qualifiedAssociationJson = jObject.getAsJsonObject("qualifiedAssociation");
-        JsonObject qualifiedUsageJson = jObject.getAsJsonObject("qualifiedUsage");
-        JsonObject qualifiedGenerationJson = jObject.getAsJsonObject("qualifiedGeneration");
-
-        JsonObject associationJson = jObject.getAsJsonObject("association");
-        JsonObject usageJson = jObject.getAsJsonObject("usage");
-        JsonObject generationJson = jObject.getAsJsonObject("generation");
-
-        for (ActivityExecution ae : activityExecutionService.findAll()) {
-
-            //ASSOCIATION
-            JsonObject wasAssociatedWithJSON = new JsonObject();
-            wasAssociatedWithJSON.addProperty("activityExecution", ae.getId());
-            wasAssociatedWithJSON.addProperty("researcher", ae.getAuthor().getId());
-            wasAssociatedWithJson.add(wasAssociatedWithJSON);
-
-            // associationJson.add("e" + ae.getId() + "_r" + ae.getAuthor().getId(), new JsonObject());
-            JsonObject hadPlanJSON = new JsonObject();
-            hadPlanJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
-            hadPlanJSON.addProperty("program", ae.getActivity().getId());
-            hadPlanJson.add("hp_a" + "e" + ae.getId() + "_r" + ae.getAuthor().getId() + "_p" + ae.getActivity().getId(), hadPlanJSON);
-
-            JsonObject agentAssocJSON = new JsonObject();
-            agentAssocJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
-            agentAssocJSON.addProperty("researcher", ae.getAuthor().getId());
-            agentRelationJson.add("ar_a" + "e" + ae.getId() + "_r" + ae.getAuthor().getId() + "_w" + ae.getAuthor().getId(), agentAssocJSON);
-
-            JsonObject qualifieldAssociationJSON = new JsonObject();
-            qualifieldAssociationJSON.addProperty("activityExecution", ae.getId());
-            qualifieldAssociationJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
-            qualifiedAssociationJson.add("qa_e" + ae.getId() + "_a" + "e" + ae.getId() + "_r" + ae.getAuthor().getId(), qualifieldAssociationJSON);
-
-            //USAGE
-            for (Port p : ae.getInputs()) {
-                // usageJson.add("e" + ae.getId() + "_p" + p.getId(), new JsonObject());
-
-                JsonObject hadInPortJSON = new JsonObject();
-                hadInPortJSON.addProperty("usage", "e" + ae.getId() + "_p" + p.getId());
-                hadInPortJSON.addProperty("port", p.getId());
-                hadInPortJson.add("hip_u" + "e" + ae.getId() + "_p" + p.getId() + "_p" + p.getId(), hadInPortJSON);
-
-                JsonObject hadEntityJSON = new JsonObject();
-                hadEntityJSON.addProperty("usage", "e" + ae.getId() + "_p" + p.getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        hadEntityJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        hadEntityJSON.addProperty("document", p.getEntity().getId());
-                }
-                hadEntityJson.add("he_u" + "e" + ae.getId() + "_p" + p.getId() + "_e" + p.getEntity().getId(), hadEntityJSON);
-
-                JsonObject qualifieldUsageJSON = new JsonObject();
-                qualifieldUsageJSON.addProperty("activityExecution", ae.getId());
-                qualifieldUsageJSON.addProperty("usage", "e" + ae.getId() + "_p" + p.getId());
-                qualifiedUsageJson.add("qu_e" + ae.getId() + "_u" + "e" + ae.getId() + "_p" + p.getId(), qualifieldUsageJSON);
-            }
-
-            //GENERATION
-            for (Port p : ae.getOutputs()) {
-                JsonObject usedJSON = new JsonObject();
-                usedJSON.addProperty("activityExecution", ae.getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        usedJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        usedJSON.addProperty("document", p.getEntity().getId());
-                }
-                usedJson.add(usedJSON);
-
-                //generationJson.add("e" + ae.getId() + "_e" + p.getEntity().getId(), new JsonObject());
-                JsonObject hadOutPortJSON = new JsonObject();
-                hadOutPortJSON.addProperty("generation", "e" + ae.getId() + "_e" + p.getEntity().getId());
-                hadOutPortJSON.addProperty("port", p.getId());
-                hadOutPortJson.add("hop_g" + "e" + ae.getId() + "_e" + p.getEntity().getId() + "_p" + p.getId(), hadOutPortJSON);
-
-                JsonObject hadEntityJSON = new JsonObject();
-                hadEntityJSON.addProperty("generation", "e" + ae.getId() + "_e" + p.getEntity().getId());
-                switch (p.getEntity().getKind()) {
-                    case DATA:
-                        hadEntityJSON.addProperty("data", p.getEntity().getId());
-                    case DOCUMENT:
-                        hadEntityJSON.addProperty("document", p.getEntity().getId());
-                }
-                hadEntityJson.add("he_g" + "e" + ae.getId() + "_e" + p.getEntity().getId() + "_e" + p.getEntity().getId(), hadEntityJSON);
-
-                JsonObject qualifieldGenerationJSON = new JsonObject();
-                qualifieldGenerationJSON.addProperty("activityExecution", ae.getId());
-                qualifieldGenerationJSON.addProperty("generation", "e" + ae.getId() + "_e" + p.getEntity().getId());
-
-                qualifiedGenerationJson.add("qg_e" + ae.getId() + "g" + "e" + ae.getId() + "_e" + p.getEntity().getId(), qualifieldGenerationJSON);
-            }
-        }
-    }
 }

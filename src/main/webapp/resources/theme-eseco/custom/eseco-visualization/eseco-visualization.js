@@ -231,7 +231,7 @@ var GraphChart = {
 
         // add tooltip information
         var tip;
-        node.on("click", function (d) {
+        node.on("dblclick", function (d) {
             if (tip)
                 tip.remove();
 
@@ -268,13 +268,15 @@ var GraphChart = {
                     .attr("height", bbox.height + 5);
         });
 
-
+        container.on("click", function (d) {
+            tip.remove();
+        });
 
         // add the curvy lines
         function tick() {
 
             path.attr("d", function (d) {
-                if (d.linknum == null) {
+                if (isNaN(d.linknum) || d.linknum == null || d.linknum == undefined) {
                     d.linknum = 1;
                 }
                 var dx = d.target.x - d.source.x,
