@@ -39,7 +39,7 @@ public class ProvSeOGetInferencesService {
 
     public void testURL(String path) throws IOException {
         try {
-            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/");
+            URL u = new URL("http://" + path + "/provse-service/rest/ontology/");
 
             HttpURLConnection urlConn = (HttpURLConnection) u.openConnection();
             urlConn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
@@ -56,7 +56,7 @@ public class ProvSeOGetInferencesService {
         try {
             String type = "application/json";
             byte[] encodedData = rawData.toString().getBytes(StandardCharsets.UTF_8);
-            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/");
+            URL u = new URL("http://" + path + "/provse-service/rest/ontology/");
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
             conn.setDoOutput(true);
@@ -67,7 +67,6 @@ public class ProvSeOGetInferencesService {
             os.write(encodedData);
             conn.connect();
             if (conn.getResponseCode() != HttpStatus.OK.value()) {
-                System.out.println(conn.getResponseMessage() + " === " + conn.getResponseCode());
                 throw new HTTPException(conn.getResponseCode());
             }
         } catch (IOException ex) {
@@ -78,7 +77,7 @@ public class ProvSeOGetInferencesService {
 
     public JSONObject getProvenanceOntologyService(String path, String entity) throws IOException {
         try {
-            URL u = new URL("http://" + path + "/provse-service/webresources/ontology/?entity=" + entity);
+            URL u = new URL("http://" + path + "/provse-service/rest/ontology/?entity=" + entity);
             HttpURLConnection conn = (HttpURLConnection) u.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("GET");
@@ -90,7 +89,6 @@ public class ProvSeOGetInferencesService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(
                     new InputStreamReader(in, "UTF-8"));
 
-            System.out.println(responseMessage);
             return jsonObject;
         } catch (IOException ex) {
             ex.printStackTrace();

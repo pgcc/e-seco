@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.exception.JDBCConnectionException;
 
 @Controller
 public class UacController extends CommonController {
@@ -44,9 +45,18 @@ public class UacController extends CommonController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(User user, HttpSession session, Model model) {
-
-        // Try to find a user with the passed login credentials
-        User authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
+        User authenticatedUser = null;
+        try {
+            // Try to find a user with the passed login credentials
+            authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
+        } catch (Exception ex) {
+            try {
+                // Try to find a user with the passed login credentials
+                authenticatedUser = userService.findByEmailAndPassword(user.getLogin(), user.getPassword());
+            } catch (Exception e) {
+                model.addAttribute("error_jdbc", true);
+            }
+        }
 
         // If a active user can be found, register the session and redirect, otherwise, send an error to the view
         if (authenticatedUser != null) {

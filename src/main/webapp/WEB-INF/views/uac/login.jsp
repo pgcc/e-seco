@@ -16,6 +16,9 @@
             <c:if test="${not empty error_active}">
             swal("Error", "You user is not active!", "error");
             </c:if>
+            <c:if test="${not empty error_jdbc}">
+            swal("Error", "Unable to acquire JDBC Connection!", "error");
+            </c:if>
         </script>
     </jsp:attribute>
 

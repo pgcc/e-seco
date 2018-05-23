@@ -122,16 +122,16 @@ public class ProvSeOExportDataService {
         getObjects();
         getRelations();
 
-        try (FileOutputStream fout = new FileOutputStream(System.getProperty("user.home") + "\\AppData\\Local\\Temp\\ProvenanceExport.json")) {
-            fout.write(jObject.toString().getBytes(StandardCharsets.UTF_8));
-            fout.flush();
-            fout.close();
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ProvSeOExportDataService.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ProvSeOExportDataService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (FileOutputStream fout = new FileOutputStream(System.getProperty("user.home") + "\\AppData\\Local\\Temp\\ProvenanceExport.json")) {
+//            fout.write(jObject.toString().getBytes(StandardCharsets.UTF_8));
+//            fout.flush();
+//            fout.close();
+//
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(ProvSeOExportDataService.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(ProvSeOExportDataService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return jObject;
     }
 
