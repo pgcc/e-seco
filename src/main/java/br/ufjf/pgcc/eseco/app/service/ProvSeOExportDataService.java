@@ -156,8 +156,8 @@ public class ProvSeOExportDataService {
 
     private void getRelations() {
 
-        JsonArray jObjecthadMember = new JsonArray();
-        jObject.add("hadMember", jObjecthadMember);
+        JsonArray jObjecthasMember = new JsonArray();
+        jObject.add("hasMember", jObjecthasMember);
 
         JsonArray jObjectwasAttributedTo = new JsonArray();
         jObject.add("wasAttributedTo", jObjectwasAttributedTo);
@@ -513,7 +513,7 @@ public class ProvSeOExportDataService {
     }
 
     private void getExperimentRelations() {
-        JsonArray hadMemberAsJson = jObject.getAsJsonArray("hadMember");
+        JsonArray hasMemberAsJson = jObject.getAsJsonArray("hasMember");
         JsonArray wasAttributedToAsJson = jObject.getAsJsonArray("wasAttributedTo");
         JsonArray wasInfluencedByAsJson = jObject.getAsJsonArray("wasInfluencedBy");
 
@@ -521,10 +521,10 @@ public class ProvSeOExportDataService {
         for (Experiment e : experiments) {
 
             for (Workflow w : e.getWorkflows()) {
-                JsonObject hadMemberJSON = new JsonObject();
-                hadMemberJSON.addProperty("experiment", e.getId());
-                hadMemberJSON.addProperty("workflow", w.getId());
-                hadMemberAsJson.add(hadMemberJSON);
+                JsonObject hasMemberJSON = new JsonObject();
+                hasMemberJSON.addProperty("experiment", e.getId());
+                hasMemberJSON.addProperty("workflow", w.getId());
+                hasMemberAsJson.add(hasMemberJSON);
             }
 
             JsonObject wasAttributedToJSON = new JsonObject();
@@ -653,12 +653,26 @@ public class ProvSeOExportDataService {
         JsonArray usageJson = jObject.getAsJsonArray("usage");
         JsonArray generationJson = jObject.getAsJsonArray("generation");
 
-        for (WorkflowExecution workflowExec : workflowExecutionService.findAll()) {
+        for (WorkflowExecution we : workflowExecutionService.findAll()) {
+            JsonObject hadPlanJSON = new JsonObject();
+            hadPlanJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
+            hadPlanJSON.addProperty("workflow", we.getWorkflow().getId());
+            hadPlanJson.add(hadPlanJSON);
 
-            for (ActivityExecution ae : workflowExec.getActivityExecutions()) {
+            JsonObject agentAssocJSON = new JsonObject();
+            agentAssocJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
+            agentAssocJSON.addProperty("researcher", we.getAuthor().getId());
+            agentRelationJson.add(agentAssocJSON);
+
+            JsonObject qualifieldAssociationJSON = new JsonObject();
+            qualifieldAssociationJSON.addProperty("workflowExecution", we.getId());
+            qualifieldAssociationJSON.addProperty("association", "e" + we.getId() + "_r" + we.getAuthor().getId());
+            qualifiedAssociationJson.add(qualifieldAssociationJSON);
+
+            for (ActivityExecution ae : we.getActivityExecutions()) {
                 JsonObject wasPartOfJSON = new JsonObject();
                 wasPartOfJSON.addProperty("activityExecution", ae.getId());
-                wasPartOfJSON.addProperty("workflowExecution", workflowExec.getId());
+                wasPartOfJSON.addProperty("workflowExecution", we.getId());
                 wasPartOfAsJson.add(wasPartOfJSON);
 
                 //ASSOCIATION
@@ -666,17 +680,17 @@ public class ProvSeOExportDataService {
 //            wasAssociatedWithJSON.addProperty("workflowExecution", we.getId());
 //            wasAssociatedWithJSON.addProperty("researcher", we.getAuthor().getId());
 //            wasAssociatedWithJson.add(wasAssociatedWithJSON);
-                JsonObject hadPlanJSON = new JsonObject();
+                hadPlanJSON = new JsonObject();
                 hadPlanJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
                 hadPlanJSON.addProperty("program", ae.getActivity().getId());
                 hadPlanJson.add(hadPlanJSON);
 
-                JsonObject agentAssocJSON = new JsonObject();
+                agentAssocJSON = new JsonObject();
                 agentAssocJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
                 agentAssocJSON.addProperty("researcher", ae.getAuthor().getId());
                 agentRelationJson.add(agentAssocJSON);
 
-                JsonObject qualifieldAssociationJSON = new JsonObject();
+                qualifieldAssociationJSON = new JsonObject();
                 qualifieldAssociationJSON.addProperty("activityExecution", ae.getId());
                 qualifieldAssociationJSON.addProperty("association", "e" + ae.getId() + "_r" + ae.getAuthor().getId());
                 qualifiedAssociationJson.add(qualifieldAssociationJSON);
