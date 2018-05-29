@@ -2,10 +2,13 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Detail;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -68,8 +72,41 @@ public class ExperimentActivitiesController {
         // set default value
         activity.setAuthor(user.getAgent().getResearcher());
         activity.setDateCreated(new Date());
+        List<Detail> details = new ArrayList<>();
+        details.add(new Detail());
+        activity.setDetails(details);
 
         model.addAttribute("activityForm", activity);
+        return "experiments/activities/activities-form";
+    }
+
+    @RequestMapping(value = "/experiments/activities/addDetail", method = RequestMethod.POST)
+    public String addDetail(@ModelAttribute("activityForm") Activity activity, Model model, HttpSession session) {
+
+        LOGGER.info("addDetail()");
+
+        List<Detail> details = activity.getDetails();
+        details.add(new Detail());
+        activity.setDetails(details);
+        model.addAttribute("activityForm", activity);
+        populateDefaultModel(model);
+
+        return "experiments/activities/activities-form";
+    }
+
+    @RequestMapping(value = "/experiments/activities/removeDetail", method = RequestMethod.POST)
+    public String removeDetail(@ModelAttribute("activityForm") Activity activity, @RequestParam("index") int index, Model model, HttpSession session) {
+
+        LOGGER.info("removeDetail()");
+
+        if (activity.getDetails().size() > 1) {
+            activity.getDetails().remove(index);
+        } else {
+            activity.getDetails().set(index, new Detail());
+        }
+        model.addAttribute("activityForm", activity);
+        populateDefaultModel(model);
+
         return "experiments/activities/activities-form";
     }
 
@@ -79,6 +116,11 @@ public class ExperimentActivitiesController {
         LOGGER.log(Level.INFO, "showUpdateActivityForm() : {0}", id);
 
         Activity activity = activityService.find(id);
+        if (activity.getDetails() == null || activity.getDetails().isEmpty()) {
+            List<Detail> details = new ArrayList<>();
+            details.add(new Detail());
+            activity.setDetails(details);
+        }
         model.addAttribute("activityForm", activity);
 
         populateDefaultModel(model);
@@ -154,7 +196,7 @@ public class ExperimentActivitiesController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-       
+
         List<WorkflowService> servicesList = workflowServiceService.findAll();
         model.addAttribute("servicesList", servicesList);
     }

@@ -133,6 +133,19 @@ public class Experiment {
     )
     private List<Workflow> workflows;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "exp_experiment_detail",
+            joinColumns = {
+                @JoinColumn(name = "experiment_id", nullable = false)
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "detail_id", nullable = false)
+            }
+    )
+    private List<Detail> details;
+
     public Experiment() {
     }
 
@@ -262,6 +275,14 @@ public class Experiment {
 
     public void setWorkflows(List<Workflow> workflows) {
         this.workflows = workflows;
+    }
+
+    public List<Detail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<Detail> details) {
+        this.details = details;
     }
 
     public boolean isNew() {

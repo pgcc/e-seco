@@ -18,7 +18,19 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            function addDetail() {
+                var form = document.getElementById("activityform");
+                form.action = "../activities/addDetail";
+                form.submit();
+            }
+            ;
+            function removeDetail(index) {
+                var form = document.getElementById("activityform");
+                form.action = "../activities/removeDetail?index=" + index;
+                form.submit();
+            }
+        </script>
     </jsp:attribute>
 
 
@@ -55,7 +67,7 @@
 
             <spring:url value="/experiments/activities" var="experimentActivitiesUrl" />
 
-            <f:form class="form form-horizontal" method="post" modelAttribute="activityForm" 
+            <f:form id="activityform" class="form form-horizontal" method="post" modelAttribute="activityForm" 
                     action="${experimentActivitiesUrl}">
 
                 <f:hidden path="id" />
@@ -108,6 +120,45 @@
                     </div>
                 </spring:bind>
 
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                Protocol                         
+                            </a>                                    
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">  
+                            <div class="form-group">
+                                <label class="col-sm-2 ">Name</label>         
+                                <label class="col-sm-10 ">Description</label>                     
+                            </div>
+                            <spring:bind path="details">
+                                <c:forEach items="${activityForm['details'].toArray()}" var="detail" varStatus="loop">
+                                    <div class="form-group">
+                                        <div class="col-sm-2">
+                                            <f:input path="details[${loop.index}].name" type="text" class="form-control " id="name" placeholder="Name" />
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <f:textarea path="details[${loop.index}].description"  class="form-control" rows="1" id="description" placeholder="Description" />                                            
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-danger btn-link" title="delete" onclick="addDetail()">
+                                                <span class="glyphicon glyphicon-plus"/>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeDetail('${loop.index}')">
+                                                <span class="glyphicon glyphicon-remove"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </spring:bind>
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>
@@ -120,7 +171,7 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                </div>
+                </div>                
             </f:form>
         </div>
     </jsp:body>

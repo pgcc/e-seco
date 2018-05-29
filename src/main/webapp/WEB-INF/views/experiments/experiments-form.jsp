@@ -18,7 +18,19 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            function addDetail() {
+                var form = document.getElementById("experimentform");
+                form.action = "../experiments/addDetail";
+                form.submit();
+            }
+            ;
+            function removeDetail(index) {
+                var form = document.getElementById("experimentform");
+                form.action = "../experiments/removeDetail?index=" + index;
+                form.submit();
+            }
+        </script>
     </jsp:attribute>
 
 
@@ -52,7 +64,7 @@
 
             <spring:url value="/experiments" var="experimentActionUrl" />
 
-            <f:form class="form form-horizontal" method="post" modelAttribute="experimentForm" action="${experimentActionUrl}">
+            <f:form id="experimentform" class="form form-horizontal" method="post" modelAttribute="experimentForm" action="${experimentActionUrl}">
 
                 <f:hidden path="id" />
 
@@ -84,11 +96,10 @@
                         </div>
                     </div>
                 </spring:bind>
-
-                <spring:bind path="dateCreated">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                <div class="form-group">
+                    <spring:bind path="dateCreated">
                         <label class="col-sm-2 control-label">Created in</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-2">
                             <div class="input-group">
                                 <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
                                 <div class="input-group-addon">
@@ -96,54 +107,47 @@
                                 </div>
                             </div>    
                         </div>
-                    </div>
-                </spring:bind>
-
-                <spring:bind path="dateUpdated">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                    </spring:bind>
+                    <spring:bind path="dateUpdated">                    
                         <label class="col-sm-2 control-label">Updated in</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-2">
                             <div class="input-group">
                                 <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </spring:bind>
+                        </div>                    
+                    </spring:bind>
 
-                <spring:bind path="dateEnded">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <spring:bind path="dateEnded">                    
                         <label class="col-sm-2 control-label">Ended in</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-2">
                             <div class="input-group">
                                 <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </spring:bind>
+                        </div>                    
+                    </spring:bind>
+                </div>
 
-                <spring:bind path="status">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                <div class="form-group">
+                    <spring:bind path="status">
                         <label class="col-sm-2 control-label">Status</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-2">
                             <f:radiobuttons path="status" items="${statusList}" itemLabel="name" element="label class='radio-inline'" disabled="true" />
                         </div>
-                    </div>
-                </spring:bind>
+                    </spring:bind>
 
-                <spring:bind path="currentPhase">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <spring:bind path="currentPhase">                    
                         <label class="col-sm-2 control-label">Current Phase</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-6">
                             <f:radiobuttons path="currentPhase" items="${phaseList}" itemLabel="name" element="label class='radio-inline'" disabled="true" />
-                        </div>
-                    </div>
-                </spring:bind>
+                        </div>                    
+                    </spring:bind>
+                </div>
 
                 <spring:bind path="version">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -175,33 +179,6 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="institutions">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Institutions</label>
-                        <div class="col-sm-10">
-                            <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
-                        </div>
-                    </div>
-                </spring:bind>
-
-                <spring:bind path="researchers">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Researchers</label>
-                        <div class="col-sm-10">
-                            <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName" itemValue="id"/>
-                        </div>
-                    </div>
-                </spring:bind>
-
-                <spring:bind path="researchGroups">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Research Groups</label>
-                        <div class="col-sm-10">
-                            <f:select path="researchGroups" items="${researchGroupsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
-                        </div>
-                    </div>
-                </spring:bind>
-
                 <spring:bind path="workflows">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Workflows</label>
@@ -211,6 +188,87 @@
                     </div>
                 </spring:bind>
 
+                <div class="form-group">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Responsible Agents 
+                                    </a>                                    
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                <div class="panel-body">
+                                    <spring:bind path="institutions">
+                                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                                            <label class="col-sm-2 control-label">Institutions</label>
+                                            <div class="col-sm-10">
+                                                <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
+
+                                    <spring:bind path="researchGroups">
+                                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                                            <label class="col-sm-2 control-label">Research Groups</label>
+                                            <div class="col-sm-10">
+                                                <f:select path="researchGroups" items="${researchGroupsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
+
+                                    <spring:bind path="researchers">
+                                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                                            <label class="col-sm-2 control-label">Researchers</label>
+                                            <div class="col-sm-10">
+                                                <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName" itemValue="id"/>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Protocol                         
+                                    </a>                                    
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="panel-body">    
+                                    <div class="form-group">
+                                        <label class="col-sm-2 ">Name</label>         
+                                        <label class="col-sm-10 ">Description</label>                     
+                                    </div>
+                                    <spring:bind path="details">
+                                        <c:forEach items="${experimentForm['details'].toArray()}" var="detail" varStatus="loop">
+                                            <div class="form-group">
+                                                <div class="col-sm-2">
+                                                    <f:input path="details[${loop.index}].name" type="text" class="form-control " id="name" placeholder="Name" />
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <f:textarea path="details[${loop.index}].description"  class="form-control" rows="1" id="description" placeholder="Description" />                                            
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-danger btn-link" title="delete" onclick="addDetail()">
+                                                        <span class="glyphicon glyphicon-plus"/>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeDetail('${loop.index}')">
+                                                        <span class="glyphicon glyphicon-remove"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </spring:bind>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <c:choose>

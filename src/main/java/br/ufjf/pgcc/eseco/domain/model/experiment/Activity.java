@@ -62,13 +62,26 @@ public class Activity {
     @JoinTable(
             name = "exp_workflow_activity",
             joinColumns = {
-                    @JoinColumn(name = "activity_id", nullable = false)
+                @JoinColumn(name = "activity_id", nullable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "workflow_id", nullable = false)
+                @JoinColumn(name = "workflow_id", nullable = false)
             }
     )
     private List<Workflow> workflows;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "exp_activity_detail",
+            joinColumns = {
+                @JoinColumn(name = "activity_id", nullable = false)
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "detail_id", nullable = false)
+            }
+    )
+    private List<Detail> details;
 
     @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
     private List<ActivityExecution> executions;
@@ -148,4 +161,13 @@ public class Activity {
     public void setWorkflows(List<Workflow> workflows) {
         this.workflows = workflows;
     }
+
+    public List<Detail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<Detail> details) {
+        this.details = details;
+    }
+
 }

@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.pgcc.eseco.app.service.ImportProvenanceDataService;
 import br.ufjf.pgcc.eseco.app.service.ProvSeOGetInferencesService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Detail;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
@@ -19,7 +20,9 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -101,8 +104,43 @@ public class ExperimentsController {
         experiment.setCurrentPhase(ExperimentPhase.PROBLEM_INVESTIGATION);
         experiment.setVersion("1.0.0");
 
+        List<Detail> details = new ArrayList<>();
+        details.add(new Detail());
+        experiment.setDetails(details);
+
         model.addAttribute("experimentForm", experiment);
-        populateDefaultModel(model);
+        populateDefaultModel(model, ExperimentStatus.IN_PROGRESS, ExperimentPhase.PROBLEM_INVESTIGATION);
+
+        return "experiments/experiments-form";
+    }
+
+    @RequestMapping(value = "/experiments/addDetail", method = RequestMethod.POST)
+    public String addDetail(@ModelAttribute("experimentForm") Experiment experiment, Model model, HttpSession session) {
+
+        LOGGER.info("addDetail()");
+
+        List<Detail> details = experiment.getDetails();
+        details.add(new Detail());
+        experiment.setDetails(details);
+        model.addAttribute("experimentForm", experiment);
+        populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
+
+        return "experiments/experiments-form";
+    }
+
+    @RequestMapping(value = "/experiments/removeDetail", method = RequestMethod.POST)
+    public String removeDetail(@ModelAttribute("experimentForm") Experiment experiment, @RequestParam("index") int index, Model model, HttpSession session) {
+
+        LOGGER.info("removeDetail()");
+
+        if (experiment.getDetails().size() > 1) {
+            experiment.getDetails().remove(index);
+        } else {
+            experiment.getDetails().set(index, new Detail());
+        }
+        model.addAttribute("experimentForm", experiment);
+        populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
+
         return "experiments/experiments-form";
     }
 
@@ -113,9 +151,15 @@ public class ExperimentsController {
 
         Experiment experiment = experimentService.find(id);
         experiment.setDateUpdated(new Date());
+        if (experiment.getDetails() == null || experiment.getDetails().isEmpty()) {
+            List<Detail> details = new ArrayList<>();
+            details.add(new Detail());
+            experiment.setDetails(details);
+        }
         model.addAttribute("experimentForm", experiment);
 
-        populateDefaultModel(model);
+        populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
+
         return "experiments/experiments-form";
     }
 
@@ -126,7 +170,7 @@ public class ExperimentsController {
         LOGGER.log(Level.INFO, "saveOrUpdateExperiment() : {0}", experiment);
 
         if (result.hasErrors()) {
-            populateDefaultModel(model);
+            populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
             return "experiments/experiments-form";
         } else {
             redirectAttributes.addFlashAttribute("css", "success");
@@ -141,7 +185,8 @@ public class ExperimentsController {
                 return "redirect:/experiments/" + experiment.getId();
             } catch (Exception ex) {
                 Logger.getLogger(ExperimentsController.class.getName()).log(Level.SEVERE, null, ex);
-                populateDefaultModel(model);
+                populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
+
                 return "experiments/experiments-form";
             }
         }
@@ -253,10 +298,15 @@ public class ExperimentsController {
         return "experiments/experiments-add-provenance-data-form";
     }
 
-    private void populateDefaultModel(Model model) {
+    private void populateDefaultModel(Model model, ExperimentStatus status, ExperimentPhase phase) {
 
-        model.addAttribute("statusList", ExperimentStatus.getList());
-        model.addAttribute("phaseList", ExperimentPhase.getList());
+        List<ExperimentStatus> statusList = new ArrayList<>();
+        statusList.add(status);
+        List<ExperimentPhase> phaseList = new ArrayList<>();
+        phaseList.add(phase);
+
+        model.addAttribute("statusList", statusList);
+        model.addAttribute("phaseList", phaseList);
         model.addAttribute("disciplinesList", disciplineService.findAll());
         model.addAttribute("institutionsList", institutionService.findAll());
         model.addAttribute("researchesList", researcherService.findAll());

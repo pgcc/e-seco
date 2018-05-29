@@ -246,6 +246,46 @@
 
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingFive">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                        Protocol                                
+                                    </a>
+                                    <span class="badge">${experiment.details.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.details}" var="detail">
+                                            <li class="list-group-item">${detail.name} = ${detail.description}</li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        Workflows                                
+                                    </a>
+                                    <span class="badge">${experiment.workflows.size()}</span>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                <div class="panel-body">
+                                    <ul class="list-group" >
+                                        <c:forEach items="${experiment.workflows}" var="workflow">
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">${workflow.name}</a></li>
+                                            </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -304,25 +344,7 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                        Workflows                                
-                                    </a>
-                                    <span class="badge">${experiment.workflows.size()}</span>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="panel-body">
-                                    <ul class="list-group" >
-                                        <c:forEach items="${experiment.workflows}" var="workflow">
-                                            <li class="list-group-item"><a href="<c:url value="/experiments/workflows/${workflow.id}"/>">${workflow.name}</a></li>
-                                            </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>                

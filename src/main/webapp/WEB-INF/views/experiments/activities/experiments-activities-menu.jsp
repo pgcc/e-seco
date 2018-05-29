@@ -12,7 +12,7 @@
     </li>
     <c:if test="${activity != null}">
         <li>
-            <a href="<c:url value="/experiments/activityExecutions/${activity.id}/update"/>">
+            <a href="<c:url value="/experiments/activities/${activity.id}/update"/>">
                 <i class="fa fa-refresh"></i> Update
             </a>
         </li>  
