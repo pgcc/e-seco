@@ -37,7 +37,7 @@ public class Researcher {
     @Column(name = "photo")
     private String photo;
 
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "core_agents_researchers_interests",
@@ -50,7 +50,7 @@ public class Researcher {
     )
     private List<Interest> researchInterests;
 
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "core_agents_researchers_disciplines",
@@ -63,7 +63,7 @@ public class Researcher {
     )
     private List<Discipline> disciplines;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "core_agents_researchers_institutions",
             joinColumns = {

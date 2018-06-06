@@ -340,7 +340,9 @@ public class ProvSeOExportDataService {
             agentJSON.addProperty("title", r.getTitle());
             if (r.getAgent() != null) {
                 agentJSON.addProperty("displayName", r.getDisplayName());
-                agentJSON.addProperty("birthday", r.getAgent().getBirthday().toString());
+                if (r.getAgent().getBirthday() != null) {
+                    agentJSON.addProperty("birthday", r.getAgent().getBirthday().toString());
+                }
                 agentJSON.addProperty("name", r.getAgent().getName());
                 agentJSON.addProperty("photo", r.getPhoto());
             }

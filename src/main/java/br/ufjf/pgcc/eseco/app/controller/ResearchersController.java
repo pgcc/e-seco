@@ -48,15 +48,15 @@ public class ResearchersController extends CommonController {
     @Autowired
     ResearcherFormValidator researcherFormValidator;
 
-    @InitBinder
+    @InitBinder("researcherForm")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(researcherFormValidator);
     }
 
     @Autowired
     public ResearchersController(ResearcherService researcherService, InstitutionService institutionService,
-                                 AgentService agentService, DisciplineService disciplineService, InterestService interestService,
-                                 MendeleyService mendeleyService, ResearcherKeywordService researcherKeywordService) {
+            AgentService agentService, DisciplineService disciplineService, InterestService interestService,
+            MendeleyService mendeleyService, ResearcherKeywordService researcherKeywordService) {
         this.researcherService = researcherService;
         this.institutionService = institutionService;
         this.agentService = agentService;
@@ -64,6 +64,15 @@ public class ResearchersController extends CommonController {
         this.interestService = interestService;
         this.mendeleyService = mendeleyService;
         this.researcherKeywordService = researcherKeywordService;
+    }
+
+    @RequestMapping(value = "/researchers", method = RequestMethod.GET)
+    public String showAllResearchers(Model model) {
+
+        LOGGER.info("showAllResearchers()");
+        model.addAttribute("researchers", researcherService.findAll());
+
+        return "researchers/list";
     }
 
     @RequestMapping(value = "/researchers/add", method = RequestMethod.GET)
@@ -104,7 +113,7 @@ public class ResearchersController extends CommonController {
         // Transform context info into JSON String
         List<ResearcherKeyword> researcherKeywordList = new ArrayList<>();
 
-        for(ResearcherKeyword rk: researcher.getResearchKeywords()){
+        for (ResearcherKeyword rk : researcher.getResearchKeywords()) {
             ResearcherKeyword newRk = new ResearcherKeyword();
             newRk.setName(rk.getName());
             researcherKeywordList.add(newRk);
@@ -134,7 +143,7 @@ public class ResearchersController extends CommonController {
 
     @RequestMapping(value = "/researchers", method = RequestMethod.POST)
     public String saveOrUpdateResearcher(@ModelAttribute("researcherForm") @Validated Researcher researcher,
-                                         BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
+            BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
 
         LOGGER.log(Level.INFO, "saveOrUpdateResearcher() : {0}", researcher);
 
@@ -159,14 +168,16 @@ public class ResearchersController extends CommonController {
                 // Add Keywords List
                 List<String> keyList = new ArrayList<>();
                 List<ResearcherKeyword> keywordsList = new ArrayList<>();
-                for (ResearcherKeyword rk : mendeleyService.searchKeywordsByProfileId(researcher.getMendeleyId())) {
-                    String key = rk.getName().toLowerCase() + "-" + rk.getYear();
-                    if(!keyList.contains(key)){
-                        keyList.add(key);
+                if (researcher.getMendeleyId() != null) {
+                    for (ResearcherKeyword rk : mendeleyService.searchKeywordsByProfileId(researcher.getMendeleyId())) {
+                        String key = rk.getName().toLowerCase() + "-" + rk.getYear();
+                        if (!keyList.contains(key)) {
+                            keyList.add(key);
 
-                        rk.setName(rk.getName().toLowerCase());
-                        rk.setResearcher(researcher);
-                        keywordsList.add(rk);
+                            rk.setName(rk.getName().toLowerCase());
+                            rk.setResearcher(researcher);
+                            keywordsList.add(rk);
+                        }
                     }
                 }
 
@@ -175,8 +186,7 @@ public class ResearchersController extends CommonController {
                 for (ResearcherKeyword rk : researcher.getResearchKeywords()) {
                     researcherKeywordService.delete(rk);
                 }
-                */
-
+                 */
                 // Add new keywords
                 researcher.setResearchKeywords(keywordsList);
                 for (ResearcherKeyword rk : researcher.getResearchKeywords()) {
@@ -224,10 +234,10 @@ public class ResearchersController extends CommonController {
                 model.addAttribute("css", "warning");
                 model.addAttribute("msg", "Researcher not found!");
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             model.addAttribute("css", "danger");
-            model.addAttribute("msg", ex);
+            model.addAttribute("msg", ex.getMessage());
         }
 
         model.addAttribute("researcherForm", researcher);

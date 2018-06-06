@@ -278,7 +278,7 @@ public class ExperimentsController {
         User user = (User) session.getAttribute("logged_user");
 
         if (experiment.getWorkflows().size() == 1 && !file.isEmpty()) {
-            Workflow workflow = workflowService.find(experiment.getWorkflows().get(0).getId());
+            Workflow workflow = workflowService.find(experiment.getWorkflows().iterator().next().getId());
             try {
                 importProvenanceDataService.importProvenanceData(experiment, workflow, file, user.getAgent().getResearcher());
                 redirectAttributes.addFlashAttribute("css", "success");

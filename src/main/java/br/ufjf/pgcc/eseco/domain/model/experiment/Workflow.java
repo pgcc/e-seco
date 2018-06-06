@@ -56,7 +56,7 @@ public class Workflow {
     @Column(name = "version")
     private String version;
 
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_activity",

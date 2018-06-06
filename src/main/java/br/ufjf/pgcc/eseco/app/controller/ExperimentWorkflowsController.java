@@ -5,6 +5,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
@@ -39,6 +40,7 @@ public class ExperimentWorkflowsController {
     private ExperimentService experimentService;
     private WorkflowService workflowService;
     private WfmsService wfmsService;
+    private ActivityService activityService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -47,10 +49,11 @@ public class ExperimentWorkflowsController {
 
     @Autowired
     public void setWorkflowService(ExperimentService experimentService, WorkflowService workflowService,
-            WfmsService wfmsService) {
+            WfmsService wfmsService, ActivityService activityService) {
         this.experimentService = experimentService;
         this.workflowService = workflowService;
         this.wfmsService = wfmsService;
+        this.activityService = activityService;
     }
 
     @RequestMapping(value = "/experiments/workflows", method = RequestMethod.GET)
@@ -195,6 +198,7 @@ public class ExperimentWorkflowsController {
 
         model.addAttribute("wfmsList", wfmsService.findAll());
         model.addAttribute("experimentsList", experimentService.findAll());
+         model.addAttribute("activitiesList", activityService.findAll());
     }
 
 }

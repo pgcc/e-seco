@@ -21,13 +21,15 @@
         <script type="text/javascript">
             function addDetail() {
                 var form = document.getElementById("activityform");
-                form.action = "../activities/addDetail";
+                var url = window.location.pathname.split("/activities", 1) + "/activities/addDetail";
+                form.action = url;
                 form.submit();
             }
             ;
             function removeDetail(index) {
                 var form = document.getElementById("activityform");
-                form.action = "../activities/removeDetail?index=" + index;
+                var url = window.location.pathname.split("/activities", 1) + "/activities/removeDetail?index=" + index;
+                form.action = url;
                 form.submit();
             }
         </script>

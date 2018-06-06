@@ -11,6 +11,7 @@ import br.ufjf.pgcc.eseco.domain.model.core.ResearchGroup;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.persistence.Entity;
 
@@ -131,7 +132,7 @@ public class Experiment {
                 @JoinColumn(name = "workflow_id", nullable = false)
             }
     )
-    private List<Workflow> workflows;
+    private Set<Workflow> workflows;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -269,11 +270,11 @@ public class Experiment {
         this.researchGroups = researchGroups;
     }
 
-    public List<Workflow> getWorkflows() {
+    public Set<Workflow> getWorkflows() {
         return workflows;
     }
 
-    public void setWorkflows(List<Workflow> workflows) {
+    public void setWorkflows(Set<Workflow> workflows) {
         this.workflows = workflows;
     }
 

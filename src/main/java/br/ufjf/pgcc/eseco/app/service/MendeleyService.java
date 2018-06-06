@@ -86,12 +86,12 @@ public class MendeleyService {
     /**
      * The app's consumer key
      */
-    private final String CLIENT_ID = "4563";
+    private final String CLIENT_ID = "5852";
 
     /**
      * The app's consumer secret
      */
-    private final String CLIENT_SECRET = "4RsB2qVKHwHGAok6";
+    private final String CLIENT_SECRET = "VIZdVMHpkYd8m7is";
 
     /**
      * The access token used to sign requests
@@ -167,8 +167,12 @@ public class MendeleyService {
      *
      * @throws java.io.IOException
      */
-    public ArrayList<Researcher> searchByEmail(String email) throws IOException {
+    public ArrayList<Researcher> searchByEmail(String email) throws Exception {
 
+        if (accessToken == null) {
+            getAccessTokenSecret();
+            throw new Exception("Cannot connect to Mendeley Service!");
+        }
         StringBuilder url = new StringBuilder(PROFILES_URL);
         url.append("?");
         url.append("access_token=").append(accessToken.getAccessToken());
@@ -176,7 +180,7 @@ public class MendeleyService {
         url.append("email=").append(email);
 
         String response = searchGET(url.toString(), false);
-        System.out.println(response);
+        LOGGER.log(Level.INFO, response);
         return parseResearcherList(response);
     }
 
@@ -419,7 +423,6 @@ public class MendeleyService {
 
         return keywordsList;
     }
-
 
     private class MendeleyAccessToken {
 

@@ -20,14 +20,16 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             function addDetail() {
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetail";
                 var form = document.getElementById("experimentform");
-                form.action = "../experiments/addDetail";
+                form.action = url;
                 form.submit();
             }
             ;
             function removeDetail(index) {
                 var form = document.getElementById("experimentform");
-                form.action = "../experiments/removeDetail?index=" + index;
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/removeDetail?index=" + index;
+                form.action = url;
                 form.submit();
             }
         </script>
@@ -253,7 +255,7 @@
                                                     <f:textarea path="details[${loop.index}].description"  class="form-control" rows="1" id="description" placeholder="Description" />                                            
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <button type="button" class="btn btn-danger btn-link" title="delete" onclick="addDetail()">
+                                                    <button type="button" class="btn btn-danger btn-link" title="add" onclick="addDetail()">
                                                         <span class="glyphicon glyphicon-plus"/>
                                                     </button>
                                                     <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeDetail('${loop.index}')">

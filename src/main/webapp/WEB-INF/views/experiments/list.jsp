@@ -68,6 +68,7 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
+                                <th>Author</th>
                                 <th>Status</th>
                                 <th>Phase</th>
                                 <th class="text-center" >Action</th>
@@ -83,6 +84,7 @@
                             <tr>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
+                                 <td onclick="location.href = '${experimentUrl}'">${experiment.author.displayName}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
 
