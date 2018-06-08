@@ -63,12 +63,13 @@
 
                 <f:hidden path="id" />
 
-                <spring:bind path="activity.name">
+
+                <spring:bind path="activity">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Activity Name</label>
+                        <label class="col-sm-2 control-label">Activity</label>
                         <div class="col-sm-10">
-                            <f:input path="activity.name" class="form-control" id="name" placeholder="Activity Name" disabled="true"/>
-                            <f:errors path="activity.name" class="control-label" />
+                            <f:select path="activity" items="${activityList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="activity" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
@@ -79,6 +80,7 @@
                         <label class="col-sm-2 control-label">Author</label>
                         <div class="col-sm-10">
                             <f:input path="author.displayName" class="form-control" id="author" placeholder="Author" disabled="true"/>
+                            <f:errors path="author" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
@@ -87,7 +89,8 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Start Time</label>
                         <div class="col-sm-10">
-                            <f:input path="startTime" class="form-control" id="startTime" placeholder="Start Time"/>
+                            <f:input path="startTime" class="form-control datetimepicker" id="startTime" placeholder="Start Time"/>
+                            <f:errors path="startTime" class="control-label" />
                         </div>                        
                     </div>
                 </spring:bind>
@@ -96,8 +99,27 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">End Time</label>
                         <div class="col-sm-10">
-                            <f:input path="endTime" class="form-control" id="endTime" placeholder="End Time"/>
+                            <f:input path="endTime" class="form-control datetimepicker" id="endTime" placeholder="End Time"/>
+                            <f:errors path="endTime" class="control-label" />
                         </div>                        
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="inputs">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Inputs</label>
+                        <div class="col-sm-10">
+                            <f:select path="inputs" items="${inputsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="outputs">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Outputs</label>
+                        <div class="col-sm-10">
+                            <f:select path="outputs" items="${outputsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                        </div>
                     </div>
                 </spring:bind>
 

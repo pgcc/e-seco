@@ -66,6 +66,10 @@
                     <c:choose>
                         <c:when test="${entity['kind']=='DATA'}">
                             <div class="row">
+                                <label class="col-sm-2">Kind</label>
+                                <div class="col-sm-10">DATA</div>
+                            </div>
+                            <div class="row">
                                 <label class="col-sm-2">Type</label>
                                 <div class="col-sm-10">${entity.data.type}</div>
                             </div>
@@ -74,19 +78,15 @@
                                 <div class="col-sm-10">${entity.data.value}</div>
                             </div>
                         </c:when>
-                        <c:when test="${entity['kind']=='DOCUMENT'}">
+                        <c:when test="${entity['kind']=='DOCUMENT'}">     
                             <div class="row">
-                                <label class="col-sm-2">Type</label>
-                                <div class="col-sm-10">${entity.document.type}</div>
+                                <label class="col-sm-2">Kind</label>
+                                <div class="col-sm-10">DOCUMENT</div>
                             </div>
                             <div class="row">
                                 <label class="col-sm-2">Link</label>
                                 <div class="col-sm-10">${entity.document.file}</div>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2">Value</label>
-                                <div class="col-sm-10">${entity.document.value}</div>
-                            </div>
+                            </div>                            
                         </c:when>
                     </c:choose>
                 </div>                

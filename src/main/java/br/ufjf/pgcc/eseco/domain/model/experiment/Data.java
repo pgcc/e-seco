@@ -5,6 +5,7 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

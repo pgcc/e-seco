@@ -106,7 +106,7 @@
                                 <div class="panel-body">
                                     <ul class="list-group" >
                                         <c:forEach items="${activity.executions}" var="execution">
-                                            <li class="list-group-item"><a href="<c:url value="/experiments/activityExecutions/${execution.id}"/>">${execution.startTime}</a></li>
+                                            <li class="list-group-item"><a href="<c:url value="/experiments/activityExecutions/${execution.id}"/>">${execution.id} - ${execution.author.displayName} - ${execution.startTime}</a></li>
                                             </c:forEach>
                                     </ul>
                                 </div>

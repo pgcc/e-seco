@@ -23,15 +23,13 @@
                 if (myRadio.value === "DATA") {
                     document.getElementById("datavalue").setAttribute("class", "form-group");
                     document.getElementById("datatype").setAttribute("class", "form-group");
-
-                    document.getElementById("documentvalue").setAttribute("class", "form-group hidden");
+                   
                     document.getElementById("documentlink").setAttribute("class", "form-group hidden");
                 }
                 if (myRadio.value === "DOCUMENT") {
                     document.getElementById("datavalue").setAttribute("class", "form-group hidden");
                     document.getElementById("datatype").setAttribute("class", "form-group hidden");
-
-                    document.getElementById("documentvalue").setAttribute("class", "form-group");
+                    
                     document.getElementById("documentlink").setAttribute("class", "form-group");
                 }
             }
@@ -130,37 +128,24 @@
                             <f:errors path="data.value" class="control-label" />
                         </div>
                     </div>
-                </spring:bind>               
-
-                <spring:bind path="document.type">
-                    <div id="datatype" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DATA'? '' : 'hidden'}">
-                        <label class="col-sm-2 control-label">Type</label>
-                        <div class="col-sm-10">
-                            <f:input path="document.type" class="form-control" id="type" placeholder="Type" />
-                            <f:errors path="document.type" class="control-label" />
-                        </div>
-                    </div>
-                </spring:bind>
-
+                </spring:bind>  
+                
+                <spring:url value="/experiments/entities/choosefile" var="chooseFileUrl"/>
                 <spring:bind path="document.file">
                     <div id="documentlink" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}" >
-                        <label class="col-sm-2 control-label">Link</label>
+                        <label class="col-sm-2 control-label">File</label>
                         <div class="col-sm-10">
-                            <f:input path="document.file" class="form-control" id="link" placeholder="Link" />
-                            <f:errors path="document.file" class="control-label" />
-                        </div>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" onclick="type = 'post', action = '${chooseFileUrl}'">Choose</button>
+                                </span>
+                                <f:input path="document.file" class="form-control" id="link" placeholder="File URL"/>
+                                <f:errors path="document.file" class="control-label" />
+                            </div>
+                        </div>  
                     </div>
                 </spring:bind>
-
-                <spring:bind path="document.value">
-                    <div id="documentvalue" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}">
-                        <label class="col-sm-2 control-label">Value</label>
-                        <div class="col-sm-10">
-                            <f:textarea path="document.value" class="form-control" rows="5" id="value" placeholder="Value" />
-                            <f:errors path="document.value" class="control-label" />
-                        </div>
-                    </div>
-                </spring:bind>
+                
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
