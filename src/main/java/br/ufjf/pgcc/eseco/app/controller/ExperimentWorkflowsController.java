@@ -91,7 +91,7 @@ public class ExperimentWorkflowsController {
 
         return "experiments/workflows/workflows-form";
     }
-    
+
     @RequestMapping(value = "/experiments/workflows/add", method = RequestMethod.GET)
     public String showAddWorkflowForm(Model model, HttpSession session) {
 
@@ -144,12 +144,12 @@ public class ExperimentWorkflowsController {
 
             try {
                 workflow = workflowService.saveOrUpdate(workflow);
-                for (Experiment experiment : workflow.getExperiments()){
+                for (Experiment experiment : workflow.getExperiments()) {
                     experiment = experimentService.find(experiment.getId());
                     experiment.getWorkflows().add(workflow);
                     experimentService.saveOrUpdate(experiment);
                 }
-               
+
                 return "redirect:/experiments/workflows/" + workflow.getId();
 
             } catch (Exception ex) {
@@ -198,7 +198,7 @@ public class ExperimentWorkflowsController {
 
         model.addAttribute("wfmsList", wfmsService.findAll());
         model.addAttribute("experimentsList", experimentService.findAll());
-         model.addAttribute("activitiesList", activityService.findAll());
+        model.addAttribute("activitiesList", activityService.findAll());
     }
 
 }

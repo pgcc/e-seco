@@ -23,16 +23,21 @@
                 if (myRadio.value === "DATA") {
                     document.getElementById("datavalue").setAttribute("class", "form-group");
                     document.getElementById("datatype").setAttribute("class", "form-group");
-                   
+
                     document.getElementById("documentlink").setAttribute("class", "form-group hidden");
                 }
                 if (myRadio.value === "DOCUMENT") {
                     document.getElementById("datavalue").setAttribute("class", "form-group hidden");
                     document.getElementById("datatype").setAttribute("class", "form-group hidden");
-                    
+
                     document.getElementById("documentlink").setAttribute("class", "form-group");
                 }
             }
+            ;
+            function fileSelected(myInput) {
+                document.getElementById("file").setAttribute("value", myInput.value);
+            }
+            ;
         </script>
     </jsp:attribute>
 
@@ -57,6 +62,14 @@
     <jsp:body>
 
         <div class="container-fluid">
+            <c:if test="${not empty msg}">
+                <div class="alert alert-${css} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>${msg}</strong>
+                </div>
+            </c:if>
 
             <c:choose>
                 <c:when test="${entityForm['new']}">
@@ -69,9 +82,9 @@
             <br />
 
             <spring:url value="/experiments/entities" var="experimentEntitiesUrl" />
-
+            <spring:url value="/experiments/entities/upload" var="experimentUploadUrl" />
             <f:form class="form form-horizontal" method="post" modelAttribute="entityForm" 
-                    action="${experimentEntitiesUrl}">
+                    enctype="multipart/form-data" action="${experimentEntitiesUrl}">
 
                 <f:hidden path="id" />
 
@@ -97,6 +110,7 @@
                                     <f:radiobuttons path="kind" items="${kindList}" itemLabel="name" element="label class='radio-inline'" onchange="showOtherFields(this)" disabled="true"/>
                                 </c:otherwise>
                             </c:choose>
+                            <f:errors path="kind" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
@@ -129,23 +143,36 @@
                         </div>
                     </div>
                 </spring:bind>  
-                
+
                 <spring:url value="/experiments/entities/choosefile" var="chooseFileUrl"/>
                 <spring:bind path="document.file">
                     <div id="documentlink" class="form-group ${status.error ? 'has-error' : ''} ${entityForm['kind']=='DOCUMENT'? '' : 'hidden'}" >
                         <label class="col-sm-2 control-label">File</label>
                         <div class="col-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" onclick="type = 'post', action = '${chooseFileUrl}'">Choose</button>
-                                </span>
-                                <f:input path="document.file" class="form-control" id="link" placeholder="File URL"/>
-                                <f:errors path="document.file" class="control-label" />
-                            </div>
+                            <c:choose>
+                                <c:when test="${entityForm['new']}">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" onclick="$('#fileToUpload').click()">Choose</button>
+                                        </span>
+                                        <f:input id="file" path="document.file" class="form-control" placeholder="File URL"/>
+                                    </div>
+                                    <f:errors path="document.file" class="control-label" />
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" disabled="true" type="button" >Choose</button>
+                                        </span>                                        
+                                        <f:input path="document.file" disabled="true" class="form-control" id="link" placeholder="File URL"/>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+
                         </div>  
                     </div>
                 </spring:bind>
-                
+
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -160,7 +187,10 @@
                         </c:choose>
                     </div>
                 </div>
+                <input type="file" id="fileToUpload" name="fileToUpload" style="visibility: hidden;" onchange="fileSelected(this)" />
             </f:form>
+
+
         </div>
     </jsp:body>
 </t:layout-app>

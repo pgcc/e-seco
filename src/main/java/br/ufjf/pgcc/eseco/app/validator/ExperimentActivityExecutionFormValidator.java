@@ -25,8 +25,8 @@ public class ExperimentActivityExecutionFormValidator implements Validator {
         ActivityExecution activityExecution = (ActivityExecution) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "activity", "NotEmpty.experimentActivityExecutionForm.activity");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "author", "NotEmpty.experimentActivityExecutionForm.author");
-         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startTime", "NotEmpty.experimentActivityExecutionForm.endTime");
-          ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endTime", "NotEmpty.experimentActivityExecutionForm.endTime");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startTime", "NotEmpty.experimentActivityExecutionForm.endTime");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endTime", "NotEmpty.experimentActivityExecutionForm.endTime");
 
     }
 

@@ -63,12 +63,22 @@
 
                 <f:hidden path="id" />
 
-                <spring:bind path="workflow.name">
+                <spring:bind path="experiment">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Workflow Name</label>
+                        <label class="col-sm-2 control-label">Experiment</label>
                         <div class="col-sm-10">
-                            <f:input path="workflow.name" class="form-control" id="name" placeholder="Workflow Name" disabled="true"/>
-                            <f:errors path="workflow.name" class="control-label" />
+                            <f:select path="experiment" items="${experimentList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="experiment" class="control-label" />
+                        </div>
+                    </div>
+                </spring:bind>
+                
+                <spring:bind path="workflow">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Workflow</label>
+                        <div class="col-sm-10">
+                            <f:select path="workflow" items="${workflowList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:errors path="workflow" class="control-label" />
                         </div>
                     </div>
                 </spring:bind>
@@ -87,7 +97,8 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Start Time</label>
                         <div class="col-sm-10">
-                            <f:input path="startTime" class="form-control" id="startTime" placeholder="Start Time"/>
+                            <f:input path="startTime" class="form-control datetimepicker" id="startTime" placeholder="Start Time"/>
+                            <f:errors path="startTime" class="control-label" />
                         </div>                        
                     </div>
                 </spring:bind>
@@ -96,8 +107,18 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">End Time</label>
                         <div class="col-sm-10">
-                            <f:input path="endTime" class="form-control" id="endTime" placeholder="End Time"/>
+                            <f:input path="endTime" class="form-control datetimepicker" id="endTime" placeholder="End Time"/>
+                            <f:errors path="endTime" class="control-label" />
                         </div>                        
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="activityExecutions">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Activities Executions</label>
+                        <div class="col-sm-10">
+                            <f:select path="activityExecutions" items="${activityExecutionsList}" multiple="true" size="3" class="form-control" itemLabel="activity.name" itemValue="id"/>
+                        </div>
                     </div>
                 </spring:bind>
 

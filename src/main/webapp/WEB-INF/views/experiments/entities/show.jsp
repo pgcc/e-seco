@@ -83,9 +83,11 @@
                                 <label class="col-sm-2">Kind</label>
                                 <div class="col-sm-10">DOCUMENT</div>
                             </div>
+                            <spring:url value="/experiments/entities/${entity.id}/download" var="downloadUrl" />
                             <div class="row">
                                 <label class="col-sm-2">Link</label>
-                                <div class="col-sm-10">${entity.document.file}</div>
+                                <div class="col-sm-8">${entity.document.file}</div>
+                                <button class="btn btn-primary" type="button" onclick="location.href = '${downloadUrl}'">Download</button>
                             </div>                            
                         </c:when>
                     </c:choose>

@@ -109,7 +109,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Inputs</label>
                         <div class="col-sm-10">
-                            <f:select path="inputs" items="${inputsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:select path="inputs" items="${inputsList}" multiple="true" size="3" class="form-control" itemLabel="entity.name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>
@@ -118,7 +118,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Outputs</label>
                         <div class="col-sm-10">
-                            <f:select path="outputs" items="${outputsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:select path="outputs" items="${outputsList}" multiple="true" size="3" class="form-control" itemLabel="entity.name" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>

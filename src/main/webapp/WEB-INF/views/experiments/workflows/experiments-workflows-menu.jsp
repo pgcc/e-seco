@@ -17,4 +17,10 @@
             </a>
         </li>  
     </c:if>
+
+    <li>
+        <a href="<c:url value="/experiments/workflowExecutions/add"/>">
+            <i class="fa fa-plus-circle"></i> Add Execution
+        </a>
+    </li>  
 </ul>

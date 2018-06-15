@@ -1,9 +1,16 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowExecutionFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowExecutionService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -31,6 +38,10 @@ public class ExperimentWorkflowExecutionsController {
     ExperimentWorkflowExecutionFormValidator workflowExecutionFormValidator;
 
     private WorkflowExecutionService workflowExecutionService;
+    private WorkflowService workflowService;
+    private ActivityExecutionService activityExecutionService;
+    private PortService portService;
+    private ExperimentService experimentService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -38,8 +49,13 @@ public class ExperimentWorkflowExecutionsController {
     }
 
     @Autowired
-    public void setWorkflowExecutionService(WorkflowExecutionService workflowExecutionService) {
+    public void setWorkflowExecutionService(WorkflowExecutionService workflowExecutionService, WorkflowService workflowService,
+            ActivityExecutionService activityExecutionService, PortService portService, ExperimentService experimentService) {
         this.workflowExecutionService = workflowExecutionService;
+        this.workflowService = workflowService;
+        this.activityExecutionService = activityExecutionService;
+        this.portService = portService;
+        this.experimentService = experimentService;
     }
 
     @RequestMapping(value = "/experiments/workflowExecutions", method = RequestMethod.GET)
@@ -63,7 +79,7 @@ public class ExperimentWorkflowExecutionsController {
         workflowExecution.setAuthor(user.getAgent().getResearcher());
         model.addAttribute("workflowExecutionForm", workflowExecution);
         populateDefaultModel(model);
-        
+
         return "experiments/workflowExecutions/workflow-executions-form";
     }
 
@@ -97,6 +113,18 @@ public class ExperimentWorkflowExecutionsController {
             }
 
             try {
+                workflowExecution.setInputs(new ArrayList<Port>());
+                workflowExecution.setOutputs(new ArrayList<Port>());
+                for (ActivityExecution ae : workflowExecution.getActivityExecutions()) {
+                    ae = activityExecutionService.find(ae.getId());
+                    if (ae.getInputs() != null) {
+                        workflowExecution.getInputs().addAll(ae.getInputs());
+                    }
+                    if (ae.getOutputs() != null) {
+                        workflowExecution.getOutputs().addAll(ae.getOutputs());
+                    }
+                }
+
                 workflowExecution = workflowExecutionService.saveOrUpdate(workflowExecution);
                 return "redirect:/experiments/workflowExecutions/" + workflowExecution.getId();
             } catch (Exception ex) {
@@ -148,7 +176,9 @@ public class ExperimentWorkflowExecutionsController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-       
+        model.addAttribute("workflowList", workflowService.findAll());
+        model.addAttribute("activityExecutionsList", activityExecutionService.findAll());
+        model.addAttribute("experimentList", experimentService.findAll());
     }
 
 }

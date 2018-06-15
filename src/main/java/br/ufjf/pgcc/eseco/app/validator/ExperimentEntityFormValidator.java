@@ -24,8 +24,7 @@ public class ExperimentEntityFormValidator implements Validator {
 
         Entity entity = (Entity) target;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.experimentEntityForm.name");
-        System.out.println(errors.hasErrors());
-
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "kind", "NotEmpty.experimentEntityForm.kind");
     }
 
 }

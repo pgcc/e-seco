@@ -2,15 +2,11 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityExecutionFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.EntityService;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -39,6 +35,7 @@ public class ExperimentActivityExecutionsController {
 
     private ActivityExecutionService activityExecutionService;
     private ActivityService activityService;
+    private PortService portService;
     private EntityService entityService;
 
     @InitBinder
@@ -48,10 +45,11 @@ public class ExperimentActivityExecutionsController {
 
     @Autowired
     public void setActivityExecutionService(ActivityExecutionService activityExecutionService,
-            ActivityService activityService, EntityService entityService) {
+            ActivityService activityService, EntityService entityService, PortService portService) {
         this.activityExecutionService = activityExecutionService;
         this.activityService = activityService;
         this.entityService = entityService;
+        this.portService = portService;
     }
 
     @RequestMapping(value = "/experiments/activityExecutions", method = RequestMethod.GET)
@@ -86,7 +84,6 @@ public class ExperimentActivityExecutionsController {
 
         ActivityExecution activityExecution = activityExecutionService.find(id);
         model.addAttribute("activityExecutionForm", activityExecution);
-
         populateDefaultModel(model);
         return "experiments/activityExecutions/activity-executions-form";
     }
@@ -160,18 +157,9 @@ public class ExperimentActivityExecutionsController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-        model.addAttribute("activityList", activityService.findAll());
-        List<Port> inputsList = new ArrayList<>();
-        List<Port> outputsList = new ArrayList<>();
-
-        for (Entity e : entityService.findAll()) {
-            Port p = new Port();
-            p.setEntity(e);
-            inputsList.add(p);
-            outputsList.add(p);
-        }
-        model.addAttribute("inputsList", inputsList);
-        model.addAttribute("outputsList", outputsList);
+        model.addAttribute("activityList", activityService.findAll());        
+        model.addAttribute("inputsList", portService.findAll());
+        model.addAttribute("outputsList", portService.findAll());
     }
 
 }

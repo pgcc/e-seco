@@ -5,6 +5,8 @@ import br.ufjf.pgcc.eseco.app.config.DispatcherConfig;
 
 import br.ufjf.pgcc.eseco.app.config.SpringMailConfig;
 import br.ufjf.pgcc.eseco.app.config.WebConfig;
+import java.io.File;
+import javax.servlet.MultipartConfigElement;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -15,6 +17,8 @@ import javax.servlet.ServletRegistration;
 
 public class AppInitializer implements WebApplicationInitializer {
 
+    private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
+    
     @Override
     public void onStartup(ServletContext container) {
         // Create the 'root' Spring application context
@@ -36,5 +40,15 @@ public class AppInitializer implements WebApplicationInitializer {
                 = container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
+        
+        // temp file will be uploaded here
+        File uploadDirectory = new File(System.getProperty("java.io.tmpdir"));
+
+        // register a MultipartConfigElement
+        MultipartConfigElement multipartConfigElement =
+                new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
+                        maxUploadSizeInMb, maxUploadSizeInMb * 2, maxUploadSizeInMb / 2);
+
+        dispatcher.setMultipartConfig(multipartConfigElement);
     }
 }
