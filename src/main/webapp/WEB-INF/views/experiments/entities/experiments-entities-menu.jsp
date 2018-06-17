@@ -10,7 +10,7 @@
             <i class="fa fa-plus-circle"></i> Add Entity
         </a>
     </li>
-    <c:if test="${entity != null}">
+    <c:if test="${entity != null && entity.author.agent.user.id == sessionScope.logged_user.id}">
         <li>
             <a href="<c:url value="/experiments/entities/${entity.id}/update"/>">
                 <i class="fa fa-refresh"></i> Update

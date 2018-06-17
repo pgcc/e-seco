@@ -10,14 +10,14 @@ import java.util.*;
 
 @Service
 public class PortService {
-
+    
     private final PortDAO portDAO;
-
+    
     @Autowired
     public PortService(PortDAO portDAO) {
         this.portDAO = portDAO;
     }
-
+    
     @Transactional
     public Port saveOrUpdate(Port port) throws Exception {
         if (port.getId() == 0 || find(port.getId()) == null) {
@@ -26,18 +26,22 @@ public class PortService {
             return portDAO.update(port);
         }
     }
-
+    
     @Transactional
     public void delete(Port port) throws Exception {
         portDAO.delete(port);
     }
-
+    
     public Port find(int portId) {
         return portDAO.find(portId);
     }
-
+    
+    public Port findByEntityId(int entityId) {        
+        return portDAO.findOneByEntityId(entityId);
+    }
+    
     public List<Port> findAll() {
         return portDAO.findAll();
     }
-
+    
 }

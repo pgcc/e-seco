@@ -242,16 +242,16 @@
                             <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">    
                                     <div class="form-group">
-                                        <label class="col-sm-2 ">Name</label>         
-                                        <label class="col-sm-10 ">Description</label>                     
+                                        <label class="col-sm-4 ">Name</label>         
+                                        <label class="col-sm-8 ">Description</label>                     
                                     </div>
                                     <spring:bind path="details">
                                         <c:forEach items="${experimentForm['details'].toArray()}" var="detail" varStatus="loop">
                                             <div class="form-group">
-                                                <div class="col-sm-2">
+                                                <div class="col-sm-4">
                                                     <f:input path="details[${loop.index}].name" type="text" class="form-control " id="name" placeholder="Name" />
                                                 </div>
-                                                <div class="col-sm-8">
+                                                <div class="col-sm-6">
                                                     <f:textarea path="details[${loop.index}].description"  class="form-control" rows="1" id="description" placeholder="Description" />                                            
                                                 </div>
                                                 <div class="col-sm-2">

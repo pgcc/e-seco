@@ -77,7 +77,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Workflow</label>
                         <div class="col-sm-10">
-                            <f:select path="workflow" items="${workflowList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:select path="workflow" items="${workflowList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id" disabled="true"/>
                             <f:errors path="workflow" class="control-label" />
                         </div>
                     </div>

@@ -68,7 +68,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Activity</label>
                         <div class="col-sm-10">
-                            <f:select path="activity" items="${activityList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id"/>
+                            <f:select path="activity" items="${activityList}" multiple="false" size="1" class="form-control" itemLabel="name" itemValue="id" disabled="true"/>
                             <f:errors path="activity" class="control-label" />
                         </div>
                     </div>

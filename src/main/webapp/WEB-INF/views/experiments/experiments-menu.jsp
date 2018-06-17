@@ -12,7 +12,7 @@
         </a>
     </li>    
 
-    <c:if test="${experiment != null}">
+    <c:if test="${experiment != null && experiment.author.agent.user.id == sessionScope.logged_user.id}">
         <li>
             <a href="<c:url value="/experiments/${experiment.id}/update"/>">
                 <i class="fa fa-refresh"></i> Update

@@ -81,11 +81,24 @@ public class ExperimentsController {
     }
 
     @RequestMapping(value = "/experiments", method = RequestMethod.GET)
-    public String showAllExperiments(Model model) {
+    public String showAllExperiments(Model model, HttpSession session) {
 
         LOGGER.info("showAllExperiments()");
+        
+        ArrayList<Experiment> myexperiments = new ArrayList<>();
+        ArrayList<Experiment> experiments = new ArrayList<>();
+        
+        User user = (User) session.getAttribute("logged_user");
+        for (Experiment e : experimentService.findAll()) {
+            if (e.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myexperiments.add(e);
+            } else{
+                experiments.add(e);
+            }
+        }
 
-        model.addAttribute("experiments", experimentService.findAll());
+        model.addAttribute("myexperiments", myexperiments);
+        model.addAttribute("experiments", experiments);
         return "experiments/list";
     }
 
@@ -181,6 +194,15 @@ public class ExperimentsController {
             }
 
             try {
+
+                ArrayList<Detail> details = new ArrayList<>();
+                for (Detail d : experiment.getDetails()) {
+                    if (d.getName() != null && !d.getName().isEmpty()) {
+                        details.add(d);
+                    }
+                }
+                experiment.setDetails(details);
+
                 experiment = experimentService.saveOrUpdate(experiment);
                 return "redirect:/experiments/" + experiment.getId();
             } catch (Exception ex) {

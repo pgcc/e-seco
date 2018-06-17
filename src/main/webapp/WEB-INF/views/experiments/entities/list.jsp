@@ -61,7 +61,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Entities</h2>
+            <h2>My Entities</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -75,12 +75,11 @@
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="entity" items="${entities}">
+                        <c:forEach var="entity" items="${myentities}">
 
                             <spring:url value="entities/${entity.id}" var="entityUrl" />
                             <spring:url value="entities/${entity.id}/delete" var="deleteUrl" /> 
                             <spring:url value="entities/${entity.id}/update" var="updateUrl" />
-
 
                             <tr>
                                 <td onclick="location.href = '${entityUrl}'">${entity.id}</td>
@@ -100,6 +99,43 @@
                                             post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+
+
+            <h2>All Entities</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Name</th>
+                                <th>Author</th>
+                                <th>Kind</th>
+                                <th class="text-center" >Action</th>
+                            </tr>
+                        </thead>
+                        <c:forEach var="entity" items="${entities}">
+
+                            <spring:url value="entities/${entity.id}" var="entityUrl" />
+
+                            <tr>
+                                <td onclick="location.href = '${entityUrl}'">${entity.id}</td>
+                                <td onclick="location.href = '${entityUrl}'">${entity.name}</td>
+                                <td onclick="location.href = '${entityUrl}'">${entity.author.displayName}</td>
+                                <td onclick="location.href = '${entityUrl}'">${entity.kind.name}</td>
+
+
+                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${entityUrl}'">
+                                        <span class="glyphicon glyphicon-eye-open"/>
+                                    </button>                                   
                                 </td>
                             </tr>
                         </c:forEach>

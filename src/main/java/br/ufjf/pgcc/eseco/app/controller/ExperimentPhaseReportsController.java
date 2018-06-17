@@ -90,6 +90,7 @@ public class ExperimentPhaseReportsController {
                     case RESULTS_PUBLICATION:
                         experiment.setCurrentPhase(ExperimentPhase.EXPERIMENT_FINISHED);
                         experiment.setStatus(ExperimentStatus.FINISHED);
+                        experiment.setDateEnded(new Date());
                         break;
                 }
                 experimentService.saveOrUpdate(experiment);

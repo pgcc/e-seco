@@ -62,8 +62,8 @@
                     <strong>${msg}</strong>
                 </div>
             </c:if> 
-
-            <h2>All Activity Executions</h2>
+            
+            <h2>My Activity Executions</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -76,7 +76,7 @@
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="activityExecution" items="${activityExecutions}">
+                        <c:forEach var="activityExecution" items="${myactivityExecutions}">
 
                             <spring:url value="activityExecutions/${activityExecution.id}" var="activityExecutionUrl" />
                             <spring:url value="activityExecutions/${activityExecution.id}/delete" var="deleteUrl" /> 
@@ -100,6 +100,40 @@
                                             post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+
+            <h2>All Activity Executions</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Activity Name</th>
+                                <th>Author</th>
+                                <th class="text-center" >Action</th>
+                            </tr>
+                        </thead>
+                        <c:forEach var="activityExecution" items="${activityExecutions}">
+
+                            <spring:url value="activityExecutions/${activityExecution.id}" var="activityExecutionUrl" />
+                          
+                            <tr>
+                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.id}</td>
+                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.activity.name}</td>
+                                <td onclick="location.href = '${activityExecutionUrl}'">${activityExecution.author.displayName}</td>
+
+
+                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${activityExecutionUrl}'">
+                                        <span class="glyphicon glyphicon-eye-open"/>
+                                    </button>                                   
                                 </td>
                             </tr>
                         </c:forEach>

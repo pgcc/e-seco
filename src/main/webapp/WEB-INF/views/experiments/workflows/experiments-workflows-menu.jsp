@@ -10,17 +10,18 @@
             <i class="fa fa-plus-circle"></i> Add Workflow
         </a>
     </li>
-    <c:if test="${workflow != null}">
+    <c:if test="${workflow != null && workflow.author.agent.user.id == sessionScope.logged_user.id}">
         <li>
             <a href="<c:url value="/experiments/workflows/${workflow.id}/update"/>">
                 <i class="fa fa-refresh"></i> Update
             </a>
         </li>  
+        <li>
+            <a href="<c:url value="/experiments/workflowExecutions/add/${workflow.id}"/>">
+                <i class="fa fa-plus-circle"></i> Execute
+            </a>
+        </li>  
     </c:if>
 
-    <li>
-        <a href="<c:url value="/experiments/workflowExecutions/add"/>">
-            <i class="fa fa-plus-circle"></i> Add Execution
-        </a>
-    </li>  
+
 </ul>

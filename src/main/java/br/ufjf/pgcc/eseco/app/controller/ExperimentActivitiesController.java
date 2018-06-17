@@ -3,7 +3,6 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Detail;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.resource.WorkflowServiceService;
@@ -53,10 +52,23 @@ public class ExperimentActivitiesController {
     }
 
     @RequestMapping(value = "/experiments/activities", method = RequestMethod.GET)
-    public String showAllActivities(Model model) {
+    public String showAllActivities(Model model, HttpSession session) {
 
         LOGGER.info("showAllActivities()");
-        model.addAttribute("activities", activityService.findAll());
+        ArrayList<Activity> myactivities = new ArrayList<>();
+        ArrayList<Activity> activities = new ArrayList<>();
+
+        User user = (User) session.getAttribute("logged_user");
+        for (Activity a : activityService.findAll()) {
+            if (a.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myactivities.add(a);
+            } else {
+                activities.add(a);
+            }
+        }
+
+        model.addAttribute("myactivities", myactivities);
+        model.addAttribute("activities", activities);
 
         return "experiments/activities/list";
     }
@@ -145,6 +157,14 @@ public class ExperimentActivitiesController {
             }
 
             try {
+                ArrayList<Detail> details = new ArrayList<>();
+                for (Detail d : activity.getDetails()) {
+                    if (d.getName() != null && !d.getName().isEmpty()) {
+                        details.add(d);
+                    }
+                }
+                activity.setDetails(details);
+
                 activity = activityService.saveOrUpdate(activity);
                 return "redirect:/experiments/activities/" + activity.getId();
             } catch (Exception ex) {

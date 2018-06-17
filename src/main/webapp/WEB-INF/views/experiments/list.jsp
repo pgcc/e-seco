@@ -48,7 +48,6 @@
 
 
     <jsp:body>
-
         <div class="container-fluid">
             <c:if test="${not empty msg}">
                 <div class="alert alert-${css} alert-dismissible" role="alert">
@@ -59,6 +58,50 @@
                 </div>
             </c:if>
 
+            <h2>My Experiments</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Name</th>
+                                <th>Author</th>
+                                <th>Status</th>
+                                <th>Phase</th>
+                                <th class="text-center" >Action</th>
+                            </tr>
+                        </thead>
+
+
+                        <c:forEach var="experiment" items="${myexperiments}">
+                            <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
+                            <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
+                            <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
+                            <tr>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.author.displayName}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
+
+                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
+                                        <span class="glyphicon glyphicon-eye-open"/>
+                                    </button>
+                                    <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
+                                        <span class="glyphicon glyphicon-edit"/>
+                                    </button>
+                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
+                                        <span class="glyphicon glyphicon-remove"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
             <h2>All Experiments</h2>
             <br/>
             <div class="panel panel-default">
@@ -75,16 +118,11 @@
                             </tr>
                         </thead>
                         <c:forEach var="experiment" items="${experiments}">
-
                             <spring:url value="/experiments/${experiment.id}" var="experimentUrl" />
-                            <spring:url value="/experiments/${experiment.id}/delete" var="deleteUrl" /> 
-                            <spring:url value="/experiments/${experiment.id}/update" var="updateUrl" />
-
-
                             <tr>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.id}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.name}</td>
-                                 <td onclick="location.href = '${experimentUrl}'">${experiment.author.displayName}</td>
+                                <td onclick="location.href = '${experimentUrl}'">${experiment.author.displayName}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.status.name}</td>
                                 <td onclick="location.href = '${experimentUrl}'">${experiment.currentPhase.name}</td>
 
@@ -92,12 +130,7 @@
                                     <button class="btn btn-link" title="view" onclick="location.href = '${experimentUrl}'">
                                         <span class="glyphicon glyphicon-eye-open"/>
                                     </button>
-                                    <button class="btn btn-primary btn-link" title="edit" onclick="location.href = '${updateUrl}'">
-                                        <span class="glyphicon glyphicon-edit"/>
-                                    </button>
-                                    <button class="btn btn-danger btn-link" title="delete" onclick="this.disabled = true; post('${deleteUrl}')">
-                                        <span class="glyphicon glyphicon-remove"/>
-                                    </button>
+
                                 </td>
                             </tr>
                         </c:forEach>

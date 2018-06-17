@@ -6,20 +6,17 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Data;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Document;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.EntityKind;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.DataService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.DocumentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.EntityService;
-import java.awt.FileDialog;
-import java.awt.Frame;
+import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +27,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,45 +41,61 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes({"entityForm"})
 public class ExperimentEntitiesController {
-
+    
     private static final Logger LOGGER = Logger.getLogger(ExperimentEntitiesController.class.getName());
-
+    
     @Autowired
     ExperimentEntityFormValidator entityFormValidator;
-
+    
     private EntityService entityService;
     private DataService dataService;
     private DocumentService documentService;
-
+    private PortService portService;
+    
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(entityFormValidator);
     }
-
+    
     @Autowired
     public void setEntityService(EntityService entityService, DataService dataService,
-            DocumentService documentService) {
+            DocumentService documentService, PortService portService) {
         this.entityService = entityService;
         this.dataService = dataService;
         this.documentService = documentService;
+        this.portService = portService;
     }
-
+    
     @RequestMapping(value = "/experiments/entities", method = RequestMethod.GET)
-    public String showAllEntities(Model model) {
-
+    public String showAllEntities(Model model, HttpSession session) {
+        
         LOGGER.info("showAllEntities()");
-        model.addAttribute("entities", entityService.findAll());
-
+        
+        ArrayList<Entity> myentities = new ArrayList<>();
+        ArrayList<Entity> entities = new ArrayList<>();
+        
+        User user = (User) session.getAttribute("logged_user");
+        for (Entity e : entityService.findAll()) {
+            if (e.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myentities.add(e);
+            } else {
+                entities.add(e);
+            }
+        }
+        
+        model.addAttribute("myentities", myentities);
+        model.addAttribute("entities", entities);
+        
         return "experiments/entities/list";
     }
-
+    
     @RequestMapping(value = "/experiments/entities/add", method = RequestMethod.GET)
     public String showAddEntityForm(Model model, HttpSession session) {
-
+        
         LOGGER.info("showAddEntityForm()");
-
+        
         User user = (User) session.getAttribute("logged_user");
-
+        
         Entity entity = new Entity();
         entity.setAuthor(user.getAgent().getResearcher());
         entity.setData(new Data());
@@ -93,26 +104,26 @@ public class ExperimentEntitiesController {
         populateDefaultModel(model);
         return "experiments/entities/entities-form";
     }
-
+    
     @RequestMapping(value = "/experiments/entities/{id}/update", method = RequestMethod.GET)
     public String showUpdateEntityForm(@PathVariable("id") int id, Model model) {
-
+        
         LOGGER.log(Level.INFO, "showUpdateEntityForm() : {0}", id);
-
+        
         Entity entity = entityService.find(id);
         model.addAttribute("entityForm", entity);
-
+        
         populateDefaultModel(model);
         return "experiments/entities/entities-form";
     }
-
+    
     @RequestMapping(value = "/experiments/entities", method = RequestMethod.POST)
     public String saveOrUpdateEntity(@ModelAttribute("entityForm") Entity entity,
             @RequestParam("fileToUpload") MultipartFile file, BindingResult result,
             Model model, final RedirectAttributes redirectAttributes) {
-
+        
         LOGGER.log(Level.INFO, "saveOrUpdateEntity() : {0}", entity);
-
+        
         if (entity.getName().isEmpty()) {
             result.addError(new FieldError("name", "name", "Name is required!"));
         }
@@ -129,7 +140,6 @@ public class ExperimentEntitiesController {
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Entity updated successfully!");
             }
-
             try {
                 if (entity.getKind().equals(EntityKind.DATA)) {
                     entity.setDocument(null);
@@ -159,7 +169,15 @@ public class ExperimentEntitiesController {
                         }
                     }
                 }
-                entity = entityService.saveOrUpdate(entity);
+                if (entity.isNew()) {
+                    entity = entityService.saveOrUpdate(entity);
+                    Port port = new Port();
+                    port.setEntity(entity);
+                    portService.saveOrUpdate(port);
+                } else {
+                    entity = entityService.saveOrUpdate(entity);
+                }
+                
                 return "redirect:/experiments/entities/" + entity.getId();
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
@@ -170,15 +188,15 @@ public class ExperimentEntitiesController {
             }
         }
     }
-
+    
     @RequestMapping(value = "/experiments/entities/{id}/delete", method = RequestMethod.POST)
     public String deleteEntity(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
-
+        
         LOGGER.log(Level.INFO, "deleteEntity() : {0}", id);
-
+        
         Entity entity = entityService.find(id);
         try {
-
+            
             if (entity.getData() != null) {
                 dataService.delete(entity.getData());
             }
@@ -189,6 +207,9 @@ public class ExperimentEntitiesController {
                 }
                 documentService.delete(entity.getDocument());
             }
+            Port port = portService.findByEntityId(id);
+            portService.delete(port);
+            
             entityService.delete(entity);
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", "Entity has been deleted!");
@@ -197,37 +218,37 @@ public class ExperimentEntitiesController {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", ex.getMessage());
         }
-
+        
         return "redirect:/experiments/entities";
     }
-
+    
     @RequestMapping(value = "/experiments/entities/{id}", method = RequestMethod.GET)
     public String showEntity(@PathVariable("id") int id, Model model, HttpSession session) {
-
+        
         LOGGER.log(Level.INFO, "showEntity() id: {0}", id);
-
+        
         Entity entity = entityService.find(id);
         if (entity == null) {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Entity not found");
         }
-
+        
         model.addAttribute("entity", entity);
         return "experiments/entities/show";
-
+        
     }
-
+    
     @RequestMapping(value = "/experiments/entities/{id}/download", method = RequestMethod.GET)
     public String downloadFile(@PathVariable("id") int id, HttpServletResponse response, Model model, final RedirectAttributes redirectAttributes) {
-
+        
         Entity entity = entityService.find(id);
         if (entity.getDocument() == null) {
             model.addAttribute("entity", entity);
             return "experiments/entities/show";
         }
-
+        
         File file = new File(entity.getDocument().getFile());
-
+        
         if (!file.exists()) {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", "Sorry. The file you are looking for does not exist");
@@ -239,9 +260,9 @@ public class ExperimentEntitiesController {
             response.setContentLength((int) file.length());
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
             FileCopyUtils.copy(inputStream, response.getOutputStream());
-
+            
         } catch (Exception e) {
-            e.printStackTrace();;
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
         return "";
     }
@@ -254,5 +275,5 @@ public class ExperimentEntitiesController {
     private void populateDefaultModel(Model model) {
         model.addAttribute("kindList", EntityKind.getList());
     }
-
+    
 }

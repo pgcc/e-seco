@@ -62,7 +62,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Workflows Executions</h2>
+            <h2>My Workflows Executions</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -75,7 +75,7 @@
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="workflowExecution" items="${workflowExecutions}">
+                        <c:forEach var="workflowExecution" items="${myworkflowExecutions}">
 
                             <spring:url value="workflowExecutions/${workflowExecution.id}" var="workflowExecutionUrl" />
                             <spring:url value="workflowExecutions/${workflowExecution.id}/delete" var="deleteUrl" /> 
@@ -99,6 +99,40 @@
                                             post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+            
+            <h2>All Workflows Executions</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Workflow Name</th>
+                                <th>Author</th>
+                                <th class="text-center" >Action</th>
+                            </tr>
+                        </thead>
+                        <c:forEach var="workflowExecution" items="${workflowExecutions}">
+
+                            <spring:url value="workflowExecutions/${workflowExecution.id}" var="workflowExecutionUrl" />
+                         
+                            <tr>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.id}</td>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.workflow.name}</td>
+                                <td onclick="location.href = '${workflowExecutionUrl}'">${workflowExecution.author.displayName}</td>
+
+
+                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${workflowExecutionUrl}'">
+                                        <span class="glyphicon glyphicon-eye-open"/>
+                                    </button>                                    
                                 </td>
                             </tr>
                         </c:forEach>

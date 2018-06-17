@@ -1,12 +1,14 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentActivityExecutionFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.EntityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -53,24 +55,40 @@ public class ExperimentActivityExecutionsController {
     }
 
     @RequestMapping(value = "/experiments/activityExecutions", method = RequestMethod.GET)
-    public String showAllActivityExecutions(Model model) {
+    public String showAllActivityExecutions(Model model, HttpSession session) {
 
         LOGGER.info("showAllActivityExecutions()");
+        ArrayList<ActivityExecution> myactivityExecutions = new ArrayList<>();
+        ArrayList<ActivityExecution> activityExecutions = new ArrayList<>();
+        User user = (User) session.getAttribute("logged_user");
+        for (ActivityExecution a : activityExecutionService.findAll()) {
+            if (a.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myactivityExecutions.add(a);
+            } else {
+                activityExecutions.add(a);
+            }
+        }
+
+        model.addAttribute("myactivityExecutions", myactivityExecutions);
+        model.addAttribute("activityExecutions", activityExecutions);
+
         model.addAttribute("activityExecutions", activityExecutionService.findAll());
 
         return "experiments/activityExecutions/list";
     }
 
-    @RequestMapping(value = "/experiments/activityExecutions/add", method = RequestMethod.GET)
-    public String showAddActivityExecutionForm(Model model, HttpSession session) {
+    @RequestMapping(value = "/experiments/activityExecutions/add/{id}", method = RequestMethod.GET)
+    public String showAddActivityExecutionForm(@PathVariable("id") int activityId, Model model, HttpSession session) {
 
         LOGGER.info("showAddActivityExecutionForm()");
 
         User user = (User) session.getAttribute("logged_user");
+        Activity activity = activityService.find(activityId);
 
         ActivityExecution activityExecution = new ActivityExecution();
         // set default value
         activityExecution.setAuthor(user.getAgent().getResearcher());
+        activityExecution.setActivity(activity);
         model.addAttribute("activityExecutionForm", activityExecution);
         populateDefaultModel(model);
 
@@ -157,7 +175,7 @@ public class ExperimentActivityExecutionsController {
      * @param model
      */
     private void populateDefaultModel(Model model) {
-        model.addAttribute("activityList", activityService.findAll());        
+        model.addAttribute("activityList", activityService.findAll());
         model.addAttribute("inputsList", portService.findAll());
         model.addAttribute("outputsList", portService.findAll());
     }

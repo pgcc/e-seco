@@ -1,8 +1,10 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowExecutionFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
@@ -59,27 +61,48 @@ public class ExperimentWorkflowExecutionsController {
     }
 
     @RequestMapping(value = "/experiments/workflowExecutions", method = RequestMethod.GET)
-    public String showAllWorkflowExecutions(Model model) {
+    public String showAllWorkflowExecutions(Model model, HttpSession session) {
 
         LOGGER.info("showAllWorkflowExecutions()");
-        model.addAttribute("workflowExecutions", workflowExecutionService.findAll());
+        ArrayList<WorkflowExecution> myworkflowExecutions = new ArrayList<>();
+        ArrayList<WorkflowExecution> workflowExecutions = new ArrayList<>();
+
+        User user = (User) session.getAttribute("logged_user");
+        for (WorkflowExecution w : workflowExecutionService.findAll()) {
+            if (w.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myworkflowExecutions.add(w);
+            } else {
+                workflowExecutions.add(w);
+            }
+        }
+
+        model.addAttribute("myworkflowExecutions", myworkflowExecutions);
+        model.addAttribute("workflowExecutions", workflowExecutions);
 
         return "experiments/workflowExecutions/list";
     }
 
-    @RequestMapping(value = "/experiments/workflowExecutions/add", method = RequestMethod.GET)
-    public String showAddWorkflowExecutionForm(Model model, HttpSession session) {
+    @RequestMapping(value = "/experiments/workflowExecutions/add/{id}", method = RequestMethod.GET)
+    public String showAddWorkflowExecutionForm(@PathVariable("id") int workflowId, Model model, HttpSession session) {
 
         LOGGER.info("showAddWorkflowExecutionForm()");
 
         User user = (User) session.getAttribute("logged_user");
+        Workflow workflow = workflowService.find(workflowId);
 
         WorkflowExecution workflowExecution = new WorkflowExecution();
         // set default value
         workflowExecution.setAuthor(user.getAgent().getResearcher());
+        workflowExecution.setWorkflow(workflow);
         model.addAttribute("workflowExecutionForm", workflowExecution);
         populateDefaultModel(model);
+        model.addAttribute("experimentList", workflow.getExperiments());
 
+        ArrayList<ActivityExecution> activityExecutionsList = new ArrayList();
+        for (Activity activity : workflow.getActivities()) {
+            activityExecutionsList.addAll(activity.getExecutions());
+        }
+        model.addAttribute("activityExecutionsList", activityExecutionsList);
         return "experiments/workflowExecutions/workflow-executions-form";
     }
 

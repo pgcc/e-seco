@@ -10,16 +10,17 @@
             <i class="fa fa-plus-circle"></i> Add Activity
         </a>
     </li>
-    <c:if test="${activity != null}">
+    <c:if test="${activity != null && activity.author.agent.user.id == sessionScope.logged_user.id}">
         <li>
             <a href="<c:url value="/experiments/activities/${activity.id}/update"/>">
                 <i class="fa fa-refresh"></i> Update
             </a>
         </li>  
+        <li>
+            <a href="<c:url value="/experiments/activityExecutions/add/${activity.id}"/>">
+                <i class="fa fa-plus-circle"></i> Execute
+            </a>
+        </li>  
     </c:if>
-    <li>
-        <a href="<c:url value="/experiments/activityExecutions/add"/>">
-            <i class="fa fa-plus-circle"></i> Add Execution
-        </a>
-    </li>  
+
 </ul>

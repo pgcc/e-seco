@@ -57,9 +57,25 @@ public class ExperimentWorkflowsController {
     }
 
     @RequestMapping(value = "/experiments/workflows", method = RequestMethod.GET)
-    public String showAllWorkflows(Model model) {
+    public String showAllWorkflows(Model model, HttpSession session) {
 
         LOGGER.info("showAllWorkflows()");
+        
+        ArrayList<Workflow> myworkflows = new ArrayList<>();
+        ArrayList<Workflow> workflows = new ArrayList<>();
+        
+        User user = (User) session.getAttribute("logged_user");
+        for (Workflow w : workflowService.findAll()) {
+            if (w.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
+                myworkflows.add(w);
+            } else{
+                workflows.add(w);
+            }
+        }
+
+        model.addAttribute("myworkflows", myworkflows);
+        model.addAttribute("workflows", workflows);
+        
         model.addAttribute("workflows", workflowService.findAll());
 
         return "experiments/workflows/list";

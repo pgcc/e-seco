@@ -62,7 +62,7 @@
                 </div>
             </c:if> 
 
-            <h2>All Activities</h2>
+            <h2>My Activities</h2>
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -76,12 +76,11 @@
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>
-                        <c:forEach var="activity" items="${activities}">
+                        <c:forEach var="activity" items="${myactivities}">
 
                             <spring:url value="activities/${activity.id}" var="activityUrl" />
                             <spring:url value="activities/${activity.id}/delete" var="deleteUrl" /> 
                             <spring:url value="activities/${activity.id}/update" var="updateUrl" />
-
 
                             <tr>
                                 <td onclick="location.href = '${activityUrl}'">${activity.id}</td>
@@ -101,6 +100,42 @@
                                             post('${deleteUrl}')">
                                         <span class="glyphicon glyphicon-remove"/>
                                     </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+
+            <h2>All Activities</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Name</th>
+                                <th>Author</th>
+                                <th>Created In</th>
+                                <th class="text-center" >Action</th>
+                            </tr>
+                        </thead>
+                        <c:forEach var="activity" items="${activities}">
+
+                            <spring:url value="activities/${activity.id}" var="activityUrl" />
+
+                            <tr>
+                                <td onclick="location.href = '${activityUrl}'">${activity.id}</td>
+                                <td onclick="location.href = '${activityUrl}'">${activity.name}</td>
+                                <td onclick="location.href = '${activityUrl}'">${activity.author.displayName}</td>
+                                <td onclick="location.href = '${activityUrl}'">${activity.dateCreated}</td>
+
+
+                                <td class="text-center">
+                                    <button class="btn btn-link" title="view" onclick="location.href = '${activityUrl}'">
+                                        <span class="glyphicon glyphicon-eye-open"/>
+                                    </button>                                    
                                 </td>
                             </tr>
                         </c:forEach>

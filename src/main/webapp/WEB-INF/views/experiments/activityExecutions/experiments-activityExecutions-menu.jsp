@@ -4,12 +4,7 @@
         <a href="<c:url value="/experiments/activityExecutions"/>">
             <i class="fa fa-th"></i> Activity Executions
         </a>
-    </li>
-    <li>
-        <a href="<c:url value="/experiments/activityExecutions/add"/>">
-            <i class="fa fa-plus-circle"></i> Add Activity Execution
-        </a>
-    </li>    
+    </li> 
     <c:if test="${activityExecution != null}">
         <li>
             <a href="<c:url value="/experiments/activityExecutions/${activityExecution.id}/update"/>">
