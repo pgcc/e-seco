@@ -13,8 +13,8 @@
 
 
     <jsp:attribute name="stylesheets">
-<link rel="stylesheet"
-      href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
+        <link rel="stylesheet"
+              href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
         <style type="text/css">
             .bld {
                 font-weight: bold;
@@ -24,9 +24,9 @@
 
 
     <jsp:attribute name="javascripts">
-<script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
         <script type="text/javascript"
-                src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
+        src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var researcherKeywordsJson = JSON.parse('${researcherKeywordsJSON}');
@@ -40,22 +40,23 @@
                 width = width.replace("px", "");
                 var wordCountData = mountDataToWordCount(researcherKeywordsJson);
                 drawWordCount(wordCountData, "#box-chart-keywords", width);
-            };
+            }
+            ;
 
             function mountDataToWordCount(itemData) {
                 var wordCountData = [];
 
-                $.each(itemData, function(i, keyword){
+                $.each(itemData, function (i, keyword) {
                     var foundKeywordInList = false;
-                    $.each(wordCountData, function(i, keywordInList){
-                        if(keywordInList.text === keyword.name){
+                    $.each(wordCountData, function (i, keywordInList) {
+                        if (keywordInList.text === keyword.name) {
                             foundKeywordInList = true;
-                            if(keywordInList.size <= 60){
+                            if (keywordInList.size <= 60) {
                                 keywordInList.size += 5;
                             }
                         }
                     });
-                    if(!foundKeywordInList){
+                    if (!foundKeywordInList) {
                         wordCountData.push({
                             "text": keyword.name,
                             "size": 15
@@ -190,14 +191,14 @@
                         </div>
                         <div id="collapseRatingsVisualization" class="panel-collapse collapse out">
 
-                                <table class="table table-bordered">
-                                    <thead>
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
                                         <th>Keyword</th>
                                         <th class="text-center" style="width:100px;">Year</th>
                                     </tr>
-                                    </thead>
-                                    <tbody>
+                                </thead>
+                                <tbody>
                                     <c:choose>
                                         <c:when test="${not empty researcher.researchKeywords}">
                                             <c:forEach var="keyword" items="${researcher.researchKeywords}">
@@ -215,8 +216,8 @@
                                             </tr>
                                         </c:otherwise>
                                     </c:choose>
-                                    </tbody>
-                                </table>
+                                </tbody>
+                            </table>
 
                         </div>
                     </div>
@@ -233,9 +234,11 @@
                         <button onclick="location.href = '${urlProfile}'" class="btn btn-link"><span
                                 class="glyphicon glyphicon-arrow-left"></span> Back
                         </button>
-                        <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span
-                                class="glyphicon glyphicon-refresh"></span> Update
-                        </button>
+                        <c:if test="${researcher.agent.user.id == sessionScope.logged_user.id}">
+                            <button onclick="location.href = '${urlUpdate}'" class="btn btn-link"><span
+                                    class="glyphicon glyphicon-refresh"></span> Update
+                            </button>
+                        </c:if>
                     </ul>
                 </div>
             </nav>

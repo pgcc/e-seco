@@ -3,6 +3,8 @@ package br.ufjf.pgcc.eseco.app.controller;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -28,16 +30,32 @@ public class AgentsController extends CommonController {
     public AgentsController(AgentService agentService) {
         this.agentService = agentService;
     }
-    
+
     @RequestMapping(value = "/agents", method = RequestMethod.GET)
     public String showAllAgents(Model model) {
 
         LOGGER.info("showAllAgents()");
         model.addAttribute("agents", agentService.findAll());
-        
+
         return "agents/list";
     }
-    
+
+    @RequestMapping(value = "/agents/developers", method = RequestMethod.GET)
+    public String showAllAgentsDevelopers(Model model) {
+
+        LOGGER.info("showAllAgentsDevelopers()");
+
+        List<Agent> agents = new ArrayList<>();
+
+        for (Agent agent : agentService.findAll()) {
+            if (agent.getDeveloper() != null) {
+                agents.add(agent);
+            }
+        }
+        model.addAttribute("agents", agents);
+
+        return "agents/list";
+    }
 
     @RequestMapping(value = "/agents/add", method = RequestMethod.GET)
     public String showAddAgentForm(Model model, HttpSession session) {
