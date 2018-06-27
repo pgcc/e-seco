@@ -1,0 +1,604 @@
+{
+  "agent": {
+    "kepler:user": {
+      "prov:label": "Lenita"
+    }
+  },
+  "wasGeneratedBy": {
+    "_:wGB99": {
+      "prov:time": "2018-06-26T23:40:22.827-03:00",
+      "prov:entity": "kepler:e9",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados: .outputFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+    "_:wGB98": {
+      "prov:time": "2018-06-26T23:40:22.811-03:00",
+      "prov:entity": "kepler:e8",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação GPR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a8"
+    },
+    "_:wGB97": {
+      "prov:time": "2018-06-26T23:40:22.811-03:00",
+      "prov:entity": "kepler:e7",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação CAR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a7"
+    },
+    "_:wGB96": {
+      "prov:time": "2018-06-26T23:40:22.795-03:00",
+      "prov:entity": "kepler:e6",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.classificação.outputFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:wGB95": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e5",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a5"
+    },
+    "_:wGB94": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e4",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a4"
+    },
+    "_:wGB93": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e3",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a3"
+    },
+    "_:wGB92": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Seleção de animais.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a2"
+    },
+    "_:wGB91": {
+      "prov:time": "2018-06-26T23:40:22.748-03:00",
+      "prov:entity": "kepler:e1",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.String Constant.output",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a1"
+    }
+  },
+  "activity": {
+    "kepler:a4": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.764-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.764-03:00"
+    },
+    "kepler:a5": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.764-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.764-03:00"
+    },
+    "kepler:a2": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.748-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Seleção de animais",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.764-03:00"
+    },
+    "kepler:a3": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.764-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.764-03:00"
+    },
+    "kepler:a8": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.811-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Classificação GPR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.811-03:00"
+    },
+    "kepler:a9": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileCopy",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.811-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados: ",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.827-03:00"
+    },
+    "kepler:a6": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileCopy",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.764-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.classificação",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.795-03:00"
+    },
+    "kepler:a7": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.795-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Classificação CAR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.811-03:00"
+    },
+    "kepler:a10": {
+      "kepler:actorClass": {
+        "$": "org.kepler.actor.Logger",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.827-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Adaptação dos animais",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.827-03:00"
+    },
+    "kepler:a1": {
+      "kepler:actorClass": {
+        "$": "ptolemy.actor.lib.StringConst",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-26T23:40:22.748-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.String Constant",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-26T23:40:22.748-03:00"
+    }
+  },
+  "prefix": {
+    "xsd": "http://www.w3.org/2001/XMLSchema",
+    "prov": "http://www.w3.org/ns/prov#",
+    "kepler": "http://kelper-project.org"
+  },
+  "wasAssociatedWith": {
+    "kepler:waw8": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a8"
+    },
+    "kepler:waw9": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a9"
+    },
+    "kepler:waw6": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a6"
+    },
+    "kepler:waw7": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a7"
+    },
+    "kepler:waw4": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a4"
+    },
+    "kepler:waw5": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a5"
+    },
+    "kepler:waw2": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a2"
+    },
+    "kepler:waw3": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a3"
+    },
+    "kepler:waw1": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a1"
+    },
+    "kepler:waw10": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a10"
+    }
+  },
+  "used": {
+    "_:u109": {
+      "prov:time": "2018-06-26T23:40:22.811-03:00",
+      "prov:entity": "kepler:e8",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados: .destinationFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+    "_:u100": {
+      "prov:time": "2018-06-26T23:40:22.748-03:00",
+      "prov:entity": "kepler:e1",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Seleção de animais.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a2"
+    },
+    "_:u110": {
+      "prov:time": "2018-06-26T23:40:22.827-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Adaptação dos animais.text",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a10"
+    },
+    "_:u104": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e5",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.classificação.sourceFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:u103": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e3",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a5"
+    },
+    "_:u102": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e3",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a4"
+    },
+    "_:u101": {
+      "prov:time": "2018-06-26T23:40:22.764-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a3"
+    },
+    "_:u108": {
+      "prov:time": "2018-06-26T23:40:22.811-03:00",
+      "prov:entity": "kepler:e7",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados: .sourceFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+    "_:u107": {
+      "prov:time": "2018-06-26T23:40:22.811-03:00",
+      "prov:entity": "kepler:e6",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação GPR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a8"
+    },
+    "_:u106": {
+      "prov:time": "2018-06-26T23:40:22.795-03:00",
+      "prov:entity": "kepler:e6",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação CAR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a7"
+    },
+    "_:u105": {
+      "prov:time": "2018-06-26T23:40:22.780-03:00",
+      "prov:entity": "kepler:e4",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.classificação.destinationFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    }
+  },
+  "entity": {
+    "kepler:workflow": {
+      "kepler:executionStopTime": {
+        "$": "2018-06-26T23:40:22.827-03:00",
+        "type": "xsd:dateTime"
+      },
+      "prov:value": {
+        "$": "\u003c?xml version\u003d\"1.0\" standalone\u003d\"no\"?\u003e\n\u003c!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\"\u003e\n\u003centity name\u003d\"workflow_CAR_GPR\" class\u003d\"org.kepler.moml.CompositeClassEntity\"\u003e\n    \u003cproperty name\u003d\"_createdBy\" class\u003d\"ptolemy.kernel.attributes.VersionAttribute\" value\u003d\"11.0.devel\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:uuid:255a11e4-5b85-4fd5-851f-40537b110e98:100:327\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.kepler.moml.CompositeClassEntity\"\u003e\n        \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"null\"\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_windowProperties\" class\u003d\"ptolemy.actor.gui.WindowPropertiesAttribute\" value\u003d\"{bounds\u003d{-8, -8, 1382, 744}, maximized\u003dtrue}\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilSize\" class\u003d\"ptolemy.actor.gui.SizeAttribute\" value\u003d\"[1061, 613]\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilZoomFactor\" class\u003d\"ptolemy.data.expr.ExpertParameter\" value\u003d\"0.6400000000000001\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilCenter\" class\u003d\"ptolemy.data.expr.ExpertParameter\" value\u003d\"{650.125, 312.83909903477576}\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"SDF Director\" class\u003d\"ptolemy.domains.sdf.kernel.SDFDirector\"\u003e\n        \u003cproperty name\u003d\"localClock\" class\u003d\"ptolemy.actor.LocalClock\"\u003e\n            \u003cproperty name\u003d\"globalTimeResolution\" class\u003d\"ptolemy.actor.parameters.SharedParameter\" value\u003d\"1.0E-10\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"clockRate\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"1.0\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"iterations\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"AUTO\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"vectorizationFactor\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"1\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"allowDisconnectedGraphs\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"allowRateChanges\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"constrainBufferSizes\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"period\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"0.0\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"synchronizeToRealTime\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Scheduler\" class\u003d\"ptolemy.domains.sdf.kernel.SDFScheduler\"\u003e\n            \u003cproperty name\u003d\"constrainBufferSizes\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"constrainBufferSizes\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSteve Neuendorffer\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026#10;\u0026lt;p\u0026gt;The SDF Director is often used to oversee fairly simple, sequential workflows in which the director can determine the order of actor invocation from the workflow. Types of workflows that would run well under an SDF Director include processing and reformatting tabular data, converting one data type to another, and reading and plotting a series of data points. A workflow in which an image is read, processed (rotated, scaled, clipped, filtered, etc.), and then displayed, is also an example of a sequential workflow that requires a director simply to ensure that each actor fires in the proper order (i.e., that each actor executes only after it receives its required inputs).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The SDF Director is very efficient and will not tax system resources with overhead. However, this efficiency requires that certain conditions be met, namely that the data consumption and production rate of each actor in an SDF workflow be constant and declared. If an actor reads one piece of data and calculates and outputs a single result, it must always read and output a single token of data. This data rate cannot change during workflow execution and, in general, workflows that require dynamic scheduling and/or flow control cannot use this director. Additionally, the SDF Director has no understanding of passing time (at least by default), and actors that depend on a notion of time may not work as expected. For example, a TimedPlotter actor will plot all values at time zero when used in SDF. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;By default, the SDF Director requires that all actors in its workflow be connected. Otherwise, the director cannot account for concurrency between disconnected workflow parts. Usually, a PN Director should be used for workflows that contain disconnected actors; however, the SDF Director\u0027s allowDisconnectedGraphs parameter may also be set to true. The SDF Director will then schedule each disconnected \u0026quot;island\u0026quot; independently. The director cannot infer the sequential relationship between disconnected actors (i.e., nothing forces the director to finish executing all actors on one island before firing actors on another). However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF model indicate an error.\u0026lt;/p\u0026gt;\u0026#10; \u0026#10;\u0026lt;p\u0026gt;Because SDF Directors schedule actors to fire only after they receive their inputs, workflows that require loops (feeding an actor\u0027s output back into its input port for further processing) can cause \u0026quot;deadlock\u0026quot; errors. The deadlock errors occur because the actor depends on its own output value as an initial input. To fix this problem, use a SampleDelay actor to generate and inject an initial input value into the workflow.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The SDF Director determines the order in which actors execute and how many times each actor needs to be fired to complete a single iteration of the workflow. This schedule is calculated BEFORE the director begins to iterate the workflow. Because the SDF Director calculates a schedule in advance, it is quite efficient. However, SDF workflows must be static. In other words, the same number of tokens must be consumed/produced at every iteration of the workflow. Workflows that require dynamic control structures, such as a BooleanSwitch actor that sends output on one of two ports depending on the value of a \u0027control\u0027, cannot be used with an SDF Director because the number of tokens on each output can change for each execution.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Unless otherwise specified, the SDF Director assumes that each actor consumes and produces exactly one token per channel on each firing. Actors that do not follow the one-token-per-channel firing convention (e.g., Repeat or Ramp) must declare the number of tokens they produce or consume via the appropriate parameters. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The number of times a workflow is iterated is controlled by the director\u0027s iterations parameter. Since Kepler 2.4, this parameter is set to \u0026quot;AUTO\u0026quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, \u0026quot;AUTO\u0026quot; means its value will be \u0026quot;1\u0026quot; when it is placed in the top level workflow, and will be \u0026quot;UNBOUNDED\u0026quot; when it is placed in a composite actor. This default value works for most cases. You can also select \u0026quot;UNBOUNDED\u0026quot; or specify \u0026quot;0\u0026quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The amount of data processed by an SDF workflow is a function of both the number of times the workflow iterates and the value of the director\u0027s vectorizationFactor parameter. The vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The SDF Director has several advanced parameters that are generally only relevant when an SDF workflow contains composite components. In most cases the period, timeResolution, synchronizeToRealTime, allowRateChanges, timeResolution, and constrainBufferSizes parameters can be left at their default values.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;For more information about the SDF Director, see the Ptolemy documentation (http://ptolemy.eecs.berkeley.edu/papers/05/ptIIdesign3-domains/ptIIdesign3-domains.pdf).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:allowDisconnectedGraphs\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to allow disconnected actors in the workflow (by default, all actors are required to be connected). If disconnected actors are permitted, the SDF Director will schedule each disconnected \u0027island\u0027 independently. Nothing \u0026quot;forces\u0026quot; the director to finish executing all actors on one island before firing actors on another. However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF workflow indicate an error.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:allowRateChanges\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether dynamic rate changes are permitted or not. By default, rate changes are not permitted, and the director will perform a check to disallow such workflows. If the parameter is selected, then workflows that require rate parameters to be modified during execution are valid, and the SDF Director will dynamically compute a new schedule at runtime. This is an advanced parameter that can usually be left at its default value.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:constrainBufferSizes\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether buffer sizes are fixed. By default, buffers are fixed, and attempts to write to the buffer that cause the buffer to exceed its scheduled size result in an error. This is an advanced parameter that can usually be left at its default value.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:timeResolution\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe time precision used by this director. All time values are rounded to the nearest multiple of this number. The value is a double that defaults to \u0026quot;1E-10\u0026quot; (which is 10-10). This is an advanced parameter that can usually be left at its default value.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:iterations\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify the number of times a workflow is iterated. Since Kepler 2.4, this parameter is set to \u0026quot;AUTO\u0026quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, \u0026quot;AUTO\u0026quot; means its value will be \u0026quot;1\u0026quot; when it is placed in the top level workflow, and will be \u0026quot;UNBOUNDED\u0026quot; when it is placed in a composite actor. This default value works for most cases. You can also select \u0026quot;UNBOUNDED\u0026quot; or specify \u0026quot;0\u0026quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:vectorizationFactor\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:synchronizeToRealTime\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the execution should synchronize to real time or not. By default, the director does not synchronize to real time. If synchronize is selected, the director will only process the workflow when elapsed real time matches the product of the period parameter and the iteration count. Note: if the period parameter has a value of 0.0 (the default), then selecting this parameter has no effect. This is an advanced parameter that can usually be left at its default value.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:period\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe time period of each iteration. The value is a double that defaults to 0.0, which means that the director does not increment workflow time. If the value greater than 0.0, the actor will increment workflow time each time it fires. This is an advanced parameter that can usually be left at its default value. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org:director:1:2\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"ptolemy.domains.sdf.kernel.SDFDirector\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:directorclass:1:2\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#Director\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#Director\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{95, 115}\"\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"Provenance Recorder\" class\u003d\"org.kepler.provenance.ProvenanceRecorder\"\u003e\n        \u003cproperty name\u003d\"Record Token Values\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"User Name\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Machine Name\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"containerWorkflowLSID\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"containerWorkflowName\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Delay Recording Specification\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Recording Type\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"PROV\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:uuid:255a11e4-5b85-4fd5-851f-40537b110e98:111:4\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eRecords provenance\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eDaniel Crawl\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"\" class\u003d\"ptolemy.vergil.basic.DocAttribute\"\u003e\n            \u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"Daniel Crawl\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.kepler.provenance.ProvenanceRecorder\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:548:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{330, 85}\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"filename\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\provenance.json\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"namespace\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"http://kelper-project.org\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"nsPrefix\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"kepler\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"addTimestamps\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"outputType\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"JSON\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\" value\u003d\"urn:lsid:kepler-project.org:actor:548:1\"\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003centity name\u003d\"Seleção de animais\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\animais.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[290.0, 240.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"String Constant\" class\u003d\"ptolemy.actor.lib.StringConst\"\u003e\n        \u003cproperty name\u003d\"value\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"LOTE;REP;BEZ;IDAinicial;PESOinicial\u0026#10;B;36;5409;109,0;135,5\u0026#10;D;11;4548;169,0;172,5\u0026#10;C;2;4066;186,0;152,0\u0026#10;A;10;4546;201,0;154,0\u0026#10;D;8;4544;176,0;192,5\u0026#10;B;32;5403;116,0;147,0\u0026#10;B;27;4586;120,0;140,5\u0026#10;B;28;4587;128,0;153,0\u0026#10;D;7;4537;183,0;175,5\u0026#10;C;21;4577;134,0;126,5\u0026#10;B;31;5402;116,0;149,0\u0026#10;D;6;4536;183,0;177,0\u0026#10;C;25;4584;121,0;127,0\u0026#10;C;23;4582;123,0;141,0\u0026#10;B;34;5407;110,0;132,0\u0026#10;A;17;4560;153,0;155,5\u0026#10;D;16;4557;154,0;199,0\u0026#10;D;5;4535;184,0;167,5\u0026#10;B;35;5408;110,0;118,0\u0026#10;A;13;4550;165,0;162,5\u0026#10;C;20;4575;137,0;104,5\u0026#10;A;12;4549;168,0;155,5\u0026#10;B;30;5401;117,0;128,0\u0026#10;A;14;4551;165,0;171,0\u0026#10;C;26;4585;121,0;137,5\u0026#10;D;1;4065;187,0;169,5\u0026#10;B;33;5404;111,0;123,5\u0026#10;A;9;4545;176,0;166,5\u0026#10;A;19;4573;200,0;162,0\u0026#10;C;22;4581;126,0;144,0\u0026#10;A;4;4528;189,0;157,5\u0026#10;D;18;4572;143,0;181,0\u0026#10;D;3;4525;184,0;174,0\u0026#10;C;24;4583;121,0;131,0\u0026#10;C;29;4588;123,0;134,5\u0026#10;A;15;4554;158,0;167,0\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"firingCountLimit\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"NONE\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"NONE\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"0\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eEdward Lee\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The StringConstant actor outputs a string specified via the actor\u0027s value parameter.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specifying strings with the StringConstant actor is convenient, as the actor does not require that strings be surrounded by quotes. The actor is often used to specify file paths, which can be selected using the Browse button available in the actor\u0027s parameters.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specified string values can include references to parameters within scope (i.e., parameters defined at the same level of the hierarchy or higher). \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;NOTE: If using a PN Director, the \u0027firingCountLimit\u0027 parameter is often set to a finite integer (e.g. \u00271\u0027) so that the workflow will terminate. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:output\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts a string constant specified by the value parameter.  \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:trigger\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eA multiport that has no declared type (in other words, the port can accept any data type: double, int, array, etc.) If the port is connected, the actor will not fire until the trigger port receives an input token. Connecting the port is optional, but useful when scheduling the actor to perform at a certain time. \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:firingCountLimit\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe limit on the number of times the actor will fire. The default value is \u0027NONE\u0027, meaning there is no limit on the number of time the constant will be provided to the output port. Any integer can be provided as a value for this parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:value\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe value produced by the actor. Specified strings do not require enclosing quotes. (To include a \u0027$\u0027 sign in the string, enter \u0027$$\u0027.)\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"ptolemy.actor.lib.StringConst\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1052:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#StringFunctionActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#Constant\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_icon\" class\u003d\"ptolemy.vergil.icon.BoxedValueIcon\"\u003e\n            \u003cproperty name\u003d\"attributeName\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"value\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"displayWidth\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"60\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{50, 255}\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"trigger\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Adaptação dos animais\" class\u003d\"org.kepler.actor.Logger\"\u003e\n        \u003cproperty name\u003d\"logfile\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"$CWD\\kepler.log\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"header\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"format\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"text\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysAppend\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNorbert Podhorszki\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e$Id: Logger.xml 30507 2012-08-22 23:51:26Z crawl $\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026#10;Log information directed into a file. All Logger actors can write into the\u0026#10; same file, if their parameter points to the same file. Format as it is, or\u0026#10; XML. text format: date: header: text XML format:\u0026#10; \u0026#10; \u0026#10; If the text is empty (or only white spaces), nothing will be written. So you\u0026#10; do not need to filter out e.g. empty stderr messages before connecting to\u0026#10; this Logger actor.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:text\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe text to be printed into the log. This port is expects strings.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:logfile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe log file. It can be changed between firings. The file will be created if does not exists, otherwise text will be appended to the existing file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:format\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe format of the logger. Currently \u0026quot;text\u0026quot; or \u0026quot;xml\u0026quot;. Other value will mean \u0026quot;text\u0026quot;. If different loggers use different format option for the same file, the output will be a mixture of different formats.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:header\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe header information to be printed with the log. Useful to provide an actor name, or some meaningful name. Date is printed independently to the log.\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.kepler.actor.Logger\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1209:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#TextualOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[485.0, 245.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"text\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Coleta dos dados\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\dados coletados.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[495.0, 355.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Cálculo do CAR\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha CAR.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[700.0, 285.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Cálculo do GPR\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha GPR.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[710.0, 400.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"classificação\" class\u003d\"org.geon.FileCopy\"\u003e\n        \u003cproperty name\u003d\"sourceFileParam\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha CAR.csv\"\u003e\n            \u003cdisplay name\u003d\"source File\"/\u003e\n            \u003cproperty name\u003d\"allowDirectories\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"destFileParam\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha GPR.csv\"\u003e\n            \u003cdisplay name\u003d\"destination File\"/\u003e\n            \u003cproperty name\u003d\"allowDirectories\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"recursive\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eEfrat Jaeger\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileCopy actor copies a specified file/directory to a destination file/directory and outputs the destination file/directory name and path.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The source and destination file/directory paths can be accepted through either the sourceFile port or parameter. See FileParameter for more information about specifying paths.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Choose to overwrite the destination file/directory or append the copied file to the destination file using the actor\u0027s append parameter. By default, the actor will request confirmation before overwriting a file. Note: to move a file instead of copying it, use the FileCopier actor.\u0026lt;/p\u0026gt;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:sourceFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that accepts the file name and path of a file to be copied. See FileParameter for more information about specifying paths. The file name and path can also be specified using the sourceFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:outputFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the name and path of the copied file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:destinationFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that accepts the name and path of the destination file. See FileParameter for more information about specifying paths. The destination file name can also be specified using the destinationFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the source file to the specified destination file or to overwrite it. By default, the actor will overwrite any preexisting file (after asking for permission).\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:recursive\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the sub-directories in the source path should also be copied. By default, the actor will copy the sub-directories to destination path.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should request confirmation before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:destFileParam\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name and path of the destination file. See FileParameter for more information about specifying paths. The destination file name can also be specified using the destinationFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:sourceFileParam\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe file name and path of the file to be copied. See FileParameter for more information about specifying paths. The file name and path can also be specified via the sourceFile port.\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileCopy\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1112:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#FileSystemActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#FileSystem\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[895.0, 240.0]\"\u003e\n        \u003c/property\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Classificação GPR\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação GPR.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[1063.992919921875, 300.91552734375]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Classificação CAR\" class\u003d\"org.geon.FileWrite\"\u003e\n        \u003cproperty name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.FilePortParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação CAR.csv\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"alwaysFlush\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eNo author given\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileWriter actor reads a string and writes it to a file. The actor outputs the file path of the generated file.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify a destination file path with the fileName parameter. If the specified file does not exist, then the actor will create it.  If the file already exists, then the actor will ask for permission to overwrite it (unless the append parameter is selected, in which case the new content is appended to the existing content).\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The actor is similar to the LineWriter, except that the FileWriter outputs the generated file path, while the LineWriter actor does not. FileWriter is also similar to TextFileWriter, except that the FileWriter actor adds line breaks, while the TextFileWriter does not.\u0026lt;/p\u0026gt;\u0026#10;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that receives a string to write to a file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:url\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the file name of the generated file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the input string to an existing, specified file. By default, the actor will overwrite any preexisting file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should confirm before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:fileName\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name of the file to which to write. See FileParameter for more information about specifying file names. \u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileWrite\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1003:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#WriterOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#LocalOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[1080.0, 170.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"input\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"multiport\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"fileName\" class\u003d\"ptolemy.actor.parameters.ParameterPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Análise dos resultados: \" class\u003d\"org.geon.FileCopy\"\u003e\n        \u003cproperty name\u003d\"sourceFileParam\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação CAR.csv\"\u003e\n            \u003cdisplay name\u003d\"source File\"/\u003e\n            \u003cproperty name\u003d\"allowDirectories\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"destFileParam\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação GPR.csv\"\u003e\n            \u003cdisplay name\u003d\"destination File\"/\u003e\n            \u003cproperty name\u003d\"allowDirectories\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"append\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"confirmOverwrite\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"recursive\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eEfrat Jaeger\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The FileCopy actor copies a specified file/directory to a destination file/directory and outputs the destination file/directory name and path.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;The source and destination file/directory paths can be accepted through either the sourceFile port or parameter. See FileParameter for more information about specifying paths.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Choose to overwrite the destination file/directory or append the copied file to the destination file using the actor\u0027s append parameter. By default, the actor will request confirmation before overwriting a file. Note: to move a file instead of copying it, use the FileCopier actor.\u0026lt;/p\u0026gt;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:sourceFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that accepts the file name and path of a file to be copied. See FileParameter for more information about specifying paths. The file name and path can also be specified using the sourceFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:outputFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn output port that broadcasts the name and path of the copied file.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:destinationFile\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eAn input port that accepts the name and path of the destination file. See FileParameter for more information about specifying paths. The destination file name can also be specified using the destinationFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:append\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether to append the source file to the specified destination file or to overwrite it. By default, the actor will overwrite any preexisting file (after asking for permission).\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:recursive\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the sub-directories in the source path should also be copied. By default, the actor will copy the sub-directories to destination path.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:confirmOverwrite\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should request confirmation before overwriting an existing file. By default, the actor will ask for confirmation.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:sourceFileParam\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe file name and path of the file to be copied. See FileParameter for more information about specifying paths. The file name and path can also be specified via the sourceFile port.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:destFileParam\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe name and path of the destination file. See FileParameter for more information about specifying paths. The destination file name can also be specified using the destinationFile parameter.\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.geon.FileCopy\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:1112:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#FileSystemActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#FileSystem\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[1275.0, 325.0]\"\u003e\n        \u003c/property\u003e\n    \u003c/entity\u003e\n    \u003crelation name\u003d\"relation2\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation3\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n        \u003cvertex name\u003d\"vertex1\" value\u003d\"[365.0, 275.0]\"\u003e\n        \u003c/vertex\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n        \u003cvertex name\u003d\"vertex1\" value\u003d\"[625.0, 380.0]\"\u003e\n        \u003c/vertex\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation4\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation5\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation6\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n        \u003cvertex name\u003d\"vertex1\" value\u003d\"[1005.0, 280.0]\"\u003e\n        \u003c/vertex\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation7\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation8\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003clink port\u003d\"Seleção de animais.input\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Seleção de animais.url\" relation\u003d\"relation3\"/\u003e\n    \u003clink port\u003d\"String Constant.output\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Adaptação dos animais.text\" relation\u003d\"relation3\"/\u003e\n    \u003clink port\u003d\"Coleta dos dados.input\" relation\u003d\"relation3\"/\u003e\n    \u003clink port\u003d\"Coleta dos dados.url\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Cálculo do CAR.input\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Cálculo do CAR.url\" relation\u003d\"relation4\"/\u003e\n    \u003clink port\u003d\"Cálculo do GPR.input\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Cálculo do GPR.url\" relation\u003d\"relation5\"/\u003e\n    \u003clink port\u003d\"classificação.sourceFile\" relation\u003d\"relation4\"/\u003e\n    \u003clink port\u003d\"classificação.destinationFile\" relation\u003d\"relation5\"/\u003e\n    \u003clink port\u003d\"classificação.outputFile\" relation\u003d\"relation6\"/\u003e\n    \u003clink port\u003d\"Classificação GPR.input\" relation\u003d\"relation6\"/\u003e\n    \u003clink port\u003d\"Classificação GPR.url\" relation\u003d\"relation7\"/\u003e\n    \u003clink port\u003d\"Classificação CAR.input\" relation\u003d\"relation6\"/\u003e\n    \u003clink port\u003d\"Classificação CAR.url\" relation\u003d\"relation8\"/\u003e\n    \u003clink port\u003d\"Análise dos resultados: .sourceFile\" relation\u003d\"relation8\"/\u003e\n    \u003clink port\u003d\"Análise dos resultados: .destinationFile\" relation\u003d\"relation7\"/\u003e\n\u003c/entity\u003e\n",
+        "type": "xsd:string"
+      },
+      "kepler:executionStartTime": {
+        "$": "2018-06-26T23:40:22.717-03:00",
+        "type": "xsd:dateTime"
+      },
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR",
+        "type": "xsd:string"
+      },
+      "kepler:executionLSID": {
+        "$": "urn:lsid:uuid:255a11e4-5b85-4fd5-851f-40537b110e98:179:1",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e8": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação GPR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e9": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação GPR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e6": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha GPR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e7": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação CAR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e1": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "LOTE;REP;BEZ;IDAinicial;PESOinicial\nB;36;5409;109,0;135,5\nD;11;4548;169,0;172,5\nC;2;4066;186,0;152,0\nA;10;4546;201,0;154,0\nD;8;4544;176,0;192,5\nB;32;5403;116,0;147,0\nB;27;4586;120,0;140,5\nB;28;4587;128,0;153,0\nD;7;4537;183,0;175,5\nC;21;4577;134,0;126,5\nB;31;5402;116,0;149,0\nD;6;4536;183,0;177,0\nC;25;4584;121,0;127,0\nC;23;4582;123,0;141,0\nB;34;5407;110,0;132,0\nA;17;4560;153,0;155,5\nD;16;4557;154,0;199,0\nD;5;4535;184,0;167,5\nB;35;5408;110,0;118,0\nA;13;4550;165,0;162,5\nC;20;4575;137,0;104,5\nA;12;4549;168,0;155,5\nB;30;5401;117,0;128,0\nA;14;4551;165,0;171,0\nC;26;4585;121,0;137,5\nD;1;4065;187,0;169,5\nB;33;5404;111,0;123,5\nA;9;4545;176,0;166,5\nA;19;4573;200,0;162,0\nC;22;4581;126,0;144,0\nA;4;4528;189,0;157,5\nD;18;4572;143,0;181,0\nD;3;4525;184,0;174,0\nC;24;4583;121,0;131,0\nC;29;4588;123,0;134,5\nA;15;4554;158,0;167,0",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e4": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha GPR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e5": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha CAR.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e2": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\animais.csv",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e3": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\YURI\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\dados coletados.csv",
+        "type": "xsd:string"
+      }
+    }
+  }
+}
