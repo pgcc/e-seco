@@ -60,7 +60,7 @@ public class WorkflowExecution {
     @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
     private Date endTime;
 
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_execution_activity_execution",

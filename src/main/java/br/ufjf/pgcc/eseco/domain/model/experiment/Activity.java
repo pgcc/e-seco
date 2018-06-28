@@ -57,7 +57,7 @@ public class Activity {
     )
     private List<WorkflowService> workflowServices;
 
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name = "exp_workflow_activity",
