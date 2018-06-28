@@ -18,7 +18,63 @@
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript">
+            // Get JSON Data for visualizations
+            var provenanceJson = JSON.parse('${experimentProvenanceJSON}');
+            console.log(${experimentProvenanceJSON});
+            /***********************************************/
+            /* PROVENANCE GRAPH                            */
+            /***********************************************/
+            function showProvenanceGraphVisualization() {
+                var target = "#box-chart-provenance-graph";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
 
+                var graphData = mountDataToProvenance(provenanceJson);
+
+                drawGraph(graphData, target, width);
+            }
+            ;
+            function mountDataToProvenance(itemData) {
+
+                var info = "";
+                for (var i in itemData.nodes) {
+                    info = info += i + " => " + itemData.nodes[i].name;
+                    info = info += '\n';
+                }
+                var graphData = {
+                    "nodes": [],
+                    "links": []
+                };
+
+                for (var i in itemData.nodes) {
+                    graphData.nodes.push({
+                        "name": itemData.nodes[i].name, "group": 1, "kind": 7, "img": itemData.nodes[i].img, "label": "false", info: ""
+                    });
+                }
+                for (var i in itemData.relations) {
+                    var experimentName = i;
+                    for (var j in itemData.relations[i]) {
+                        var targetName = itemData.relations[i][j].id_1;
+                        var sourceName = itemData.relations[i][j].id_2;
+
+                        var target = graphData.nodes.find(x => x.name == targetName);
+                        var source = graphData.nodes.find(x => x.name == sourceName);
+                        if(target.info == ""){
+                            target.info = "Experiments: ";
+                        }
+                        if (!target.info.includes(experimentName)) {
+                            target.info = target.info + experimentName + ", ";
+                        }
+                        graphData.links.push({
+                            "source": source, "target": target, "value": 2, "type": "link"
+                        });
+                    }
+                }
+                return graphData;
+            }
+            showProvenanceGraphVisualization();
+        </script>
     </jsp:attribute>
 
 
@@ -45,6 +101,21 @@
             <br/>
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Researchers Graph Visualization
+                                    </h3>
+                                </div>
+                                <div class="panel-body" style="position: relative;">
+                                    <img src="<c:url value="/resources/images/researchers-relations-graph-legend.png" />">
+                                    <div id="box-chart-provenance-graph"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table table-hover table-responsive">
                         <thead>
                             <tr>

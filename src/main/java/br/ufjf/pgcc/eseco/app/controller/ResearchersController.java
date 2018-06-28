@@ -5,9 +5,9 @@ import br.ufjf.pgcc.eseco.app.validator.ResearcherFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.core.*;
 import br.ufjf.pgcc.eseco.domain.service.core.*;
 import br.ufjf.pgcc.eseco.common.controller.CommonController;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
-
-import java.io.IOException;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,7 @@ public class ResearchersController extends CommonController {
     private final InterestService interestService;
     private final MendeleyService mendeleyService;
     private final ResearcherKeywordService researcherKeywordService;
+    private final ExperimentService experimentService;
 
     @Autowired
     ResearcherFormValidator researcherFormValidator;
@@ -56,7 +59,8 @@ public class ResearchersController extends CommonController {
     @Autowired
     public ResearchersController(ResearcherService researcherService, InstitutionService institutionService,
             AgentService agentService, DisciplineService disciplineService, InterestService interestService,
-            MendeleyService mendeleyService, ResearcherKeywordService researcherKeywordService) {
+            MendeleyService mendeleyService, ResearcherKeywordService researcherKeywordService,
+            ExperimentService experimentService) {
         this.researcherService = researcherService;
         this.institutionService = institutionService;
         this.agentService = agentService;
@@ -64,14 +68,46 @@ public class ResearchersController extends CommonController {
         this.interestService = interestService;
         this.mendeleyService = mendeleyService;
         this.researcherKeywordService = researcherKeywordService;
+        this.experimentService = experimentService;
     }
 
     @RequestMapping(value = "/researchers", method = RequestMethod.GET)
     public String showAllResearchers(Model model) {
 
         LOGGER.info("showAllResearchers()");
-        model.addAttribute("researchers", researcherService.findAll());
+        List<Researcher> allResearchers = researcherService.findAll();
+        model.addAttribute("researchers", allResearchers);
 
+        List<Experiment> allExperiments = experimentService.findAll();
+        JSONObject object = new JSONObject();
+        JSONObject nodes = new JSONObject();
+        JSONObject relations = new JSONObject();
+        for (Researcher researcher : allResearchers) {
+            JSONObject node = new JSONObject();
+            node.put("name", researcher.getDisplayName());
+            node.put("img", researcher.getPhoto());
+            nodes.put(researcher.getId(), node);
+
+        }
+
+        for (Experiment experiment : allExperiments) {
+            JSONObject experimentJson = new JSONObject();
+            relations.put("experiment_" + experiment.getId(), experimentJson);
+            for (Researcher researcher2 : experiment.getResearchers()) {
+                if (experiment.getAuthor().getId() != researcher2.getId()) {
+                    JSONObject peer = new JSONObject();
+                    peer.put("id_1", experiment.getAuthor().getDisplayName());
+                    peer.put("id_2", researcher2.getDisplayName());
+                    Integer.compare(experiment.getAuthor().getId(), researcher2.getId());
+                    experimentJson.put(experiment.getAuthor().getId() + "_" + researcher2.getId(), peer);
+                }
+
+            }
+        }
+        object.put("nodes", nodes);
+        object.put("relations", relations);
+        model.addAttribute("experimentProvenanceJSON", object);
+        System.out.println(object);
         return "researchers/list";
     }
 

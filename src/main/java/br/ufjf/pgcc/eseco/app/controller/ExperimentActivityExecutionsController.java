@@ -72,8 +72,6 @@ public class ExperimentActivityExecutionsController {
         model.addAttribute("myactivityExecutions", myactivityExecutions);
         model.addAttribute("activityExecutions", activityExecutions);
 
-        model.addAttribute("activityExecutions", activityExecutionService.findAll());
-
         return "experiments/activityExecutions/list";
     }
 

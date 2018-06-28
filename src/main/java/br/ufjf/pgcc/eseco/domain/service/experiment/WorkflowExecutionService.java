@@ -1,7 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.WorkflowExecutionDAO;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

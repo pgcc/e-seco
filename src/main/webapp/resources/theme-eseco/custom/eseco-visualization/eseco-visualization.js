@@ -167,30 +167,37 @@ var GraphChart = {
                 .append("svg:path")
                 .attr("d", "M0,-5L10,0L0,5");
 
+
         // add the links and the arrows
         var path = svg.append("svg:g").selectAll("path")
                 .data(force.links())
                 .enter().append("svg:path")
                 .attr("class", function (d) {
                     var classes = "link " + d.type;
-
                     if (d.way == "interoperate") {
                         classes += " interoperate ";
                     }
-
-                    return classes
-
+                    return classes;
                 })
-                .attr("marker-end", "url(#end)");
+                .attr("marker-end", "url(#end)")
+                .attr("id", function (d) {
+                    return d.source.name + "_" + d.target.name + "_" + d.name;
+                });
 
         // add link labels
-        var linkLabels = svg.selectAll(".link-label")
+        svg.selectAll(".link-label")
                 .data(data.links)
                 .enter().append('svg:text')
+                .append("svg:textPath")
                 .attr({
                     "class": "link-label",
                     "text-anchor": "middle"
                 })
+                .attr("xlink:href", function (d) {
+                    return "#" + d.source.name + "_" + d.target.name + "_" + d.name;
+                })
+                .style("text-anchor", "middle")
+                .attr("startOffset", "50%")
                 .text(function (d) {
                     return d.name;
                 });
@@ -201,6 +208,21 @@ var GraphChart = {
                 .enter().append("g")
                 .attr("class", "node")
                 .call(force.drag);
+
+
+        svg.append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:circle")
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 16);
+
+        svg.append("svg:clipPath")
+                .attr("id", "clipG")
+                .append("svg:circle")
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 32);
 
         // add the nodes
         node.append("circle")
@@ -218,16 +240,64 @@ var GraphChart = {
                         return "purple";
                     } else if (d.kind == 6) {
                         return "yellow";
+                    } else if (d.kind == 7) {
+                        return "gray";
                     }
                 });
+
+
+        //add images at the nodes
+        var images = node.append("svg:image")
+                .attr("xlink:href", function (d) {
+                    return d.img;
+                })
+                .attr("x", "-16px")
+                .attr("y", "-16px")
+                .attr("width", "32px")
+                .attr("height", "32px")
+                .attr("clip-path", "url(#clip)");
+
+        images.on('mouseenter', function () {
+            // select element in current context
+            d3.select(this)
+                    .transition()
+                    .attr("x", function (d) {
+                        return -32;
+                    })
+                    .attr("y", function (d) {
+                        return -32;
+                    })
+                    .attr("height", 64)
+                    .attr("width", 64)
+                    .attr("clip-path", "url(#clipG)");
+        }).on('mouseleave', function () {
+            d3.select(this)
+                    .transition()
+                    .attr("x", function (d) {
+                        return -16;
+                    })
+                    .attr("y", function (d) {
+                        return -16;
+                    })
+                    .attr("height", 32)
+                    .attr("width", 32)
+                    .attr("clip-path", "url(#clip)");
+        });
+
 
         // add the text
         node.append("text")
                 .attr("x", 15)
                 .attr("dy", ".35em")
                 .text(function (d) {
+                    if (d.label == "false") {
+                        return "";
+                    }
                     return d.name.split('.').pop();
                 });
+
+
+
 
         // add tooltip information
         var tip;
@@ -243,16 +313,17 @@ var GraphChart = {
                     .style("stroke", "steelblue");
 
             tip.append("text")
-                    .text("Name: " + d.name)
+                    .text(d.name)
                     .attr("dy", "1em")
                     .attr("x", 5);
 
-            tip.append("text")
-                    .text("Properties: ")
-                    .attr("dy", "2em")
-                    .attr("x", 5);
 
-            if (d.info != null) {
+
+            if (d.info) {
+                tip.append("text")
+                        .text("Details: ")
+                        .attr("dy", "2em")
+                        .attr("x", 5);
                 for (var i = 0; i < d.info.split('\n').length; i++) {
                     var pos = 3 + i;
                     pos = pos + "em";
@@ -269,43 +340,44 @@ var GraphChart = {
         });
 
         container.on("click", function (d) {
-            tip.remove();
+            if (tip)
+                tip.remove();
         });
+
 
         // add the curvy lines
         function tick() {
 
             path.attr("d", function (d) {
-                if (isNaN(d.linknum) || d.linknum == null || d.linknum == undefined) {
-                    d.linknum = 1;
-                }
                 var dx = d.target.x - d.source.x,
                         dy = d.target.y - d.source.y,
-                        dr = Math.sqrt(dx * dx + dy * dy) / d.linknum;
-                return "M" +
-                        d.source.x + "," +
-                        d.source.y + "A" +
-                        dr + "," + dr + " 0 0,1 " +
-                        d.target.x + "," +
-                        d.target.y;
+                        dr = Math.sqrt(dx * dx + dy * dy);
+
+                if (isNaN(d.linknum) || d.linknum == null || d.linknum == undefined || d.linknum == 1) {
+                    d.linknum = 1;
+                    //rx ry x-axis-rotation large-arc-flag sweep-flag x y
+                    return "M" +
+                            d.source.x + "," +
+                            d.source.y + "A" +
+                            dr + "," + dr + " 0 0,1 " +
+                            d.target.x + "," +
+                            d.target.y;
+                } else {
+                    //rx ry x-axis-rotation large-arc-flag sweep-flag x y
+                    return "M" +
+                            d.source.x + "," +
+                            d.source.y + "A" +
+                            dr + "," + dr + " 0 0,0 " +
+                            d.target.x + "," +
+                            d.target.y;
+                }
             });
 
             node.attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
-
-            linkLabels.attr("x", function (d) {
-                if (d.linknum != 1) {
-                    return ((d.source.x + d.target.x + (d.linknum * 50)) / 2);
-                }
-                return ((d.source.x + d.target.x) / 2);
-            }).attr("y", function (d) {
-                if (d.linknum != 1) {
-                    return ((d.source.y + d.target.y + (d.linknum * 50)) / 2);
-                }
-                return ((d.source.y + d.target.y) / 2);
-            });
         }
+
     }
 };
 

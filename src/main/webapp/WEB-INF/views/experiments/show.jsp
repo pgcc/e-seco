@@ -13,47 +13,17 @@
     </jsp:attribute>
 
 
-    <jsp:attribute name="stylesheets">
-        <link rel="stylesheet"
-              href="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.css"/>">
-        <style type="text/css">
-            #tbl-rating-avg-values {
-                border-radius: 4px !important;
-            }
-
-            #tbl-rating-avg-values .progress {
-                margin-bottom: 0 !important;
-            }
-
-            .img-graph-legend {
-                position: absolute;
-                top: 20px;
-                left: 20px;
-            }
-        </style>
+    <jsp:attribute name="stylesheets">      
     </jsp:attribute>
 
 
     <jsp:attribute name="javascripts">
-        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.legend.min.js" />"></script>
-        <script type="text/javascript">
-            var d3version4 = d3;
-            window.d3 = null;
-        </script>
-        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v3.min.js" />"></script>
-        <script type="text/javascript">
-            var d3version3 = d3;
-            window.d3 = null;
-        </script>
-        <script type="text/javascript"
-        src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var provenanceJson = JSON.parse('${experimentProvenanceJSON}');
 
             /***********************************************/
-            /* USAGE AND RELATIONS GRAPH                   */
+            /* PROVENANCE GRAPH                            */
             /***********************************************/
             function showProvenanceGraphVisualization() {
                 var target = "#box-chart-provenance-graph";
@@ -75,7 +45,7 @@
                 var graphData = {
                     "nodes": [
                         {
-                            "name": "experiment_" +${experiment.id},
+                            "name": "experiment_${experiment.id}",
                             "group": 0,
                             "kind": 1, // Kind 1 = Principal item
                             "info": info
@@ -130,11 +100,9 @@
                     }
 
                 }
-                console.log(graphData);
                 return graphData;
             }
             showProvenanceGraphVisualization();
-
         </script>
     </jsp:attribute>
 
