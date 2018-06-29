@@ -93,8 +93,8 @@
                         <h3 class="panel-title">Developer Profile</h3>
                     </div>
                     <div class="panel-body">
-                        <c:if test="${not empty agent.developer}">
-                            <a href="<c:url value="/developers/${agent.developer.id}"/>"> Click here to access the Profile</a>
+                        <c:if test="${not empty agent.developer}"> <!--não está implementado ainda-->
+                            <a href="<c:url value="/agents/${agent.developer.id}"/>"> Click here to access the Profile</a>
                         </c:if>
                         <c:if test="${empty agent.developer}">
                             <span>${agent.name} does not have a Developer Profile</span>

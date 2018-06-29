@@ -206,6 +206,8 @@
 
         <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.v4.min.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3.legend.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3-sankey.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/d3-sankey.js" />"></script>
         <script type="text/javascript">
             var d3version4 = d3;
             window.d3 = null;

@@ -1651,3 +1651,267 @@ if (d3) {
         exports.cloud = cloud;
     })(typeof exports === "undefined" ? d3.layout || (d3.layout = {}) : exports);
 }
+
+
+/*********************************************/
+/* CHORD CHART                               */
+/*********************************************/
+//https://bl.ocks.org/eesur/a0c31af31b4ae022f61b50af22aa4d30
+
+function drawChordChart(data, target, width) {
+    // Call function to draw the Chord Chart
+    sankey(target, data, width);
+}
+
+function sankey(bind, data, chartWidth, config) {
+    d3 = d3version4;
+    config = {
+        margin: {top: 20, right: 100, bottom: 20, left: 100},
+        width: chartWidth,
+        height: 500,
+        sourceColors: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33'],
+        targetColors: ['#bbb'],
+        ...config
+    }
+    const {margin, width, height} = config
+    const w = width - margin.left - margin.right
+    const h = height - margin.top - margin.bottom
+    const sourceColors = d3.scaleOrdinal()
+            .range(config.sourceColors)
+    const targetColors = d3.scaleOrdinal()
+            .range(config.targetColors)
+    const _data = nodesAndLinks(data.content)
+
+    console.log('data', data)
+    console.log('_data formatted', _data)
+
+    // set up dom
+    const selection = d3.select(bind)
+    // destroy/wipe first
+    d3.select(bind).select('.js-wrap').remove()
+    createDOM(selection)
+
+    // create svg in passed in div
+    const svg = selection.select('.js-svg')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+    const sankey = d3.sankey()
+            .nodeWidth(40)
+            .nodePadding(10)
+            .extent([[1, 1], [w - 1, h - 6]])
+    sankey(_data)
+    // console.log('sankey(_data)', sankey(_data))
+
+    const link = svg.append('g')
+            .attr('class', 'links')
+            .attr('fill', 'none')
+            .attr('stroke-opacity', 0.2)
+            .selectAll('path')
+            .data(_data.links)
+            .enter().append('path')
+            .attr('class', d => {
+                // console.log('d', d)
+                return `source-${d.source.node} target-${d.target.node}`
+            })
+            .attr('d', d3.sankeyLinkHorizontal())
+            .attr('stroke', d => sourceColors(d.source.node))
+            .attr('stroke-width', d => Math.max(1, d.width))
+
+    const node = svg.append('g')
+            .attr('class', 'nodes')
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', 10)
+            .selectAll('g')
+            .data(_data.nodes)
+            .enter().append('g')
+
+    node.append('rect')
+            .attr('x', d => d.x0)
+            .attr('y', d => d.y0)
+            .attr('class', d => d.type + ' bar')
+            .attr('height', d => d.y1 - d.y0)
+            .attr('width', d => d.x1 - d.x0)
+            // use colours depending on source or target
+            .attr('fill', d => (d.type === 'source')
+                        ? sourceColors(d.subIndex)
+                        : targetColors(d.subIndex)
+            )
+            .on('click', function (d) {
+                if (d.type === 'source') {
+                    highlightSourcePaths(svg, d.index, d.type)
+                    updateTitle(selection, d.label, d.value)
+                    listInfo(selection, d.sourceLinks, {
+                        type: 'source',
+                        colorScale: sourceColors
+                    })
+                } else {
+                    highlightSourcePaths(svg, d.index, d.type)
+                    updateTitle(selection, d.label, d.value)
+                    listInfo(selection, d.targetLinks, {
+                        type: 'target',
+                        colorScale: sourceColors
+                    })
+                }
+            })
+            .on('dblclick', function (d) {
+                svg.selectAll('path')
+                        .attr('stroke-opacity', 0.2)
+            })
+
+    node.append('text')
+            .attr('x', d => d.x0 + 50)
+            .attr('y', d => (d.y1 + d.y0) / 2)
+            .attr('dy', '0.35em')
+            .attr('class', 'label')
+            .attr('text-anchor', 'start')
+            .text(d => d.label)
+            .filter(d => d.x0 < width / 2)
+            .attr('x', d => d.x1 - 50)
+            .attr('text-anchor', 'end')
+
+    function highlightSourcePaths(sel, index, type) {
+        sel.selectAll('path')
+                .attr('stroke-opacity', 0.05)
+                // pass in type of source/target
+                .filter(`path.${type}-${index}`)
+                .attr('stroke-opacity', 0.6)
+    }
+}
+
+function nodesAndLinks(data) {
+    console.log();
+    const targetsArray = listTargets(data);
+    const sourceNode = createSourceNodes(data);
+    const targetNodes = createTargetNodes(data);
+    const linksArray = createLinks(data);
+    console.log('sourceNode', sourceNode);
+    console.log('targetNodes', targetNodes);
+    console.log('linksArray', linksArray);
+    console.log('sourceNode.concat(targetNodes)', sourceNode.concat(targetNodes));
+
+    function createSourceNodes(data) {
+        const nodes = data.map((d, i) => {
+            return {
+                node: i,
+                subIndex: i,
+                label: d.label,
+                type: 'source'
+            };
+        });
+        return nodes;
+    }
+
+    function listTargets(data) {
+        // list potential targets
+        let _targets = [];
+        data.forEach(o => {
+            // push as flat array
+            _targets.push(...o.values.map(d => d.label))
+        });
+        // remove duplicates
+        const targetsArray = [...(new Set(_targets))]
+        console.log('targetsArray', targetsArray)
+        return targetsArray
+    }
+
+    function createTargetNodes(data) {
+        // create required structure
+        const nodes = targetsArray.map((d, i) => {
+            return {
+                node: (data.length) + i,
+                subIndex: i,
+                label: d,
+                type: 'target'
+            }
+        })
+        return nodes
+    }
+
+    function createLinks(data) {
+        const links = []
+        data.forEach((o, index) => {
+            const val = o.values.map(d => {
+                return {
+                    source: index,
+                    target: targetsArray.indexOf(d.label) + data.length,
+                    value: d.value,
+                    targetLabel: o.label,
+                    sourceLabel: d.label
+                }
+            }).filter(d => d.value !== null)
+            links.push(val)
+        })
+        // return a flattened array
+        return links.reduce((a, b) => a.concat(b), [])
+    }
+
+    // return the formatted data
+    return {
+        nodes: sourceNode.concat(targetNodes),
+        links: linksArray
+    }
+}
+
+function listInfo (selection, data, config) {
+  config = {
+    type: 'source',
+    colorScale: null,
+    ...config
+  }
+  const {type, colorScale} = config
+
+  const join = selection.select('.js-info-ul')
+    .selectAll('li')
+    .data(data)
+
+  join.enter().append('li')
+    .attr('class', 'mb1')
+    .merge(join)
+    .html(d => {
+      const index = d.source.node
+      if (type === 'source') {
+        return `${createColorBlock(index)} ${d.target.label}: <span class='bold'>${d.value}</span>`
+      } else {
+        return `${createColorBlock(index)} ${d.source.label}: <span class='bold'>${d.value}</span>`
+      }
+    })
+
+  join.exit().remove()
+
+  function createColorBlock (index) {
+    return (`
+      <span 
+      class='inline-block li-${index}' 
+      style='background: ${colorScale(index)}; width: 8px; opacity:0.7;'
+      >
+      &nbsp;
+      </span>
+    `)
+  }
+}
+
+function createDOM(selection) {
+    const container = selection.append('section')
+            .attr('class', 'clearfix mx-auto my2 js-wrap')
+    // create DOM for svg chart
+    const chart = container.append('div')
+            .attr('class', 'col col-sm-9')
+    chart.append('div')
+            .attr('class', 'js-svg')
+    // create DOM for displaying info
+    const info = container.append('div')
+            .attr('class', 'col col-sm-3')
+    info.append('h2')
+            .attr('class', 'h3 regular js-info-title')
+    info.append('ul')
+            .attr('class', 'list-reset js-info-ul')
+}
+
+function updateTitle (selection, label, value) {
+  selection.select('.js-info-title')
+    .html(`${label} <span class='js-total'>(total: ${value})</span>`)
+}

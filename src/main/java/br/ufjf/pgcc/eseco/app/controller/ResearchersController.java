@@ -17,8 +17,10 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.IOException;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,38 +78,10 @@ public class ResearchersController extends CommonController {
 
         LOGGER.info("showAllResearchers()");
         List<Researcher> allResearchers = researcherService.findAll();
+
         model.addAttribute("researchers", allResearchers);
-
-        List<Experiment> allExperiments = experimentService.findAll();
-        JSONObject object = new JSONObject();
-        JSONObject nodes = new JSONObject();
-        JSONObject relations = new JSONObject();
-        for (Researcher researcher : allResearchers) {
-            JSONObject node = new JSONObject();
-            node.put("name", researcher.getDisplayName());
-            node.put("img", researcher.getPhoto());
-            nodes.put(researcher.getId(), node);
-
-        }
-
-        for (Experiment experiment : allExperiments) {
-            JSONObject experimentJson = new JSONObject();
-            relations.put("experiment_" + experiment.getId(), experimentJson);
-            for (Researcher researcher2 : experiment.getResearchers()) {
-                if (experiment.getAuthor().getId() != researcher2.getId()) {
-                    JSONObject peer = new JSONObject();
-                    peer.put("id_1", experiment.getAuthor().getDisplayName());
-                    peer.put("id_2", researcher2.getDisplayName());
-                    Integer.compare(experiment.getAuthor().getId(), researcher2.getId());
-                    experimentJson.put(experiment.getAuthor().getId() + "_" + researcher2.getId(), peer);
-                }
-
-            }
-        }
-        object.put("nodes", nodes);
-        object.put("relations", relations);
-        model.addAttribute("experimentProvenanceJSON", object);
-        System.out.println(object);
+        model.addAttribute("researchRelationsGraphJSON", getResearchRelationsGraph());
+        model.addAttribute("researchExperimentsChartJSON", getResearchExperimentsChart());
         return "researchers/list";
     }
 
@@ -325,5 +299,103 @@ public class ResearchersController extends CommonController {
         model.addAttribute("institutionsList", institutionService.findAll());
         model.addAttribute("interestsList", interestService.findAll());
         model.addAttribute("disciplinesList", disciplineService.findAll());
+    }
+
+    private JSONObject getResearchRelationsGraph() {
+        List<Researcher> allResearchers = researcherService.findAll();
+        List<Experiment> allExperiments = experimentService.findAll();
+        JSONObject object = new JSONObject();
+        JSONObject researchers = new JSONObject();
+        JSONObject researchRelations = new JSONObject();
+        for (Researcher researcher : allResearchers) {
+            JSONObject node = new JSONObject();
+            node.put("name", researcher.getDisplayName());
+            node.put("img", researcher.getPhoto());
+            researchers.put(researcher.getId(), node);
+        }
+
+        for (Experiment experiment : allExperiments) {
+            JSONObject experimentJson = new JSONObject();
+            researchRelations.put("experiment_" + experiment.getId(), experimentJson);
+            for (Researcher researcher2 : experiment.getResearchers()) {
+                if (experiment.getAuthor().getId() != researcher2.getId()) {
+                    JSONObject peer = new JSONObject();
+                    peer.put("id_1", experiment.getAuthor().getDisplayName());
+                    peer.put("id_2", researcher2.getDisplayName());
+                    Integer.compare(experiment.getAuthor().getId(), researcher2.getId());
+                    experimentJson.put(experiment.getAuthor().getId() + "_" + researcher2.getId(), peer);
+                }
+
+            }
+        }
+        object.put("nodes", researchers);
+        object.put("relations", researchRelations);
+        return object;
+    }
+
+    private JSONObject getResearchExperimentsChart() {
+//        try {
+        List<Researcher> allResearchers = researcherService.findAll();
+
+        JSONArray relations = new JSONArray();
+        for (Researcher researcher : allResearchers) {
+            JSONObject relation = new JSONObject();
+            relation.put("label", researcher.getDisplayName());
+            List<Experiment> experiments = experimentService.findByAuthorId(researcher.getId());
+            JSONArray array = new JSONArray();
+            for (Experiment experiment : experiments) {
+                JSONObject experimentObj = new JSONObject();
+                experimentObj.put("label", experiment.getName());
+                experimentObj.put("value", 1);
+                array.add(experimentObj);
+            }
+            relation.put("values", array);
+            if (experiments.size() > 0) {
+                relations.add(relation);
+            }
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content", relations);
+        return jsonObject;
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("content", new JSONParser().parse("["
+//                    + "	{"
+//                    + "	  \"label\": \"Region-a\","
+//                    + "	  \"values\": ["
+//                    + "		{\"label\": \"Ash\", \"value\": 4},"
+//                    + "		{\"label\": \"Birch\", \"value\": 3},"
+//                    + "		{\"label\": \"Maple\", \"value\": 1}"
+//                    + "	  ]"
+//                    + "	},"
+//                    + "	{"
+//                    + "	  \"label\": \"Region-b\","
+//                    + "	  \"values\": ["
+//                    + "		{\"label\": \"Ash\", \"value\": 3},"
+//                    + "		{\"label\": \"Birch\", \"value\": 1},"
+//                    + "		{\"label\": \"Maple\", \"value\": 1}"
+//                    + "	  ]"
+//                    + "	},"
+//                    + "	{"
+//                    + "	  \"label\": \"Region-c\","
+//                    + "	  \"values\": ["
+//                    + "		{\"label\": \"Ash\", \"value\": 4},"
+//                    + "		{\"label\": \"Birch\", \"value\": 3}"
+//                    + "	  ]"
+//                    + "	},"
+//                    + "	{"
+//                    + "	  \"label\": \"Region-d\","
+//                    + "	  \"values\": ["
+//                    + "		{\"label\": \"Maple\", \"value\": 1},"
+//                    + "		{\"label\": \"Ash\", \"value\": null},"
+//                    + "		{\"label\": \"Birch\", \"value\": 2}"
+//                    + "	  ]"
+//                    + "	}"
+//                    + "]"));
+//            return jsonObject;
+//        } catch (ParseException ex) {
+//            ex.printStackTrace();
+////            Logger.getLogger(ResearchersController.class.getName()).log(Level.SEVERE, null, ex);
+//            return new JSONObject();
+//        }
     }
 }

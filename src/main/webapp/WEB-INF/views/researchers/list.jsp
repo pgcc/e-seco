@@ -20,22 +20,23 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             // Get JSON Data for visualizations
-            var provenanceJson = JSON.parse('${experimentProvenanceJSON}');
-            console.log(${experimentProvenanceJSON});
+            var researchRelationsGraphDATA = JSON.parse('${researchRelationsGraphJSON}');
+            var researchExperimentsChartDATA = JSON.parse('${researchExperimentsChartJSON}');
+            console.log(researchExperimentsChartDATA);
             /***********************************************/
-            /* PROVENANCE GRAPH                            */
+            /* Research Relations GRAPH                            */
             /***********************************************/
-            function showProvenanceGraphVisualization() {
-                var target = "#box-chart-provenance-graph";
+            function showResearchRelationsGraphVisualization() {
+                var target = "#box-research-relations-graph";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
 
-                var graphData = mountDataToProvenance(provenanceJson);
+                var graphData = mountDataToRelationsGraph(researchRelationsGraphDATA);
 
                 drawGraph(graphData, target, width);
             }
             ;
-            function mountDataToProvenance(itemData) {
+            function mountDataToRelationsGraph(itemData) {
 
                 var info = "";
                 for (var i in itemData.nodes) {
@@ -49,7 +50,7 @@
 
                 for (var i in itemData.nodes) {
                     graphData.nodes.push({
-                        "name": itemData.nodes[i].name, "group": 1, "kind": 7, "img": itemData.nodes[i].img, "label": "false", info: ""
+                        "name": itemData.nodes[i].name, "group": 1, "kind": 7, "img": itemData.nodes[i].img, info: ""
                     });
                 }
                 for (var i in itemData.relations) {
@@ -60,7 +61,7 @@
 
                         var target = graphData.nodes.find(x => x.name == targetName);
                         var source = graphData.nodes.find(x => x.name == sourceName);
-                        if(target.info == ""){
+                        if (target.info == "") {
                             target.info = "Experiments: ";
                         }
                         if (!target.info.includes(experimentName)) {
@@ -73,7 +74,23 @@
                 }
                 return graphData;
             }
-            showProvenanceGraphVisualization();
+            showResearchRelationsGraphVisualization();
+            
+            
+            
+            
+            /***********************************************/
+            /* Research Experiments CHART                            */
+            /***********************************************/
+            function showResearchExperimentsChartVisualization() {
+                var target = "#box-research-experiments-chart";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+                width = (width/12)*9;
+                drawChordChart(researchExperimentsChartDATA, target, width );
+            }
+            ;
+            showResearchExperimentsChartVisualization();
         </script>
     </jsp:attribute>
 
@@ -106,12 +123,26 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        Researchers Graph Visualization
+                                        Researchers Experiments
+                                    </h3>
+                                </div>
+                                <div class="panel-body" style="position: relative;">
+                                    <div id="box-research-experiments-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Relationship Between Researchers
                                     </h3>
                                 </div>
                                 <div class="panel-body" style="position: relative;">
                                     <img src="<c:url value="/resources/images/researchers-relations-graph-legend.png" />">
-                                    <div id="box-chart-provenance-graph"></div>
+                                    <div id="box-research-relations-graph"></div>
                                 </div>
                             </div>
                         </div>

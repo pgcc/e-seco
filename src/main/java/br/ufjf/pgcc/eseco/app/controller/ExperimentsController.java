@@ -15,10 +15,6 @@ import br.ufjf.pgcc.eseco.domain.service.core.ResearchGroupService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
-import java.awt.FileDialog;
-import java.awt.Frame;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -41,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -84,15 +82,15 @@ public class ExperimentsController {
     public String showAllExperiments(Model model, HttpSession session) {
 
         LOGGER.info("showAllExperiments()");
-        
+
         ArrayList<Experiment> myexperiments = new ArrayList<>();
         ArrayList<Experiment> experiments = new ArrayList<>();
-        
+
         User user = (User) session.getAttribute("logged_user");
         for (Experiment e : experimentService.findAll()) {
             if (e.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
                 myexperiments.add(e);
-            } else{
+            } else {
                 experiments.add(e);
             }
         }
@@ -268,56 +266,40 @@ public class ExperimentsController {
         return "experiments/experiments-add-provenance-data-form";
     }
 
-    @RequestMapping(value = "/experiments/{id}/addProvenance", method = RequestMethod.POST)
-    public String chooseProvenanceDataFile(@PathVariable("id") int id, @ModelAttribute("experimentForm") Experiment experiment, Model model) {
-
-        LOGGER.log(Level.INFO, "chooseProvenanceDataFile() : {0}", id);
-
-        FileDialog fileDialog = new FileDialog(new Frame(), "Open", FileDialog.LOAD);
-        fileDialog.setFile("*.json");
-        fileDialog.setFilenameFilter(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".json");
-            }
-        });
-
-        fileDialog.setFocusable(true);
-        fileDialog.setVisible(true);
-        fileDialog.toFront();
-
-        model.addAttribute("file", fileDialog.getDirectory() + fileDialog.getFile());
-        model.addAttribute("workflowsList", experimentService.find(id).getWorkflows());
-        return "experiments/experiments-add-provenance-data-form";
-    }
-
     @RequestMapping(value = "/experiments/saveProvenance", method = RequestMethod.POST)
     public String saveProvenanceData(@ModelAttribute("experimentForm") Experiment experiment,
-            @RequestParam(value = "file") String file, Model model,
+            @RequestParam("fileToUpload") MultipartFile file, Model model, BindingResult result,
             final RedirectAttributes redirectAttributes, HttpSession session) {
 
         LOGGER.log(Level.INFO, "saveProvenanceData() : {0}", experiment);
         User user = (User) session.getAttribute("logged_user");
 
-        if (experiment.getWorkflows().size() == 1 && !file.isEmpty()) {
-            Workflow workflow = workflowService.find(experiment.getWorkflows().iterator().next().getId());
-            try {
-                importProvenanceDataService.importProvenanceData(experiment, workflow, file, user.getAgent().getResearcher());
-                redirectAttributes.addFlashAttribute("css", "success");
-                redirectAttributes.addFlashAttribute("msg", "Provenance Data successfully imported!");
-                return "redirect:/experiments/" + experiment.getId();
-
-            } catch (Exception ex) {
-                redirectAttributes.addFlashAttribute("css", "danger");
-                redirectAttributes.addFlashAttribute("msg", ex.getMessage());
-                LOGGER.log(Level.SEVERE, ex.getMessage());
-                return "redirect:/experiments/" + experiment.getId() + "/addProvenance";
-            }
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", "Please select a file to upload!");
+            return "redirect:/experiments/" + experiment.getId() + "/addProvenance";
         }
-        model.addAttribute("file", file);
-        model.addAttribute("experimentForm", experiment);
-        model.addAttribute("workflowsList", experimentService.find(experiment.getId()).getWorkflows());
-        return "experiments/experiments-add-provenance-data-form";
+        if (experiment.getWorkflows().size() != 1) {
+            result.addError(new FieldError("workflows", "workflows", " Please select the Workflow!"));
+            experiment = experimentService.find(experiment.getId());
+            model.addAttribute("experimentForm", experiment);
+            model.addAttribute("workflowsList", experiment.getWorkflows());
+            return "experiments/experiments-add-provenance-data-form";
+        }
+
+        Workflow workflow = workflowService.find(experiment.getWorkflows().iterator().next().getId());
+        try {
+            importProvenanceDataService.importProvenanceData(experiment, workflow, file.getBytes(), user.getAgent().getResearcher());
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", "Provenance Data successfully imported!");
+            return "redirect:/experiments/" + experiment.getId();
+
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", ex.getMessage());
+            LOGGER.log(Level.SEVERE, ex.getMessage());
+            return "redirect:/experiments/" + experiment.getId() + "/addProvenance";
+        }
     }
 
     private void populateDefaultModel(Model model, ExperimentStatus status, ExperimentPhase phase) {

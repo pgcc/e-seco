@@ -18,7 +18,12 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            function fileSelected(myInput) {
+                document.getElementById("file").setAttribute("value", myInput.value);
+            }
+            ;
+        </script>
     </jsp:attribute>
 
 
@@ -47,14 +52,13 @@
             <h2> Import Provenance Data </h2>               
             <br />
             <spring:url value="/experiments/saveProvenance/" var="saveProvenanceUrl" />            
-            <spring:url value="/experiments/${experimentForm.id}/addProvenance" var="chooseFileUrl"/>
 
             <f:form class="form form-horizontal" method="post" modelAttribute="experimentForm" 
-                    action="${saveProvenanceUrl}">
+                    enctype="multipart/form-data" action="${saveProvenanceUrl}">
 
                 <spring:bind path="name">
                     <div class = "form-group ${status.error ? 'has-error' : ''}">
-                        <label class = "col-sm-2 control-label"> Name </label>
+                        <label class = "col-sm-2 control-label">Experiment</label>
                         <div
                             class = "col-sm-10">
                             <f:input path="name" class="form-control" id="name" placeholder="Name" disabled="true"/>
@@ -65,23 +69,23 @@
 
                 <spring:bind path="workflows">
                     <div class = "form-group ${status.error ? 'has-error' : ''}">
-                        <label class = "col-sm-2 control-label"> Workflow </label>
+                        <label class = "col-sm-2 control-label">Workflow</label>
                         <div class="col-sm-10">
                             <f:select path="workflows" items="${workflowsList}" multiple="false" class="form-control" itemLabel="name" itemValue="id"/>
                         </div>
                     </div>
+                    <f:errors path="workflows" class="control-label" />
                 </spring:bind>
                 <div class = "form-group ${status.error ? 'has-error' : ''}">
-                    <label class = "col-sm-2 control-label"> Provenance File </label>
-
+                    <label class = "col-sm-2 control-label">Provenance File </label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" onclick="type = 'post', action = '${chooseFileUrl}'">Choose File</button>
+                                <button class="btn btn-primary" type="button" onclick="$('#fileToUpload').click()">Choose File</button>
                             </span>
                             <input id="file" name="file" type="text" class="form-control" placeholder="File Name" value="${file}">
                         </div>
-                    </div>                
+                    </div>   
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -89,6 +93,7 @@
                     </div>
                 </div>
             </div>
+            <input type="file" id="fileToUpload" name="fileToUpload" style="visibility: hidden;" onchange="fileSelected(this)" />
         </f:form>
     </div>
 </jsp:body>

@@ -113,8 +113,8 @@ public class Agent {
         }
 
         // If none, use generic empty photo
-        if(null == photo){
-            photo = "/eseco/resources/images/agent-photo-blank.png";
+        if(null == photo || photo.isEmpty()){
+            photo = "resources/images/agent-photo-blank.png";
         }
 
         return photo;

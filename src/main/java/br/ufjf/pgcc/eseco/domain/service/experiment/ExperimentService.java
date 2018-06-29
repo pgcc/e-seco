@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ExperimentDAO;
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,28 @@ public class ExperimentService {
         List<Experiment> experiments = findAll();
         ArrayList<Experiment> experimentsFound = new ArrayList<>();
 
-        for(Experiment experiment: experiments){
-            for(Workflow workflow: experiment.getWorkflows()){
-                if(workflow.getId() == workflowID){
-                    if(!experimentsFound.contains(experiment)){
+        for (Experiment experiment : experiments) {
+            for (Workflow workflow : experiment.getWorkflows()) {
+                if (workflow.getId() == workflowID) {
+                    if (!experimentsFound.contains(experiment)) {
                         experimentsFound.add(experiment);
                     }
+                }
+            }
+        }
+
+        return experimentsFound;
+    }
+
+    public List<Experiment> findByAuthorId(int researcherID) {
+
+        List<Experiment> experiments = findAll();
+        ArrayList<Experiment> experimentsFound = new ArrayList<>();
+
+        for (Experiment experiment : experiments) {
+            if (experiment.getAuthor().getId() == researcherID) {
+                if (!experimentsFound.contains(experiment)) {
+                    experimentsFound.add(experiment);
                 }
             }
         }

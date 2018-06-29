@@ -147,6 +147,9 @@ public class Researcher {
     }
 
     public String getPhoto() {
+        if(photo == null || photo.isEmpty()){
+            photo = "resources/images/agent-photo-blank.png";
+        }
         return photo;
     }
 
