@@ -501,7 +501,6 @@ var TreemapChart = {
                 .attr("class", "treemap-block-header")
                 .append("p")
                 .text(function (d) {
-                    //console.log(d.data)
                     return d.data.name;
                 })
                 .attr("text-anchor", "middle")
@@ -760,7 +759,6 @@ var RadarChart = {
                     .style("stroke-width", "2px")
                     .style("stroke", cfg.color(series)).style("fill-opacity", .9)
                     .on('mouseover', function (d) {
-                        console.log(d.area)
                         tooltip
                                 .style("left", d3.event.pageX - 40 + "px")
                                 .style("top", d3.event.pageY - 80 + "px")
@@ -1661,35 +1659,35 @@ if (d3) {
 function drawChordChart(data, target, width) {
     // Call function to draw the Chord Chart
     sankey(target, data, width);
+    d3version4.selectAll('.wrapme').call(wrap);
 }
 
 function sankey(bind, data, chartWidth, config) {
     d3 = d3version4;
     config = {
-        margin: {top: 20, right: 100, bottom: 20, left: 100},
+        margin: {top: 20, right: 140, bottom: 20, left: 60},
         width: chartWidth,
         height: 500,
-        sourceColors: ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33'],
+        sourceColors: ['#e41a1c', '#377eb8', '#4daf4a', '#FF1493', '#984ea3', '#ff7f00', '#ffff33', '#A52A2A', '#00FF00'],
         targetColors: ['#bbb'],
         ...config
     }
-    const {margin, width, height} = config
-    const w = width - margin.left - margin.right
-    const h = height - margin.top - margin.bottom
+    const {margin, width, height} = config;
+    const w = width - margin.left - margin.right;
+    const h = height - margin.top - margin.bottom;
     const sourceColors = d3.scaleOrdinal()
-            .range(config.sourceColors)
+            .range(config.sourceColors);
     const targetColors = d3.scaleOrdinal()
-            .range(config.targetColors)
-    const _data = nodesAndLinks(data.content)
+            .range(config.targetColors);
+    const _data = nodesAndLinks(data.content);
 
-    console.log('data', data)
-    console.log('_data formatted', _data)
+   
 
     // set up dom
-    const selection = d3.select(bind)
+    const selection = d3.select(bind);
     // destroy/wipe first
-    d3.select(bind).select('.js-wrap').remove()
-    createDOM(selection)
+    d3.select(bind).select('.js-wrap').remove();
+    createDOM(selection);
 
     // create svg in passed in div
     const svg = selection.select('.js-svg')
@@ -1697,14 +1695,13 @@ function sankey(bind, data, chartWidth, config) {
             .attr('width', width)
             .attr('height', height)
             .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     const sankey = d3.sankey()
-            .nodeWidth(40)
+            .nodeWidth(100)
             .nodePadding(10)
-            .extent([[1, 1], [w - 1, h - 6]])
-    sankey(_data)
-    // console.log('sankey(_data)', sankey(_data))
+            .extent([[1, 1], [w - 1, h - 6]]);
+    sankey(_data);
 
     const link = svg.append('g')
             .attr('class', 'links')
@@ -1714,12 +1711,11 @@ function sankey(bind, data, chartWidth, config) {
             .data(_data.links)
             .enter().append('path')
             .attr('class', d => {
-                // console.log('d', d)
-                return `source-${d.source.node} target-${d.target.node}`
+                return `source-${d.source.node} target-${d.target.node}`;
             })
             .attr('d', d3.sankeyLinkHorizontal())
             .attr('stroke', d => sourceColors(d.source.node))
-            .attr('stroke-width', d => Math.max(1, d.width))
+            .attr('stroke-width', d => Math.max(1, d.width));
 
     const node = svg.append('g')
             .attr('class', 'nodes')
@@ -1727,14 +1723,16 @@ function sankey(bind, data, chartWidth, config) {
             .attr('font-size', 10)
             .selectAll('g')
             .data(_data.nodes)
-            .enter().append('g')
+            .enter().append('g');
 
     node.append('rect')
-            .attr('x', d => d.x0)
+            .attr('x', d => (d.type === 'source')
+                        ? d.x1
+                        : d.x0)
             .attr('y', d => d.y0)
             .attr('class', d => d.type + ' bar')
             .attr('height', d => d.y1 - d.y0)
-            .attr('width', d => d.x1 - d.x0)
+            .attr('width', d => 30)
             // use colours depending on source or target
             .attr('fill', d => (d.type === 'source')
                         ? sourceColors(d.subIndex)
@@ -1760,39 +1758,36 @@ function sankey(bind, data, chartWidth, config) {
             .on('dblclick', function (d) {
                 svg.selectAll('path')
                         .attr('stroke-opacity', 0.2)
-            })
+            });
 
     node.append('text')
-            .attr('x', d => d.x0 + 50)
-            .attr('y', d => (d.y1 + d.y0) / 2)
+            .attr('x', d => d.x0 + 40)
+            .attr('y', d => d.y0 + 7)
             .attr('dy', '0.35em')
-            .attr('class', 'label')
+            .attr('class', 'label wrapme')
             .attr('text-anchor', 'start')
+            .attr('width', 160)
+            .attr('height', "100%")
             .text(d => d.label)
-            .filter(d => d.x0 < width / 2)
-            .attr('x', d => d.x1 - 50)
-            .attr('text-anchor', 'end')
+            .filter(d => d.type === 'source')
+            .attr('x', d => d.x1 - 10)
+            .attr('text-anchor', 'end');  
 
     function highlightSourcePaths(sel, index, type) {
         sel.selectAll('path')
                 .attr('stroke-opacity', 0.05)
                 // pass in type of source/target
                 .filter(`path.${type}-${index}`)
-                .attr('stroke-opacity', 0.6)
+                .attr('stroke-opacity', 0.6);
     }
 }
 
 function nodesAndLinks(data) {
-    console.log();
     const targetsArray = listTargets(data);
     const sourceNode = createSourceNodes(data);
     const targetNodes = createTargetNodes(data);
     const linksArray = createLinks(data);
-    console.log('sourceNode', sourceNode);
-    console.log('targetNodes', targetNodes);
-    console.log('linksArray', linksArray);
-    console.log('sourceNode.concat(targetNodes)', sourceNode.concat(targetNodes));
-
+   
     function createSourceNodes(data) {
         const nodes = data.map((d, i) => {
             return {
@@ -1803,7 +1798,7 @@ function nodesAndLinks(data) {
             };
         });
         return nodes;
-    }
+    };
 
     function listTargets(data) {
         // list potential targets
@@ -1814,9 +1809,8 @@ function nodesAndLinks(data) {
         });
         // remove duplicates
         const targetsArray = [...(new Set(_targets))]
-        console.log('targetsArray', targetsArray)
-        return targetsArray
-    }
+        return targetsArray;
+    };
 
     function createTargetNodes(data) {
         // create required structure
@@ -1826,13 +1820,13 @@ function nodesAndLinks(data) {
                 subIndex: i,
                 label: d,
                 type: 'target'
-            }
-        })
-        return nodes
-    }
+            };
+        });
+        return nodes;
+    };
 
     function createLinks(data) {
-        const links = []
+        const links = [];
         data.forEach((o, index) => {
             const val = o.values.map(d => {
                 return {
@@ -1841,32 +1835,32 @@ function nodesAndLinks(data) {
                     value: d.value,
                     targetLabel: o.label,
                     sourceLabel: d.label
-                }
+                };
             }).filter(d => d.value !== null)
-            links.push(val)
-        })
+            links.push(val);
+        });
         // return a flattened array
-        return links.reduce((a, b) => a.concat(b), [])
+        return links.reduce((a, b) => a.concat(b), []);
     }
 
     // return the formatted data
     return {
         nodes: sourceNode.concat(targetNodes),
         links: linksArray
-    }
+    };
 }
 
 function listInfo (selection, data, config) {
   config = {
     type: 'source',
     colorScale: null,
-    ...config
+            ...config
   }
-  const {type, colorScale} = config
+  const {type, colorScale} = config;
 
   const join = selection.select('.js-info-ul')
     .selectAll('li')
-    .data(data)
+    .data(data);
 
   join.enter().append('li')
     .attr('class', 'mb1')
@@ -1874,13 +1868,14 @@ function listInfo (selection, data, config) {
     .html(d => {
       const index = d.source.node
       if (type === 'source') {
-        return `${createColorBlock(index)} ${d.target.label}: <span class='bold'>${d.value}</span>`
+//          : <span class='bold'>${d.value}</span>
+        return `${createColorBlock(index)} ${d.target.label}`;
       } else {
-        return `${createColorBlock(index)} ${d.source.label}: <span class='bold'>${d.value}</span>`
+        return `${createColorBlock(index)} ${d.source.label}`;
       }
-    })
+    });
 
-  join.exit().remove()
+  join.exit().remove();
 
   function createColorBlock (index) {
     return (`
@@ -1890,28 +1885,140 @@ function listInfo (selection, data, config) {
       >
       &nbsp;
       </span>
-    `)
-  }
+    `);
+  };
 }
 
 function createDOM(selection) {
     const container = selection.append('section')
-            .attr('class', 'clearfix mx-auto my2 js-wrap')
+            .attr('class', 'clearfix mx-auto my2 js-wrap');
     // create DOM for svg chart
     const chart = container.append('div')
-            .attr('class', 'col col-sm-9')
+            .attr('class', 'col col-sm-9');
     chart.append('div')
-            .attr('class', 'js-svg')
+            .attr('class', 'js-svg');
     // create DOM for displaying info
     const info = container.append('div')
-            .attr('class', 'col col-sm-3')
+            .attr('class', 'col col-sm-3');
     info.append('h2')
-            .attr('class', 'h3 regular js-info-title')
+            .attr('class', 'h5 regular js-info-title');
     info.append('ul')
-            .attr('class', 'list-reset js-info-ul')
+            .attr('class', 'list-reset js-info-ul');
+    
 }
 
 function updateTitle (selection, label, value) {
   selection.select('.js-info-title')
-    .html(`${label} <span class='js-total'>(total: ${value})</span>`)
+    .html(`${label} <span class='js-total'>(total: ${value})</span>`);
+}
+
+
+function wrap(text) {
+    text.each(function() {
+        var text = d3.select(this);
+        var words = text.text().split(/\s+/).reverse();
+        var lineHeight = 20;
+        var width = parseFloat(text.attr('width'));
+        var height = parseFloat(text.attr('height'));
+        var y = parseFloat(text.attr('y'));
+        var x = text.attr('x');
+        var anchor = text.attr('text-anchor');
+    
+        var tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('text-anchor', anchor);
+        var lineNumber = 0;
+        var line = [];
+        var word = words.pop();
+
+        while (word) {            
+            line.push(word);
+            tspan.text(line.join(' '));
+            if (tspan.node().getComputedTextLength() > width && ((lineNumber) * lineHeight)< height) {
+                lineNumber += 1;
+                line.pop();
+                tspan.text(line.join(' '));
+                line = [word];
+                tspan = text.append('tspan').attr('x', x).attr('y', y + lineNumber * lineHeight).attr('anchor', anchor).text(word);
+            }            
+            word = words.pop();
+            if(((lineNumber) * lineHeight)>= height){
+                words = [];
+            }
+        }        
+    });
+}
+
+/*********************************************/
+/* Parents Tree                              */
+/*********************************************/
+//https://bl.ocks.org/mbostock/2966094
+
+
+function drawParentsTree(data, target, width) {
+    var margin = {top: 0, right: 0, bottom: 0, left: 0},
+    width = width - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+    if (!window.d3) {
+        var d3 = d3version3;
+    }
+ 
+    var tree = d3.layout.tree()
+        .separation(function(a, b) { return a.parent === b.parent ? 1 : .5; })
+        .children(function(d) { return d.parents; })
+        .size([height, width]);
+
+    var svg = d3.select(target).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var nodes = tree.nodes(data);
+
+    var link = svg.selectAll(".link")
+        .data(tree.links(nodes))
+      .enter().append("path")
+        .attr("class", "link")
+        .attr("d", elbow);
+
+    var node = svg.selectAll(".node")
+        .data(nodes)
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+    
+    var text = node.append("text")
+        .attr("class", "name")
+        .attr("x", 8)
+        .attr("y", -6)
+        .text(function(d) { return d.name; });
+
+    node.append('rect')
+        .attr('x', 8)
+        .attr('y', -25)
+        .attr('height', 70)
+        .attr('width', 150)
+        .attr('fill', 'transparent')
+        .style('stroke', 'gray');
+
+    node.append("text")
+        .attr("x", 8)
+        .attr("y", 8)
+        .attr("dy", ".71em")
+        .attr("class", "about lifespan")
+        .text(function(d) { return "d.born +  + d.died"; });
+
+    node.append("text")
+        .attr("x", 8)
+        .attr("y", 8)
+        .attr("dy", "1.86em")
+        .attr("class", "about location")
+        .text(function(d) { return "d.location"; });
+
+    function elbow(d, i) {
+      return "M" + d.source.y + "," + d.source.x
+           + "H" + d.target.y + "V" + d.target.x
+           + (d.target.children ? "" : "h" + margin.right);
+    }
 }

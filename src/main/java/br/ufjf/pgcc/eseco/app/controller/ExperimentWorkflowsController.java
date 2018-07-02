@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.validator.ExperimentWorkflowFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
@@ -11,9 +12,12 @@ import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,22 +64,22 @@ public class ExperimentWorkflowsController {
     public String showAllWorkflows(Model model, HttpSession session) {
 
         LOGGER.info("showAllWorkflows()");
-        
+
         ArrayList<Workflow> myworkflows = new ArrayList<>();
         ArrayList<Workflow> workflows = new ArrayList<>();
-        
+
         User user = (User) session.getAttribute("logged_user");
         for (Workflow w : workflowService.findAll()) {
             if (w.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
                 myworkflows.add(w);
-            } else{
+            } else {
                 workflows.add(w);
             }
         }
 
         model.addAttribute("myworkflows", myworkflows);
         model.addAttribute("workflows", workflows);
-        
+
         model.addAttribute("workflows", workflowService.findAll());
 
         return "experiments/workflows/list";
@@ -205,7 +209,7 @@ public class ExperimentWorkflowsController {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Workflow not found");
         }
-
+        model.addAttribute("workflowTreeJSON", getWorkflowTree(id));
         model.addAttribute("workflow", workflow);
         return "experiments/workflows/show";
     }
@@ -217,4 +221,22 @@ public class ExperimentWorkflowsController {
         model.addAttribute("activitiesList", activityService.findAll());
     }
 
+    private JSONObject getWorkflowTree(int id) {
+        Workflow workflow = workflowService.find(id);
+        JSONObject tree = new JSONObject();
+        JSONArray parents = new JSONArray();
+        List<Activity> activities = workflow.getActivities();
+        for (Activity activity : activities) {
+            JSONObject activityJson = new JSONObject();
+            if (activities.indexOf(activity) == 0) {
+                activityJson = tree;
+            }
+            activityJson.put("name", activity.getName());
+            
+            parents.add(activityJson);
+            parents = new JSONArray();
+            activityJson.put("parents", parents);
+        }
+        return tree;
+    }
 }

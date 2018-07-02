@@ -14,6 +14,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
@@ -28,8 +29,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +39,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.misc.IOUtils;
 
 /**
  *
@@ -95,7 +93,7 @@ public class ImportProvenanceDataService {
      *
      * @param experiment
      * @param workflow
-     * @param filePath
+     * @param bytes
      * @param researcher
      * @throws java.lang.Exception
      */
@@ -328,10 +326,13 @@ public class ImportProvenanceDataService {
                 Researcher researcher = mapResearchers.get(value.getAsJsonObject().get("prov:agent").getAsString());
 
                 Activity activity = mapActivities.get(value.getAsJsonObject().get("prov:activity").getAsString());
-                if (workflow.getActivities() == null) {
-                    workflow.setActivities(new ArrayList<Activity>());
+                if (workflow.getWorkflowActivities() == null) {
+                    workflow.setWorkflowActivities(new ArrayList<WorkflowActivity>());
                 }
-                workflow.getActivities().add(activity);
+                WorkflowActivity workflowActivity = new WorkflowActivity();
+                workflowActivity.setActivity(activity);
+                workflowActivity.setWorkflow(workflow);
+                workflow.getWorkflowActivities().add(workflowActivity);
                 workflow = workflowService.saveOrUpdate(workflow);
 
                 ActivityExecution activityExecution = mapActivitiesExecutions.get(value.getAsJsonObject().get("prov:activity").getAsString());

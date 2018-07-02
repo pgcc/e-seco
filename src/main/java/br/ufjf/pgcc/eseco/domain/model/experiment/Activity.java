@@ -7,6 +7,7 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
+import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
@@ -57,18 +58,9 @@ public class Activity {
     )
     private List<WorkflowService> workflowServices;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(
-            name = "exp_workflow_activity",
-            joinColumns = {
-                @JoinColumn(name = "activity_id", nullable = false)
-            },
-            inverseJoinColumns = {
-                @JoinColumn(name = "workflow_id", nullable = false)
-            }
-    )
-    private List<Workflow> workflows;
+    private List<WorkflowActivity> workflowActivities;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -83,7 +75,8 @@ public class Activity {
     )
     private List<Detail> details;
 
-    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "activity")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ActivityExecution> executions;
 
     public Activity() {
@@ -155,11 +148,19 @@ public class Activity {
     }
 
     public List<Workflow> getWorkflows() {
+        List<Workflow> workflows = new ArrayList<>();
+        for (WorkflowActivity workflowActivity : workflowActivities) {
+            workflows.add(workflowActivity.getWorkflow());
+        }
         return workflows;
     }
 
-    public void setWorkflows(List<Workflow> workflows) {
-        this.workflows = workflows;
+    public List<WorkflowActivity> getWorkflowActivities() {
+        return workflowActivities;
+    }
+
+    public void setWorkflowActivities(List<WorkflowActivity> workflowActivities) {
+        this.workflowActivities = workflowActivities;
     }
 
     public List<Detail> getDetails() {

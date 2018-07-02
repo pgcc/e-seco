@@ -75,12 +75,10 @@
                 return graphData;
             }
             showResearchRelationsGraphVisualization();
-            
-            
-            
+                           
             
             /***********************************************/
-            /* Research Experiments CHART                            */
+            /* Research Experiments CHART                  */
             /***********************************************/
             function showResearchExperimentsChartVisualization() {
                 var target = "#box-research-experiments-chart";

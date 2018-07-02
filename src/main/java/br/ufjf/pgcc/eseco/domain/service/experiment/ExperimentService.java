@@ -1,5 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
+import br.ufjf.pgcc.eseco.domain.dao.core.ResearcherDAO;
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ExperimentDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
@@ -60,7 +61,7 @@ public class ExperimentService {
         return experimentsFound;
     }
 
-    public List<Experiment> findByAuthorId(int researcherID) {
+    public List<Experiment> findByResearcherId(int researcherID) {
 
         List<Experiment> experiments = findAll();
         ArrayList<Experiment> experimentsFound = new ArrayList<>();
@@ -70,9 +71,16 @@ public class ExperimentService {
                 if (!experimentsFound.contains(experiment)) {
                     experimentsFound.add(experiment);
                 }
+            } else {
+                for (Researcher researcher : experiment.getResearchers()) {
+                    if (researcher.getId() == researcherID) {
+                        if (!experimentsFound.contains(experiment)) {
+                            experimentsFound.add(experiment);
+                        }
+                    }
+                }
             }
         }
-
         return experimentsFound;
     }
 }

@@ -19,8 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -334,14 +332,14 @@ public class ResearchersController extends CommonController {
     }
 
     private JSONObject getResearchExperimentsChart() {
-//        try {
+
         List<Researcher> allResearchers = researcherService.findAll();
 
         JSONArray relations = new JSONArray();
         for (Researcher researcher : allResearchers) {
             JSONObject relation = new JSONObject();
             relation.put("label", researcher.getDisplayName());
-            List<Experiment> experiments = experimentService.findByAuthorId(researcher.getId());
+            List<Experiment> experiments = experimentService.findByResearcherId(researcher.getId());
             JSONArray array = new JSONArray();
             for (Experiment experiment : experiments) {
                 JSONObject experimentObj = new JSONObject();
@@ -357,45 +355,5 @@ public class ResearchersController extends CommonController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("content", relations);
         return jsonObject;
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("content", new JSONParser().parse("["
-//                    + "	{"
-//                    + "	  \"label\": \"Region-a\","
-//                    + "	  \"values\": ["
-//                    + "		{\"label\": \"Ash\", \"value\": 4},"
-//                    + "		{\"label\": \"Birch\", \"value\": 3},"
-//                    + "		{\"label\": \"Maple\", \"value\": 1}"
-//                    + "	  ]"
-//                    + "	},"
-//                    + "	{"
-//                    + "	  \"label\": \"Region-b\","
-//                    + "	  \"values\": ["
-//                    + "		{\"label\": \"Ash\", \"value\": 3},"
-//                    + "		{\"label\": \"Birch\", \"value\": 1},"
-//                    + "		{\"label\": \"Maple\", \"value\": 1}"
-//                    + "	  ]"
-//                    + "	},"
-//                    + "	{"
-//                    + "	  \"label\": \"Region-c\","
-//                    + "	  \"values\": ["
-//                    + "		{\"label\": \"Ash\", \"value\": 4},"
-//                    + "		{\"label\": \"Birch\", \"value\": 3}"
-//                    + "	  ]"
-//                    + "	},"
-//                    + "	{"
-//                    + "	  \"label\": \"Region-d\","
-//                    + "	  \"values\": ["
-//                    + "		{\"label\": \"Maple\", \"value\": 1},"
-//                    + "		{\"label\": \"Ash\", \"value\": null},"
-//                    + "		{\"label\": \"Birch\", \"value\": 2}"
-//                    + "	  ]"
-//                    + "	}"
-//                    + "]"));
-//            return jsonObject;
-//        } catch (ParseException ex) {
-//            ex.printStackTrace();
-////            Logger.getLogger(ResearchersController.class.getName()).log(Level.SEVERE, null, ex);
-//            return new JSONObject();
-//        }
     }
 }

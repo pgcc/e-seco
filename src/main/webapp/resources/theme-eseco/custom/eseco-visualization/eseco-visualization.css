@@ -133,7 +133,7 @@ text {
 .box-sizing border-box body{
     font-family:-apple-system,monospace;
     color: #454545;
-    width: 800px;
+    width: 500px;
     margin: 0 auto
 }
 .chart {
@@ -161,7 +161,7 @@ rect.target {
     cursor: pointer;
 }
 .label {
-    font-size: 14px;
+    font-size: 12px;
     fill: #454545
 }
 

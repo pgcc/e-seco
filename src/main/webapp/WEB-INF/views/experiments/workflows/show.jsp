@@ -18,7 +18,23 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            // Get JSON Data for visualizations
+            var workflowTreeDATA = JSON.parse('${workflowTreeJSON}');
+            console.log('${workflowTreeJSON}');
+            /***********************************************/
+            /* Research Experiments CHART                            */
+            /***********************************************/
+            function showParentsTreeVisualization() {
+                var target = "#box-workflow-tree";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+                width = (width / 12) * 9;
+                drawParentsTree(workflowTreeDATA, target, width);
+            }
+            ;
+            showParentsTreeVisualization();
+        </script>
     </jsp:attribute>
 
 
@@ -87,6 +103,39 @@
                         <label class="col-sm-2">Created in</label>
                         <div class="col-sm-10">${workflow.dateCreated}</div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        Workflow Visualization
+                                    </h3>
+                                </div>
+                                <div class="panel-body" style="position: relative;">
+                                    <div id="box-workflow-tree"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    Activities                                
+                                </a>
+                                <span class="badge">${workflow.activities.size()}</span>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <ul class="list-group" >
+                                    <c:forEach items="${workflow.activities}" var="activity">
+                                        <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
+                                        </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingOne">
@@ -107,27 +156,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Activities                                
-                                    </a>
-                                    <span class="badge">${workflow.activities.size()}</span>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="panel-body">
-                                    <ul class="list-group" >
-                                        <c:forEach items="${workflow.activities}" var="activity">
-                                            <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
-                                            </c:forEach>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="headingFour">
                                 <h4 class="panel-title">

@@ -6,6 +6,7 @@
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -56,24 +57,16 @@ public class Workflow {
     @Column(name = "version")
     private String version;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(
-            name = "exp_workflow_activity",
-            joinColumns = {
-                @JoinColumn(name = "workflow_id", nullable = false)
-            },
-            inverseJoinColumns = {
-                @JoinColumn(name = "activity_id", nullable = false)
-            }
-    )
-    private List<Activity> activities;
+    private List<WorkflowActivity> workflowActivities;
 
     @ManyToMany(mappedBy = "workflows")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Experiment> experiments;
 
-    @OneToMany(mappedBy = "workflow", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workflow")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<WorkflowExecution> executions;
 
     public Workflow() {
@@ -152,11 +145,19 @@ public class Workflow {
     }
 
     public List<Activity> getActivities() {
+        List<Activity> activities = new ArrayList<>();
+        for (WorkflowActivity workflowactivity : workflowActivities) {
+            activities.add(workflowactivity.getActivity());
+        }
         return activities;
     }
 
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
+    public List<WorkflowActivity> getWorkflowActivities() {
+        return workflowActivities;
+    }
+
+    public void setWorkflowActivities(List<WorkflowActivity> workflowActivities) {
+        this.workflowActivities = workflowActivities;
     }
 
     public List<Experiment> getExperiments() {
