@@ -25,15 +25,15 @@
             /***********************************************/
             /* Research Experiments CHART                            */
             /***********************************************/
-            function showParentsTreeVisualization() {
+            function showTreeVisualization() {
                 var target = "#box-workflow-tree";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
                 width = (width / 12) * 9;
-                drawParentsTree(workflowTreeDATA, target, width);
+                drawTree(workflowTreeDATA, target, width);
             }
             ;
-            showParentsTreeVisualization();
+            showTreeVisualization();
         </script>
     </jsp:attribute>
 

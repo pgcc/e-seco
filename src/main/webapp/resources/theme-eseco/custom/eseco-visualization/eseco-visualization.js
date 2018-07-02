@@ -1766,8 +1766,8 @@ function sankey(bind, data, chartWidth, config) {
             .attr('dy', '0.35em')
             .attr('class', 'label wrapme')
             .attr('text-anchor', 'start')
-            .attr('width', 160)
-            .attr('height', "100%")
+            .attr('width', 150)
+            .attr('height',  d => d.y1 - d.y0)
             .text(d => d.label)
             .filter(d => d.type === 'source')
             .attr('x', d => d.x1 - 10)
@@ -1932,7 +1932,7 @@ function wrap(text) {
         while (word) {            
             line.push(word);
             tspan.text(line.join(' '));
-            if (tspan.node().getComputedTextLength() > width && ((lineNumber) * lineHeight)< height) {
+            if (tspan.node().getComputedTextLength() > width && (lineNumber + 1 * lineHeight) < height) {
                 lineNumber += 1;
                 line.pop();
                 tspan.text(line.join(' '));
@@ -1948,12 +1948,12 @@ function wrap(text) {
 }
 
 /*********************************************/
-/* Parents Tree                              */
+/* Tree                              */
 /*********************************************/
 //https://bl.ocks.org/mbostock/2966094
 
 
-function drawParentsTree(data, target, width) {
+function drawTree(data, target, width) {
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
     width = width - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -1964,7 +1964,7 @@ function drawParentsTree(data, target, width) {
  
     var tree = d3.layout.tree()
         .separation(function(a, b) { return a.parent === b.parent ? 1 : .5; })
-        .children(function(d) { return d.parents; })
+        .children(function(d) { return d.children; })
         .size([height, width]);
 
     var svg = d3.select(target).append("svg")

@@ -68,7 +68,7 @@
                             target.info = target.info + experimentName + ", ";
                         }
                         graphData.links.push({
-                            "source": source, "target": target, "value": 2, "type": "link"
+                            "source": source, "target": target, "value": 1, "type": "link"
                         });
                     }
                 }

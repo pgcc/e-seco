@@ -2,6 +2,8 @@ package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ActivityDAO;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,16 +47,33 @@ public class ActivityService {
         List<Activity> activities = findAll();
         ArrayList<Activity> activitiesFound = new ArrayList<>();
 
-        for(Activity activity: activities){
-            for(br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService ws: activity.getWorkflowServices()){
-                if(ws.getId() == workflowServiceID){
-                    if(!activitiesFound.contains(activity)){
+        for (Activity activity : activities) {
+            for (br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService ws : activity.getWorkflowServices()) {
+                if (ws.getId() == workflowServiceID) {
+                    if (!activitiesFound.contains(activity)) {
                         activitiesFound.add(activity);
                     }
                 }
             }
         }
 
+        return activitiesFound;
+    }
+
+    public List<Activity> findByWorkflowIdAndOrder(int workflowID, int orderExec) {
+
+        List<Activity> activities = findAll();
+        ArrayList<Activity> activitiesFound = new ArrayList<>();
+
+        for (Activity activity : activities) {
+            for (WorkflowActivity wa : activity.getWorkflowActivities()) {
+                if (wa.getWorkflow().getId() == workflowID && wa.getOrderExec() == orderExec) {
+                    if (!activitiesFound.contains(activity)) {
+                        activitiesFound.add(activity);
+                    }
+                }
+            }
+        }
         return activitiesFound;
     }
 

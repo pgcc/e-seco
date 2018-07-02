@@ -222,21 +222,40 @@ public class ExperimentWorkflowsController {
     }
 
     private JSONObject getWorkflowTree(int id) {
-        Workflow workflow = workflowService.find(id);
         JSONObject tree = new JSONObject();
-        JSONArray parents = new JSONArray();
-        List<Activity> activities = workflow.getActivities();
-        for (Activity activity : activities) {
-            JSONObject activityJson = new JSONObject();
-            if (activities.indexOf(activity) == 0) {
-                activityJson = tree;
-            }
-            activityJson.put("name", activity.getName());
-            
-            parents.add(activityJson);
-            parents = new JSONArray();
-            activityJson.put("parents", parents);
+        List<Activity> findByWorkflowIdAndOrder = activityService.findByWorkflowIdAndOrder(id, 1);
+        if (findByWorkflowIdAndOrder.size() == 1) {
+            Activity activity = findByWorkflowIdAndOrder.get(0);
+            tree.put("name", activity.getName() + " ord: " + 1);
+            tree.put("children", getchildren(id, 2));
         }
+
+//        JSONObject tree = new JSONObject();
+//        JSONArray parents = new JSONArray();
+//        List<Activity> activities = workflow.getActivities();
+//
+//        for (Activity activity : activities) {
+//            JSONObject activityJson = new JSONObject();
+//            if (activities.indexOf(activity) == 0) {
+//                activityJson = tree;
+//            }
+//            activityJson.put("name", activity.getName());
+//
+//            parents.add(activityJson);
+//            parents = new JSONArray();
+//            activityJson.put("parents", parents);
+//        }
         return tree;
+    }
+
+    private JSONArray getchildren(int workflowId, int orderExec) {
+        JSONArray children = new JSONArray();
+        for (Activity activity : activityService.findByWorkflowIdAndOrder(workflowId, orderExec)) {
+            JSONObject activityJson = new JSONObject();
+            activityJson.put("name", activity.getName() + " ord: " + orderExec);
+            activityJson.put("children", getchildren(workflowId, orderExec + 1));
+            children.add(activityJson);
+        }
+        return children;
     }
 }
