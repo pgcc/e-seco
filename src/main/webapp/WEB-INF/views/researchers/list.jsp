@@ -22,7 +22,7 @@
             // Get JSON Data for visualizations
             var researchRelationsGraphDATA = JSON.parse('${researchRelationsGraphJSON}');
             var researchExperimentsChartDATA = JSON.parse('${researchExperimentsChartJSON}');
-            console.log(researchExperimentsChartDATA);
+            console.log(researchRelationsGraphDATA);
             /***********************************************/
             /* Research Relations GRAPH                            */
             /***********************************************/

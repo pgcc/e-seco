@@ -1,6 +1,7 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ActivityDAO;
+import br.ufjf.pgcc.eseco.domain.dao.experiment.WorkflowDAO;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
@@ -14,10 +15,12 @@ import java.util.*;
 public class ActivityService {
 
     private final ActivityDAO activityDAO;
+    private final WorkflowDAO workflowDAO;
 
     @Autowired
-    public ActivityService(ActivityDAO activityDAO) {
+    public ActivityService(ActivityDAO activityDAO, WorkflowDAO workflowDAO) {
         this.activityDAO = activityDAO;
+        this.workflowDAO = workflowDAO;
     }
 
     @Transactional
@@ -62,15 +65,12 @@ public class ActivityService {
 
     public List<Activity> findByWorkflowIdAndOrder(int workflowID, int orderExec) {
 
-        List<Activity> activities = findAll();
         ArrayList<Activity> activitiesFound = new ArrayList<>();
 
-        for (Activity activity : activities) {
-            for (WorkflowActivity wa : activity.getWorkflowActivities()) {
-                if (wa.getWorkflow().getId() == workflowID && wa.getOrderExec() == orderExec) {
-                    if (!activitiesFound.contains(activity)) {
-                        activitiesFound.add(activity);
-                    }
+        for (WorkflowActivity wa : workflowDAO.find(workflowID).getWorkflowActivities()) {
+            if (wa.getOrderExec() == orderExec) {
+                if (!activitiesFound.contains(wa.getActivity())) {
+                    activitiesFound.add(wa.getActivity());
                 }
             }
         }

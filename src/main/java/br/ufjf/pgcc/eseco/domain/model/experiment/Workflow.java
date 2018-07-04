@@ -7,6 +7,7 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -153,6 +154,7 @@ public class Workflow {
     }
 
     public List<WorkflowActivity> getWorkflowActivities() {
+        Collections.sort(workflowActivities);
         return workflowActivities;
     }
 

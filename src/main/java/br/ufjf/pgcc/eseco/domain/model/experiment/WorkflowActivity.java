@@ -22,7 +22,7 @@ import javax.persistence.Table;
 //@IdClass(WorkflowActivityId.class)
 @Entity
 @Table(name = "exp_workflow_activity")
-public class WorkflowActivity implements Serializable {
+public class WorkflowActivity implements Serializable, Comparable<WorkflowActivity> {
 
     @Id
     @Column(name = "id")
@@ -73,6 +73,11 @@ public class WorkflowActivity implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(WorkflowActivity o) {
+        return Integer.compare(this.getOrderExec(), o.getOrderExec());
     }
 
 }

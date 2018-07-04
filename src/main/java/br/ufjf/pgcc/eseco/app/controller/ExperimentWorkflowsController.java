@@ -5,17 +5,22 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import org.hibernate.internal.util.compare.ComparableComparator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,39 +228,52 @@ public class ExperimentWorkflowsController {
 
     private JSONObject getWorkflowTree(int id) {
         JSONObject tree = new JSONObject();
-        List<Activity> findByWorkflowIdAndOrder = activityService.findByWorkflowIdAndOrder(id, 1);
-        if (findByWorkflowIdAndOrder.size() == 1) {
-            Activity activity = findByWorkflowIdAndOrder.get(0);
-            tree.put("name", activity.getName() + " ord: " + 1);
-            tree.put("children", getchildren(id, 2));
-        }
+        JSONObject nodes = new JSONObject();
+        JSONObject links = new JSONObject();
+        List<WorkflowActivity> workflowActivities = workflowService.find(id).getWorkflowActivities();
 
-//        JSONObject tree = new JSONObject();
-//        JSONArray parents = new JSONArray();
-//        List<Activity> activities = workflow.getActivities();
-//
-//        for (Activity activity : activities) {
-//            JSONObject activityJson = new JSONObject();
-//            if (activities.indexOf(activity) == 0) {
-//                activityJson = tree;
-//            }
-//            activityJson.put("name", activity.getName());
-//
-//            parents.add(activityJson);
-//            parents = new JSONArray();
-//            activityJson.put("parents", parents);
-//        }
-        return tree;
-    }
+        int position = 0;
+        int phases = 0;
 
-    private JSONArray getchildren(int workflowId, int orderExec) {
-        JSONArray children = new JSONArray();
-        for (Activity activity : activityService.findByWorkflowIdAndOrder(workflowId, orderExec)) {
+        for (int i = 0; i < workflowActivities.size(); i++) {
+            WorkflowActivity workflowActivity = workflowActivities.get(i);
+
+            if (i == 0 || workflowActivities.get(i - 1).getOrderExec() != workflowActivity.getOrderExec()) {
+                position = 1;
+                phases++;
+            } else {
+                position++;
+            }
+
             JSONObject activityJson = new JSONObject();
-            activityJson.put("name", activity.getName() + " ord: " + orderExec);
-            activityJson.put("children", getchildren(workflowId, orderExec + 1));
-            children.add(activityJson);
+            activityJson.put("name", workflowActivity.getActivity().getName());
+            activityJson.put("orderExec", workflowActivity.getOrderExec());
+            activityJson.put("info", "Input: Output:");
+
+            int nextSiblings = 0;
+            for (int j = i + 1; j < workflowActivities.size(); j++) {
+                WorkflowActivity workflowActivity2 = workflowActivities.get(j);
+                if (workflowActivity2.getOrderExec() == workflowActivity.getOrderExec() + 1) {
+                    JSONObject linkJson = new JSONObject();
+                    linkJson.put("activity1", workflowActivity.getActivity().getId());
+                    linkJson.put("activity2", workflowActivity2.getActivity().getId());
+                    links.put(workflowActivity.getActivity().getId() + "_" + workflowActivity2.getActivity().getId(), linkJson);
+                } else {
+                    if (workflowActivity2.getOrderExec() == workflowActivity.getOrderExec()) {
+                        nextSiblings++;
+                    }
+                }
+            }
+
+            activityJson.put("siblings", position + nextSiblings);
+            activityJson.put("position", position);
+            nodes.put(String.valueOf(workflowActivity.getActivity().getId()), activityJson);
+
         }
-        return children;
+
+        tree.put("nodes", nodes);
+        tree.put("links", links);
+        tree.put("phases", phases);
+        return tree;
     }
 }

@@ -21,19 +21,55 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var workflowTreeDATA = JSON.parse('${workflowTreeJSON}');
-            console.log('${workflowTreeJSON}');
+//            console.log(workflowTreeDATA);
             /***********************************************/
             /* Research Experiments CHART                            */
             /***********************************************/
-            function showTreeVisualization() {
+            function showWorkflowVisualization() {
                 var target = "#box-workflow-tree";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
-                width = (width / 12) * 9;
-                drawTree(workflowTreeDATA, target, width);
+
+                var graphData = mountDataToWorkflowVis(workflowTreeDATA);
+
+                drawWorkflow(graphData, target, width, workflowTreeDATA.phases);
             }
             ;
-            showTreeVisualization();
+            function mountDataToWorkflowVis(itemData) {
+
+                var info = "";
+                for (var i in itemData.nodes) {
+                    info = info += i + " => " + itemData.nodes[i].name;
+                    info = info += '\n';
+                }
+                var graphData = {
+                    "nodes": [],
+                    "links": []
+                };
+
+                for (var i in itemData.nodes) {
+                    var node = itemData.nodes[i];
+                    graphData.nodes.push({
+                        "name": node.name, "group": 1, "kind": 4, "info": node.info, id: i,
+                        "orderExec": node.orderExec, "siblings": node.siblings,
+                        "position": node.position
+                    });
+                }
+
+                for (var i in itemData.links) {
+                    var targetID = itemData.links[i].activity2;
+                    var sourceID = itemData.links[i].activity1;
+
+                    var target = graphData.nodes.find(x => x.id == targetID);
+                    var source = graphData.nodes.find(x => x.id == sourceID);
+
+                    graphData.links.push({
+                        "source": source, "target": target, "value": 1, "type": "link"
+                    });
+                }
+                return graphData;
+            }
+            showWorkflowVisualization();
         </script>
     </jsp:attribute>
 
