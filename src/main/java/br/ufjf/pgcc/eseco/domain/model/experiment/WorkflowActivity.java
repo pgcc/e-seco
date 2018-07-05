@@ -19,10 +19,9 @@ import javax.persistence.Table;
  *
  * @author Lenita
  */
-//@IdClass(WorkflowActivityId.class)
 @Entity
 @Table(name = "exp_workflow_activity")
-public class WorkflowActivity implements Serializable, Comparable<WorkflowActivity> {
+public class WorkflowActivity implements Comparable<WorkflowActivity> {
 
     @Id
     @Column(name = "id")

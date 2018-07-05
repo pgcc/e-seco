@@ -12,16 +12,12 @@ import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WfmsService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
-import org.hibernate.internal.util.compare.ComparableComparator;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -138,6 +135,39 @@ public class ExperimentWorkflowsController {
         return "experiments/workflows/workflows-form";
     }
 
+    @RequestMapping(value = "/experiments/workflows/addActivities", method = RequestMethod.POST)
+    public String addActivities(@ModelAttribute("workflowForm") Workflow workflow, Model model, HttpSession session) {
+
+        LOGGER.info("addActivities()");
+        List<WorkflowActivity> workflowActivities = new ArrayList<>();
+        for (Activity activity : workflow.getActivities()) {
+            Activity a = activityService.find(activity.getId());
+            WorkflowActivity wa = new WorkflowActivity();
+            wa.setWorkflow(workflow);
+            wa.setActivity(a);
+            workflowActivities.add(wa);
+        }
+
+        workflow.setWorkflowActivities(workflowActivities);
+        model.addAttribute("workflowForm", workflow);
+        populateDefaultModel(model);
+
+        return "experiments/workflows/workflows-form";
+    }
+
+    @RequestMapping(value = "/experiments/workflows/removeActivity", method = RequestMethod.POST)
+    public String removeActivity(@ModelAttribute("workflowForm") Workflow workflow, @RequestParam("index") int index, Model model, HttpSession session) {
+
+        LOGGER.info("removeActivity()");
+
+        workflow.getWorkflowActivities().remove(index);
+
+        model.addAttribute("workflowForm", workflow);
+        populateDefaultModel(model);
+
+        return "experiments/workflows/workflows-form";
+    }
+
     @RequestMapping(value = "/experiments/workflows/{id}/update", method = RequestMethod.GET)
     public String showUpdateWorkflowForm(@PathVariable("id") int id, Model model) {
 
@@ -145,7 +175,7 @@ public class ExperimentWorkflowsController {
 
         Workflow workflow = workflowService.find(id);
         model.addAttribute("workflowForm", workflow);
-
+        model.addAttribute("workflowActivities", workflow.getWorkflowActivities());
         populateDefaultModel(model);
         return "experiments/workflows/workflows-form";
     }
@@ -231,6 +261,7 @@ public class ExperimentWorkflowsController {
         JSONObject nodes = new JSONObject();
         JSONObject links = new JSONObject();
         List<WorkflowActivity> workflowActivities = workflowService.find(id).getWorkflowActivities();
+        Collections.sort(workflowActivities);
 
         int position = 0;
         int phases = 0;
@@ -248,7 +279,7 @@ public class ExperimentWorkflowsController {
             JSONObject activityJson = new JSONObject();
             activityJson.put("name", workflowActivity.getActivity().getName());
             activityJson.put("orderExec", workflowActivity.getOrderExec());
-            activityJson.put("info", "Input: Output:");
+            activityJson.put("info", "Description:" + workflowActivity.getActivity().getDescription());
 
             int nextSiblings = 0;
             for (int j = i + 1; j < workflowActivities.size(); j++) {

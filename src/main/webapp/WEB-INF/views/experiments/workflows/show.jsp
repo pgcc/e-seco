@@ -21,7 +21,8 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var workflowTreeDATA = JSON.parse('${workflowTreeJSON}');
-//            console.log(workflowTreeDATA);
+            console.log(workflowTreeDATA);
+            console.log(workflowTreeDATA.phases);
             /***********************************************/
             /* Research Experiments CHART                            */
             /***********************************************/
@@ -29,10 +30,10 @@
                 var target = "#box-workflow-tree";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
-
-                var graphData = mountDataToWorkflowVis(workflowTreeDATA);
-
-                drawWorkflow(graphData, target, width, workflowTreeDATA.phases);
+                if (workflowTreeDATA.phases > 0) {
+                    var graphData = mountDataToWorkflowVis(workflowTreeDATA);
+                    drawWorkflow(graphData, target, width, workflowTreeDATA.phases);
+                }
             }
             ;
             function mountDataToWorkflowVis(itemData) {
@@ -159,15 +160,17 @@
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                     Activities                                
                                 </a>
-                                <span class="badge">${workflow.activities.size()}</span>
+                                <span class="badge">${workflow.workflowActivities.size()}</span>
                             </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
                                 <ul class="list-group" >
-                                    <c:forEach items="${workflow.activities}" var="activity">
-                                        <li class="list-group-item"><a href="<c:url value="/experiments/activities/${activity.id}"/>">${activity.name}</a></li>
-                                        </c:forEach>
+                                    <c:forEach items="${workflow.workflowActivities}" var="wa">
+                                        <li class="list-group-item">
+                                            <a href="<c:url value="/experiments/activities/${wa.activity.id}"/>">${wa.activity.name}</a> Sequence: ${wa.orderExec} 
+                                        </li>
+                                    </c:forEach>
                                 </ul>
                             </div>
                         </div>

@@ -70,6 +70,9 @@ public class Workflow {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<WorkflowExecution> executions;
 
+    @Transient
+    private List<Activity> activities;
+
     public Workflow() {
     }
 
@@ -146,15 +149,24 @@ public class Workflow {
     }
 
     public List<Activity> getActivities() {
-        List<Activity> activities = new ArrayList<>();
-        for (WorkflowActivity workflowactivity : workflowActivities) {
-            activities.add(workflowactivity.getActivity());
+
+        if (activities != null) {
+            return activities;
+        }
+        activities = new ArrayList<>();
+        if (workflowActivities != null) {
+            for (WorkflowActivity workflowactivity : workflowActivities) {
+                activities.add(workflowactivity.getActivity());
+            }
         }
         return activities;
     }
 
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
     public List<WorkflowActivity> getWorkflowActivities() {
-        Collections.sort(workflowActivities);
         return workflowActivities;
     }
 

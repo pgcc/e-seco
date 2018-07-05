@@ -2437,7 +2437,7 @@ var WorkflowChart = {
 
             if (d.info) {
                 tip = svg.append("g")
-                        .attr("transform", "translate(" + d.x + "," + d.y + ")");
+                        .attr("transform", "translate(" + 0 + "," + 0 + ")");
 
                 var rect = tip.append("rect")
                         .style("fill", "white");

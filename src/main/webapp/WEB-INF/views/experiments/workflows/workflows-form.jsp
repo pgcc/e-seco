@@ -18,7 +18,22 @@
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript">
+            function addActivity() {
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/addActivities";
+                var form = document.getElementById("workflowform");
 
+                form.action = url;
+                form.submit();
+            }
+            ;
+            function removeActivity(index) {
+                var form = document.getElementById("workflowform");
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/removeActivity?index=" + index;
+                form.action = url;
+                form.submit();
+            }
+        </script>
     </jsp:attribute>
 
 
@@ -54,7 +69,7 @@
 
             <spring:url value="/experiments/workflows" var="experimentWorkflowsUrl" />
 
-            <f:form class="form form-horizontal" method="post" modelAttribute="workflowForm" 
+            <f:form id="workflowform" class="form form-horizontal" method="post" modelAttribute="workflowForm" 
                     action="${experimentWorkflowsUrl}">
 
                 <f:hidden path="id" />
@@ -142,15 +157,43 @@
                         </div>
                     </div>
                 </spring:bind>
-                
+
                 <spring:bind path="activities">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Activities</label>
                         <div class="col-sm-10">
-                            <f:select path="activities" items="${activitiesList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
-                            <f:errors path="activities" class="control-label" />
+                            <div class="input-group">
+                                <f:select path="activities" items="${activitiesList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" style="height: 68px" onclick="addActivity()">Select Activities</button>
+                                </span>
+                            </div>
                         </div>
                     </div>
+                </spring:bind>
+
+                <spring:bind path="workflowActivities">
+                    <label class="col-sm-2 control-label">Activities Sequence</label>
+                    <label class="col-sm-2 control-label" style="text-align: center">Sequence</label>
+                    <label class="col-sm-8 control-label" style="text-align: center">Activity</label>
+                    <c:forEach items="${workflowForm['workflowActivities']}" var="workflowActivity" varStatus="loop">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="col-sm-2">
+                                <f:input path="workflowActivities[${loop.index}].orderExec" type="text" class="form-control " id="orderExec" placeholder="Execution Order" />
+                            </div>
+                            <div class="col-sm-7">
+                                <f:input path="workflowActivities[${loop.index}].activity.name" disabled="true" class="form-control" id="activity" placeholder="Activity" />                                            
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeActivity('${loop.index}')">
+                                    <span class="glyphicon glyphicon-remove"/>
+                                </button>
+                            </div>
+                        </div>
+                        <f:errors path="workflowActivities" class="control-label" />
+                    </c:forEach>
                 </spring:bind>
 
                 <div class="form-group">
