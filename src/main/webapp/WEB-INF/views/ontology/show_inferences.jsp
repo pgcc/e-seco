@@ -58,81 +58,9 @@
                 var target = "#box-chart-provenance-graph";
                 var width = $(target).css("width");
                 width = width.replace("px", "");
-                var graphData = mountDataToProvenance(provenanceJson);
-                drawGraph(graphData, target, width);
+                drawProvenanceGraph(provenanceJson, target, width);
             }
             ;
-            function mountDataToProvenance(itemData) {
-
-                var info = "";
-                for (var i in itemData.dataProperties) {
-                    info = info += i + " => " + itemData.dataProperties[i];
-                    info = info += '\n';
-                }
-                var objectName = "${objectName}";
-                objectName = objectName.replace(".", "_");
-                var graphData = {
-                    "nodes": [
-                        {
-                            "name": objectName,
-                            "group": 0,
-                            "kind": 1, // Kind 1 = Principal item
-                            "info": info
-                        }
-                    ],
-                    "links": []
-                };
-
-                var groupId = 1;
-                for (var j in itemData.asserted) {
-                    for (var k = 0; k < itemData.asserted[j].length; k++) {
-                        var item = itemData.asserted[j][k];
-                        var name = item.name;                        
-                        name = name.replace(".", "_");
-                        if (graphData.links.find(x => x.target.name == name) == null) {
-                            graphData.nodes.push({
-                                "name": name, "group": groupId, "id": item.id, "class": item.type
-                            });
-                            graphData.links.push({
-                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "name": j, "linknum": 1
-                            });
-                        } else {
-                            var linknum = graphData.links.find(x => x.target.name == name).linknum;
-                            linknum += 1;
-                            graphData.links.push({
-                                "source": 0, "target": target, "value": 1, "type": "arrow", "name": j, "linknum": linknum
-                            });
-                        }
-                        groupId++;
-
-                    }
-
-                }
-                for (var j in itemData.inferred) {
-                    for (var k = 0; k < itemData.inferred[j].length; k++) {
-                        var item = itemData.inferred[j][k];
-                        var name = item.name;                        
-                        name = name.replace(".", "_");
-                        if (graphData.nodes.find(x => x.name == name) == null) {
-                            graphData.nodes.push({
-                                "name": name, "group": groupId, "id": item.id, "class": item.type
-                            });
-                            graphData.links.push({
-                                "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": 1
-                            });
-                            groupId++;
-                        } else {
-                            var target = graphData.nodes.find(x => x.name == name).group;
-                            var linknum = graphData.links.find(x => x.target == target).linknum + 1;
-                            graphData.links.push({
-                                "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
-                            });
-                        }
-                    }
-
-                }
-                return graphData;
-            }
             showProvenanceGraphVisualization();
 
         </script>

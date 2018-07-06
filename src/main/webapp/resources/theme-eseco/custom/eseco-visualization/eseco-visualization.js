@@ -105,8 +105,6 @@ var GraphChart = {
         }
 
         // get the data
-        //var nodecolor = d3.scale.category20();
-
         var nodes = data.nodes;
 
         // Compute the distinct nodes from the links.
@@ -146,34 +144,7 @@ var GraphChart = {
                 link.type = "onezerozero";
             }
         });
-        
-        nodes.forEach(function (node) {
-            if (node.class == "workflow") {
-                node.kind = 2;
-            } else if (node.class == "researcher") {
-                node.kind = 3;
-            } else if (node.class == "researchgroup") {
-                node.kind = 4;
-            } else if (node.class == "institution") {
-                node.kind = 5;
-            } else if (node.class == "experiment") {
-                node.kind = 6;
-            } else if (node.class == "wfms") {
-                node.kind = 7;
-            } else if (node.class == "program") {
-                node.kind = 8;
-            }  else if (node.class == "data") {
-                node.kind = 9;
-            }  else if (node.class == "document") {
-                node.kind = 10;
-            }  else if (node.class == "port") {
-                node.kind = 11;
-            }  else if (node.class == "workflowexecution") {
-                node.kind = 12;
-            }  else if (node.class == "activityexecution") {
-                node.kind = 13;
-            }            
-        });
+
 
         var container = d3.select(target).html("");
 
@@ -270,7 +241,7 @@ var GraphChart = {
                         return "yellow";
                     } else if (d.kind == 7) {
                         return "gray";
-                    }else if (d.kind == 8) {
+                    } else if (d.kind == 8) {
                         return "red";
                     } else if (d.kind == 9) {
                         return "green";
@@ -2506,6 +2477,423 @@ var WorkflowChart = {
             if (tip)
                 tip.remove();
         });
+
+    }
+};
+
+
+/*********************************************/
+/* PROVENANCE GRAPH                          */
+/*********************************************/
+function drawProvenanceGraph(data, target, width) {
+
+    data = mountDataToProvenance(data);
+    // Call function to draw the Radar chart
+    if (data.constructor === Object) {
+        ProvenanceGraphChart.draw(data, target, width);
+
+    } else if (typeof data === "string") {
+        d3.json(data, function (error, data) {
+            if (error)
+                throw error;
+            ProvenanceGraphChart.draw(data, target, width);
+        });
+    }
+}
+
+function mountDataToProvenance(itemData) {
+
+    var info = "";
+    for (var i in itemData.dataProperties) {
+        info = info += i + " => " + itemData.dataProperties[i];
+        info = info += '\n';
+    }
+    var objectName = "${objectName}";
+    objectName = objectName.replace(".", "_");
+    var graphData = {
+        "nodes": [
+            {
+                "name": objectName,
+                "group": 0,
+                "kind": 1, // Kind 1 = Principal item
+                "info": info
+            }
+        ],
+        "links": []
+    };
+
+    var groupId = 1;
+    for (var j in itemData.asserted) {
+        for (var k = 0; k < itemData.asserted[j].length; k++) {
+            var item = itemData.asserted[j][k];
+            var name = item.name;
+            name = name.replace(".", "_");
+            if (graphData.links.find(x => x.target.name == name) == null) {
+                graphData.nodes.push({
+                    "name": name, "group": groupId, "id": item.id, "class": item.type
+                });
+                graphData.links.push({
+                    "source": 0, "target": groupId, "value": 1, "type": "arrow", "name": j, "linknum": 1
+                });
+            } else {
+                var linknum = graphData.links.find(x => x.target.name == name).linknum;
+                linknum += 1;
+                graphData.links.push({
+                    "source": 0, "target": target, "value": 1, "type": "arrow", "name": j, "linknum": linknum
+                });
+            }
+            groupId++;
+
+        }
+
+    }
+    for (var j in itemData.inferred) {
+        for (var k = 0; k < itemData.inferred[j].length; k++) {
+            var item = itemData.inferred[j][k];
+            var name = item.name;
+            name = name.replace(".", "_");
+            if (graphData.nodes.find(x => x.name == name) == null) {
+                graphData.nodes.push({
+                    "name": name, "group": groupId, "id": item.id, "class": item.type
+                });
+                graphData.links.push({
+                    "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": 1
+                });
+                groupId++;
+            } else {
+                var target = graphData.nodes.find(x => x.name == name).group;
+                var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                graphData.links.push({
+                    "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
+                });
+            }
+        }
+
+    }
+    return graphData;
+}
+
+var ProvenanceGraphChart = {
+
+    draw: function (data, target, width) {
+
+        if (!window.d3) {
+            var d3 = d3version3;
+        }
+
+        // get the data
+        //var nodecolor = d3.scale.category20();
+
+        var nodes = data.nodes;
+
+        // Compute the distinct nodes from the links.
+        var links = data.links;
+
+        var height = 400;
+
+        var force = d3.layout.force()
+                .nodes(data.nodes)
+                .links(links)
+                .size([width, height])
+                .linkDistance(function (d) {
+                    return 1 / d.value * 200;
+                })
+
+                .charge(-500)
+                .on("tick", tick)
+                .start();
+
+        // Set the range
+        var v = d3.scale.linear().range([0, 100]);
+
+        // Scale the range of the data
+        v.domain([0, d3.max(links, function (d) {
+                return d.value;
+            })]);
+
+        // asign a type per value to encode opacity
+        links.forEach(function (link) {
+            if (v(link.value) <= 25) {
+                link.type = "twofive";
+            } else if (v(link.value) <= 50 && v(link.value) > 25) {
+                link.type = "fivezero";
+            } else if (v(link.value) <= 75 && v(link.value) > 50) {
+                link.type = "sevenfive";
+            } else if (v(link.value) <= 100 && v(link.value) > 75) {
+                link.type = "onezerozero";
+            }
+        });
+
+        nodes.forEach(function (node) {
+            if (node.class == "workflow") {
+                node.kind = 2;
+            } else if (node.class == "researcher") {
+                node.kind = 3;
+            } else if (node.class == "researchgroup") {
+                node.kind = 4;
+            } else if (node.class == "institution") {
+                node.kind = 5;
+            } else if (node.class == "experiment") {
+                node.kind = 6;
+            } else if (node.class == "wfms") {
+                node.kind = 7;
+            } else if (node.class == "program") {
+                node.kind = 8;
+            } else if (node.class == "data") {
+                node.kind = 9;
+            } else if (node.class == "document") {
+                node.kind = 10;
+            } else if (node.class == "port") {
+                node.kind = 11;
+            } else if (node.class == "workflowexecution") {
+                node.kind = 12;
+            } else if (node.class == "activityexecution") {
+                node.kind = 13;
+            }
+        });
+
+        var container = d3.select(target).html("");
+
+        var svg = container.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+        // build the arrow.
+        svg.append("svg:defs").selectAll("marker")
+                .data(["end"])      // Different link/path types can be defined here
+                .enter().append("svg:marker")    // This section adds in the arrows
+                .attr("id", String)
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 30)
+                .attr("refY", -1.5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("svg:path")
+                .attr("d", "M0,-5L10,0L0,5");
+
+
+        // add the links and the arrows
+        var path = svg.append("svg:g").selectAll("path")
+                .data(force.links())
+                .enter().append("svg:path")
+                .attr("class", function (d) {
+                    var classes = "link " + d.type;
+                    if (d.way == "interoperate") {
+                        classes += " interoperate ";
+                    }
+                    return classes;
+                })
+                .attr("marker-end", "url(#end)")
+                .attr("id", function (d) {
+                    return d.source.name + "_" + d.target.name + "_" + d.name;
+                });
+
+        // add link labels
+        svg.selectAll(".link-label")
+                .data(data.links)
+                .enter().append('svg:text')
+                .append("svg:textPath")
+                .attr({
+                    "class": "link-label",
+                    "text-anchor": "middle"
+                })
+                .attr("xlink:href", function (d) {
+                    return "#" + d.source.name + "_" + d.target.name + "_" + d.name;
+                })
+                .style("text-anchor", "middle")
+                .attr("startOffset", "50%")
+                .text(function (d) {
+                    return d.name;
+                });
+
+        // define the nodes
+        var node = svg.selectAll(".node")
+                .data(force.nodes())
+                .enter().append("g")
+                .attr("class", "node")
+                .call(force.drag);
+
+
+        svg.append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:circle")
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 16);
+
+        svg.append("svg:clipPath")
+                .attr("id", "clipG")
+                .append("svg:circle")
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('r', 32);
+
+        // add the nodes
+        node.append("circle")
+                .attr("r", 16)
+                .style("fill", function (d) {
+                    if (d.kind == 1) {
+                        return "black";
+                    } else if (d.kind == 2) {
+                        return "red";
+                    } else if (d.kind == 3) {
+                        return "green";
+                    } else if (d.kind == 4) {
+                        return "blue";
+                    } else if (d.kind == 5) {
+                        return "purple";
+                    } else if (d.kind == 6) {
+                        return "yellow";
+                    } else if (d.kind == 7) {
+                        return "gray";
+                    } else if (d.kind == 8) {
+                        return "red";
+                    } else if (d.kind == 9) {
+                        return "green";
+                    } else if (d.kind == 10) {
+                        return "blue";
+                    } else if (d.kind == 11) {
+                        return "purple";
+                    } else if (d.kind == 12) {
+                        return "yellow";
+                    } else if (d.kind == 13) {
+                        return "gray";
+                    }
+                });
+
+
+        //add images at the nodes
+        var images = node.append("svg:image")
+                .attr("xlink:href", function (d) {
+                    return d.img;
+                })
+                .attr("x", "-16px")
+                .attr("y", "-16px")
+                .attr("width", "32px")
+                .attr("height", "32px")
+                .attr("clip-path", "url(#clip)");
+
+        images.on('mouseenter', function () {
+            // select element in current context
+            d3.select(this)
+                    .transition()
+                    .attr("x", function (d) {
+                        return -32;
+                    })
+                    .attr("y", function (d) {
+                        return -32;
+                    })
+                    .attr("height", 64)
+                    .attr("width", 64)
+                    .attr("clip-path", "url(#clipG)");
+        }).on('mouseleave', function () {
+            d3.select(this)
+                    .transition()
+                    .attr("x", function (d) {
+                        return -16;
+                    })
+                    .attr("y", function (d) {
+                        return -16;
+                    })
+                    .attr("height", 32)
+                    .attr("width", 32)
+                    .attr("clip-path", "url(#clip)");
+        });
+
+
+        // add the text
+        node.append("text")
+                .attr("x", 15)
+                .attr("dy", ".35em")
+                .text(function (d) {
+                    if (d.label == "false") {
+                        return "";
+                    }
+                    return d.name.split('.').pop();
+                });
+
+
+
+
+        // add tooltip information
+        var tip;
+        node.on("dblclick", function (d) {
+            if (tip)
+                tip.remove();
+
+            tip = svg.append("g")
+                    .attr("transform", "translate(" + d.x + "," + d.y + ")");
+
+            var rect = tip.append("rect")
+                    .style("fill", "white")
+                    .style("stroke", "steelblue");
+
+            tip.append("text")
+                    .text(d.name)
+                    .attr("dy", "1em")
+                    .attr("x", 5);
+
+
+
+            if (d.info) {
+                tip.append("text")
+                        .text("Details: ")
+                        .attr("dy", "2em")
+                        .attr("x", 5);
+                for (var i = 0; i < d.info.split('\n').length; i++) {
+                    var pos = 3 + i;
+                    pos = pos + "em";
+                    tip.append("text")
+                            .text(d.info.split('\n')[i])
+                            .attr("dy", pos)
+                            .attr("x", 5);
+                }
+            }
+
+            var bbox = tip.node().getBBox();
+            rect.attr("width", bbox.width + 5)
+                    .attr("height", bbox.height + 5);
+        });
+
+        container.on("click", function (d) {
+            if (tip)
+                tip.remove();
+        });
+
+
+        // add the curvy lines
+        function tick() {
+
+            path.attr("d", function (d) {
+                var dx = d.target.x - d.source.x,
+                        dy = d.target.y - d.source.y,
+                        dr = Math.sqrt(dx * dx + dy * dy);
+
+                if (isNaN(d.linknum) || d.linknum == null || d.linknum == undefined || d.linknum == 1) {
+                    d.linknum = 1;
+                    //rx ry x-axis-rotation large-arc-flag sweep-flag x y
+                    return "M" +
+                            d.source.x + "," +
+                            d.source.y + "A" +
+                            dr + "," + dr + " 0 0,1 " +
+                            d.target.x + "," +
+                            d.target.y;
+                } else {
+                    //rx ry x-axis-rotation large-arc-flag sweep-flag x y
+                    return "M" +
+                            d.source.x + "," +
+                            d.source.y + "A" +
+                            dr + "," + dr + " 0 0,0 " +
+                            d.target.x + "," +
+                            d.target.y;
+                }
+            });
+
+            node.attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+        }
 
     }
 };
