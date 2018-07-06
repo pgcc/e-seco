@@ -75,9 +75,10 @@ public class OntologyController {
             JsonElement je = jp.parse(experimentProvenanceJSON.toJSONString());
             String prettyJsonString = gson.toJson(je);
             prettyJsonString = prettyJsonString.replaceAll("\\.", "_");
-            model.addAttribute("objectName", objectName);
+            model.addAttribute("objectName", experimentProvenanceJSON.get("resource"));
             model.addAttribute("objectInferences", prettyJsonString);
-            model.addAttribute("objectInferencesJson", experimentProvenanceJSON);
+            String experimentProvenance = experimentProvenanceJSON.toJSONString().replaceAll("\\\\", "_");
+            model.addAttribute("objectInferencesJson", experimentProvenance);
         } catch (IOException ex) {
             Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
             redirectAttributes.addFlashAttribute("css", "danger");

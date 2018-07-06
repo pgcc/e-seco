@@ -51,7 +51,6 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var provenanceJson = JSON.parse('${objectInferencesJson}');
-
             /***********************************************/
             /* USAGE AND RELATIONS GRAPH                   */
             /***********************************************/
@@ -87,11 +86,12 @@
                 var groupId = 1;
                 for (var j in itemData.asserted) {
                     for (var k = 0; k < itemData.asserted[j].length; k++) {
-                        var name = itemData.asserted[j][k];
+                        var item = itemData.asserted[j][k];
+                        var name = item.name;                        
                         name = name.replace(".", "_");
                         if (graphData.links.find(x => x.target.name == name) == null) {
                             graphData.nodes.push({
-                                "name": name, "group": groupId, "kind": 4
+                                "name": name, "group": groupId, "id": item.id, "class": item.type
                             });
                             graphData.links.push({
                                 "source": 0, "target": groupId, "value": 1, "type": "arrow", "name": j, "linknum": 1
@@ -110,11 +110,12 @@
                 }
                 for (var j in itemData.inferred) {
                     for (var k = 0; k < itemData.inferred[j].length; k++) {
-                        var name = itemData.inferred[j][k];
+                        var item = itemData.inferred[j][k];
+                        var name = item.name;                        
                         name = name.replace(".", "_");
                         if (graphData.nodes.find(x => x.name == name) == null) {
                             graphData.nodes.push({
-                                "name": name, "group": groupId, "kind": 3
+                                "name": name, "group": groupId, "id": item.id, "class": item.type
                             });
                             graphData.links.push({
                                 "source": 0, "target": groupId, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": 1
@@ -130,7 +131,6 @@
                     }
 
                 }
-                console.log(graphData);
                 return graphData;
             }
             showProvenanceGraphVisualization();

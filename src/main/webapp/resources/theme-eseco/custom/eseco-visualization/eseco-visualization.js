@@ -107,7 +107,7 @@ var GraphChart = {
         // get the data
         //var nodecolor = d3.scale.category20();
 
-        var nodes = {};
+        var nodes = data.nodes;
 
         // Compute the distinct nodes from the links.
         var links = data.links;
@@ -145,6 +145,34 @@ var GraphChart = {
             } else if (v(link.value) <= 100 && v(link.value) > 75) {
                 link.type = "onezerozero";
             }
+        });
+        
+        nodes.forEach(function (node) {
+            if (node.class == "workflow") {
+                node.kind = 2;
+            } else if (node.class == "researcher") {
+                node.kind = 3;
+            } else if (node.class == "researchgroup") {
+                node.kind = 4;
+            } else if (node.class == "institution") {
+                node.kind = 5;
+            } else if (node.class == "experiment") {
+                node.kind = 6;
+            } else if (node.class == "wfms") {
+                node.kind = 7;
+            } else if (node.class == "program") {
+                node.kind = 8;
+            }  else if (node.class == "data") {
+                node.kind = 9;
+            }  else if (node.class == "document") {
+                node.kind = 10;
+            }  else if (node.class == "port") {
+                node.kind = 11;
+            }  else if (node.class == "workflowexecution") {
+                node.kind = 12;
+            }  else if (node.class == "activityexecution") {
+                node.kind = 13;
+            }            
         });
 
         var container = d3.select(target).html("");
@@ -241,6 +269,18 @@ var GraphChart = {
                     } else if (d.kind == 6) {
                         return "yellow";
                     } else if (d.kind == 7) {
+                        return "gray";
+                    }else if (d.kind == 8) {
+                        return "red";
+                    } else if (d.kind == 9) {
+                        return "green";
+                    } else if (d.kind == 10) {
+                        return "blue";
+                    } else if (d.kind == 11) {
+                        return "purple";
+                    } else if (d.kind == 12) {
+                        return "yellow";
+                    } else if (d.kind == 13) {
                         return "gray";
                     }
                 });
