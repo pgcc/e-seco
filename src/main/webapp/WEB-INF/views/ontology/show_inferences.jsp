@@ -101,13 +101,13 @@
                                 <button class="btn btn-primary pull-right">Find</button>
                             </div>
                         </div>
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label for="result" class="col-sm-2 control-label">Result</label>
                             <div class="col-sm-10">
                                 <textarea id="result" name="result" rows="20" class="form-control"   placeholder="result">${objectInferences}</textarea>
                             </div>
 
-                        </div>
+                        </div>-->
                         <div class="form-group">
                             <label for="result" class="col-sm-2 control-label">Graph</label>
                             <div class="col-xs-10">
@@ -118,8 +118,7 @@
                                         </h3>
                                     </div>
                                     <div class="panel-body" style="position: relative;">
-                                        <img 
-                                            src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">
+<!--                                        <img src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">-->
                                         <div id="box-chart-provenance-graph"></div>
                                     </div>
                                 </div>

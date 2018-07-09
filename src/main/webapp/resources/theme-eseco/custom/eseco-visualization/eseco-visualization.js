@@ -2625,30 +2625,44 @@ var ProvenanceGraphChart = {
         });
 
         nodes.forEach(function (node) {
-            if (node.class == "workflow") {
-                node.kind = 2;
-            } else if (node.class == "researcher") {
-                node.kind = 3;
-            } else if (node.class == "researchgroup") {
-                node.kind = 4;
-            } else if (node.class == "institution") {
-                node.kind = 5;
-            } else if (node.class == "experiment") {
-                node.kind = 6;
-            } else if (node.class == "wfms") {
-                node.kind = 7;
-            } else if (node.class == "program") {
-                node.kind = 8;
-            } else if (node.class == "data") {
-                node.kind = 9;
-            } else if (node.class == "document") {
+
+            //agent orange
+            if (node.class == "researcher") {
                 node.kind = 10;
-            } else if (node.class == "port") {
+            } else if (node.class == "developer") {
                 node.kind = 11;
-            } else if (node.class == "workflowexecution") {
+            } else if (node.class == "researchgroup") {
                 node.kind = 12;
-            } else if (node.class == "activityexecution") {
+            } else if (node.class == "institution") {
                 node.kind = 13;
+            } else if (node.class == "wfms") {
+                node.kind = 14;
+            } else if (node.class == "service") {
+                node.kind = 15;
+            }
+            //entity yellow
+            else if (node.class == "experiment") {
+                node.kind = 20;
+            } else if (node.class == "workflow") {
+                node.kind = 21;
+            } else if (node.class == "activity") {
+                node.kind = 22;
+            } else if (node.class == "port") {
+                node.kind = 23;
+            } else if (node.class == "data") {
+                node.kind = 24;
+            } else if (node.class == "document") {
+                node.kind = 25;
+            }
+            //activity blue
+            else if (node.class == "workflowexecution") {
+                node.kind = 30;
+            } else if (node.class == "activityexecution") {
+                node.kind = 31;
+            }
+            //location brown
+            else if (node.class == "city") {
+                node.kind = 40;
             }
         });
 
@@ -2671,7 +2685,6 @@ var ProvenanceGraphChart = {
                 .attr("orient", "auto")
                 .append("svg:path")
                 .attr("d", "M0,-5L10,0L0,5");
-
 
         // add the links and the arrows
         var path = svg.append("svg:g").selectAll("path")
@@ -2729,78 +2742,80 @@ var ProvenanceGraphChart = {
                 .attr('cy', 0)
                 .attr('r', 32);
 
+
+
         // add the nodes
         node.append("circle")
                 .attr("r", 16)
                 .style("fill", function (d) {
+                    //main object black
                     if (d.kind == 1) {
-                        return "black";
-                    } else if (d.kind == 2) {
-                        return "red";
-                    } else if (d.kind == 3) {
-                        return "green";
-                    } else if (d.kind == 4) {
-                        return "blue";
-                    } else if (d.kind == 5) {
-                        return "purple";
-                    } else if (d.kind == 6) {
-                        return "yellow";
-                    } else if (d.kind == 7) {
-                        return "gray";
-                    } else if (d.kind == 8) {
-                        return "red";
-                    } else if (d.kind == 9) {
-                        return "green";
-                    } else if (d.kind == 10) {
-                        return "blue";
-                    } else if (d.kind == 11) {
-                        return "purple";
+                        return "#000000";
+                    }
+                    //agent orange
+                    if (d.kind == 10) {
+                        return "Teal";
+                    } else if (d.kind == 11) {//green
+                        return "YellowGreen ";
                     } else if (d.kind == 12) {
-                        return "yellow";
+                        return "Turquoise";
                     } else if (d.kind == 13) {
-                        return "gray";
+                        return "SpringGreen";
+                    } else if (d.kind == 14) {
+                        return "SeaGreen";
+                    } else if (d.kind == 15) {
+                        return "OliveDrab";
+                    }
+                    //entity yellow
+                    else if (d.kind == 20) {
+                        return "Crimson";
+                    } else if (d.kind == 21) {
+                        return "#6600CC"
+                    } else if (d.kind == 22) {
+                        return "Fuchsia";
+                    } else if (d.kind == 23) {
+                        return "DarkOrchid";
+                    } else if (d.kind == 24) {
+                        return "PaleVioletRed";
+                    } else if (d.kind == 25) {
+                        return "Salmon";
+                    }
+                    //activity blue
+                    else if (d.kind == 30) {
+                        return "LightSlateGray";
+                    } else if (d.kind == 31) {
+                        return "DimGray";
+                    }
+                    //location brown
+                    else if (d.kind == 40) {
+                        return "DarkGoldenRod";
                     }
                 });
 
-
         //add images at the nodes
-        var images = node.append("svg:image")
+        node.append("svg:image")
                 .attr("xlink:href", function (d) {
-                    return d.img;
+                    //agent orange
+                    if (d.kind >= 10 && d.kind <= 15) {
+                        return "resources/images/pentagon.png";
+                    }
+                    //entity yellow
+                    if (d.kind >= 20 && d.kind <= 25) {
+                        return "resources/images/oval.png";
+                    }
+                    //activity blue
+                    if (d.kind >= 30 && d.kind <= 31) {
+                        return "resources/images/rectangle.png";
+                    }
+                    //location brown
+                    else if (d.kind == 40) {
+                        return "resources/images/rectangle-brown.png";
+                    }
                 })
-                .attr("x", "-16px")
-                .attr("y", "-16px")
-                .attr("width", "32px")
-                .attr("height", "32px")
-                .attr("clip-path", "url(#clip)");
-
-        images.on('mouseenter', function () {
-            // select element in current context
-            d3.select(this)
-                    .transition()
-                    .attr("x", function (d) {
-                        return -32;
-                    })
-                    .attr("y", function (d) {
-                        return -32;
-                    })
-                    .attr("height", 64)
-                    .attr("width", 64)
-                    .attr("clip-path", "url(#clipG)");
-        }).on('mouseleave', function () {
-            d3.select(this)
-                    .transition()
-                    .attr("x", function (d) {
-                        return -16;
-                    })
-                    .attr("y", function (d) {
-                        return -16;
-                    })
-                    .attr("height", 32)
-                    .attr("width", 32)
-                    .attr("clip-path", "url(#clip)");
-        });
-
+                .attr("x", "-8px")
+                .attr("y", "-8px")
+                .attr("width", "16px")
+                .attr("height", "16px");
 
         // add the text
         node.append("text")
@@ -2834,8 +2849,6 @@ var ProvenanceGraphChart = {
                     .attr("dy", "1em")
                     .attr("x", 5);
 
-
-
             if (d.info) {
                 tip.append("text")
                         .text("Details: ")
@@ -2860,6 +2873,24 @@ var ProvenanceGraphChart = {
             if (tip)
                 tip.remove();
         });
+        
+        svg.append("svg:image")
+                .attr("xlink:href", "resources/images/provenance.png")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", "30%")
+                .attr("height", "30%")
+                .on('mouseenter', function () {
+                    d3.select(this)
+                            .transition()
+                            .attr("height", "75%")
+                            .attr("width", "75%");
+                }).on('mouseleave', function () {
+                    d3.select(this)
+                            .transition()
+                            .attr("width", "30%")
+                            .attr("height", "30%");
+                });
 
 
         // add the curvy lines
