@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -65,11 +66,16 @@ public class OntologyController {
         return "ontology/show_inferences";
     }
 
-    @RequestMapping(value = "/ontology", method = RequestMethod.POST)
-    public String getOntologyInferencesService(Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/ontology/{objectName}", method = RequestMethod.GET)
+    public String getOntologyInferencesService(@PathVariable("objectName") String objectName, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            String objectName = request.getParameter("objectName");
+            objectName = objectName.replace("_", ".");
             JSONObject experimentProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService(request.getHeader("host"), objectName);
+            if (experimentProvenanceJSON.size() == 0) {
+                model.addAttribute("css", "danger");
+                model.addAttribute("msg", "Object not found!");
+                 return "ontology/show_inferences";
+            }
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonParser jp = new JsonParser();
             JsonElement je = jp.parse(experimentProvenanceJSON.toJSONString());

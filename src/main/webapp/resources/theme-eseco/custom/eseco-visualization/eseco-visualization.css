@@ -169,3 +169,7 @@ rect.target {
     padding-left: 5px;
     color: #888;
 }
+
+.node-label{
+    font-size: 16px;
+}

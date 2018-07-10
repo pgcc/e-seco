@@ -1934,8 +1934,10 @@ function wrap(text) {
     }
 
     text.each(function () {
+
         var text = d3.select(this);
-        var words = text.text().split(/\s+/).reverse();
+//        console.log(text.text());
+        var words = text.text().split(" ").reverse();
         var lineHeight = 20;
         var width = parseFloat(text.attr('width'));
         var height = parseFloat(text.attr('height'));
@@ -1951,17 +1953,19 @@ function wrap(text) {
         while (word) {
             line.push(word);
             tspan.text(line.join(' '));
-            if (tspan.node().getComputedTextLength() > width && (lineNumber + 1 * lineHeight) < height) {
+            if ((tspan.node().getComputedTextLength() > width || word == "\n")) {
+                if (((lineNumber + 2) * lineHeight) >= height) {
+                    break;
+                }
                 lineNumber += 1;
                 line.pop();
-                tspan.text(line.join(' '));
+                if (word != "\n") {
+                    tspan.text(line.join(' '));
+                }
                 line = [word];
                 tspan = text.append('tspan').attr('x', x).attr('y', y + lineNumber * lineHeight).attr('anchor', anchor).text(word);
             }
             word = words.pop();
-            if (((lineNumber) * lineHeight) >= height) {
-                words = [];
-            }
         }
     });
 }
@@ -2499,23 +2503,26 @@ function drawProvenanceGraph(data, target, width) {
             ProvenanceGraphChart.draw(data, target, width);
         });
     }
+    d3version4.selectAll('.wrapme').call(wrap);
 }
 
 function mountDataToProvenance(itemData) {
-
     var info = "";
     for (var i in itemData.dataProperties) {
-        info = info += i + " => " + itemData.dataProperties[i];
-        info = info += '\n';
+        info = info += i.toUpperCase() + ": " + itemData.dataProperties[i] + " \n ";
     }
-    var objectName = "${objectName}";
+
+    var objectName = itemData.resource;
+    if (itemData.dataProperties.name != undefined) {
+        objectName = itemData.dataProperties.name;
+    }
     objectName = objectName.replace(".", "_");
     var graphData = {
         "nodes": [
             {
                 "name": objectName,
                 "group": 0,
-                "kind": 1, // Kind 1 = Principal item
+                "class": itemData.dataProperties.type,
                 "info": info
             }
         ],
@@ -2562,13 +2569,14 @@ function mountDataToProvenance(itemData) {
                 groupId++;
             } else {
                 var target = graphData.nodes.find(x => x.name == name).group;
-                var linknum = graphData.links.find(x => x.target == target).linknum + 1;
-                graphData.links.push({
-                    "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
-                });
+                if (target) {
+                    var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                    graphData.links.push({
+                        "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
+                    });
+                }
             }
         }
-
     }
     return graphData;
 }
@@ -2589,7 +2597,7 @@ var ProvenanceGraphChart = {
         // Compute the distinct nodes from the links.
         var links = data.links;
 
-        var height = 400;
+        var height = 600;
 
         var force = d3.layout.force()
                 .nodes(data.nodes)
@@ -2754,41 +2762,41 @@ var ProvenanceGraphChart = {
                     }
                     //agent orange
                     if (d.kind == 10) {
-                        return "Teal";
+                        return "#0B4237";
                     } else if (d.kind == 11) {//green
-                        return "YellowGreen ";
+                        return "#006551 ";
                     } else if (d.kind == 12) {
-                        return "Turquoise";
+                        return "#067F67";
                     } else if (d.kind == 13) {
-                        return "SpringGreen";
+                        return "#169A80";
                     } else if (d.kind == 14) {
-                        return "SeaGreen";
+                        return "#32A38D";
                     } else if (d.kind == 15) {
-                        return "OliveDrab";
+                        return "#58BDA9";
                     }
                     //entity yellow
                     else if (d.kind == 20) {
-                        return "Crimson";
+                        return "#150A52";
                     } else if (d.kind == 21) {
-                        return "#6600CC"
+                        return "#1C0D6D"
                     } else if (d.kind == 22) {
-                        return "Fuchsia";
+                        return "#29178A";
                     } else if (d.kind == 23) {
-                        return "DarkOrchid";
+                        return "#3E2AA8";
                     } else if (d.kind == 24) {
-                        return "PaleVioletRed";
+                        return "#5746B1";
                     } else if (d.kind == 25) {
-                        return "Salmon";
+                        return "#796AC7";
                     }
                     //activity blue
                     else if (d.kind == 30) {
-                        return "LightSlateGray";
+                        return "#B57200";
                     } else if (d.kind == 31) {
-                        return "DimGray";
+                        return "#E99300";
                     }
                     //location brown
                     else if (d.kind == 40) {
-                        return "DarkGoldenRod";
+                        return "#162742";
                     }
                 });
 
@@ -2797,19 +2805,19 @@ var ProvenanceGraphChart = {
                 .attr("xlink:href", function (d) {
                     //agent orange
                     if (d.kind >= 10 && d.kind <= 15) {
-                        return "resources/images/pentagon.png";
+                        return "/" + window.location.pathname.split('/')[1] + "/resources/images/pentagon.png";
                     }
                     //entity yellow
                     if (d.kind >= 20 && d.kind <= 25) {
-                        return "resources/images/oval.png";
+                        return "/" + window.location.pathname.split('/')[1] + "/resources/images/oval.png";
                     }
                     //activity blue
                     if (d.kind >= 30 && d.kind <= 31) {
-                        return "resources/images/rectangle.png";
+                        return "/" + window.location.pathname.split('/')[1] + "/resources/images/rectangle-blue.png";
                     }
                     //location brown
                     else if (d.kind == 40) {
-                        return "resources/images/rectangle-brown.png";
+                        return "/" + window.location.pathname.split('/')[1] + "/resources/images/rectangle-brown.png";
                     }
                 })
                 .attr("x", "-8px")
@@ -2820,16 +2828,15 @@ var ProvenanceGraphChart = {
         // add the text
         node.append("text")
                 .attr("x", 15)
+                .attr("y", 0)
                 .attr("dy", ".35em")
+                .attr("width", 400)
+                .attr("height", 25)
+                .attr('class', 'wrapme ')
+                .attr('text-anchor', "start")
                 .text(function (d) {
-                    if (d.label == "false") {
-                        return "";
-                    }
-                    return d.name.split('.').pop();
+                    return d.name.replace("  ", " ");
                 });
-
-
-
 
         // add tooltip information
         var tip;
@@ -2838,7 +2845,7 @@ var ProvenanceGraphChart = {
                 tip.remove();
 
             tip = svg.append("g")
-                    .attr("transform", "translate(" + d.x + "," + d.y + ")");
+                    .attr("transform", "translate(" + 5 + "," + 5 + ")");
 
             var rect = tip.append("rect")
                     .style("fill", "white")
@@ -2846,36 +2853,50 @@ var ProvenanceGraphChart = {
 
             tip.append("text")
                     .text(d.name)
-                    .attr("dy", "1em")
-                    .attr("x", 5);
+                    .attr("x", (width / 2)-40)
+                    .attr("y", 20)
+                    .attr('class', 'wrapme node-label')
+                    .attr('width', width - 50)
+                    .attr('height', height)
+                    .attr('text-anchor', "middle");
 
+            var title = tip.append("svg:image")
+                    .attr("x", width - 60)
+                    .attr("y", 0)
+                    .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/go.png")
+                    .attr('width', "36px")
+                    .attr('height', "36px");
+
+            title.on("click", function () {
+                if (d.kind && d.id) {
+                    window.location.replace(window.location.href.split("ontology/")[0] + "ontology/" + d.class + "_" + d.id);
+                }
+            });
             if (d.info) {
                 tip.append("text")
-                        .text("Details: ")
-                        .attr("dy", "2em")
-                        .attr("x", 5);
-                for (var i = 0; i < d.info.split('\n').length; i++) {
-                    var pos = 3 + i;
-                    pos = pos + "em";
-                    tip.append("text")
-                            .text(d.info.split('\n')[i])
-                            .attr("dy", pos)
-                            .attr("x", 5);
-                }
+                        .text(d.info)
+                        .attr("x", 5)
+                        .attr("y", 70)
+                        .attr('class', 'wrapme ')
+                        .attr('width', width - 10)
+                        .attr('height', height)
+                        .attr('text-anchor', "start");
             }
 
+            d3version4.selectAll('.wrapme').call(wrap);
             var bbox = tip.node().getBBox();
-            rect.attr("width", bbox.width + 5)
-                    .attr("height", bbox.height + 5);
+            rect.attr("width", width -10)
+                    .attr("height", bbox.height + 10);
+
         });
 
         container.on("click", function (d) {
             if (tip)
                 tip.remove();
         });
-        
+
         svg.append("svg:image")
-                .attr("xlink:href", "resources/images/provenance.png")
+                .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/provenance-graph-legend.png")
                 .attr("x", 0)
                 .attr("y", 0)
                 .attr("width", "30%")
@@ -2886,11 +2907,11 @@ var ProvenanceGraphChart = {
                             .attr("height", "75%")
                             .attr("width", "75%");
                 }).on('mouseleave', function () {
-                    d3.select(this)
-                            .transition()
-                            .attr("width", "30%")
-                            .attr("height", "30%");
-                });
+            d3.select(this)
+                    .transition()
+                    .attr("width", "30%")
+                    .attr("height", "30%");
+        });
 
 
         // add the curvy lines
@@ -2911,7 +2932,6 @@ var ProvenanceGraphChart = {
                             d.target.x + "," +
                             d.target.y;
                 } else {
-                    //rx ry x-axis-rotation large-arc-flag sweep-flag x y
                     return "M" +
                             d.source.x + "," +
                             d.source.y + "A" +

@@ -86,48 +86,16 @@
                 </div>
             </c:if>
 
-            <h2>Show Inferences</h2>
+            <h2>Provenance Visualization</h2>
             <br/>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form action="<c:url value="/ontology"/>" method="post" class="form form-horizontal" >
-                        <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">Instance Name</label>
-                            <div class="col-sm-8">
-                                <input id="objectName" name="objectName" class="form-control" type="text" placeholder="Instance Name" value="${objectName}">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary pull-right">Find</button>
-                            </div>
-                        </div>
-<!--                        <div class="form-group">
-                            <label for="result" class="col-sm-2 control-label">Result</label>
-                            <div class="col-sm-10">
-                                <textarea id="result" name="result" rows="20" class="form-control"   placeholder="result">${objectInferences}</textarea>
-                            </div>
-
-                        </div>-->
-                        <div class="form-group">
-                            <label for="result" class="col-sm-2 control-label">Graph</label>
-                            <div class="col-xs-10">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title">
-                                            Experiment Provenance Graph Visualization
-                                        </h3>
-                                    </div>
-                                    <div class="panel-body" style="position: relative;">
-<!--                                        <img src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">-->
-                                        <div id="box-chart-provenance-graph"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
+            <div class="panel panel-default">             
+                <div class="panel-body" style="position: relative;">
+                    <div id="box-chart-provenance-graph"></div>
                 </div>
             </div>
+
+
         </div>
     </jsp:body>
 </t:layout-app>
