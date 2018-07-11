@@ -16,6 +16,7 @@ import br.ufjf.pgcc.eseco.domain.model.core.ResearcherKeyword;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Data;
+import br.ufjf.pgcc.eseco.domain.model.experiment.Detail;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Document;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
@@ -472,6 +473,15 @@ public class ProvSeOExportDataService {
             }
             experimentJSON.add("discipline", jArrayDisciplines);
 
+            JsonArray jArrayDetail = new JsonArray();
+            for (Detail d : e.getDetails()) {
+                JsonObject detail = new JsonObject();
+                detail.addProperty("name", d.getName());
+                detail.addProperty("description", d.getDescription());
+                jArrayDetail.add(detail);
+            }
+            experimentJSON.add("detail", jArrayDetail);
+
             jArrayExperiments.add(experimentJSON);
         }
         entityAsJson.add("experiment", jArrayExperiments);
@@ -509,6 +519,14 @@ public class ProvSeOExportDataService {
                 activityJSON.addProperty("generatedAtTime", a.getDateCreated().toString());
             }
 
+            JsonArray jArrayDetail = new JsonArray();
+            for (Detail d : a.getDetails()) {
+                JsonObject detail = new JsonObject();
+                detail.addProperty("name", d.getName());
+                detail.addProperty("description", d.getDescription());
+                jArrayDetail.add(detail);
+            }
+            activityJSON.add("detail", jArrayDetail);
             jArrayActivities.add(activityJSON);
         }
         entityAsJson.add("program", jArrayActivities);
