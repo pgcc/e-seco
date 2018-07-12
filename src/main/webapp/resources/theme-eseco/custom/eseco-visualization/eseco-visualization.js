@@ -1931,9 +1931,10 @@ function updateTitle(selection, label, value) {
 function wrap(text) {
 
     var d3 = d3version4;
-    text.each(function () {        
+    text.each(function () {
         var text = d3.select(this);
-        var words = text.text().split(" ").reverse();
+        var str = text.text().replace("  ", " ");
+        var words = str.split(" ").reverse();
         var lineHeight = 20;
         var width = parseFloat(text.attr('width'));
         var height = parseFloat(text.attr('height'));
@@ -2539,16 +2540,21 @@ function mountDataToProvenance(itemData) {
                     "source": 0, "target": groupId, "value": 1, "type": "arrow", "name": j, "linknum": 1
                 });
             } else {
-                var linknum = graphData.links.find(x => x.target.name == name).linknum;
-                linknum += 1;
-                graphData.links.push({
-                    "source": 0, "target": target, "value": 1, "type": "arrow", "name": j, "linknum": linknum
-                });
+                var target = graphData.nodes.find(x => x.name == name).group;
+                if (target) {
+                    var other = graphData.links.find(x => x.target == target);
+                    if (other.way == null) {
+                        other.name = other.name + j;
+                    } else {
+                        var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                        graphData.links.push({
+                            "source": 0, "target": target, "value": 1, "type": "arrow", "name": j, "linknum": linknum
+                        });
+                    }
+                }
             }
             groupId++;
-
         }
-
     }
     for (var j in itemData.inferred) {
         for (var k = 0; k < itemData.inferred[j].length; k++) {
@@ -2566,10 +2572,15 @@ function mountDataToProvenance(itemData) {
             } else {
                 var target = graphData.nodes.find(x => x.name == name).group;
                 if (target) {
-                    var linknum = graphData.links.find(x => x.target == target).linknum + 1;
-                    graphData.links.push({
-                        "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
-                    });
+                    var other = graphData.links.find(x => x.target == target);
+                    if (other.way == "interoperate") {
+                        other.name = other.name + " / " + j;
+                    } else {
+                        var linknum = graphData.links.find(x => x.target == target).linknum + 1;
+                        graphData.links.push({
+                            "source": 0, "target": target, "value": 1, "type": "arrow", "way": "interoperate", "name": j, "linknum": linknum
+                        });
+                    }
                 }
             }
         }
@@ -2600,10 +2611,10 @@ var ProvenanceGraphChart = {
                 .links(links)
                 .size([width, height])
                 .linkDistance(function (d) {
-                    return 1 / d.value * 200;
+                    return 1 / d.value * 250;
                 })
 
-                .charge(-500)
+                .charge(-1000)
                 .on("tick", tick)
                 .start();
 
@@ -2721,7 +2732,7 @@ var ProvenanceGraphChart = {
                 .style("text-anchor", "middle")
                 .attr("startOffset", "50%")
                 .text(function (d) {
-                    return d.name;
+                    return d.name.toLowerCase();
                 });
 
         // define the nodes
@@ -2849,7 +2860,7 @@ var ProvenanceGraphChart = {
 
             tip.append("text")
                     .text(d.name)
-                    .attr("x", (width / 2)-40)
+                    .attr("x", (width / 2) - 40)
                     .attr("y", 20)
                     .attr('class', 'wrapme node-label')
                     .attr('width', width - 50)
@@ -2865,7 +2876,7 @@ var ProvenanceGraphChart = {
 
             title.on("click", function () {
                 if (d.kind && d.id) {
-                    window.location.replace(window.location.href.split("ontology/")[0] + "ontology/" + d.class + "_" + d.id);
+                    window.location.replace("/" + window.location.pathname.split("/")[1] + "/ontology/" + d.class + "_" + d.id);
                 }
             });
             if (d.info) {
@@ -2881,9 +2892,12 @@ var ProvenanceGraphChart = {
 
             d3version4.selectAll('.wrapme').call(wrap);
             var bbox = tip.node().getBBox();
-            rect.attr("width", width -10)
+            rect.attr("width", width - 20)
                     .attr("height", bbox.height + 10);
-
+            if ((bbox.height + 10) > height) {
+                svg.attr("width", width - 10)
+                        .attr("height", bbox.height + 20);
+            }
         });
 
         container.on("click", function (d) {

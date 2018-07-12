@@ -135,7 +135,6 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body" style="position: relative;">
-                                    <img src="<c:url value="/resources/images/provenance-relations-graph-legend.png" />">
                                     <div id="box-chart-provenance-graph"></div>
                                 </div>
                             </div>
