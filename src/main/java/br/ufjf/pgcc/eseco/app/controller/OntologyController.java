@@ -2,6 +2,8 @@ package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.ProvSeOExportDataService;
 import br.ufjf.pgcc.eseco.app.service.ProvSeOGetInferencesService;
+import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.http.HTTPException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,28 +45,30 @@ public class OntologyController {
     }
 
     @RequestMapping(value = "/ontology", method = RequestMethod.GET)
-    public String callOntologyService(Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String callOntologyService(Model model, RedirectAttributes redirectAttributes,
+            HttpServletRequest request, HttpSession session) {
 
         LOGGER.info("callOntologyService()");
-
+        User user = (User) session.getAttribute("logged_user");
+        Researcher researcher = user.getAgent().getResearcher();
         JsonObject data = provSeOExportDataService.getData();
 
         try {
             provSeOGetInferencesService.callOntologyService(request.getHeader("host"), data);
 
-            model.addAttribute("css", "success");
-            model.addAttribute("msg", "Inferences imported successfully!");
+            redirectAttributes.addFlashAttribute("css", "success");
+            redirectAttributes.addFlashAttribute("msg", "Inferences imported successfully!");
         } catch (IOException ex) {
             Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
-            model.addAttribute("css", "danger");
-            model.addAttribute("msg", "Error creating HTTP connection! " + ex.getMessage());
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", "Error creating HTTP connection! " + ex.getMessage());
         } catch (HTTPException ex) {
             Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
-            model.addAttribute("css", "danger");
-            model.addAttribute("msg", "Error in ontology service. Status code = " + ex.getStatusCode() + "!");
+            redirectAttributes.addFlashAttribute("css", "danger");
+            redirectAttributes.addFlashAttribute("msg", "Error in ontology service. Status code = " + ex.getStatusCode() + "!");
 
         }
-        return "ontology/show_inferences";
+        return "redirect:ontology/researcher_" + researcher.getId();
     }
 
     @RequestMapping(value = "/ontology/{objectName}", method = RequestMethod.GET)
@@ -74,7 +79,7 @@ public class OntologyController {
             if (experimentProvenanceJSON.size() == 0) {
                 model.addAttribute("css", "danger");
                 model.addAttribute("msg", "Object not found!");
-                 return "ontology/show_inferences";
+                return "ontology/show_inferences";
             }
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonParser jp = new JsonParser();

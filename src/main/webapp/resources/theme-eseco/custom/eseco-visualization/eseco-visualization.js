@@ -1929,14 +1929,10 @@ function updateTitle(selection, label, value) {
 
 
 function wrap(text) {
-    if (!window.d3) {
-        var d3 = d3version4;
-    }
 
-    text.each(function () {
-
+    var d3 = d3version4;
+    text.each(function () {        
         var text = d3.select(this);
-//        console.log(text.text());
         var words = text.text().split(" ").reverse();
         var lineHeight = 20;
         var width = parseFloat(text.attr('width'));

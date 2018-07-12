@@ -69,7 +69,7 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/institutions"/>">Institutions</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/agents"/>">Members</a></li>
+                            <li><a href="<c:url value="/researchers"/>">Members</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/researchGroups"/>">Research Groups</a></li>
                         </ul>
