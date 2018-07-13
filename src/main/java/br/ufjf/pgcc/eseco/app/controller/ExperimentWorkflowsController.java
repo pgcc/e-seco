@@ -243,7 +243,7 @@ public class ExperimentWorkflowsController {
         if (workflow == null) {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Workflow not found");
-        }
+        }        
         model.addAttribute("workflowTreeJSON", getWorkflowTree(id));
         model.addAttribute("workflow", workflow);
         return "experiments/workflows/show";
@@ -277,9 +277,27 @@ public class ExperimentWorkflowsController {
             }
 
             JSONObject activityJson = new JSONObject();
-            activityJson.put("name", workflowActivity.getActivity().getName());
+            Activity activity = workflowActivity.getActivity();
+            activityJson.put("name", activity.getName());
             activityJson.put("orderExec", workflowActivity.getOrderExec());
-            activityJson.put("info", "Description:" + workflowActivity.getActivity().getDescription());
+            activityJson.put("description", activity.getDescription());
+            activityJson.put("author", activity.getAuthor().getDisplayName());
+
+            if (activity.getAuthor().getId() != workflowActivity.getWorkflow().getAuthor().getId()) {
+                for (Workflow w : activity.getWorkflows()) {
+                    if (w.getAuthor().getId() == activity.getAuthor().getId()) {
+                        activityJson.put("reusedFrom", w.getName());
+                    }
+                }
+            } else {
+                String workflows = "";
+                for (Workflow w : activity.getWorkflows()) {
+                    if (w.getAuthor().getId() != activity.getAuthor().getId()) {
+                        workflows += w.getName() + ", ";
+                        activityJson.put("reusedBy", workflows);
+                    }
+                }
+            }
 
             int nextSiblings = 0;
             for (int j = i + 1; j < workflowActivities.size(); j++) {
@@ -289,10 +307,8 @@ public class ExperimentWorkflowsController {
                     linkJson.put("activity1", workflowActivity.getActivity().getId());
                     linkJson.put("activity2", workflowActivity2.getActivity().getId());
                     links.put(workflowActivity.getActivity().getId() + "_" + workflowActivity2.getActivity().getId(), linkJson);
-                } else {
-                    if (workflowActivity2.getOrderExec() == workflowActivity.getOrderExec()) {
-                        nextSiblings++;
-                    }
+                } else if (workflowActivity2.getOrderExec() == workflowActivity.getOrderExec()) {
+                    nextSiblings++;
                 }
             }
 

@@ -1941,6 +1941,7 @@ function wrap(text) {
         var y = parseFloat(text.attr('y'));
         var x = text.attr('x');
         var anchor = text.attr('text-anchor');
+        text.attr('class', "");
 
         var tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('text-anchor', anchor);
         var lineNumber = 0;
@@ -2328,6 +2329,12 @@ var WorkflowChart = {
             if (d.siblings > 1) {
                 d.y = ((height / d.siblings) * d.position) - nodeHeight;
             }
+            if(d.reusedFrom != null){
+                d.kind = 6;
+            }
+            if(d.reusedBy != null){
+                d.kind = 3;
+            }
         });
 
         var svg = container.append("svg")
@@ -2447,7 +2454,7 @@ var WorkflowChart = {
             if (tip)
                 tip.remove();
 
-            if (d.info) {
+            
                 tip = svg.append("g")
                         .attr("transform", "translate(" + 0 + "," + 0 + ")");
 
@@ -2455,29 +2462,58 @@ var WorkflowChart = {
                         .style("fill", "white");
 
                 tip.append("text")
-                        .text("Details ")
-                        .attr("dy", "1em")
+                        .text(d.name)
+                        .attr("class", "node-label")
+                        .attr("y", 20)
                         .attr("x", 5);
+                
+                tip.append("text")
+                        .text("Description: " + d.description)
+                        .attr('height', height)
+                        .attr('width', width)
+                        .attr("class", "wrapme")
+                        .attr("text-anchor", "start")
+                        .attr("x", 5)
+                        .attr("y", 80);
+                
+                tip.append("text")
+                        .text("Author: " + d.author)
+                        .attr("x", 5)
+                        .attr("y", 40);
 
-                for (var i = 0; i < d.info.split('\n').length; i++) {
-                    var pos = 3 + i;
-                    pos = pos + "em";
+                if(d.reusedFrom){
                     tip.append("text")
-                            .text(d.info.split('\n')[i])
-                            .attr("dy", pos)
-                            .attr("x", 5);
+                        .text("Reused From: " + d.reusedFrom)
+                        .attr("y", 60)
+                        .attr("x", 5);
+                }
+                
+                if(d.reusedBy){
+                    tip.append("text")
+                        .text("Reused By: " + d.reusedBy)
+                        .attr("y", 60)
+                        .attr("x", 5);
                 }
 
+                d3version3.selectAll('.wrapme').call(wrap);
                 var bbox = tip.node().getBBox();
                 rect.attr("width", bbox.width + 5)
                         .attr("height", bbox.height + 5);
-            }
+            
         });
 
         node.on("mouseout", function () {
             if (tip)
                 tip.remove();
         });
+        
+        svg.append("svg:image")
+                .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/workflow-legend.png")
+                .attr("x", 0)
+                .attr("y", height - 80)
+                .attr("width", "30%")
+                .attr("height", "30%");
+
 
     }
 };
@@ -2907,10 +2943,10 @@ var ProvenanceGraphChart = {
 
         svg.append("svg:image")
                 .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/provenance-graph-legend.png")
-                .attr("x", 0)
+                .attr("x", -15)
                 .attr("y", 0)
-                .attr("width", "30%")
-                .attr("height", "30%")
+                .attr("width", "20%")
+                .attr("height", "20%")
                 .on('mouseenter', function () {
                     d3.select(this)
                             .transition()
@@ -2919,8 +2955,8 @@ var ProvenanceGraphChart = {
                 }).on('mouseleave', function () {
             d3.select(this)
                     .transition()
-                    .attr("width", "30%")
-                    .attr("height", "30%");
+                    .attr("width", "20%")
+                    .attr("height", "20%");
         });
 
 

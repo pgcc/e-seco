@@ -21,8 +21,6 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var workflowTreeDATA = JSON.parse('${workflowTreeJSON}');
-            console.log(workflowTreeDATA);
-            console.log(workflowTreeDATA.phases);
             /***********************************************/
             /* Research Experiments CHART                            */
             /***********************************************/
@@ -51,9 +49,9 @@
                 for (var i in itemData.nodes) {
                     var node = itemData.nodes[i];
                     graphData.nodes.push({
-                        "name": node.name, "group": 1, "kind": 4, "info": node.info, id: i,
-                        "orderExec": node.orderExec, "siblings": node.siblings,
-                        "position": node.position
+                        "name": node.name, "group": 1, "kind": 4, "description": node.description, id: i,
+                        "orderExec": node.orderExec, "siblings": node.siblings, "author": node.author, 
+                        "position": node.position, "reusedFrom": node.reusedFrom, "reusedBy": node.reusedBy
                     });
                 }
 
