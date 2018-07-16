@@ -80,6 +80,19 @@ public class ActivityExecution {
     )
     private List<Port> outputs;
 
+    @ManyToOne
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name = "exp_workflow_execution_activity_execution",
+            joinColumns = {
+                @JoinColumn(name = "activity_execution_id", nullable = false)
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "workflow_execution_id", nullable = false)
+            }
+    )
+    private WorkflowExecution workflowExecution;
+
     public ActivityExecution() {
     }
 
@@ -137,6 +150,14 @@ public class ActivityExecution {
 
     public void setOutputs(List<Port> outputs) {
         this.outputs = outputs;
+    }
+
+    public WorkflowExecution getWorkflowExecution() {
+        return workflowExecution;
+    }
+
+    public void setWorkflowExecution(WorkflowExecution workflowExecution) {
+        this.workflowExecution = workflowExecution;
     }
 
     public boolean isNew() {

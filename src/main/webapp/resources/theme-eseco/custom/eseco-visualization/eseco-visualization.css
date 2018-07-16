@@ -173,3 +173,20 @@ rect.target {
 .node-label{
     font-size: 16px;
 }
+
+#box-chart-entity-provenance-graph {
+  font: 10px sans-serif;
+  position: relative;
+}
+
+#mainBubble svg {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+#mainBubble circle.topBubble {
+  fill: #aaa;
+  stroke: #666;
+  stroke-width: 1.5px;
+}

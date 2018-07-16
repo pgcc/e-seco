@@ -1933,6 +1933,7 @@ function wrap(text) {
     var d3 = d3version4;
     text.each(function () {
         var text = d3.select(this);
+        console.log("wrap  = " + text.text())
         var str = text.text().replace("  ", " ");
         var words = str.split(" ").reverse();
         var lineHeight = 20;
@@ -1941,7 +1942,7 @@ function wrap(text) {
         var y = parseFloat(text.attr('y'));
         var x = text.attr('x');
         var anchor = text.attr('text-anchor');
-        text.attr('class', "");
+        text.attr('class', text.attr('class').replace("wrapme", "").trim());
 
         var tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('text-anchor', anchor);
         var lineNumber = 0;
@@ -2994,3 +2995,414 @@ var ProvenanceGraphChart = {
 
     }
 };
+
+
+/*********************************************/
+/* Bubble Menu                               */
+/*http://jsfiddle.net/xameeramir/zcgLybpd/   */
+/*********************************************/
+
+function drawBubbleMenu(data, target, width) {
+
+//    data = mountDataToBubble(data);
+       
+    // Call function to draw the Radar chart
+    if (data.constructor === Object) {
+        BubbleMenu.draw(data, target, width);
+
+    } else if (typeof data === "string") {
+        d3.json(data, function (error, data) {
+            if (error)
+                throw error;
+            BubbleMenu.draw(data, target, width);
+        });
+    }
+    d3version4.selectAll('.wrapme').call(wrap);
+}
+
+//function mountDataToBubble(itemData) {
+//    
+//    var root = {"children":
+//                [
+//                    {"name":"workflowexecution.3","id":"3","type":"workflowexecution","label":"Análise do metabolismo em novilhas com fenótipos divergentes para EA","author":"Danieli Cabral da Silva","description":"Processo de avaliação e classificação de animais por CAR e GPR e ECA, e análise de acordo com o consumo, a digestibilidade, partição energética, emissões de CH4 entérico, balanço de nitrogênio, metabólitos sanguíneos e termografia infravermelha.","start":"2018-06-16 09:25:00.0","end":"2018-06-17 12:25:00.0","address":"/experiments/workflows/5","children":[{"name":"activityexecution.13","id":"13","type":"activityexecution","label":"Cálculo CAR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de consumo alimentar residual (CAR) dos animais.","start":"2018-06-16 20:47:00.0","end":"2018-06-16 21:47:00.0","address":"/experiments/activities/11"},{"name":"activityexecution.14","id":"14","type":"activityexecution","label":"Cálculo GPR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de ganho de peso residual (GPR) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/12"},{"name":"activityexecution.15","id":"15","type":"activityexecution","label":"Cálculo ECA","author":"Danieli Cabral da Silva","description":"Cálculo do índice de eficiência de conversão alimentar (ECA) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/13"}]},
+//                    {"name":"workflowexecution.3","id":"3","type":"workflowexecution","label":"Análise do metabolismo em novilhas com fenótipos divergentes para EA","author":"Danieli Cabral da Silva","description":"Processo de avaliação e classificação de animais por CAR e GPR e ECA, e análise de acordo com o consumo, a digestibilidade, partição energética, emissões de CH4 entérico, balanço de nitrogênio, metabólitos sanguíneos e termografia infravermelha.","start":"2018-06-16 09:25:00.0","end":"2018-06-17 12:25:00.0","address":"/experiments/workflows/5","children":[{"name":"activityexecution.13","id":"13","type":"activityexecution","label":"Cálculo CAR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de consumo alimentar residual (CAR) dos animais.","start":"2018-06-16 20:47:00.0","end":"2018-06-16 21:47:00.0","address":"/experiments/activities/11"},{"name":"activityexecution.14","id":"14","type":"activityexecution","label":"Cálculo GPR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de ganho de peso residual (GPR) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/12"},{"name":"activityexecution.15","id":"15","type":"activityexecution","label":"Cálculo ECA","author":"Danieli Cabral da Silva","description":"Cálculo do índice de eficiência de conversão alimentar (ECA) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/13"}]},
+//                    {"name":"workflowexecution.4","id":"4","type":"workflowexecution","label":"Análise da EA sobre a puberdade e características ovarianas","author":"Adolfo Pérez Fonseca","description":"Estudar e caracterizar os parâmetros reprodutivos até a primeira concepção, incluindo-se idade e peso à puberdade, comportamento de estro, dinâmica folicular, resposta a protocolos hormonais e fertilidade em novilhas Girolando. Relacionar a eficiência nutricional com idade e peso à puberdade e alguns parâmetros reprodutivos em novilhas Girolando.","start":"2018-06-17 16:42:00.0","end":"2018-06-17 22:42:00.0","address":"/experiments/workflows/6","children":[{"name":"activityexecution.20","id":"20","type":"activityexecution","label":"Cálculo do CAR","author":"Adolfo Pérez Fonseca","description":"Cálculo do Consumo alimentar Residual (CAR) dos animais.","start":"2018-06-17 19:39:00.0","end":"2018-06-17 19:40:00.0","address":"/experiments/activities/18"}]}
+//                ],"name":"Dados Coletados"};
+//    return root;
+//}
+
+var BubbleMenu = {
+
+    draw: function (root, target, width) {
+
+        if (!window.d3) {
+            var d3 = d3version3;
+        }        
+        
+        var w = width;
+        var h = Math.ceil(w * 0.5);
+        var oR = 0;
+        var nTop = 0;
+
+        var svgContainer = d3.select(target)
+          .style("height", h + "px");
+
+        var svg = svgContainer.append("svg")
+          .attr("class", "mainBubbleSVG")
+          .attr("width", w)
+          .attr("height", h)
+          .on("mouseleave", function() {
+             d3version4.selectAll('.wrapme').call(wrap);             
+             resetBubbles(width);
+          });
+
+        var mainNote = svg.append("text")
+          .attr("id", "bubbleItemNote")
+          .attr("x", 10)
+          .attr("y", h - 110)
+          .attr("width", w - 10)
+          .attr("height", h - 10)
+          .attr("font-size", 12)
+          .attr("dominant-baseline", "middle")
+          .attr("alignment-baseline", "middle")
+          .style("fill", "#888888")
+          .text(function(d) {
+            return "";
+          });
+
+
+          var bubbleObj = svg.selectAll(".topBubble")
+            .data(root.children)
+            .enter().append("g")
+            .attr("id", function(d, i) {
+              return "topBubbleAndText_" + i
+            });
+
+          nTop = root.children.length;
+          oR = w / (2 + 3 * nTop);
+
+          h = Math.ceil(w / nTop * 1.8);
+          svgContainer.style("height", h + "px");
+
+          var colVals = d3.scale.category10();
+
+          bubbleObj.append("circle")
+            .attr("class", "topBubble")
+            .attr("id", function(d, i) {
+              return "topBubble" + i;
+            })
+            .attr("r", function(d) {
+              return oR;
+            })
+            .attr("cx", function(d, i) {
+              return oR * (3 * (1 + i) - 1);
+            })
+            .attr("cy", (h + oR) / 3)
+            .style("fill", function(d, i) {
+              return colVals(i);
+            }) // #1f77b4
+            .attr("cursor", "pointer")
+            .style("opacity", 0.3)
+            .on("click", function(d, i) {
+                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
+            })
+            .on("mouseover", function(d, i) {                         
+               activateBubble(d, i);
+               d3version4.selectAll('.wrapme').call(wrap);   
+            }).append("svg:title")
+              .text(function(d) {
+                return d.address;
+            });
+            
+
+
+          bubbleObj.append("text")
+            .attr("class", "topBubbleText wrapme")
+            .attr("x", function(d, i) {
+              return oR * (3 * (1 + i) - 1);
+            })    
+            .attr("y", (h + oR) / 3.5)
+            .attr("width", oR)
+            .attr("height", oR) 
+            .style("fill", function(d, i) {
+              return colVals(i);
+            }) // #1f77b4
+            .attr("font-size", 16)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("alignment-baseline", "middle")
+            .text(function(d) {
+              return d.label
+            })
+            .on("click", function(d, i) {
+                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
+              })
+            .on("mouseover", function(d, i) {
+              activateBubble(d, i);
+              d3version4.selectAll('.wrapme').call(wrap);               
+            });
+
+
+          for (var iB = 0; iB < nTop; iB++) {
+            var childBubbles = svg.selectAll(".childBubble" + iB)
+              .data(root.children[iB].children)
+              .enter().append("g");
+
+
+            childBubbles.append("circle")
+              .attr("class", "childBubble" + iB)
+              .attr("id", function(d, i) {
+                return "childBubble_" + iB + "sub_" + i;
+              })
+              .attr("r", function(d) {
+                return oR / 3.0;
+              })
+              .attr("cx", function(d, i) {
+                return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("cy", function(d, i) {
+                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("cursor", "pointer")
+              .style("opacity", 0.5)
+              .style("fill", "#eee")
+              .on("click", function(d, i) {
+                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
+              })
+              .on("mouseover", function(d, i) {
+                var noteText = "";
+                noteText += "Description: " + d.description + " \n ";
+                noteText += "Author: " + d.author + " \n ";
+                noteText += "Started at : " + d.start + " ";
+                noteText += "Ended at : " + d.end;
+                
+                d3.select("#bubbleItemNote")
+                        .text(noteText)
+                        .attr("class", "wrapme" );
+                
+                d3version4.selectAll('.wrapme').call(wrap);
+              })
+              .append("svg:title")
+              .text(function(d) {
+                return d.address;
+              });
+
+            childBubbles.append("text")
+              .attr("class", "childBubbleText" + iB)
+              .attr("x", function(d, i) {
+                return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("y", function(d, i) {
+                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("width", oR)
+              .attr("height", oR) 
+              .style("opacity", 0.5)
+              .attr("text-anchor", "middle")
+              .style("fill", function(d, i) {
+                return colVals(iB);
+              }) // #1f77b4
+              .attr("font-size", 6)
+              .attr("cursor", "pointer")
+              .attr("dominant-baseline", "middle")
+              .attr("alignment-baseline", "middle")
+              .text(function(d) {
+                return d.label
+              })
+              .on("click", function(d, i) {
+                window.open("/" + window.location.pathname.split("/")[1] + d.address);
+              });
+
+          }
+
+        resetBubbles = function(width) {
+          w = width;
+          oR = w / (2 + 3 * nTop);
+
+          h = Math.ceil(w / nTop * 1.8);
+          svgContainer.style("height", h + "px");
+
+          mainNote.attr("y", h - 110);
+
+          svg.attr("width", w);
+          svg.attr("height", h);
+
+          d3.select("#bubbleItemNote").text("");
+
+          var t = d3;
+
+          t.selectAll(".topBubble")
+            .attr("r", function(d) {
+              return oR;
+            })
+            .attr("cx", function(d, i) {
+              return oR * (3 * (1 + i) - 1);
+            })
+            .attr("cy", (h + oR) / 3);
+
+          t.selectAll(".topBubbleText")
+            .attr("font-size", 16)
+            .attr("x", function(d, i) {
+              return oR * (3 * (1 + i) - 1);
+            })            
+            .attr("y", (h + oR) / 3.5)
+            .attr("class" , "topBubbleText wrapme")
+            .attr("width", oR)
+            .attr("height", oR)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("alignment-baseline", "middle")            
+            .text(function(d) {
+                return d.label
+              });      
+            
+         
+          for (var k = 0; k < nTop; k++) {
+            t.selectAll(".childBubbleText" + k)
+              .attr("x", function(d, i) {
+                return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("y", function(d, i) {
+                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("font-size", 6)
+              .style("opacity", 0.5);
+
+            t.selectAll(".childBubble" + k)
+              .attr("r", function(d) {
+                return oR / 3.0;
+              })
+              .style("opacity", 0.5)
+              .attr("cx", function(d, i) {
+                return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("cy", function(d, i) {
+                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              });
+
+          }    
+          
+          d3version4.selectAll('.wrapme').call(wrap);
+          
+        }
+
+
+        activateBubble = function(d, i) {
+          // increase this bubble and decrease others
+          var t = d3;
+
+          t.selectAll(".topBubble")
+            .attr("cx", function(d, ii) {
+              if (i == ii) {
+                // Nothing to change
+                return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
+              } else {
+                // Push away a little bit
+                if (ii < i) {
+                  // left side
+                  return oR * 0.6 * (3 * (1 + ii) - 1);
+                } else {
+                  // right side
+                  return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
+                }
+              }
+            })
+            .attr("r", function(d, ii) {
+              if (i == ii)
+                return oR * 1.8;
+              else
+                return oR * 0.8;
+            });
+
+          t.selectAll(".topBubbleText")
+            .attr("x", function(d, ii) {     
+              if (i == ii) {
+                // Nothing to change
+                return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
+              } else {
+                // Push away a little bit
+                if (ii < i) {
+                  // left side
+                  return oR * 0.6 * (3 * (1 + ii) - 1);
+                } else {
+                  // right side
+                  return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
+                }
+              }
+            })
+            .attr("y", (h + oR) / 3.5)
+            .attr("class" , "topBubbleText wrapme")
+            .attr("font-size", function(d, ii) {
+              if (i == ii)
+                return 16 * 1.5;
+              else
+                return 16 * 0.6;
+            })
+            .attr("width", function(d, ii) {
+              if (i == ii)
+                return oR * 1.8;
+              else
+                return oR * 0.8;
+            })
+            .attr("height", function(d, ii) {
+              if (i == ii)
+                return oR * 1.8;
+              else
+                return oR * 0.8;
+            })            
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("alignment-baseline", "middle")            
+            .text(function(d) {
+                return d.label
+              });
+        
+          var signSide = -1;
+          for (var k = 0; k < nTop; k++) {
+            signSide = 1;
+            if (k < nTop / 2) signSide = 1;
+            t.selectAll(".childBubbleText" + k)
+              .attr("x", function(d, i) {
+                return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("y", function(d, i) {
+                return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("font-size", function() {
+                return (k == i) ? 12 : 6;
+              })
+              .style("opacity", function() {
+                return (k == i) ? 1 : 0;
+              });
+
+            t.selectAll(".childBubble" + k)
+              .attr("cx", function(d, i) {
+                return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("cy", function(d, i) {
+                return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+              })
+              .attr("r", function() {
+                return (k == i) ? (oR * 0.55) : (oR / 3.0);
+              })
+              .style("opacity", function() {
+                return (k == i) ? 1 : 0;
+              });
+          }
+            var noteText = "";
+            noteText += "Description: " + d.description + " \n ";
+            noteText += "Author: " + d.author + " \n ";
+            noteText += "Started at : " + d.start + " ";
+            noteText += "Ended at : " + d.end;
+
+            d3.select("#bubbleItemNote")
+                    .text(noteText)
+                    .attr("class", "wrapme" );
+            d3version4.selectAll('.wrapme').call(wrap);
+
+        }
+
+        window.onresize = resetBubbles(width);       
+        
+    }
+}

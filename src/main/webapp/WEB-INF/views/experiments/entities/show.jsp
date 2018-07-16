@@ -18,7 +18,22 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            // Get JSON Data for visualizations
+            var provenanceJson = JSON.parse('${entityProvenanceJSON}');
+//            console.log(provenanceJson);
+            /***********************************************/
+            /* BUBLLE MENU                                 */
+            /***********************************************/
+            function showBubbleMenuVisualization() {
+                var target = "#box-chart-entity-provenance-graph";
+                var width = $(target).css("width");
+                width = width.replace("px", "");
+                drawBubbleMenu(provenanceJson, target, width);
+            }
+            ;
+            showBubbleMenuVisualization();
+        </script>
     </jsp:attribute>
 
 
@@ -91,7 +106,25 @@
                             </div>                            
                         </c:when>
                     </c:choose>
-                </div>                
+                </div>   
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Provenance Visualization
+                                </h3>
+                            </div>
+                            <div class="panel-body" style="position: relative;">
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-7">
+                                    <div id="box-chart-entity-provenance-graph"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </jsp:body>
     </t:layout-app>

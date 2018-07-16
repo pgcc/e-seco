@@ -1,26 +1,39 @@
 package br.ufjf.pgcc.eseco.app.controller;
 
 import br.ufjf.pgcc.eseco.app.service.FileUploadService;
+import br.ufjf.pgcc.eseco.app.service.ProvSeOGetInferencesService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentEntityFormValidator;
+import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Data;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Document;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Entity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.EntityKind;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.DataService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.DocumentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.EntityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowExecutionService;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,39 +54,46 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes({"entityForm"})
 public class ExperimentEntitiesController {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ExperimentEntitiesController.class.getName());
-    
+
     @Autowired
     ExperimentEntityFormValidator entityFormValidator;
-    
+
     private EntityService entityService;
     private DataService dataService;
     private DocumentService documentService;
     private PortService portService;
-    
+    private ProvSeOGetInferencesService provSeOGetInferencesService;
+    private WorkflowExecutionService workflowExecutionService;
+    private ActivityExecutionService activityExecutionService;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(entityFormValidator);
     }
-    
+
     @Autowired
     public void setEntityService(EntityService entityService, DataService dataService,
-            DocumentService documentService, PortService portService) {
+            DocumentService documentService, PortService portService, ProvSeOGetInferencesService provSeOGetInferencesService,
+            WorkflowExecutionService workflowExecutionService, ActivityExecutionService activityExecutionService) {
         this.entityService = entityService;
         this.dataService = dataService;
         this.documentService = documentService;
         this.portService = portService;
+        this.provSeOGetInferencesService = provSeOGetInferencesService;
+        this.workflowExecutionService = workflowExecutionService;
+        this.activityExecutionService = activityExecutionService;
     }
-    
+
     @RequestMapping(value = "/experiments/entities", method = RequestMethod.GET)
     public String showAllEntities(Model model, HttpSession session) {
-        
+
         LOGGER.info("showAllEntities()");
-        
+
         ArrayList<Entity> myentities = new ArrayList<>();
         ArrayList<Entity> entities = new ArrayList<>();
-        
+
         User user = (User) session.getAttribute("logged_user");
         for (Entity e : entityService.findAll()) {
             if (e.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
@@ -82,20 +102,20 @@ public class ExperimentEntitiesController {
                 entities.add(e);
             }
         }
-        
+
         model.addAttribute("myentities", myentities);
         model.addAttribute("entities", entities);
-        
+
         return "experiments/entities/list";
     }
-    
+
     @RequestMapping(value = "/experiments/entities/add", method = RequestMethod.GET)
     public String showAddEntityForm(Model model, HttpSession session) {
-        
+
         LOGGER.info("showAddEntityForm()");
-        
+
         User user = (User) session.getAttribute("logged_user");
-        
+
         Entity entity = new Entity();
         entity.setAuthor(user.getAgent().getResearcher());
         entity.setData(new Data());
@@ -104,26 +124,26 @@ public class ExperimentEntitiesController {
         populateDefaultModel(model);
         return "experiments/entities/entities-form";
     }
-    
+
     @RequestMapping(value = "/experiments/entities/{id}/update", method = RequestMethod.GET)
     public String showUpdateEntityForm(@PathVariable("id") int id, Model model) {
-        
+
         LOGGER.log(Level.INFO, "showUpdateEntityForm() : {0}", id);
-        
+
         Entity entity = entityService.find(id);
         model.addAttribute("entityForm", entity);
-        
+
         populateDefaultModel(model);
         return "experiments/entities/entities-form";
     }
-    
+
     @RequestMapping(value = "/experiments/entities", method = RequestMethod.POST)
     public String saveOrUpdateEntity(@ModelAttribute("entityForm") Entity entity,
             @RequestParam("fileToUpload") MultipartFile file, BindingResult result,
             Model model, final RedirectAttributes redirectAttributes) {
-        
+
         LOGGER.log(Level.INFO, "saveOrUpdateEntity() : {0}", entity);
-        
+
         if (entity.getName().isEmpty()) {
             result.addError(new FieldError("name", "name", "Name is required!"));
         }
@@ -177,7 +197,7 @@ public class ExperimentEntitiesController {
                 } else {
                     entity = entityService.saveOrUpdate(entity);
                 }
-                
+
                 return "redirect:/experiments/entities/" + entity.getId();
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
@@ -188,15 +208,15 @@ public class ExperimentEntitiesController {
             }
         }
     }
-    
+
     @RequestMapping(value = "/experiments/entities/{id}/delete", method = RequestMethod.POST)
     public String deleteEntity(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
-        
+
         LOGGER.log(Level.INFO, "deleteEntity() : {0}", id);
-        
+
         Entity entity = entityService.find(id);
         try {
-            
+
             if (entity.getData() != null) {
                 dataService.delete(entity.getData());
             }
@@ -209,7 +229,7 @@ public class ExperimentEntitiesController {
             }
             Port port = portService.findByEntityId(id);
             portService.delete(port);
-            
+
             entityService.delete(entity);
             redirectAttributes.addFlashAttribute("css", "success");
             redirectAttributes.addFlashAttribute("msg", "Entity has been deleted!");
@@ -218,37 +238,45 @@ public class ExperimentEntitiesController {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", ex.getMessage());
         }
-        
+
         return "redirect:/experiments/entities";
     }
-    
+
     @RequestMapping(value = "/experiments/entities/{id}", method = RequestMethod.GET)
-    public String showEntity(@PathVariable("id") int id, Model model, HttpSession session) {
-        
+    public String showEntity(@PathVariable("id") int id, Model model, HttpSession session, HttpServletRequest request) {
+
         LOGGER.log(Level.INFO, "showEntity() id: {0}", id);
-        
+
         Entity entity = entityService.find(id);
         if (entity == null) {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Entity not found");
         }
-        
+
+        try {
+            JSONObject entityProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService(request.getHeader("host"), entity.getKind().name.toLowerCase() + "." + entity.getId());
+            model.addAttribute("entityProvenanceJSON", getReusedByChart(entityProvenanceJSON.toJSONString()).toString());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         model.addAttribute("entity", entity);
         return "experiments/entities/show";
-        
+
     }
-    
+
     @RequestMapping(value = "/experiments/entities/{id}/download", method = RequestMethod.GET)
     public String downloadFile(@PathVariable("id") int id, HttpServletResponse response, Model model, final RedirectAttributes redirectAttributes) {
-        
+
         Entity entity = entityService.find(id);
         if (entity.getDocument() == null) {
             model.addAttribute("entity", entity);
             return "experiments/entities/show";
         }
-        
+
         File file = new File(entity.getDocument().getFile());
-        
+
         if (!file.exists()) {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", "Sorry. The file you are looking for does not exist");
@@ -260,7 +288,7 @@ public class ExperimentEntitiesController {
             response.setContentLength((int) file.length());
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
             FileCopyUtils.copy(inputStream, response.getOutputStream());
-            
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
         }
@@ -275,5 +303,53 @@ public class ExperimentEntitiesController {
     private void populateDefaultModel(Model model) {
         model.addAttribute("kindList", EntityKind.getList());
     }
-    
+
+    private JsonObject getReusedByChart(String entityProvenanceJSON) {
+
+        JsonElement json = new Gson().fromJson(entityProvenanceJSON, JsonElement.class);
+
+        JsonObject data = new JsonObject();
+        JsonArray children = new JsonArray();
+        data.add("children", children);
+        data.add("name", json.getAsJsonObject().get("resource"));
+        JsonObject inferred = json.getAsJsonObject().get("inferred").getAsJsonObject();
+        JsonArray reusedBy = inferred.get("was Reused By").getAsJsonArray();
+
+        HashMap<String, JsonArray> workflowExecutions = new HashMap<>();
+
+        for (JsonElement execution : reusedBy) {
+            JsonObject executionAsJsonObject = execution.getAsJsonObject();
+            if (executionAsJsonObject.get("type").getAsString().equals("workflowexecution")) {
+                WorkflowExecution wfexec = workflowExecutionService.find(executionAsJsonObject.get("id").getAsInt());
+                executionAsJsonObject.addProperty("label", wfexec.getWorkflow().getName());
+                executionAsJsonObject.addProperty("author", wfexec.getWorkflow().getAuthor().getDisplayName());
+                executionAsJsonObject.addProperty("description", wfexec.getWorkflow().getDescription());
+                executionAsJsonObject.addProperty("start", wfexec.getStartTime().toString());
+                executionAsJsonObject.addProperty("end", wfexec.getEndTime().toString());
+                executionAsJsonObject.addProperty("address", "/experiments/workflows/" + wfexec.getWorkflow().getId());
+                JsonArray childrenArray = new JsonArray();
+                executionAsJsonObject.add("children", childrenArray);
+                workflowExecutions.put(executionAsJsonObject.get("name").getAsString(), childrenArray);
+                children.add(executionAsJsonObject);
+            }
+        }
+
+        for (JsonElement execution : reusedBy) {
+            JsonObject executionAsJsonObject = execution.getAsJsonObject();
+            if (executionAsJsonObject.get("type").getAsString().equals("activityexecution")) {
+                ActivityExecution acexec = activityExecutionService.find(executionAsJsonObject.get("id").getAsInt());
+                executionAsJsonObject.addProperty("label", acexec.getActivity().getName());
+                executionAsJsonObject.addProperty("author", acexec.getActivity().getAuthor().getDisplayName());
+                executionAsJsonObject.addProperty("description", acexec.getActivity().getDescription());
+                executionAsJsonObject.addProperty("start", acexec.getStartTime().toString());
+                executionAsJsonObject.addProperty("end", acexec.getEndTime().toString());
+                executionAsJsonObject.addProperty("address", "/experiments/activities/" + acexec.getActivity().getId());
+                if (workflowExecutions.containsKey("workflowexecution." + acexec.getWorkflowExecution().getId())) {
+                    workflowExecutions.get("workflowexecution." + acexec.getWorkflowExecution().getId()).add(executionAsJsonObject);
+                }
+            }
+        }
+
+        return data;
+    }
 }
