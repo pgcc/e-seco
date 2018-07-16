@@ -1933,7 +1933,6 @@ function wrap(text) {
     var d3 = d3version4;
     text.each(function () {
         var text = d3.select(this);
-        console.log("wrap  = " + text.text())
         var str = text.text().replace("  ", " ");
         var words = str.split(" ").reverse();
         var lineHeight = 20;
@@ -3330,7 +3329,14 @@ var BubbleMenu = {
                 }
               }
             })
-            .attr("y", (h + oR) / 3.5)
+            .attr("y", function(d, ii) {     
+              if (i == ii) {
+                  return (h + oR) / 4
+              }
+              else  {
+                  return (h + oR) / 3.5
+              }
+              })
             .attr("class" , "topBubbleText wrapme")
             .attr("font-size", function(d, ii) {
               if (i == ii)

@@ -313,6 +313,10 @@ public class ExperimentEntitiesController {
         data.add("children", children);
         data.add("name", json.getAsJsonObject().get("resource"));
         JsonObject inferred = json.getAsJsonObject().get("inferred").getAsJsonObject();
+        if(inferred.get("was Reused By") == null){
+            return data;
+        }
+        
         JsonArray reusedBy = inferred.get("was Reused By").getAsJsonArray();
 
         HashMap<String, JsonArray> workflowExecutions = new HashMap<>();
