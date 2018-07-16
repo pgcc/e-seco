@@ -2508,7 +2508,7 @@ var WorkflowChart = {
         });
 
         svg.append("svg:image")
-                .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/workflow-legend.png")
+                .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/workflow-graph-legend.png")
                 .attr("x", 0)
                 .attr("y", height - 80)
                 .attr("width", "30%")
@@ -3033,7 +3033,6 @@ function drawBubbleMenu(data, target, width) {
 var BubbleMenu = {
 
     draw: function (root, target, width) {
-        console.log(root);
         if (!window.d3) {
             var d3 = d3version3;
         }
