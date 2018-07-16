@@ -2329,10 +2329,10 @@ var WorkflowChart = {
             if (d.siblings > 1) {
                 d.y = ((height / d.siblings) * d.position) - nodeHeight;
             }
-            if(d.reusedFrom != null){
+            if (d.reusedFrom != null) {
                 d.kind = 6;
             }
-            if(d.reusedBy != null){
+            if (d.reusedBy != null) {
                 d.kind = 3;
             }
         });
@@ -2454,59 +2454,59 @@ var WorkflowChart = {
             if (tip)
                 tip.remove();
 
-            
-                tip = svg.append("g")
-                        .attr("transform", "translate(" + 0 + "," + 0 + ")");
 
-                var rect = tip.append("rect")
-                        .style("fill", "white");
+            tip = svg.append("g")
+                    .attr("transform", "translate(" + 0 + "," + 0 + ")");
 
-                tip.append("text")
-                        .text(d.name)
-                        .attr("class", "node-label")
-                        .attr("y", 20)
-                        .attr("x", 5);
-                
-                tip.append("text")
-                        .text("Description: " + d.description)
-                        .attr('height', height)
-                        .attr('width', width)
-                        .attr("class", "wrapme")
-                        .attr("text-anchor", "start")
-                        .attr("x", 5)
-                        .attr("y", 80);
-                
-                tip.append("text")
-                        .text("Author: " + d.author)
-                        .attr("x", 5)
-                        .attr("y", 40);
+            var rect = tip.append("rect")
+                    .style("fill", "white");
 
-                if(d.reusedFrom){
-                    tip.append("text")
+            tip.append("text")
+                    .text(d.name)
+                    .attr("class", "node-label")
+                    .attr("y", 20)
+                    .attr("x", 5);
+
+            tip.append("text")
+                    .text("Description: " + d.description)
+                    .attr('height', height)
+                    .attr('width', width)
+                    .attr("class", "wrapme")
+                    .attr("text-anchor", "start")
+                    .attr("x", 5)
+                    .attr("y", 80);
+
+            tip.append("text")
+                    .text("Author: " + d.author)
+                    .attr("x", 5)
+                    .attr("y", 40);
+
+            if (d.reusedFrom) {
+                tip.append("text")
                         .text("Reused From: " + d.reusedFrom)
                         .attr("y", 60)
                         .attr("x", 5);
-                }
-                
-                if(d.reusedBy){
-                    tip.append("text")
+            }
+
+            if (d.reusedBy) {
+                tip.append("text")
                         .text("Reused By: " + d.reusedBy)
                         .attr("y", 60)
                         .attr("x", 5);
-                }
+            }
 
-                d3version3.selectAll('.wrapme').call(wrap);
-                var bbox = tip.node().getBBox();
-                rect.attr("width", bbox.width + 5)
-                        .attr("height", bbox.height + 5);
-            
+            d3version3.selectAll('.wrapme').call(wrap);
+            var bbox = tip.node().getBBox();
+            rect.attr("width", bbox.width + 5)
+                    .attr("height", bbox.height + 5);
+
         });
 
         node.on("mouseout", function () {
             if (tip)
                 tip.remove();
         });
-        
+
         svg.append("svg:image")
                 .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/workflow-legend.png")
                 .attr("x", 0)
@@ -3004,7 +3004,7 @@ var ProvenanceGraphChart = {
 function drawBubbleMenu(data, target, width) {
 
 //    data = mountDataToBubble(data);
-       
+
     // Call function to draw the Radar chart
     if (data.constructor === Object) {
         BubbleMenu.draw(data, target, width);
@@ -3033,368 +3033,404 @@ function drawBubbleMenu(data, target, width) {
 var BubbleMenu = {
 
     draw: function (root, target, width) {
-
+        console.log(root);
         if (!window.d3) {
             var d3 = d3version3;
-        }        
-        
+        }
+
         var w = width;
         var h = Math.ceil(w * 0.5);
         var oR = 0;
         var nTop = 0;
 
         var svgContainer = d3.select(target)
-          .style("height", h + "px");
+                .style("height", h + "px");
 
         var svg = svgContainer.append("svg")
-          .attr("class", "mainBubbleSVG")
-          .attr("width", w)
-          .attr("height", h)
-          .on("mouseleave", function() {
-             d3version4.selectAll('.wrapme').call(wrap);             
-             resetBubbles(width);
-          });
+                .attr("class", "mainBubbleSVG")
+                .attr("width", w)
+                .attr("height", h)
+                .on("mouseleave", function () {
+                    d3version4.selectAll('.wrapme').call(wrap);
+                    resetBubbles(width);
+                });
 
         var mainNote = svg.append("text")
-          .attr("id", "bubbleItemNote")
-          .attr("x", 10)
-          .attr("y", h - 110)
-          .attr("width", w - 10)
-          .attr("height", h - 10)
-          .attr("font-size", 12)
-          .attr("dominant-baseline", "middle")
-          .attr("alignment-baseline", "middle")
-          .style("fill", "#888888")
-          .text(function(d) {
-            return "";
-          });
+                .attr("id", "bubbleItemNote")
+                .attr("x", 10)
+                .attr("y", h - 110)
+                .attr("width", w - 10)
+                .attr("height", h - 10)
+                .attr("font-size", 12)
+                .attr("dominant-baseline", "middle")
+                .attr("alignment-baseline", "middle")
+                .style("fill", "#888888")
+                .text(function (d) {
+                    return "";
+                });
 
 
-          var bubbleObj = svg.selectAll(".topBubble")
-            .data(root.children)
-            .enter().append("g")
-            .attr("id", function(d, i) {
-              return "topBubbleAndText_" + i
-            });
+        var bubbleObj = svg.selectAll(".topBubble")
+                .data(root.children)
+                .enter().append("g")
+                .attr("id", function (d, i) {
+                    return "topBubbleAndText_" + i
+                });
 
-          nTop = root.children.length;
-          oR = w / (2 + 3 * nTop);
+        nTop = root.children.length;
+        oR = w / (2 + 3 * nTop);
 
-          h = Math.ceil(w / nTop * 1.8);
-          svgContainer.style("height", h + "px");
+        h = Math.ceil(w / nTop * 2);
+        svgContainer.style("height", h + "px");
 
-          var colVals = d3.scale.category10();
+        var colVals = d3.scale.category10();
 
-          bubbleObj.append("circle")
-            .attr("class", "topBubble")
-            .attr("id", function(d, i) {
-              return "topBubble" + i;
-            })
-            .attr("r", function(d) {
-              return oR;
-            })
-            .attr("cx", function(d, i) {
-              return oR * (3 * (1 + i) - 1);
-            })
-            .attr("cy", (h + oR) / 3)
-            .style("fill", function(d, i) {
-              return colVals(i);
-            }) // #1f77b4
-            .attr("cursor", "pointer")
-            .style("opacity", 0.3)
-            .on("click", function(d, i) {
-                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
-            })
-            .on("mouseover", function(d, i) {                         
-               activateBubble(d, i);
-               d3version4.selectAll('.wrapme').call(wrap);   
-            }).append("svg:title")
-              .text(function(d) {
-                return d.address;
-            });
-            
-
-
-          bubbleObj.append("text")
-            .attr("class", "topBubbleText wrapme")
-            .attr("x", function(d, i) {
-              return oR * (3 * (1 + i) - 1);
-            })    
-            .attr("y", (h + oR) / 3.5)
-            .attr("width", oR)
-            .attr("height", oR) 
-            .style("fill", function(d, i) {
-              return colVals(i);
-            }) // #1f77b4
-            .attr("font-size", 16)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("alignment-baseline", "middle")
-            .text(function(d) {
-              return d.label
-            })
-            .on("click", function(d, i) {
-                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
-              })
-            .on("mouseover", function(d, i) {
-              activateBubble(d, i);
-              d3version4.selectAll('.wrapme').call(wrap);               
-            });
+        bubbleObj.append("circle")
+                .attr("class", "topBubble")
+                .attr("id", function (d, i) {
+                    return "topBubble" + i;
+                })
+                .attr("r", function (d) {
+                    return oR;
+                })
+                .attr("cx", function (d, i) {
+                    return oR * (3 * (1 + i) - 1);
+                })
+                .attr("cy", (h + oR) / 3)
+                .style("fill", function (d, i) {
+                    if (d.kind == "generated") {
+                        return colVals(1);
+                    } else if (d.kind == "reused") {
+                        return colVals(3);
+                    } else {
+                        return colVals(i);
+                    }
+                }) // #1f77b4
+                .attr("cursor", "pointer")
+                .style("opacity", 0.3)
+                .on("click", function (d, i) {
+                    window.open("/" + window.location.pathname.split("/")[1] + d.address);
+                })
+                .on("mouseover", function (d, i) {
+                    activateBubble(d, i);
+                    d3version4.selectAll('.wrapme').call(wrap);
+                }).append("svg:title")
+                .text(function (d) {
+                    return d.address;
+                });
 
 
-          for (var iB = 0; iB < nTop; iB++) {
+
+        bubbleObj.append("text")
+                .attr("class", "topBubbleText wrapme")
+                .attr("x", function (d, i) {
+                    return oR * (3 * (1 + i) - 1);
+                })
+                .attr("y", (h + oR) / 3.5)
+                .attr("width", oR)
+                .attr("height", oR)
+                .style("fill", function (d, i) {
+                    if (d.kind == "generated") {
+                        return colVals(1);
+                    } else if (d.kind == "reused") {
+                        return colVals(3);
+                    } else {
+                        return colVals(i);
+                    }
+                }) // #1f77b4
+                .attr("font-size", 16)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .attr("alignment-baseline", "middle")
+                .text(function (d) {
+                    return d.label
+                })
+                .on("click", function (d, i) {
+                    window.open("/" + window.location.pathname.split("/")[1] + d.address);
+                })
+                .on("mouseover", function (d, i) {
+                    activateBubble(d, i);
+                    d3version4.selectAll('.wrapme').call(wrap);
+                });
+
+
+        for (var iB = 0; iB < nTop; iB++) {
             var childBubbles = svg.selectAll(".childBubble" + iB)
-              .data(root.children[iB].children)
-              .enter().append("g");
+                    .data(root.children[iB].children)
+                    .enter().append("g");
 
 
             childBubbles.append("circle")
-              .attr("class", "childBubble" + iB)
-              .attr("id", function(d, i) {
-                return "childBubble_" + iB + "sub_" + i;
-              })
-              .attr("r", function(d) {
-                return oR / 3.0;
-              })
-              .attr("cx", function(d, i) {
-                return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("cy", function(d, i) {
-                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("cursor", "pointer")
-              .style("opacity", 0.5)
-              .style("fill", "#eee")
-              .on("click", function(d, i) {
-                  window.open("/" + window.location.pathname.split("/")[1] + d.address);
-              })
-              .on("mouseover", function(d, i) {
-                var noteText = "";
-                noteText += "Description: " + d.description + " \n ";
-                noteText += "Author: " + d.author + " \n ";
-                noteText += "Started at : " + d.start + " ";
-                noteText += "Ended at : " + d.end;
-                
-                d3.select("#bubbleItemNote")
-                        .text(noteText)
-                        .attr("class", "wrapme" );
-                
-                d3version4.selectAll('.wrapme').call(wrap);
-              })
-              .append("svg:title")
-              .text(function(d) {
-                return d.address;
-              });
+                    .attr("class", "childBubble" + iB)
+                    .attr("id", function (d, i) {
+                        return "childBubble_" + iB + "sub_" + i;
+                    })
+                    .attr("r", function (d) {
+                        return oR / 3.0;
+                    })
+                    .attr("cx", function (d, i) {
+                        return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                    })
+                    .attr("cy", function (d, i) {
+                        return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                    })
+                    .attr("cursor", "pointer")
+                    .style("opacity", 0.5)
+                    .style("fill", "#eee")
+                    .on("click", function (d, i) {
+                        window.open("/" + window.location.pathname.split("/")[1] + d.address);
+                    })
+                    .on("mouseover", function (d, i) {
+                        var noteText = "";
+                        noteText += "Description: " + d.description + " \n ";
+                        noteText += "Author: " + d.author + " \n ";
+                        noteText += "Started at : " + d.start + " ";
+                        noteText += "Ended at : " + d.end;
+
+                        d3.select("#bubbleItemNote")
+                                .text(noteText)
+                                .attr("class", "wrapme");
+
+                        d3version4.selectAll('.wrapme').call(wrap);
+                    })
+                    .append("svg:title")
+                    .text(function (d) {
+                        return d.address;
+                    });
 
             childBubbles.append("text")
-              .attr("class", "childBubbleText" + iB)
-              .attr("x", function(d, i) {
-                return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("y", function(d, i) {
-                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("width", oR)
-              .attr("height", oR) 
-              .style("opacity", 0.5)
-              .attr("text-anchor", "middle")
-              .style("fill", function(d, i) {
-                return colVals(iB);
-              }) // #1f77b4
-              .attr("font-size", 6)
-              .attr("cursor", "pointer")
-              .attr("dominant-baseline", "middle")
-              .attr("alignment-baseline", "middle")
-              .text(function(d) {
-                return d.label
-              })
-              .on("click", function(d, i) {
-                window.open("/" + window.location.pathname.split("/")[1] + d.address);
-              });
+                    .attr("class", "childBubbleText" + iB)
+                    .attr("x", function (d, i) {
+                        return (oR * (3 * (iB + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                    })
+                    .attr("y", function (d, i) {
+                        return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                    })
+                    .attr("width", oR)
+                    .attr("height", oR)
+                    .style("opacity", 0.5)
+                    .attr("text-anchor", "middle")
+                    .style("fill", function (d, i) {
+                        if (d.kind == "generated") {
+                            return colVals(1);
+                        } else if (d.kind == "reused") {
+                            return colVals(3);
+                        } else {
+                            return colVals(iB);
+                        }
+                    }) // #1f77b4
+                    .attr("font-size", 6)
+                    .attr("cursor", "pointer")
+                    .attr("dominant-baseline", "middle")
+                    .attr("alignment-baseline", "middle")
+                    .text(function (d) {
+                        return d.label
+                    })
+                    .on("click", function (d, i) {
+                        window.open("/" + window.location.pathname.split("/")[1] + d.address);
+                    });
 
-          }
+            svg.append("svg:image")
+                    .attr("xlink:href", "/" + window.location.pathname.split('/')[1] + "/resources/images/entity-graph-legend.png")
+                    .attr("x", 0)
+                    .attr("y", -12)
+                    .attr("width", "20%")
+                    .attr("height", "20%")                    
+                    .on('mouseenter', function () {
+                        d3.select(this)
+                                .transition()
+                                .attr("height", "75%")
+                                .attr("width", "75%");
+                    }).on('mouseleave', function () {
+                d3.select(this)
+                        .transition()
+                        .attr("width", "20%")
+                        .attr("height", "20%");
+            });
 
-        resetBubbles = function(width) {
-          w = width;
-          oR = w / (2 + 3 * nTop);
+        }
 
-          h = Math.ceil(w / nTop * 1.8);
-          svgContainer.style("height", h + "px");
+        resetBubbles = function (width) {
+            w = width;
+            oR = w / (2 + 3 * nTop);
 
-          mainNote.attr("y", h - 110);
+            h = Math.ceil(w / nTop * 2);
+            svgContainer.style("height", h + "px");
 
-          svg.attr("width", w);
-          svg.attr("height", h);
+            mainNote.attr("y", h - 110);
 
-          d3.select("#bubbleItemNote").text("");
+            svg.attr("width", w);
+            svg.attr("height", h);
 
-          var t = d3;
+            d3.select("#bubbleItemNote").text("");
 
-          t.selectAll(".topBubble")
-            .attr("r", function(d) {
-              return oR;
-            })
-            .attr("cx", function(d, i) {
-              return oR * (3 * (1 + i) - 1);
-            })
-            .attr("cy", (h + oR) / 3);
+            var t = d3;
 
-          t.selectAll(".topBubbleText")
-            .attr("font-size", 16)
-            .attr("x", function(d, i) {
-              return oR * (3 * (1 + i) - 1);
-            })            
-            .attr("y", (h + oR) / 3.5)
-            .attr("class" , "topBubbleText wrapme")
-            .attr("width", oR)
-            .attr("height", oR)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("alignment-baseline", "middle")            
-            .text(function(d) {
-                return d.label
-              });      
-            
-         
-          for (var k = 0; k < nTop; k++) {
-            t.selectAll(".childBubbleText" + k)
-              .attr("x", function(d, i) {
-                return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("y", function(d, i) {
-                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("font-size", 6)
-              .style("opacity", 0.5);
+            t.selectAll(".topBubble")
+                    .attr("r", function (d) {
+                        return oR;
+                    })
+                    .attr("cx", function (d, i) {
+                        return oR * (3 * (1 + i) - 1);
+                    })
+                    .attr("cy", (h + oR) / 3);
 
-            t.selectAll(".childBubble" + k)
-              .attr("r", function(d) {
-                return oR / 3.0;
-              })
-              .style("opacity", 0.5)
-              .attr("cx", function(d, i) {
-                return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("cy", function(d, i) {
-                return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              });
+            t.selectAll(".topBubbleText")
+                    .attr("font-size", 16)
+                    .attr("x", function (d, i) {
+                        return oR * (3 * (1 + i) - 1);
+                    })
+                    .attr("y", (h + oR) / 3.5)
+                    .attr("class", "topBubbleText wrapme")
+                    .attr("width", oR)
+                    .attr("height", oR)
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("alignment-baseline", "middle")
+                    .text(function (d) {
+                        return d.label
+                    });
 
-          }    
-          
-          d3version4.selectAll('.wrapme').call(wrap);
-          
+
+            for (var k = 0; k < nTop; k++) {
+                t.selectAll(".childBubbleText" + k)
+                        .attr("x", function (d, i) {
+                            return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("y", function (d, i) {
+                            return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("font-size", 6)
+                        .style("opacity", 0.5);
+
+                t.selectAll(".childBubble" + k)
+                        .attr("r", function (d) {
+                            return oR / 3.0;
+                        })
+                        .style("opacity", 0.5)
+                        .attr("cx", function (d, i) {
+                            return (oR * (3 * (k + 1) - 1) + oR * 1.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("cy", function (d, i) {
+                            return ((h + oR) / 3 + oR * 1.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                        });
+
+            }
+
+            d3version4.selectAll('.wrapme').call(wrap);
+
         }
 
 
-        activateBubble = function(d, i) {
-          // increase this bubble and decrease others
-          var t = d3;
+        activateBubble = function (d, i) {
+            // increase this bubble and decrease others
+            var t = d3;
 
-          t.selectAll(".topBubble")
-            .attr("cx", function(d, ii) {
-              if (i == ii) {
-                // Nothing to change
-                return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
-              } else {
-                // Push away a little bit
-                if (ii < i) {
-                  // left side
-                  return oR * 0.6 * (3 * (1 + ii) - 1);
-                } else {
-                  // right side
-                  return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
-                }
-              }
-            })
-            .attr("r", function(d, ii) {
-              if (i == ii)
-                return oR * 1.8;
-              else
-                return oR * 0.8;
-            });
+            t.selectAll(".topBubble")
+                    .attr("cx", function (d, ii) {
+                        if (i == ii) {
+                            // Nothing to change
+                            return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
+                        } else {
+                            // Push away a little bit
+                            if (ii < i) {
+                                // left side
+                                return oR * 0.6 * (3 * (1 + ii) - 1);
+                            } else {
+                                // right side
+                                return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
+                            }
+                        }
+                    })
+                    .attr("r", function (d, ii) {
+                        if (i == ii)
+                            return oR * 1.8;
+                        else
+                            return oR * 0.8;
+                    });
 
-          t.selectAll(".topBubbleText")
-            .attr("x", function(d, ii) {     
-              if (i == ii) {
-                // Nothing to change
-                return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
-              } else {
-                // Push away a little bit
-                if (ii < i) {
-                  // left side
-                  return oR * 0.6 * (3 * (1 + ii) - 1);
-                } else {
-                  // right side
-                  return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
-                }
-              }
-            })
-            .attr("y", function(d, ii) {     
-              if (i == ii) {
-                  return (h + oR) / 4
-              }
-              else  {
-                  return (h + oR) / 3.5
-              }
-              })
-            .attr("class" , "topBubbleText wrapme")
-            .attr("font-size", function(d, ii) {
-              if (i == ii)
-                return 16 * 1.5;
-              else
-                return 16 * 0.6;
-            })
-            .attr("width", function(d, ii) {
-              if (i == ii)
-                return oR * 1.8;
-              else
-                return oR * 0.8;
-            })
-            .attr("height", function(d, ii) {
-              if (i == ii)
-                return oR * 1.8;
-              else
-                return oR * 0.8;
-            })            
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("alignment-baseline", "middle")            
-            .text(function(d) {
-                return d.label
-              });
-        
-          var signSide = -1;
-          for (var k = 0; k < nTop; k++) {
-            signSide = 1;
-            if (k < nTop / 2) signSide = 1;
-            t.selectAll(".childBubbleText" + k)
-              .attr("x", function(d, i) {
-                return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("y", function(d, i) {
-                return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("font-size", function() {
-                return (k == i) ? 12 : 6;
-              })
-              .style("opacity", function() {
-                return (k == i) ? 1 : 0;
-              });
+            t.selectAll(".topBubbleText")
+                    .attr("x", function (d, ii) {
+                        if (i == ii) {
+                            // Nothing to change
+                            return oR * (3 * (1 + ii) - 1) - 0.6 * oR * (ii - 1);
+                        } else {
+                            // Push away a little bit
+                            if (ii < i) {
+                                // left side
+                                return oR * 0.6 * (3 * (1 + ii) - 1);
+                            } else {
+                                // right side
+                                return oR * (nTop * 3 + 1) - oR * 0.6 * (3 * (nTop - ii) - 1);
+                            }
+                        }
+                    })
+                    .attr("y", function (d, ii) {
+                        if (i == ii) {
+                            return (h + oR) / 4
+                        } else {
+                            return (h + oR) / 3.5
+                        }
+                    })
+                    .attr("class", "topBubbleText wrapme")
+                    .attr("font-size", function (d, ii) {
+                        if (i == ii)
+                            return 16 * 1.5;
+                        else
+                            return 16 * 0.6;
+                    })
+                    .attr("width", function (d, ii) {
+                        if (i == ii)
+                            return oR * 1.8;
+                        else
+                            return oR * 0.8;
+                    })
+                    .attr("height", function (d, ii) {
+                        if (i == ii)
+                            return oR * 1.8;
+                        else
+                            return oR * 0.8;
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("alignment-baseline", "middle")
+                    .text(function (d) {
+                        return d.label
+                    });
 
-            t.selectAll(".childBubble" + k)
-              .attr("cx", function(d, i) {
-                return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("cy", function(d, i) {
-                return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
-              })
-              .attr("r", function() {
-                return (k == i) ? (oR * 0.55) : (oR / 3.0);
-              })
-              .style("opacity", function() {
-                return (k == i) ? 1 : 0;
-              });
-          }
+            var signSide = -1;
+            for (var k = 0; k < nTop; k++) {
+                signSide = 1;
+                if (k < nTop / 2)
+                    signSide = 1;
+                t.selectAll(".childBubbleText" + k)
+                        .attr("x", function (d, i) {
+                            return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("y", function (d, i) {
+                            return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("font-size", function () {
+                            return (k == i) ? 12 : 6;
+                        })
+                        .style("opacity", function () {
+                            return (k == i) ? 1 : 0;
+                        });
+
+                t.selectAll(".childBubble" + k)
+                        .attr("cx", function (d, i) {
+                            return (oR * (3 * (k + 1) - 1) - 0.6 * oR * (k - 1) + signSide * oR * 2.5 * Math.cos((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("cy", function (d, i) {
+                            return ((h + oR) / 3 + signSide * oR * 2.5 * Math.sin((i - 1) * 45 / 180 * Math.PI));
+                        })
+                        .attr("r", function () {
+                            return (k == i) ? (oR * 0.55) : (oR / 3.0);
+                        })
+                        .style("opacity", function () {
+                            return (k == i) ? 1 : 0;
+                        });
+            }
             var noteText = "";
             noteText += "Description: " + d.description + " \n ";
             noteText += "Author: " + d.author + " \n ";
@@ -3403,12 +3439,12 @@ var BubbleMenu = {
 
             d3.select("#bubbleItemNote")
                     .text(noteText)
-                    .attr("class", "wrapme" );
+                    .attr("class", "wrapme");
             d3version4.selectAll('.wrapme').call(wrap);
 
-        }
+        };
 
-        window.onresize = resetBubbles(width);       
-        
+        window.onresize = resetBubbles(width);
+
     }
-}
+};
