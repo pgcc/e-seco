@@ -51,7 +51,6 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var provenanceJson = JSON.parse('${objectInferencesJson}');
-            console.log(provenanceJson);
             /***********************************************/
             /* USAGE AND RELATIONS GRAPH                   */
             /***********************************************/

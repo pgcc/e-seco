@@ -2360,40 +2360,40 @@ var WorkflowChart = {
                 .style('stroke-width', 2)
                 .style("stroke", function (d) {
                     if (d.kind == 1) {
-                        return "666666";
+                        return "#666666";
                     } else if (d.kind == 2) {
                         return "B85450";
                     } else if (d.kind == 3) {
-                        return "82B366";
+                        return "#82B366";
                     } else if (d.kind == 4) {
-                        return "6C8EBF";
+                        return "#6C8EBF";
                     } else if (d.kind == 5) {
-                        return "9673A6";
+                        return "#9673A6";
                     } else if (d.kind == 6) {
-                        return "D6B656";
+                        return "#D6B656";
                     } else if (d.kind == 7) {
-                        return "D79B00";
+                        return "#D79B00";
                     } else {
-                        return "000000";
+                        return "#000000";
                     }
                 })
                 .style("fill", function (d) {
                     if (d.kind == 1) {
-                        return "F5F5F5";//gray
+                        return "#F5F5F5";//gray
                     } else if (d.kind == 2) {
-                        return "F8CECC";//red
+                        return "#F8CECC";//red
                     } else if (d.kind == 3) {
-                        return "D5E8D4";//green
+                        return "#D5E8D4";//green
                     } else if (d.kind == 4) {
-                        return "DAE8FC"; //blue
+                        return "#DAE8FC"; //blue
                     } else if (d.kind == 5) {
-                        return "E1D5E7"; //purple
+                        return "#E1D5E7"; //purple
                     } else if (d.kind == 6) {
-                        return "FFF2CC"; //yellow
+                        return "#FFF2CC"; //yellow
                     } else if (d.kind == 7) {
-                        return "FFE6CC"; //orange
+                        return "#FFE6CC"; //orange
                     } else {
-                        return "FFFFFF";//none
+                        return "#FFFFFF";//none
                     }
                 });
 
@@ -2620,6 +2620,18 @@ function mountDataToProvenance(itemData) {
                 }
             }
         }
+    }
+    for (var i in graphData.links) {              
+            if (graphData.links[i].name.indexOf("was Influenced By /") != -1) {                
+                graphData.links[i].name = graphData.links[i].name.replace('was Influenced By /', '*');                
+            } else if (graphData.links[i].name.indexOf("/ was Influenced By") != -1) {
+                graphData.links[i].name = graphData.links[i].name.replace('/ was Influenced By', '*');
+            } 
+            if (graphData.links[i].name.indexOf("influenced /") != -1) {
+                graphData.links[i].name = graphData.links[i].name.replace('influenced /', '*');
+            } else if (graphData.links[i].name.indexOf("/ influenced") != -1) {
+                graphData.links[i].name = graphData.links[i].name.replace('/ influenced', '*');
+            }
     }
     return graphData;
 }
@@ -2912,7 +2924,7 @@ var ProvenanceGraphChart = {
 
             title.on("click", function () {
                 if (d.kind && d.id) {
-                    window.location.replace("/" + window.location.pathname.split("/")[1] + "/ontology/" + d.class + "_" + d.id);
+                    window.open("/" + window.location.pathname.split("/")[1] + "/ontology/" + d.class + "_" + d.id);
                 }
             });
             if (d.info) {
@@ -3234,7 +3246,7 @@ var BubbleMenu = {
                     .attr("x", 0)
                     .attr("y", -12)
                     .attr("width", "20%")
-                    .attr("height", "20%")                    
+                    .attr("height", "20%")
                     .on('mouseenter', function () {
                         d3.select(this)
                                 .transition()

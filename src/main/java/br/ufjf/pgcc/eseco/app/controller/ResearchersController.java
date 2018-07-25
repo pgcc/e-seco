@@ -127,6 +127,14 @@ public class ResearchersController extends CommonController {
             researcherKeywordList.add(newRk);
         }
 
+        if (researcherKeywordList.isEmpty()) {
+            for (Interest i : researcher.getResearchInterests()) {
+                ResearcherKeyword newRk = new ResearcherKeyword();
+                newRk.setName(i.getName());
+                researcherKeywordList.add(newRk);
+                researcher.getResearchKeywords().add(newRk);
+            }
+        }
         Gson gson = new GsonBuilder().create();
         String researcherKeywordsJSON = gson.toJson(researcherKeywordList);
 

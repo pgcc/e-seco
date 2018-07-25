@@ -21,7 +21,6 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var provenanceJson = JSON.parse('${entityProvenanceJSON}');
-//            console.log(provenanceJson);
             /***********************************************/
             /* BUBLLE MENU                                 */
             /***********************************************/
