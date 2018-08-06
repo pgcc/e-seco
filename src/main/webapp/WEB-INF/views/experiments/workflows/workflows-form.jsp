@@ -163,7 +163,7 @@
                         <label class="col-sm-2 control-label">Activities</label>
                         <div class="col-sm-10">
                             <div class="input-group">
-                                <f:select path="activities" items="${activitiesList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                <f:select path="activities" items="${activitiesList}" multiple="true" size="5" class="form-control" itemLabel="fullName" itemValue="id"/>
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button" style="height: 68px" onclick="addActivity()">Select Activities</button>
                                 </span>

@@ -85,10 +85,10 @@ public class ActivityExecution {
     @JoinTable(
             name = "exp_workflow_execution_activity_execution",
             joinColumns = {
-                @JoinColumn(name = "activity_execution_id", nullable = false)
+                @JoinColumn(name = "activity_execution_id")
             },
             inverseJoinColumns = {
-                @JoinColumn(name = "workflow_execution_id", nullable = false)
+                @JoinColumn(name = "workflow_execution_id")
             }
     )
     private WorkflowExecution workflowExecution;

@@ -190,3 +190,10 @@ rect.target {
   stroke: #666;
   stroke-width: 1.5px;
 }
+
+.bubbleChart {
+      min-width: 100px;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto;
+    }

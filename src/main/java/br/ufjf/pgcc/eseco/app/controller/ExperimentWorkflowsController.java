@@ -280,7 +280,7 @@ public class ExperimentWorkflowsController {
             Activity activity = workflowActivity.getActivity();
             activityJson.put("name", activity.getName());
             activityJson.put("orderExec", workflowActivity.getOrderExec());
-            activityJson.put("description", activity.getDescription());
+            activityJson.put("description", activity.getDescription().replaceAll(":", " ").replaceAll(",", " "));
             activityJson.put("author", activity.getAuthor().getDisplayName());
 
             if (activity.getAuthor().getId() != workflowActivity.getWorkflow().getAuthor().getId()) {

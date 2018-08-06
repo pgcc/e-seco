@@ -220,7 +220,12 @@
 
         <script type="text/javascript"
         src="<c:url value="/resources/theme-eseco/custom/eseco-visualization/eseco-visualization.js" />"></script>
-
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/misc.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/micro-observer.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/microplugin.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/bubble-chart.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/central-click.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/theme-eseco/plugins/lines.js" />"></script>
         <!-- CORE JAVASCRIPTS END -->
 
         <!-- GLOBAL LEVEL JAVASCRIPTS START -->

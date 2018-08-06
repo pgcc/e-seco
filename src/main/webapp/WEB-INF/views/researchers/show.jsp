@@ -110,6 +110,10 @@
                                     <span>${researcher.displayName}</span>
                                 </li>
                                 <li class="list-group-item">
+                                    <span>E-mail</span>
+                                    <span>${researcher.agent.user.email}</span>
+                                </li>
+                                <li class="list-group-item">
                                     <span>Photo</span>
                                     <span><img src="${researcher.photo}" class="img-rounded img-responsive" alt=""
                                                style="max-width: 200px;"></span>
@@ -145,6 +149,14 @@
                                             ${interest.name},
                                         </c:forEach>
                                     </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>ResearchGate</span>
+                                    <span>${researcher.researchgateId}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>Lattes</span>
+                                    <span>${researcher.lattesId}</span>
                                 </li>
                                 <li class="list-group-item">
                                     <span>Mendeley Id</span>

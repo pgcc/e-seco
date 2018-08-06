@@ -305,10 +305,12 @@ public class ExperimentEntitiesController {
     }
 
     private JsonObject getReusedByChart(String entityProvenanceJSON) {
-        System.out.println(entityProvenanceJSON);
         JsonElement json = new Gson().fromJson(entityProvenanceJSON, JsonElement.class);
-
         JsonObject data = new JsonObject();
+        if (json.getAsJsonObject().get("inferred") == null) {
+            return data;
+        }
+
         JsonArray children = new JsonArray();
         data.add("children", children);
         data.add("name", json.getAsJsonObject().get("resource"));
@@ -353,7 +355,7 @@ public class ExperimentEntitiesController {
                 }
             }
         }
-        
+
         if (inferred.get("was Reused By") == null) {
             return data;
         }

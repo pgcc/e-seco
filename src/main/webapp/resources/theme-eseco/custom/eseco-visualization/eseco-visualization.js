@@ -100,9 +100,7 @@ function drawGraph(data, target, width) {
 var GraphChart = {
     draw: function (data, target, width) {
 
-        if (!window.d3) {
-            var d3 = d3version3;
-        }
+        var d3 = d3version3;
 
         // get the data
         var nodes = data.nodes;
@@ -2309,9 +2307,7 @@ function drawWorkflow(data, target, width, phases) {
 var WorkflowChart = {
     draw: function (data, target, width, height, phases) {
 
-        if (!window.d3) {
-            var d3 = d3version3;
-        }
+        var d3 = d3version3;
 
         var margin = {top: 10, right: 10, bottom: 10, left: 10};
 
@@ -2421,6 +2417,9 @@ var WorkflowChart = {
                     return d.source.name + "_" + d.target.name + "_" + d.name;
                 })
                 .attr("d", function (d) {
+                    if(d.target.reusedFrom != null){
+                        return null;
+                    }
                     var targetX = d.target.x - 12;
                     var dx = d.source.x + nodeWidth;
                     //rx ry x-axis-rotation large-arc-flag sweep-flag x y
@@ -2621,17 +2620,17 @@ function mountDataToProvenance(itemData) {
             }
         }
     }
-    for (var i in graphData.links) {              
-            if (graphData.links[i].name.indexOf("was Influenced By /") != -1) {                
-                graphData.links[i].name = graphData.links[i].name.replace('was Influenced By /', '*');                
-            } else if (graphData.links[i].name.indexOf("/ was Influenced By") != -1) {
-                graphData.links[i].name = graphData.links[i].name.replace('/ was Influenced By', '*');
-            } 
-            if (graphData.links[i].name.indexOf("influenced /") != -1) {
-                graphData.links[i].name = graphData.links[i].name.replace('influenced /', '*');
-            } else if (graphData.links[i].name.indexOf("/ influenced") != -1) {
-                graphData.links[i].name = graphData.links[i].name.replace('/ influenced', '*');
-            }
+    for (var i in graphData.links) {
+        if (graphData.links[i].name.indexOf("was Influenced By /") != -1) {
+            graphData.links[i].name = graphData.links[i].name.replace('was Influenced By /', '*');
+        } else if (graphData.links[i].name.indexOf("/ was Influenced By") != -1) {
+            graphData.links[i].name = graphData.links[i].name.replace('/ was Influenced By', '*');
+        }
+        if (graphData.links[i].name.indexOf("influenced /") != -1) {
+            graphData.links[i].name = graphData.links[i].name.replace('influenced /', '*');
+        } else if (graphData.links[i].name.indexOf("/ influenced") != -1) {
+            graphData.links[i].name = graphData.links[i].name.replace('/ influenced', '*');
+        }
     }
     return graphData;
 }
@@ -2640,9 +2639,7 @@ var ProvenanceGraphChart = {
 
     draw: function (data, target, width) {
 
-        if (!window.d3) {
-            var d3 = d3version3;
-        }
+        var d3 = d3version3;
 
         // get the data
         //var nodecolor = d3.scale.category20();
@@ -3045,9 +3042,9 @@ function drawBubbleMenu(data, target, width) {
 var BubbleMenu = {
 
     draw: function (root, target, width) {
-        if (!window.d3) {
-            var d3 = d3version3;
-        }
+        
+        var d3 = d3version3;
+        
 
         var w = width;
         var h = Math.ceil(w * 0.5);
@@ -3457,5 +3454,133 @@ var BubbleMenu = {
 
         window.onresize = resetBubbles(width);
 
+    }
+};
+
+
+
+/******************************************************/
+/* Bubble Chart                                       */
+/*http://bl.ocks.org/phuonghuynh/54a2f97950feadb45b07 */
+/******************************************************/
+
+function drawBubbleChart(data) {
+
+    // Call function to draw the Radar chart
+    if (data.constructor === Object) {
+        BubbleChartVis.draw(data);
+
+    } else if (typeof data === "string") {
+        d3.json(data, function (error, data) {
+            if (error)
+                throw error;
+            BubbleChartVis.draw(data);
+        });
+    }
+}
+
+var BubbleChartVis = {
+    draw: function (values) {
+
+        var d3 = d3version3;
+
+        var bubbleChart = new d3.svg.BubbleChart({
+            supportResponsive: true,
+            //container: => use @default
+            size: 600,
+            //viewBoxSize: => use @default
+            innerRadius: 600 / 3.5,
+            //outerRadius: => use @default
+            radiusMin: 50,
+            //radiusMax: use @default
+            //intersectDelta: use @default
+            //intersectInc: use @default
+            //circleColor: use @default
+            data: {
+                items: values.items,
+                eval: function (item) {
+                    return item.count;
+                },
+                classed: function (item) {
+                    return item.text.split(" ").join("");
+                }
+            },
+            plugins: [
+                {
+                    name: "central-click",
+                    options: {
+                        text: "(Visualizar detalhes)",
+                        style: {
+                            "font-size": "20px",
+                            "text-anchor": "middle",
+                            "text-shadow": "0 0 0 black"
+
+                        },
+                        attr: {dy: "65px"},
+                        centralClick: function (d) {
+                            window.open("/" + window.location.pathname.split("/")[1] + d.link);
+                        }
+                    }
+                },
+                {
+                    name: "lines",
+                    options: {
+                        format: [
+                            {
+                                textField: "count",
+                                classed: {count: true},
+                                style: {
+                                    "font-size": "28px",
+                                    "text-anchor": "middle",
+                                    "text-shadow": "0 0 0 black"
+                                },
+                                attr: {
+                                    dy: "0px",
+                                    x: function (d) {
+                                        return d.cx;
+                                    },
+                                    y: function (d) {
+                                        return d.cy;
+                                    }
+                                }
+                            },
+                            {// Line #1
+                                textField: "text",
+                                classed: {text: true},
+                                style: {
+                                    "font-size": "14px",
+                                    "text-anchor": "middle",
+                                    "text-shadow": "0 0 0 black"
+                                },
+                                attr: {
+                                    dy: "20px",
+                                    x: function (d) {
+                                        return d.cx;
+                                    },
+                                    y: function (d) {
+                                        return d.cy;
+                                    }
+                                }
+                            }
+                        ],
+                        centralFormat: [
+                            {// Line #0
+                                style: {
+                                    "font-size": "50px",
+                                    "text-shadow": "0 0 0 black"
+                                },
+                                attr: {}
+                            },
+                            {// Line #1
+                                style: {
+                                    "font-size": "30px",
+                                    "text-shadow": "0 0 0 black"
+                                },
+                                attr: {dy: "40px"}
+                            }
+                        ]
+                    }
+                }]
+        });
     }
 };

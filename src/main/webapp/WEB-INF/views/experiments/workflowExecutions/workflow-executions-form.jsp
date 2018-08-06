@@ -117,7 +117,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Activities Executions</label>
                         <div class="col-sm-10">
-                            <f:select path="activityExecutions" items="${activityExecutionsList}" multiple="true" size="3" class="form-control" itemLabel="activity.name" itemValue="id"/>
+                            <f:select path="activityExecutions" items="${activityExecutionsList}" multiple="true" size="3" class="form-control" itemLabel="activity.fullName" itemValue="id"/>
                         </div>
                     </div>
                 </spring:bind>

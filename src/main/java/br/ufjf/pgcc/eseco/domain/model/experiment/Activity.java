@@ -171,4 +171,7 @@ public class Activity {
         this.details = details;
     }
 
+    public String getFullName(){
+        return name + " (" + author.getDisplayName() + ")";
+    }
 }

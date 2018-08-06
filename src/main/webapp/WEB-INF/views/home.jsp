@@ -15,6 +15,19 @@
 
 
     <jsp:attribute name="javascripts">
+        <script type="text/javascript">
+            // Get JSON Data for visualizations;
+            var chartJson = JSON.parse('${chartDataJSON}');
+            
+            /***********************************************/
+            /* BUBLLE MENU                                 */
+            /***********************************************/
+            function showBubbleChartVisualization() {
+                drawBubbleChart(chartJson);
+            }
+            ;
+            showBubbleChartVisualization();
+        </script>
 
     </jsp:attribute>
 
@@ -31,6 +44,10 @@
             <div class="col-xs-12">
                 <h2>Welcome to E-SECO</h2>
 
+                <div class="row">                    
+                        <div class="bubbleChart"/>                   
+                </div>
+                    
                 <c:if test="${fn:length(notifications) >= 1}">
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-warning">

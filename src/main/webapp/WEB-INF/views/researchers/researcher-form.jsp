@@ -33,7 +33,7 @@
     <jsp:attribute name="breadcrumbs">
         <ol class="breadcrumb">
             <li><a href="<c:url value="/profile"/>"><i class="fa fa-street-view"></i> User Profile</a></li>
-            <c:choose>
+                <c:choose>
                     <c:when test="${researcherForm['new']}">
                     <li><a href="<c:url value="/researchers/add"/>">Add</a></li>
                     </c:when>
@@ -82,8 +82,8 @@
                         <f:button type="submit" class="btn btn-primary">Mendeley Search</f:button>
                         <f:button type="button" class="btn btn-primary" id="btn-search-dblp">DBLP Search</f:button>
                         <f:button type="button" class="btn btn-primary" id="btn-search-researchgate">ResearchGate Search</f:button>
+                        </div>
                     </div>
-                </div>
             </f:form>
             <c:url var="register" value="/researchers"/>
             <f:form class="form form-horizontal" method="post" action="${register}" modelAttribute="researcherForm">
@@ -157,6 +157,42 @@
                             <f:select path="institutions" items="${institutionsList}" multiple="true" size="3"
                                       class="form-control" itemLabel="name" itemValue="id"/>
                             <f:errors path="institutions" class="control-label"/>
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="lattesId">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Lattes</label>
+                        <div class="col-sm-10">
+                            <f:input path="lattesId" class="form-control" type="text"/>
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="researchgateId">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">ResearchGate</label>
+                        <div class="col-sm-10">
+                            <f:input path="researchgateId" class="form-control" type="text"/>
+                        </div>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="mendeleyId">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Mendeley</label>
+                        <div class="col-sm-10">
+                            <f:input path="mendeleyId" class="form-control" type="text"/>
+                        </div>
+                    </div>
+                </spring:bind>
+                             
+                <spring:bind path="keplerId">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label class="col-sm-2 control-label">Kepler</label>
+                        <div class="col-sm-10">
+                            <f:input path="keplerId" class="form-control" type="text"/>
                         </div>
                     </div>
                 </spring:bind>

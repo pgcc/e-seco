@@ -50,4 +50,7 @@ public class Port {
         this.entity = entity;
     }
 
+    public String getFullName() {
+        return entity.getName() + " (" + entity.getAuthor().getDisplayName() + ")";
+    }
 }

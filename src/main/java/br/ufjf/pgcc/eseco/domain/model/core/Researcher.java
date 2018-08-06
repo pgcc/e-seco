@@ -31,8 +31,14 @@ public class Researcher {
     @Column(name = "mendeley_id")
     private String mendeleyId;
 
+    @Column(name = "researchgate_id")
+    private String researchgateId;
+    
     @Column(name = "kepler_id")
     private String keplerId;
+    
+    @Column(name = "lattes_id")
+    private String lattesId;
 
     @Column(name = "photo")
     private String photo;
@@ -205,4 +211,22 @@ public class Researcher {
     public void setResearchKeywords(List<ResearcherKeyword> researchKeywords) {
         this.researchKeywords = researchKeywords;
     }
+
+    public String getResearchgateId() {
+        return researchgateId;
+    }
+
+    public void setResearchgateId(String researchgateId) {
+        this.researchgateId = researchgateId;
+    }
+
+    public String getLattesId() {
+        return lattesId;
+    }
+
+    public void setLattesId(String lattesId) {
+        this.lattesId = lattesId;
+    }
+    
+    
 }

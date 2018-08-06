@@ -94,7 +94,7 @@
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-sm-2 control-label">Author</label>
                         <div class="col-sm-10">
-                            <f:input path="author.displayName" class="form-control" id="author" placeholder="Author" disabled="true"/>
+                            <f:input path="author.displayName" class="form-control" id="author" disabled="true" />
                         </div>
                     </div>
                 </spring:bind>
@@ -103,7 +103,7 @@
                         <label class="col-sm-2 control-label">Created in</label>
                         <div class="col-sm-2">
                             <div class="input-group">
-                                <f:input path="dateCreated" class="form-control datepicker" id="dateCreated"  disabled="true"/>
+                                <f:input path="dateCreated" class="form-control datepicker" id="dateCreated" />
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -114,7 +114,7 @@
                         <label class="col-sm-2 control-label">Updated in</label>
                         <div class="col-sm-2">
                             <div class="input-group">
-                                <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" disabled="true"/>
+                                <f:input path="dateUpdated" class="form-control datepicker" id="dateUpdated" />
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
@@ -126,7 +126,7 @@
                         <label class="col-sm-2 control-label">Ended in</label>
                         <div class="col-sm-2">
                             <div class="input-group">
-                                <f:input path="dateEnded" class="form-control datepicker" id="dateEnded" disabled="true"/>
+                                <f:input path="dateEnded" class="form-control datepicker" id="dateEnded"/>
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>

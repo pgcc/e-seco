@@ -21,6 +21,7 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations
             var workflowTreeDATA = JSON.parse('${workflowTreeJSON}');
+            
             /***********************************************/
             /* Research Experiments CHART                            */
             /***********************************************/

@@ -1,6 +1,5 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
-import br.ufjf.pgcc.eseco.domain.dao.core.ResearcherDAO;
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ExperimentDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
