@@ -25,11 +25,11 @@ public class WorkflowActivity implements Comparable<WorkflowActivity> {
     @EmbeddedId
     private WorkflowActivityId id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("workflowId")
     private Workflow workflow;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("activityId")
     private Activity activity;
 

@@ -9,6 +9,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.PortService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowExecutionService;
@@ -43,6 +44,7 @@ public class ExperimentWorkflowExecutionsController {
     private WorkflowExecutionService workflowExecutionService;
     private WorkflowService workflowService;
     private ActivityExecutionService activityExecutionService;
+    private ActivityService activityService;
     private PortService portService;
     private ExperimentService experimentService;
 
@@ -53,12 +55,14 @@ public class ExperimentWorkflowExecutionsController {
 
     @Autowired
     public void setWorkflowExecutionService(WorkflowExecutionService workflowExecutionService, WorkflowService workflowService,
-            ActivityExecutionService activityExecutionService, PortService portService, ExperimentService experimentService) {
+            ActivityExecutionService activityExecutionService, PortService portService, ExperimentService experimentService,
+            ActivityService activityService) {
         this.workflowExecutionService = workflowExecutionService;
         this.workflowService = workflowService;
         this.activityExecutionService = activityExecutionService;
         this.portService = portService;
         this.experimentService = experimentService;
+        this.activityService = activityService;
     }
 
     @RequestMapping(value = "/experiments/workflowExecutions", method = RequestMethod.GET)
@@ -101,6 +105,7 @@ public class ExperimentWorkflowExecutionsController {
 
         ArrayList<ActivityExecution> activityExecutionsList = new ArrayList();
         for (WorkflowActivity wa : workflow.getActivities()) {
+            wa.setActivity(activityService.find(wa.getId().getActivityId()));
             activityExecutionsList.addAll(wa.getActivity().getExecutions());
         }
         model.addAttribute("activityExecutionsList", activityExecutionsList);

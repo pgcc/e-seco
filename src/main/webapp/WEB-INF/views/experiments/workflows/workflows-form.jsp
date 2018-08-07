@@ -27,7 +27,7 @@
                         ids += selectObj.selectedOptions[i].value + ",";
                     }
                     var form = document.getElementById("workflowform");
-                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/addActivities?ids=" + ids;
+                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/${workflowForm['id']}/addActivities?ids=" + ids;
                     form.action = url;
                     form.submit();
                 }
@@ -35,7 +35,7 @@
             ;
             function removeActivity(index) {
                 var form = document.getElementById("workflowform");
-                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/removeActivity?id=" + index;
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/${workflowForm['id']}/removeActivity?id=" + index;
                 form.action = url;
                 form.submit();
             }

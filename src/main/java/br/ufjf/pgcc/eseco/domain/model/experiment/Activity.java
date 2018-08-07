@@ -7,15 +7,18 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
-import java.util.ArrayList;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -31,7 +34,7 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -168,34 +171,10 @@ public class Activity {
         this.details = details;
     }
 
-    public void addWorkflow(Workflow w) {
-        if(workflows == null){
-            workflows = new ArrayList<>();
-        }
-        WorkflowActivity workflowActivity = new WorkflowActivity(w, this);
-        workflows.add(workflowActivity);
-        w.getActivities().add(workflowActivity);
-    }
-
-    public void removeWorkflow(Workflow w) {
-        if(workflows == null){
-            return;
-        }
-        for (Iterator<WorkflowActivity> iterator = workflows.iterator();
-                iterator.hasNext();) {
-            WorkflowActivity workflowActivity = iterator.next();
-
-            if (workflowActivity.getWorkflow().equals(w)
-                    && workflowActivity.getActivity().equals(this)) {
-                iterator.remove();
-                workflowActivity.getWorkflow().getActivities().remove(workflowActivity);
-                workflowActivity.setWorkflow(null);
-                workflowActivity.setActivity(null);
-            }
-        }
-    }
-
     public String getFullName() {
-        return name + " (" + author.getDisplayName() + ")";
+        if (author != null) {
+            return name + " (" + author.getDisplayName() + ")";
+        }
+        return name;
     }
 }

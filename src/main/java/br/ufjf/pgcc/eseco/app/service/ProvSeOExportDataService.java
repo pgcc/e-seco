@@ -574,7 +574,7 @@ public class ProvSeOExportDataService {
             for (WorkflowActivity wa : w.getActivities()) {
                 JsonObject hasSubProgramJSON = new JsonObject();
                 hasSubProgramJSON.addProperty("workflow", w.getId());
-                hasSubProgramJSON.addProperty("program", wa.getActivity().getId());
+                hasSubProgramJSON.addProperty("program", wa.getId().getActivityId());
                 hasSubProgramAsJson.add(hasSubProgramJSON);
             }
 

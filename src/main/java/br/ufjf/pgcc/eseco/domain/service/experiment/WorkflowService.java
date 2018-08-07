@@ -1,7 +1,6 @@
 package br.ufjf.pgcc.eseco.domain.service.experiment;
 
 import br.ufjf.pgcc.eseco.domain.dao.experiment.WorkflowDAO;
-import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import org.springframework.beans.factory.annotation.Autowired;

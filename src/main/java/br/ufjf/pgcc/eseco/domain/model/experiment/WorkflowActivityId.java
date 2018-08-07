@@ -52,4 +52,21 @@ public class WorkflowActivityId
     public int hashCode() {
         return Objects.hash(workflowId, activityId);
     }
+
+    public int getWorkflowId() {
+        return workflowId;
+    }
+
+    public void setWorkflowId(int workflowId) {
+        this.workflowId = workflowId;
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(int activityId) {
+        this.activityId = activityId;
+    }
+
 }

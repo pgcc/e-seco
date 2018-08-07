@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.persistence.Entity;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -174,7 +174,7 @@ public class Workflow {
     }
 
     public void addActivity(Activity a) {
-        if(activities == null){
+        if (activities == null) {
             activities = new ArrayList<>();
         }
         WorkflowActivity workflowActivity = new WorkflowActivity(this, a);
@@ -183,7 +183,7 @@ public class Workflow {
     }
 
     public void removeActivity(Activity a) {
-        if(activities == null){
+        if (activities == null) {
             return;
         }
         for (Iterator<WorkflowActivity> iterator = activities.iterator();
@@ -191,7 +191,7 @@ public class Workflow {
             WorkflowActivity workflowActivity = iterator.next();
 
             if (workflowActivity.getWorkflow().equals(this)
-                    && workflowActivity.getActivity().equals(a)) {
+                    && workflowActivity.getActivity().getId() == a.getId()) {
                 iterator.remove();
                 workflowActivity.getActivity().getWorkflows().remove(workflowActivity);
                 workflowActivity.setWorkflow(null);
@@ -207,6 +207,23 @@ public class Workflow {
     @Override
     public String toString() {
         return String.valueOf(id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Workflow w = (Workflow) o;
+        return Objects.equals(id, w.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 }

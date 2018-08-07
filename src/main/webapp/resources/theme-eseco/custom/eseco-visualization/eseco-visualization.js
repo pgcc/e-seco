@@ -2417,7 +2417,8 @@ var WorkflowChart = {
                     return d.source.name + "_" + d.target.name + "_" + d.name;
                 })
                 .attr("d", function (d) {
-                    if(d.target.reusedFrom != null){
+                    console.log(d.target.reusedFrom);
+                    if(d.target.reusedFrom != null && d.source.reusedFrom != d.target.reusedFrom){
                         return null;
                     }
                     var targetX = d.target.x - 12;
