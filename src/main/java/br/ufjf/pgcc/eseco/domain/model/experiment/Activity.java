@@ -10,6 +10,7 @@ import br.ufjf.pgcc.eseco.domain.model.resource.WorkflowService;
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -58,9 +59,13 @@ public class Activity {
     )
     private List<WorkflowService> workflowServices;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<WorkflowActivity> workflowActivities;
+    @OneToMany(
+            mappedBy = "activity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<WorkflowActivity> workflows;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -147,20 +152,12 @@ public class Activity {
         return String.valueOf(id);
     }
 
-    public List<Workflow> getWorkflows() {
-        List<Workflow> workflows = new ArrayList<>();
-        for (WorkflowActivity workflowActivity : workflowActivities) {
-            workflows.add(workflowActivity.getWorkflow());
-        }
+    public List<WorkflowActivity> getWorkflows() {
         return workflows;
     }
 
-    public List<WorkflowActivity> getWorkflowActivities() {
-        return workflowActivities;
-    }
-
-    public void setWorkflowActivities(List<WorkflowActivity> workflowActivities) {
-        this.workflowActivities = workflowActivities;
+    public void setWorkflows(List<WorkflowActivity> workflows) {
+        this.workflows = workflows;
     }
 
     public List<Detail> getDetails() {
@@ -171,7 +168,34 @@ public class Activity {
         this.details = details;
     }
 
-    public String getFullName(){
+    public void addWorkflow(Workflow w) {
+        if(workflows == null){
+            workflows = new ArrayList<>();
+        }
+        WorkflowActivity workflowActivity = new WorkflowActivity(w, this);
+        workflows.add(workflowActivity);
+        w.getActivities().add(workflowActivity);
+    }
+
+    public void removeWorkflow(Workflow w) {
+        if(workflows == null){
+            return;
+        }
+        for (Iterator<WorkflowActivity> iterator = workflows.iterator();
+                iterator.hasNext();) {
+            WorkflowActivity workflowActivity = iterator.next();
+
+            if (workflowActivity.getWorkflow().equals(w)
+                    && workflowActivity.getActivity().equals(this)) {
+                iterator.remove();
+                workflowActivity.getWorkflow().getActivities().remove(workflowActivity);
+                workflowActivity.setWorkflow(null);
+                workflowActivity.setActivity(null);
+            }
+        }
+    }
+
+    public String getFullName() {
         return name + " (" + author.getDisplayName() + ")";
     }
 }

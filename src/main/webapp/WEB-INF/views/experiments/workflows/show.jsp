@@ -159,13 +159,13 @@
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                     Activities                                
                                 </a>
-                                <span class="badge">${workflow.workflowActivities.size()}</span>
+                                <span class="badge">${workflow.activities.size()}</span>
                             </h4>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
                                 <ul class="list-group" >
-                                    <c:forEach items="${workflow.workflowActivities}" var="wa">
+                                    <c:forEach items="${workflow.activities}" var="wa">
                                         <li class="list-group-item">
                                             <a href="<c:url value="/experiments/activities/${wa.activity.id}"/>">${wa.activity.name}</a> Sequence: ${wa.orderExec} 
                                         </li>

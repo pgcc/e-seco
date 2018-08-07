@@ -241,9 +241,9 @@ public class ImportProvenanceDataService {
                 activity.setDateCreated(Date.from(startDateTime.toInstant()));
 
                 if (workflow.getActivities() != null && !workflow.getActivities().isEmpty()) {
-                    for (Activity ac : workflow.getActivities()) {
-                        if (ac.getName().equalsIgnoreCase(activity.getName())) {
-                            activity = ac;
+                    for (WorkflowActivity wa : workflow.getActivities()) {
+                        if (wa.getActivity().getName().equalsIgnoreCase(activity.getName())) {
+                            activity = wa.getActivity();
                         }
                     }
                 }
@@ -326,13 +326,11 @@ public class ImportProvenanceDataService {
                 Researcher researcher = mapResearchers.get(value.getAsJsonObject().get("prov:agent").getAsString());
 
                 Activity activity = mapActivities.get(value.getAsJsonObject().get("prov:activity").getAsString());
-                if (workflow.getWorkflowActivities() == null) {
-                    workflow.setWorkflowActivities(new ArrayList<WorkflowActivity>());
+                if (workflow.getActivities() == null) {
+                    workflow.setActivities(new ArrayList<WorkflowActivity>());
                 }
-                WorkflowActivity workflowActivity = new WorkflowActivity();
-                workflowActivity.setActivity(activity);
-                workflowActivity.setWorkflow(workflow);
-                workflow.getWorkflowActivities().add(workflowActivity);
+                
+                workflow.addActivity(activity);
                 workflow = workflowService.saveOrUpdate(workflow);
 
                 ActivityExecution activityExecution = mapActivitiesExecutions.get(value.getAsJsonObject().get("prov:activity").getAsString());

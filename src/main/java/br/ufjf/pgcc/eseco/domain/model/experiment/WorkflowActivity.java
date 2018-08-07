@@ -5,13 +5,13 @@
  */
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
+import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 /**
@@ -22,23 +22,27 @@ import javax.persistence.Table;
 @Table(name = "exp_workflow_activity")
 public class WorkflowActivity implements Comparable<WorkflowActivity> {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @EmbeddedId
+    private WorkflowActivityId id;
 
-    @ManyToOne
-    @JoinColumn(name = "workflow_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("workflowId")
     private Workflow workflow;
 
-    @ManyToOne
-    @JoinColumn(name = "activity_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("activityId")
     private Activity activity;
 
     @Column(name = "order_exec")
     private int orderExec;
 
     public WorkflowActivity() {
+    }
+
+    public WorkflowActivity(Workflow w, Activity a) {
+        this.workflow = w;
+        this.activity = a;
+        this.id = new WorkflowActivityId(w.getId(), a.getId());
     }
 
     public Workflow getWorkflow() {
@@ -65,17 +69,37 @@ public class WorkflowActivity implements Comparable<WorkflowActivity> {
         this.orderExec = orderExec;
     }
 
-    public int getId() {
+    public WorkflowActivityId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(WorkflowActivityId id) {
         this.id = id;
     }
 
     @Override
     public int compareTo(WorkflowActivity o) {
         return Integer.compare(this.getOrderExec(), o.getOrderExec());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        WorkflowActivity that = (WorkflowActivity) o;
+        return Objects.equals(workflow, that.workflow)
+                && Objects.equals(activity, that.activity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(workflow, activity);
     }
 
 }

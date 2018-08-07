@@ -8,6 +8,7 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -57,9 +58,13 @@ public class Workflow {
     @Column(name = "version")
     private String version;
 
-    @OneToMany(mappedBy = "workflow", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<WorkflowActivity> workflowActivities;
+    @OneToMany(
+            mappedBy = "workflow",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<WorkflowActivity> activities;
 
     @ManyToMany(mappedBy = "workflows")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -68,9 +73,6 @@ public class Workflow {
     @OneToMany(mappedBy = "workflow")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<WorkflowExecution> executions;
-
-    @Transient
-    private List<Activity> activities;
 
     public Workflow() {
     }
@@ -147,30 +149,12 @@ public class Workflow {
         this.version = version;
     }
 
-    public List<Activity> getActivities() {
-
-        if (activities != null) {
-            return activities;
-        }
-        activities = new ArrayList<>();
-        if (workflowActivities != null) {
-            for (WorkflowActivity workflowactivity : workflowActivities) {
-                activities.add(workflowactivity.getActivity());
-            }
-        }
+    public List<WorkflowActivity> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<Activity> activities) {
+    public void setActivities(List<WorkflowActivity> activities) {
         this.activities = activities;
-    }
-
-    public List<WorkflowActivity> getWorkflowActivities() {
-        return workflowActivities;
-    }
-
-    public void setWorkflowActivities(List<WorkflowActivity> workflowActivities) {
-        this.workflowActivities = workflowActivities;
     }
 
     public List<Experiment> getExperiments() {
@@ -187,6 +171,33 @@ public class Workflow {
 
     public void setExecutions(List<WorkflowExecution> executions) {
         this.executions = executions;
+    }
+
+    public void addActivity(Activity a) {
+        if(activities == null){
+            activities = new ArrayList<>();
+        }
+        WorkflowActivity workflowActivity = new WorkflowActivity(this, a);
+        activities.add(workflowActivity);
+        a.getWorkflows().add(workflowActivity);
+    }
+
+    public void removeActivity(Activity a) {
+        if(activities == null){
+            return;
+        }
+        for (Iterator<WorkflowActivity> iterator = activities.iterator();
+                iterator.hasNext();) {
+            WorkflowActivity workflowActivity = iterator.next();
+
+            if (workflowActivity.getWorkflow().equals(this)
+                    && workflowActivity.getActivity().equals(a)) {
+                iterator.remove();
+                workflowActivity.getActivity().getWorkflows().remove(workflowActivity);
+                workflowActivity.setWorkflow(null);
+                workflowActivity.setActivity(null);
+            }
+        }
     }
 
     public boolean isNew() {

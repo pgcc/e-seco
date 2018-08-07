@@ -22,6 +22,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Wfms;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
 import br.ufjf.pgcc.eseco.domain.service.core.CityService;
@@ -570,10 +571,10 @@ public class ProvSeOExportDataService {
         List<Workflow> workflows = workflowService.findAll();
         for (Workflow w : workflows) {
 
-            for (Activity a : w.getActivities()) {
+            for (WorkflowActivity wa : w.getActivities()) {
                 JsonObject hasSubProgramJSON = new JsonObject();
                 hasSubProgramJSON.addProperty("workflow", w.getId());
-                hasSubProgramJSON.addProperty("program", a.getId());
+                hasSubProgramJSON.addProperty("program", wa.getActivity().getId());
                 hasSubProgramAsJson.add(hasSubProgramJSON);
             }
 

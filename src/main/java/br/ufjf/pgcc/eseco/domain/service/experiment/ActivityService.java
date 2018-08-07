@@ -66,7 +66,7 @@ public class ActivityService {
 
         ArrayList<Activity> activitiesFound = new ArrayList<>();
 
-        for (WorkflowActivity wa : workflowDAO.find(workflowID).getWorkflowActivities()) {
+        for (WorkflowActivity wa : workflowDAO.find(workflowID).getActivities()) {
             if (wa.getOrderExec() == orderExec) {
                 if (!activitiesFound.contains(wa.getActivity())) {
                     activitiesFound.add(wa.getActivity());

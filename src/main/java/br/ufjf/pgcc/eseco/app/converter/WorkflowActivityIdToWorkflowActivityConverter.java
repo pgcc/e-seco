@@ -6,6 +6,7 @@
 package br.ufjf.pgcc.eseco.app.converter;
 
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivityId;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,9 @@ public class WorkflowActivityIdToWorkflowActivityConverter implements Converter<
     @Override
     public WorkflowActivity convert(String id) {
         try {
-            Integer waId = Integer.parseInt(id);
+
             WorkflowActivity wa = new WorkflowActivity();
-            wa.setId(waId);
+
             return wa;
         } catch (NumberFormatException e) {
             return null;

@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.domain.service.experiment;
 import br.ufjf.pgcc.eseco.domain.dao.experiment.WorkflowDAO;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +48,8 @@ public class WorkflowService {
         ArrayList<Workflow> workflowsFound = new ArrayList<>();
 
         for(Workflow workflow: workflows){
-            for(Activity activity: workflow.getActivities()){
-                if(activity.getId() == activityID){
+            for(WorkflowActivity wa: workflow.getActivities()){
+                if(wa.getActivity().getId() == activityID){
                     if(!workflowsFound.contains(workflow)){
                         workflowsFound.add(workflow);
                     }

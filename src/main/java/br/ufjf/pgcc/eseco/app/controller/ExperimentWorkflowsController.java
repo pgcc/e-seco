@@ -37,22 +37,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes({"workflowForm"})
 public class ExperimentWorkflowsController {
-
+    
     private static final Logger LOGGER = Logger.getLogger(ExperimentWorkflowsController.class.getName());
-
+    
     @Autowired
     ExperimentWorkflowFormValidator workflowFormValidator;
-
+    
     private ExperimentService experimentService;
     private WorkflowService workflowService;
     private WfmsService wfmsService;
     private ActivityService activityService;
-
+    
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(workflowFormValidator);
     }
-
+    
     @Autowired
     public void setWorkflowService(ExperimentService experimentService, WorkflowService workflowService,
             WfmsService wfmsService, ActivityService activityService) {
@@ -61,15 +61,15 @@ public class ExperimentWorkflowsController {
         this.wfmsService = wfmsService;
         this.activityService = activityService;
     }
-
+    
     @RequestMapping(value = "/experiments/workflows", method = RequestMethod.GET)
     public String showAllWorkflows(Model model, HttpSession session) {
-
+        
         LOGGER.info("showAllWorkflows()");
-
+        
         ArrayList<Workflow> myworkflows = new ArrayList<>();
         ArrayList<Workflow> workflows = new ArrayList<>();
-
+        
         User user = (User) session.getAttribute("logged_user");
         for (Workflow w : workflowService.findAll()) {
             if (w.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
@@ -78,20 +78,20 @@ public class ExperimentWorkflowsController {
                 workflows.add(w);
             }
         }
-
+        
         model.addAttribute("myworkflows", myworkflows);
         model.addAttribute("workflows", workflows);
-
+        
         model.addAttribute("workflows", workflowService.findAll());
-
+        
         return "experiments/workflows/list";
-
+        
     }
-
+    
     @RequestMapping(value = "/experiments/{id}/workflows/add", method = RequestMethod.GET)
     public String showAddWorkflowForm(@PathVariable("id") int experimentId, Model model, HttpSession session) {
         LOGGER.info("showAddWorkflowForm()");
-
+        
         Workflow workflow = new Workflow();
 
         // set default value
@@ -107,18 +107,18 @@ public class ExperimentWorkflowsController {
         workflow.setVersion("1.0.0");
         Wfms wfms = new Wfms();
         workflow.setWfms(wfms);
-
+        
         model.addAttribute("workflowForm", workflow);
         populateDefaultModel(model);
-
+        
         return "experiments/workflows/workflows-form";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/add", method = RequestMethod.GET)
     public String showAddWorkflowForm(Model model, HttpSession session) {
-
+        
         LOGGER.info("showAddWorkflowForm()");
-
+        
         Workflow workflow = new Workflow();
 
         // set default value
@@ -128,64 +128,58 @@ public class ExperimentWorkflowsController {
         workflow.setVersion("1.0.0");
         Wfms wfms = new Wfms();
         workflow.setWfms(wfms);
-
+        
         model.addAttribute("workflowForm", workflow);
         populateDefaultModel(model);
-
+        
         return "experiments/workflows/workflows-form";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/addActivities", method = RequestMethod.POST)
-    public String addActivities(@ModelAttribute("workflowForm") Workflow workflow, Model model, HttpSession session) {
-
+    public String addActivities(@ModelAttribute("workflowForm") Workflow workflow, @RequestParam("ids") String ids, Model model, HttpSession session) {
+        
         LOGGER.info("addActivities()");
-        List<WorkflowActivity> workflowActivities = new ArrayList<>();
-        for (Activity activity : workflow.getActivities()) {
-            Activity a = activityService.find(activity.getId());
-            WorkflowActivity wa = new WorkflowActivity();
-            wa.setWorkflow(workflow);
-            wa.setActivity(a);
-            workflowActivities.add(wa);
+        String[] split = ids.split(",");
+        for (String id : split) {
+            Activity activity = activityService.find(Integer.valueOf(id));
+            workflow.addActivity(activity);
         }
-
-        workflow.setWorkflowActivities(workflowActivities);
         model.addAttribute("workflowForm", workflow);
         populateDefaultModel(model);
-
+        
         return "experiments/workflows/workflows-form";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/removeActivity", method = RequestMethod.POST)
-    public String removeActivity(@ModelAttribute("workflowForm") Workflow workflow, @RequestParam("index") int index, Model model, HttpSession session) {
-
+    public String removeActivity(@ModelAttribute("workflowForm") Workflow workflow, @RequestParam("id") int id, Model model, HttpSession session) {
+        
         LOGGER.info("removeActivity()");
-
-        workflow.getWorkflowActivities().remove(index);
-
+        Activity activity = activityService.find(id);
+        workflow.removeActivity(activity);
         model.addAttribute("workflowForm", workflow);
         populateDefaultModel(model);
-
+        
         return "experiments/workflows/workflows-form";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/{id}/update", method = RequestMethod.GET)
     public String showUpdateWorkflowForm(@PathVariable("id") int id, Model model) {
-
+        
         LOGGER.log(Level.INFO, "showUpdateWorkflowForm() : {0}", id);
-
+        
         Workflow workflow = workflowService.find(id);
         model.addAttribute("workflowForm", workflow);
-        model.addAttribute("workflowActivities", workflow.getWorkflowActivities());
+        model.addAttribute("workflowActivities", workflow.getActivities());
         populateDefaultModel(model);
         return "experiments/workflows/workflows-form";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows", method = RequestMethod.POST)
     public String saveOrUpdateWorkflow(@ModelAttribute("workflowForm") @Validated Workflow workflow,
             BindingResult result, Model model, final RedirectAttributes redirectAttributes, HttpSession session) {
-
+        
         LOGGER.log(Level.INFO, "saveOrUpdateWorkflow() : {0}", workflow);
-
+        
         if (result.hasErrors()) {
             populateDefaultModel(model);
             return "experiments/workflows/workflows-form";
@@ -196,7 +190,7 @@ public class ExperimentWorkflowsController {
             } else {
                 redirectAttributes.addFlashAttribute("msg", "Workflow updated successfully!");
             }
-
+            
             try {
                 workflow = workflowService.saveOrUpdate(workflow);
                 for (Experiment experiment : workflow.getExperiments()) {
@@ -204,9 +198,9 @@ public class ExperimentWorkflowsController {
                     experiment.getWorkflows().add(workflow);
                     experimentService.saveOrUpdate(experiment);
                 }
-
+                
                 return "redirect:/experiments/workflows/" + workflow.getId();
-
+                
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
                 populateDefaultModel(model);
@@ -214,12 +208,12 @@ public class ExperimentWorkflowsController {
             }
         }
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/{id}/delete", method = RequestMethod.POST)
     public String deleteWorkflow(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
-
+        
         LOGGER.log(Level.INFO, "deleteWorkflow() : {0}", id);
-
+        
         Workflow workflow = workflowService.find(id);
         try {
             workflowService.delete(workflow);
@@ -230,75 +224,82 @@ public class ExperimentWorkflowsController {
             redirectAttributes.addFlashAttribute("css", "danger");
             redirectAttributes.addFlashAttribute("msg", ex.getMessage());
         }
-
+        
         return "redirect:/experiments/workflows";
     }
-
+    
     @RequestMapping(value = "/experiments/workflows/{id}", method = RequestMethod.GET)
     public String showWorkflow(@PathVariable("id") int id, Model model, HttpSession session) {
-
+        
         LOGGER.log(Level.INFO, "showWorkflow() id: {0}", id);
-
+        
         Workflow workflow = workflowService.find(id);
         if (workflow == null) {
             model.addAttribute("css", "danger");
             model.addAttribute("msg", "Workflow not found");
-        }        
+        }
         model.addAttribute("workflowTreeJSON", getWorkflowTree(id));
         model.addAttribute("workflow", workflow);
         return "experiments/workflows/show";
     }
-
+    
     private void populateDefaultModel(Model model) {
-
+        
         model.addAttribute("wfmsList", wfmsService.findAll());
         model.addAttribute("experimentsList", experimentService.findAll());
+        ArrayList<WorkflowActivity> waList = new ArrayList<>();
+        for (Activity a : activityService.findAll()) {
+            WorkflowActivity wa = new WorkflowActivity();
+            wa.setActivity(a);
+            wa.setWorkflow(new Workflow());
+            waList.add(wa);
+        }
         model.addAttribute("activitiesList", activityService.findAll());
     }
-
+    
     private JSONObject getWorkflowTree(int id) {
         JSONObject tree = new JSONObject();
         JSONObject nodes = new JSONObject();
         JSONObject links = new JSONObject();
-        List<WorkflowActivity> workflowActivities = workflowService.find(id).getWorkflowActivities();
+        List<WorkflowActivity> workflowActivities = workflowService.find(id).getActivities();
         Collections.sort(workflowActivities);
-
+        
         int position = 0;
         int phases = 0;
-
+        
         for (int i = 0; i < workflowActivities.size(); i++) {
             WorkflowActivity workflowActivity = workflowActivities.get(i);
-
+            
             if (i == 0 || workflowActivities.get(i - 1).getOrderExec() != workflowActivity.getOrderExec()) {
                 position = 1;
                 phases++;
             } else {
                 position++;
             }
-
+            
             JSONObject activityJson = new JSONObject();
             Activity activity = workflowActivity.getActivity();
             activityJson.put("name", activity.getName());
             activityJson.put("orderExec", workflowActivity.getOrderExec());
             activityJson.put("description", activity.getDescription().replaceAll(":", " ").replaceAll(",", " "));
             activityJson.put("author", activity.getAuthor().getDisplayName());
-
+            
             if (activity.getAuthor().getId() != workflowActivity.getWorkflow().getAuthor().getId()) {
-                for (Workflow w : activity.getWorkflows()) {
-                    if (w.getAuthor().getId() == activity.getAuthor().getId()) {
-                        activityJson.put("reusedFrom", w.getName());
+                for (WorkflowActivity wa : activity.getWorkflows()) {
+                    if (wa.getWorkflow().getAuthor().getId() == activity.getAuthor().getId()) {
+                        activityJson.put("reusedFrom", wa.getWorkflow().getName());
                     }
                 }
             } else {
                 String workflows = "";
-                for (Workflow w : activity.getWorkflows()) {
-                    if (w.getAuthor().getId() != activity.getAuthor().getId()) {
-                        workflows += w.getName() + ", ";
+                for (WorkflowActivity wa : activity.getWorkflows()) {
+                    if (wa.getWorkflow().getAuthor().getId() != activity.getAuthor().getId()) {
+                        workflows += wa.getWorkflow().getName() + ", ";
                         activityJson.put("reusedBy", workflows);
                     }
                 }
             }
-
+            
             int nextSiblings = 0;
             for (int j = i + 1; j < workflowActivities.size(); j++) {
                 WorkflowActivity workflowActivity2 = workflowActivities.get(j);
@@ -311,13 +312,13 @@ public class ExperimentWorkflowsController {
                     nextSiblings++;
                 }
             }
-
+            
             activityJson.put("siblings", position + nextSiblings);
             activityJson.put("position", position);
             nodes.put(String.valueOf(workflowActivity.getActivity().getId()), activityJson);
-
+            
         }
-
+        
         tree.put("nodes", nodes);
         tree.put("links", links);
         tree.put("phases", phases);

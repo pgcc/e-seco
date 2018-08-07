@@ -20,16 +20,22 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             function addActivity() {
-                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/addActivities";
-                var form = document.getElementById("workflowform");
-
-                form.action = url;
-                form.submit();
+                var selectObj = document.getElementById("selectactivities");
+                if (selectObj.selectedOptions.length > 0) {
+                    var ids = "";
+                    for (var i = 0; i < selectObj.selectedOptions.length; i++) {
+                        ids += selectObj.selectedOptions[i].value + ",";
+                    }
+                    var form = document.getElementById("workflowform");
+                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/addActivities?ids=" + ids;
+                    form.action = url;
+                    form.submit();
+                }
             }
             ;
             function removeActivity(index) {
                 var form = document.getElementById("workflowform");
-                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/removeActivity?index=" + index;
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/removeActivity?id=" + index;
                 form.action = url;
                 form.submit();
             }
@@ -158,41 +164,45 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="activities">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Activities</label>
-                        <div class="col-sm-10">
-                            <div class="input-group">
-                                <f:select path="activities" items="${activitiesList}" multiple="true" size="5" class="form-control" itemLabel="fullName" itemValue="id"/>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" style="height: 68px" onclick="addActivity()">Select Activities</button>
-                                </span>
-                            </div>
+
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <label class="col-sm-2 control-label">Activities</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <select id="selectactivities"   multiple="multiple" size="5" class="form-control" >
+                                <c:forEach items="${activitiesList}" var="ac" varStatus="loop">
+                                    <option value="${activitiesList[loop.index].id}">${activitiesList[loop.index].fullName}</option>
+                                </c:forEach>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" style="height: 68px" onclick="addActivity()">Select Activities</button>
+                            </span>
                         </div>
                     </div>
-                </spring:bind>
+                </div>
 
-                <spring:bind path="workflowActivities">
+
+                <spring:bind path="activities">
                     <label class="col-sm-2 control-label">Activities Sequence</label>
                     <label class="col-sm-2 control-label" style="text-align: center">Sequence</label>
                     <label class="col-sm-8 control-label" style="text-align: center">Activity</label>
-                    <c:forEach items="${workflowForm['workflowActivities']}" var="workflowActivity" varStatus="loop">
+                    <c:forEach items="${workflowForm['activities']}" var="workflowActivity" varStatus="loop">
                         <div class="form-group ${status.error ? 'has-error' : ''}">
-                            
+
                             <label class="col-sm-2 control-label"></label>
                             <div class="col-sm-2">
-                                <f:input path="workflowActivities[${loop.index}].orderExec" type="text" class="form-control " id="orderExec" placeholder="Execution Order" />
+                                <f:input path="activities[${loop.index}].orderExec" type="text" class="form-control " id="orderExec" placeholder="Execution Order" />
                             </div>
                             <div class="col-sm-7">
-                                <f:input path="workflowActivities[${loop.index}].activity.name" disabled="true" class="form-control" id="activity" placeholder="Activity" />                                            
+                                <f:input path="activities[${loop.index}].activity.name" disabled="true" class="form-control" id="activity" placeholder="Activity" />                                            
                             </div>
                             <div class="col-sm-1">
-                                <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeActivity('${loop.index}')">
+                                <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeActivity(${workflowForm['activities'][loop.index].activity.id})">
                                     <span class="glyphicon glyphicon-remove"/>
                                 </button>
                             </div>
                         </div>
-                        <f:errors path="workflowActivities" class="control-label" />
+                        <f:errors path="activities" class="control-label" />
                     </c:forEach>
                 </spring:bind>
 

@@ -5,6 +5,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Activity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ActivityExecution;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Port;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
+import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowActivity;
 import br.ufjf.pgcc.eseco.domain.model.experiment.WorkflowExecution;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ActivityExecutionService;
@@ -99,8 +100,8 @@ public class ExperimentWorkflowExecutionsController {
         model.addAttribute("experimentList", workflow.getExperiments());
 
         ArrayList<ActivityExecution> activityExecutionsList = new ArrayList();
-        for (Activity activity : workflow.getActivities()) {
-            activityExecutionsList.addAll(activity.getExecutions());
+        for (WorkflowActivity wa : workflow.getActivities()) {
+            activityExecutionsList.addAll(wa.getActivity().getExecutions());
         }
         model.addAttribute("activityExecutionsList", activityExecutionsList);
         return "experiments/workflowExecutions/workflow-executions-form";
