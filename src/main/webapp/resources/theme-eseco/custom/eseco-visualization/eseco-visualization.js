@@ -2418,7 +2418,7 @@ var WorkflowChart = {
                 })
                 .attr("d", function (d) {
                     console.log(d.target.reusedFrom);
-                    if(d.target.reusedFrom != null && d.source.reusedFrom != d.target.reusedFrom){
+                    if (d.target.reusedFrom != null && d.source.reusedFrom != d.target.reusedFrom) {
                         return null;
                     }
                     var targetX = d.target.x - 12;
@@ -3029,39 +3029,25 @@ function drawBubbleMenu(data, target, width) {
     d3version4.selectAll('.wrapme').call(wrap);
 }
 
-//function mountDataToBubble(itemData) {
-//    
-//    var root = {"children":
-//                [
-//                    {"name":"workflowexecution.3","id":"3","type":"workflowexecution","label":"Análise do metabolismo em novilhas com fenótipos divergentes para EA","author":"Danieli Cabral da Silva","description":"Processo de avaliação e classificação de animais por CAR e GPR e ECA, e análise de acordo com o consumo, a digestibilidade, partição energética, emissões de CH4 entérico, balanço de nitrogênio, metabólitos sanguíneos e termografia infravermelha.","start":"2018-06-16 09:25:00.0","end":"2018-06-17 12:25:00.0","address":"/experiments/workflows/5","children":[{"name":"activityexecution.13","id":"13","type":"activityexecution","label":"Cálculo CAR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de consumo alimentar residual (CAR) dos animais.","start":"2018-06-16 20:47:00.0","end":"2018-06-16 21:47:00.0","address":"/experiments/activities/11"},{"name":"activityexecution.14","id":"14","type":"activityexecution","label":"Cálculo GPR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de ganho de peso residual (GPR) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/12"},{"name":"activityexecution.15","id":"15","type":"activityexecution","label":"Cálculo ECA","author":"Danieli Cabral da Silva","description":"Cálculo do índice de eficiência de conversão alimentar (ECA) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/13"}]},
-//                    {"name":"workflowexecution.3","id":"3","type":"workflowexecution","label":"Análise do metabolismo em novilhas com fenótipos divergentes para EA","author":"Danieli Cabral da Silva","description":"Processo de avaliação e classificação de animais por CAR e GPR e ECA, e análise de acordo com o consumo, a digestibilidade, partição energética, emissões de CH4 entérico, balanço de nitrogênio, metabólitos sanguíneos e termografia infravermelha.","start":"2018-06-16 09:25:00.0","end":"2018-06-17 12:25:00.0","address":"/experiments/workflows/5","children":[{"name":"activityexecution.13","id":"13","type":"activityexecution","label":"Cálculo CAR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de consumo alimentar residual (CAR) dos animais.","start":"2018-06-16 20:47:00.0","end":"2018-06-16 21:47:00.0","address":"/experiments/activities/11"},{"name":"activityexecution.14","id":"14","type":"activityexecution","label":"Cálculo GPR","author":"Danieli Cabral da Silva","description":"Cálculo do índice de ganho de peso residual (GPR) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/12"},{"name":"activityexecution.15","id":"15","type":"activityexecution","label":"Cálculo ECA","author":"Danieli Cabral da Silva","description":"Cálculo do índice de eficiência de conversão alimentar (ECA) dos animais.","start":"2018-06-16 20:48:00.0","end":"2018-06-16 21:48:00.0","address":"/experiments/activities/13"}]},
-//                    {"name":"workflowexecution.4","id":"4","type":"workflowexecution","label":"Análise da EA sobre a puberdade e características ovarianas","author":"Adolfo Pérez Fonseca","description":"Estudar e caracterizar os parâmetros reprodutivos até a primeira concepção, incluindo-se idade e peso à puberdade, comportamento de estro, dinâmica folicular, resposta a protocolos hormonais e fertilidade em novilhas Girolando. Relacionar a eficiência nutricional com idade e peso à puberdade e alguns parâmetros reprodutivos em novilhas Girolando.","start":"2018-06-17 16:42:00.0","end":"2018-06-17 22:42:00.0","address":"/experiments/workflows/6","children":[{"name":"activityexecution.20","id":"20","type":"activityexecution","label":"Cálculo do CAR","author":"Adolfo Pérez Fonseca","description":"Cálculo do Consumo alimentar Residual (CAR) dos animais.","start":"2018-06-17 19:39:00.0","end":"2018-06-17 19:40:00.0","address":"/experiments/activities/18"}]}
-//                ],"name":"Dados Coletados"};
-//    return root;
-//}
-
 var BubbleMenu = {
 
     draw: function (root, target, width) {
-        
-        var d3 = d3version3;
-        
 
+        var d3 = d3version3;
         var w = width;
         var h = Math.ceil(w * 0.5);
         var oR = 0;
         var nTop = 0;
-
         var svgContainer = d3.select(target)
                 .style("height", h + "px");
 
         var svg = svgContainer.append("svg")
                 .attr("class", "mainBubbleSVG")
-                .attr("width", w)
+                .attr("width", width)
                 .attr("height", h)
                 .on("mouseleave", function () {
                     d3version4.selectAll('.wrapme').call(wrap);
-                    resetBubbles(width);
+                    resetBubbles(width, width, h);
                 });
 
         var mainNote = svg.append("text")
@@ -3123,7 +3109,8 @@ var BubbleMenu = {
                 .on("mouseover", function (d, i) {
                     activateBubble(d, i);
                     d3version4.selectAll('.wrapme').call(wrap);
-                }).append("svg:title")
+                })                
+                .append("svg:title")
                 .text(function (d) {
                     return d.address;
                 });
@@ -3202,6 +3189,9 @@ var BubbleMenu = {
 
                         d3version4.selectAll('.wrapme').call(wrap);
                     })
+                    .on("mouseout", function () {
+                        resetBubbles(width, width, h);
+                    })
                     .append("svg:title")
                     .text(function (d) {
                         return d.address;
@@ -3259,8 +3249,12 @@ var BubbleMenu = {
 
         }
 
-        resetBubbles = function (width) {
-            w = width;
+        resetBubbles = function (nodeWidth, graphWidth, graphHeight) {
+
+            if (root.children.length == 1) {
+                nodeWidth = nodeWidth / 2
+            }
+            w = nodeWidth;
             oR = w / (2 + 3 * nTop);
 
             h = Math.ceil(w / nTop * 2);
@@ -3268,8 +3262,8 @@ var BubbleMenu = {
 
             mainNote.attr("y", h - 110);
 
-            svg.attr("width", w);
-            svg.attr("height", h);
+            svg.attr("width", graphWidth);
+            svg.attr("height", graphHeight);
 
             d3.select("#bubbleItemNote").text("");
 
@@ -3453,7 +3447,7 @@ var BubbleMenu = {
 
         };
 
-        window.onresize = resetBubbles(width);
+        window.onresize = resetBubbles(width, width, h);
 
     }
 };

@@ -146,7 +146,7 @@
                                             <f:textarea path="details[${loop.index}].description"  class="form-control" rows="1" id="description" placeholder="Description" />                                            
                                         </div>
                                         <div class="col-sm-2">
-                                            <button type="button" class="btn btn-danger btn-link" title="delete" onclick="addDetail()">
+                                            <button type="button" class="btn btn-danger btn-link" title="add new" onclick="addDetail()">
                                                 <span class="glyphicon glyphicon-plus"/>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeDetail('${loop.index}')">

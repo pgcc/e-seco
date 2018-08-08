@@ -7,6 +7,8 @@ package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -150,6 +152,9 @@ public class Workflow {
     }
 
     public List<WorkflowActivity> getActivities() {
+        if (activities == null) {
+            activities = new ArrayList<>();
+        }
         return activities;
     }
 
@@ -174,10 +179,8 @@ public class Workflow {
     }
 
     public void addActivity(Activity a) {
-        if (activities == null) {
-            activities = new ArrayList<>();
-        }
         WorkflowActivity workflowActivity = new WorkflowActivity(this, a);
+        workflowActivity.setOrderExec(activities.size() + 1);
         activities.add(workflowActivity);
         a.getWorkflows().add(workflowActivity);
     }
