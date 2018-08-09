@@ -57,6 +57,10 @@ public class DetailGroup {
         return details;
     }
 
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
     public List<String> getDetailsList() {
         String[] split = details.split(",");
         List<String> detailsList = new ArrayList<>();
@@ -65,10 +69,6 @@ public class DetailGroup {
         }
         Collections.sort(detailsList);
         return detailsList;
-    }
-
-    public void setDetails(String detailsNames) {
-        this.details = detailsNames;
     }
 
     public boolean isNew() {

@@ -27,11 +27,12 @@
             }
             ;
             function addDetailGroup(component) {
-                console.log(component.value);
-                var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetailGroup?id=" + component.value;
-                var form = document.getElementById("experimentform");
-                form.action = url;
-                form.submit();
+                if (component.value != 0) {
+                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetailGroup?id=" + component.value;
+                    var form = document.getElementById("experimentform");
+                    form.action = url;
+                    form.submit();
+                }
             }
             ;
             function removeDetail(index) {
@@ -153,20 +154,22 @@
 
                     <spring:bind path="currentPhase">                    
                         <label class="col-sm-2 control-label">Current Phase</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-2">
                             <f:radiobuttons path="currentPhase" items="${phaseList}" itemLabel="name" element="label class='radio-inline'" disabled="true" />
                         </div>                    
                     </spring:bind>
+
+                    <spring:bind path="version">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label class="col-sm-2 control-label">Version</label>
+                            <div class="col-sm-2">
+                                <f:input path="version" type="text" class="form-control" id="version" placeholder="Version"/>
+                            </div>
+                        </div>
+                    </spring:bind>
                 </div>
 
-                <spring:bind path="version">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Version</label>
-                        <div class="col-sm-10">
-                            <f:input path="version" type="text" class="form-control" id="version" placeholder="Version"/>
-                        </div>
-                    </div>
-                </spring:bind>
+
 
                 <spring:bind path="disciplines">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -189,14 +192,20 @@
                     </div>
                 </spring:bind>
 
-                <spring:bind path="workflows">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Workflows</label>
-                        <div class="col-sm-10">
-                            <f:select path="workflows" items="${workflowsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
-                        </div>
-                    </div>
-                </spring:bind>
+                <c:choose>
+                    <c:when test="${!experimentForm['new']}">
+                        <spring:bind path="workflows">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label class="col-sm-2 control-label">Workflows</label>
+                                <div class="col-sm-10">
+                                    <f:select path="workflows" items="${workflowsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                </div>
+                            </div>
+                        </spring:bind>
+                    </c:when>                   
+                </c:choose>
+
+
 
                 <div class="form-group">
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -210,15 +219,14 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    <spring:bind path="institutions">
+                                    <spring:bind path="researchers">
                                         <div class="form-group ${status.error ? 'has-error' : ''}">
-                                            <label class="col-sm-2 control-label">Institutions</label>
+                                            <label class="col-sm-2 control-label">Researchers</label>
                                             <div class="col-sm-10">
-                                                <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
+                                                <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName" itemValue="id"/>
                                             </div>
                                         </div>
                                     </spring:bind>
-
                                     <spring:bind path="researchGroups">
                                         <div class="form-group ${status.error ? 'has-error' : ''}">
                                             <label class="col-sm-2 control-label">Research Groups</label>
@@ -227,12 +235,11 @@
                                             </div>
                                         </div>
                                     </spring:bind>
-
-                                    <spring:bind path="researchers">
+                                    <spring:bind path="institutions">
                                         <div class="form-group ${status.error ? 'has-error' : ''}">
-                                            <label class="col-sm-2 control-label">Researchers</label>
+                                            <label class="col-sm-2 control-label">Institutions</label>
                                             <div class="col-sm-10">
-                                                <f:select path="researchers" items="${researchesList}" multiple="true" size="3" class="form-control" itemLabel="displayName" itemValue="id"/>
+                                                <f:select path="institutions" items="${institutionsList}" multiple="true" size="3" class="form-control" itemLabel="name" itemValue="id"/>
                                             </div>
                                         </div>
                                     </spring:bind>
@@ -243,20 +250,23 @@
                             <div class="panel-heading" role="tab" id="headingTwo">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Protocol                         
+                                        Protocol                  
                                     </a>                                    
                                 </h4>
-                            </div>
-                            <spring:bind path="detailGroup">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Experiment Type</label>
-                                    <div class="col-sm-10">
-                                        <f:select path="detailGroup" placeholder="Select a type to import default details" multiple="false" items="${detailsGroupList}" class="form-control" itemLabel="name" itemValue="id" onchange="addDetailGroup(this)"/>
-                                    </div>
-                                </div>
-                            </spring:bind>
+                            </div>                            
                             <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">    
+                                    <spring:bind path="detailGroup.id">                               
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label>Experiment Type</label>
+                                                <f:select path="detailGroup.id" onchange="addDetailGroup(this)" class="form-control">
+                                                    <f:option value="0" label="Select a type to import default details" />
+                                                    <f:options items="${detailsGroupList}" itemLabel="name" itemValue="id" />
+                                                </f:select>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
                                     <div class="form-group">
                                         <label class="col-sm-4 ">Name</label>         
                                         <label class="col-sm-8 ">Description</label>                     

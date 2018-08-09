@@ -155,8 +155,8 @@ public class ExperimentsController {
             d.setName(detail);
             details.add(d);
         }
-
         experiment.setDetails(details);
+        experiment.setDetailGroup(detailGroup);
         model.addAttribute("experimentForm", experiment);
         populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
 
@@ -270,7 +270,6 @@ public class ExperimentsController {
             JSONObject experimentProvenanceJSON = provSeOGetInferencesService.getProvenanceOntologyService(request.getHeader("host"), "experiment." + experiment.getId());
             model.addAttribute("experimentProvenanceJSON", experimentProvenanceJSON);
         } catch (IOException ex) {
-            ex.printStackTrace();
             Logger.getLogger(OntologyController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -340,10 +339,7 @@ public class ExperimentsController {
         model.addAttribute("researchesList", researcherService.findAll());
         model.addAttribute("researchGroupsList", researchGroupService.findAll());
         model.addAttribute("workflowsList", workflowService.findAll());
-        List<DetailGroup> detailGroups = new ArrayList<>();
-        detailGroups.add(new DetailGroup());
-        detailGroups.addAll(detailGroupService.findAll());
-        model.addAttribute("detailsGroupList", detailGroups);
+        model.addAttribute("detailsGroupList", detailGroupService.findAll());
     }
 
     private void setSessionCurrentPhase(HttpSession session, Experiment experiment) {

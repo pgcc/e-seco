@@ -71,7 +71,7 @@
                             <tr>
                                 <th>#ID</th>
                                 <th>Name</th>
-                                <th>Link1</th>
+                                <th>Details</th>
                                 <th class="text-center" >Action</th>
                             </tr>
                         </thead>

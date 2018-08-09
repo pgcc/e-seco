@@ -27,7 +27,7 @@
             </li> 
         </c:if>
 
-        <c:if test="${sessionScope.experiment_execution}">
+        <c:if test="${sessionScope.experiment_prototyping}">
             <li>
                 <a href="<c:url value="/experiments/${experiment.id}/workflows/add"/>">
                     <i class="fa fa-plus-circle"></i> Add Workflow

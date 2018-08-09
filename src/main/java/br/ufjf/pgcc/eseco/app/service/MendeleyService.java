@@ -91,7 +91,7 @@ public class MendeleyService {
     /**
      * The app's consumer secret
      */
-    private final String CLIENT_SECRET = "VIZdVMHpkYd8m7is";
+    private final String CLIENT_SECRET = "5Ji5zBkJMrd6WfJj";
 
     /**
      * The access token used to sign requests

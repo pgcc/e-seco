@@ -20,6 +20,9 @@ public class DetailGroupIdToDetailGroupConverter implements Converter<String, De
     public DetailGroup convert(String id) {
         try {
             Integer detailGroupId = Integer.parseInt(id);
+            if(detailGroupId == 0){
+                return null;
+            }
             DetailGroup d = new DetailGroup();
             d.setId(detailGroupId);
             return d;

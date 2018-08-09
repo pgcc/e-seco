@@ -184,7 +184,7 @@ public class ResearchersController extends CommonController {
                 // Add Keywords List
                 List<String> keyList = new ArrayList<>();
                 List<ResearcherKeyword> keywordsList = new ArrayList<>();
-                if (researcher.getMendeleyId() != null) {
+                if (researcher.getMendeleyId() != null && !researcher.getMendeleyId().isEmpty()) {
                     for (ResearcherKeyword rk : mendeleyService.searchKeywordsByProfileId(researcher.getMendeleyId())) {
                         String key = rk.getName().toLowerCase() + "-" + rk.getYear();
                         if (!keyList.contains(key)) {
