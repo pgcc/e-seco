@@ -20,11 +20,15 @@
     <jsp:attribute name="javascripts">
         <script type="text/javascript">
             function addActivity() {
-                var selectObj = document.getElementById("selectactivities");
-                if (selectObj.selectedOptions.length > 0) {
+                var selectOtherObj = document.getElementById("selectOtherActivities");
+                var selectMyObj = document.getElementById("selectMyActivities");
+                if (selectMyObj.selectedOptions.length > 0 || selectOtherObj.selectedOptions.length > 0) {
                     var ids = "";
-                    for (var i = 0; i < selectObj.selectedOptions.length; i++) {
-                        ids += selectObj.selectedOptions[i].value + ",";
+                    for (var i = 0; i < selectMyObj.selectedOptions.length; i++) {
+                        ids += selectMyObj.selectedOptions[i].value + ",";
+                    }
+                    for (var i = 0; i < selectOtherObj.selectedOptions.length; i++) {
+                        ids += selectOtherObj.selectedOptions[i].value + ",";
                     }
                     var form = document.getElementById("workflowform");
                     var url = window.location.pathname.split("/experiments", 1) + "/experiments/workflows/${workflowForm['id']}/addActivities?ids=" + ids;
@@ -101,7 +105,7 @@
                 </spring:bind>
                 <spring:bind path="wfms">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-sm-2 control-label">Wfms</label>
+                        <label class="col-sm-2 control-label">Workflow Management System</label>
                         <div class="col-sm-10">
                             <f:radiobuttons path="wfms.id" items="${wfmsList}" itemLabel="name" itemValue="id" element="label class='radio-inline'" />
 
@@ -164,37 +168,56 @@
                     </div>
                 </spring:bind>
 
-
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <label class="col-sm-2 control-label">Activities</label>
-                    <div class="col-sm-10">
-                        <div class="input-group">
-                            <select id="selectactivities"   multiple="multiple" size="5" class="form-control" >
-                                <c:forEach items="${activitiesList}" var="ac" varStatus="loop">
-                                    <option value="${activitiesList[loop.index].id}">${activitiesList[loop.index].fullName}</option>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Activities</label>                     
+                    <div class="col-sm-5" style="padding-right: unset">                      
+                        <div class="col-auto">
+                            <label for="myActivities">My Activities</label>
+                            <select id="selectMyActivities" class="form-control" multiple="multiple" size="5"  >
+                                <c:forEach items="${myActivitiesList}" var="ac" varStatus="loop">
+                                    <option value="${myActivitiesList[loop.index].id}">${myActivitiesList[loop.index].name}</option>
                                 </c:forEach>
-                            </select>
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" style="height: 68px" onclick="addActivity()">Select Activities</button>
-                            </span>
+                            </select> 
                         </div>
                     </div>
+                    <div class="col-sm-5" style="padding-left: unset">      
+                        <div class="col-auto">
+                            <label for="reuseActivities">Reuse from others</label>
+                            <div class="input-group">
+                                <select id="selectOtherActivities" class="form-control"  multiple="multiple" size="5"  >
+                                    <c:forEach items="${otherActivitiesList}" var="ac" varStatus="loop">
+                                        <option value="${otherActivitiesList[loop.index].id}">${otherActivitiesList[loop.index].fullName}</option>
+                                    </c:forEach>
+                                </select>                                 
+                                <div class="input-group-addon btn-primary" style="cursor: pointer" onclick="addActivity()">
+                                    <div class="input-group-text">Add</div>
+                                </div>
+                            </div> 
+                        </div>                           
+                    </div>  
                 </div>
 
-
                 <spring:bind path="activities">
-                    <label class="col-sm-2 control-label">Activities Sequence</label>
-                    <label class="col-sm-2 control-label" style="text-align: center">Sequence</label>
-                    <label class="col-sm-8 control-label" style="text-align: center">Activity</label>
+                    
+                    <c:if test="${not empty workflowForm['activities']}">  
+                        <label class="col-sm-2 control-label"></label>
+                        <label class="col-sm-10">Number the activities with a sequence without lack. Use the same sequence number for concurrent activities.</label> 
+                        <label class="col-sm-2 control-label"></label>
+                        <label class="col-sm-2 control-label" style="text-align: center">Sequence</label>
+                        <label class="col-sm-8 control-label" style="text-align: center">Activity</label>
+                    </c:if>
+                    <c:if test="${empty workflowForm['activities']}">  
+                        <label class="col-sm-2 control-label"></label>
+                        <label class="col-sm-10">Add activities to then select their order.</label>
+                    </c:if>
                     <c:forEach items="${workflowForm['activities']}" var="workflowActivity" varStatus="loop">
                         <div class="form-group ${status.error ? 'has-error' : ''}">
-
                             <label class="col-sm-2 control-label"></label>
                             <div class="col-sm-2">
                                 <f:input path="activities[${loop.index}].orderExec" type="text" class="form-control " id="orderExec" placeholder="Execution Order" />
                             </div>
                             <div class="col-sm-7">
-                                <f:input path="activities[${loop.index}].activity.name" disabled="true" class="form-control" id="activity" placeholder="Activity" />                                            
+                                <f:input path="activities[${loop.index}].activity.fullName" disabled="true" class="form-control" id="activity" placeholder="Activity" />                                            
                             </div>
                             <div class="col-sm-1">
                                 <button type="button" class="btn btn-danger btn-link" title="delete" onclick="removeActivity(${workflowForm['activities'][loop.index].activity.id})">
