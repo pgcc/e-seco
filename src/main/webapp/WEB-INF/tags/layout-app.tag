@@ -55,9 +55,7 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/ontology"/>">Ontology Service</a></li>
+                            <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>                            
                         </ul>
                     </li>
                     <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
@@ -65,13 +63,19 @@
                         <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-cog"></i> <span>CONFIG</span></a>
                         <ul class="dropdown-menu">
+                            <li><a href="<c:url value="/agents"/>">Agents</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/disciplines"/>">Disciplines</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/experiments/detailGroup"/>">Details Group</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/institutions"/>">Institutions</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/researchers"/>">Members</a></li>
+                            <li><a href="<c:url value="/researchers"/>">Researchers</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="<c:url value="/researchGroups"/>">Research Groups</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/ontology"/>">Ontology Service</a></li>                            
                         </ul>
                     </li>
 

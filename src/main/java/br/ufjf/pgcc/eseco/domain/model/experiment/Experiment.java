@@ -63,6 +63,10 @@ public class Experiment {
     @Column(name = "current_phase")
     private ExperimentPhase currentPhase;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "detail_group")
+    private DetailGroup detailGroup;
+
     @Column(name = "version")
     private String version;
 
@@ -284,6 +288,14 @@ public class Experiment {
 
     public void setDetails(List<Detail> details) {
         this.details = details;
+    }
+
+    public DetailGroup getDetailGroup() {
+        return detailGroup;
+    }
+
+    public void setDetailGroup(DetailGroup detailGroup) {
+        this.detailGroup = detailGroup;
     }
 
     public boolean isNew() {

@@ -26,6 +26,14 @@
                 form.submit();
             }
             ;
+            function addDetailGroup(component) {
+                console.log(component.value);
+                var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetailGroup?id=" + component.value;
+                var form = document.getElementById("experimentform");
+                form.action = url;
+                form.submit();
+            }
+            ;
             function removeDetail(index) {
                 var form = document.getElementById("experimentform");
                 var url = window.location.pathname.split("/experiments", 1) + "/experiments/removeDetail?index=" + index;
@@ -239,6 +247,14 @@
                                     </a>                                    
                                 </h4>
                             </div>
+                            <spring:bind path="detailGroup">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Experiment Type</label>
+                                    <div class="col-sm-10">
+                                        <f:select path="detailGroup" placeholder="Select a type to import default details" multiple="false" items="${detailsGroupList}" class="form-control" itemLabel="name" itemValue="id" onchange="addDetailGroup(this)"/>
+                                    </div>
+                                </div>
+                            </spring:bind>
                             <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">    
                                     <div class="form-group">

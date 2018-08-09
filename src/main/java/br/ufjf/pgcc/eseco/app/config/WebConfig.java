@@ -2,6 +2,7 @@ package br.ufjf.pgcc.eseco.app.config;
 
 import br.ufjf.pgcc.eseco.app.converter.ActivityExecutionIdToActivityExecutionConverter;
 import br.ufjf.pgcc.eseco.app.converter.ActivityIdToActivityConverter;
+import br.ufjf.pgcc.eseco.app.converter.DetailGroupIdToDetailGroupConverter;
 import br.ufjf.pgcc.eseco.app.interceptor.AuthenticatorInterceptor;
 import br.ufjf.pgcc.eseco.app.interceptor.NotificationsInterceptor;
 import br.ufjf.pgcc.eseco.app.converter.DisciplineIdToDisciplineConverter;
@@ -72,6 +73,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(new PortIdToPortConverter());
         registry.addConverter(new ActivityExecutionIdToActivityExecutionConverter());
         registry.addConverter(new WorkflowActivityIdToWorkflowActivityConverter());
+        registry.addConverter(new DetailGroupIdToDetailGroupConverter());
     }
     
 }

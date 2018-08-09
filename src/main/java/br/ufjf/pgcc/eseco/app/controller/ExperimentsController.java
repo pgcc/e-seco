@@ -4,6 +4,7 @@ import br.ufjf.pgcc.eseco.app.service.ImportProvenanceDataService;
 import br.ufjf.pgcc.eseco.app.service.ProvSeOGetInferencesService;
 import br.ufjf.pgcc.eseco.app.validator.ExperimentFormValidator;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Detail;
+import br.ufjf.pgcc.eseco.domain.model.experiment.DetailGroup;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
 import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentStatus;
@@ -13,6 +14,7 @@ import br.ufjf.pgcc.eseco.domain.service.core.DisciplineService;
 import br.ufjf.pgcc.eseco.domain.service.core.InstitutionService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearchGroupService;
 import br.ufjf.pgcc.eseco.domain.service.core.ResearcherService;
+import br.ufjf.pgcc.eseco.domain.service.experiment.DetailGroupService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.ExperimentService;
 import br.ufjf.pgcc.eseco.domain.service.experiment.WorkflowService;
 import java.io.IOException;
@@ -58,6 +60,7 @@ public class ExperimentsController {
     private WorkflowService workflowService;
     private ImportProvenanceDataService importProvenanceDataService;
     private ProvSeOGetInferencesService provSeOGetInferencesService;
+    private DetailGroupService detailGroupService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -67,7 +70,8 @@ public class ExperimentsController {
     @Autowired
     public void setExperimentService(ExperimentService experimentService, DisciplineService disciplineService,
             InstitutionService institutionService, ResearcherService researcherService, ResearchGroupService researchGroupService,
-            WorkflowService workflowService, ImportProvenanceDataService importProvenanceDataService, ProvSeOGetInferencesService provSeOGetInferencesService) {
+            WorkflowService workflowService, ImportProvenanceDataService importProvenanceDataService,
+            ProvSeOGetInferencesService provSeOGetInferencesService, DetailGroupService detailGroupService) {
         this.experimentService = experimentService;
         this.disciplineService = disciplineService;
         this.institutionService = institutionService;
@@ -76,6 +80,7 @@ public class ExperimentsController {
         this.workflowService = workflowService;
         this.importProvenanceDataService = importProvenanceDataService;
         this.provSeOGetInferencesService = provSeOGetInferencesService;
+        this.detailGroupService = detailGroupService;
     }
 
     @RequestMapping(value = "/experiments", method = RequestMethod.GET)
@@ -118,7 +123,6 @@ public class ExperimentsController {
         List<Detail> details = new ArrayList<>();
         details.add(new Detail());
         experiment.setDetails(details);
-
         model.addAttribute("experimentForm", experiment);
         populateDefaultModel(model, ExperimentStatus.IN_PROGRESS, ExperimentPhase.PROBLEM_INVESTIGATION);
 
@@ -132,6 +136,26 @@ public class ExperimentsController {
 
         List<Detail> details = experiment.getDetails();
         details.add(new Detail());
+        experiment.setDetails(details);
+        model.addAttribute("experimentForm", experiment);
+        populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
+
+        return "experiments/experiments-form";
+    }
+
+    @RequestMapping(value = "/experiments/addDetailGroup", method = RequestMethod.POST)
+    public String addDetailGroup(@RequestParam("id") int id, @ModelAttribute("experimentForm") Experiment experiment, Model model, HttpSession session) {
+
+        LOGGER.info("addDetailGroup()");
+
+        List<Detail> details = experiment.getDetails();
+        DetailGroup detailGroup = detailGroupService.find(id);
+        for (String detail : detailGroup.getDetailsList()) {
+            Detail d = new Detail();
+            d.setName(detail);
+            details.add(d);
+        }
+
         experiment.setDetails(details);
         model.addAttribute("experimentForm", experiment);
         populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
@@ -316,6 +340,10 @@ public class ExperimentsController {
         model.addAttribute("researchesList", researcherService.findAll());
         model.addAttribute("researchGroupsList", researchGroupService.findAll());
         model.addAttribute("workflowsList", workflowService.findAll());
+        List<DetailGroup> detailGroups = new ArrayList<>();
+        detailGroups.add(new DetailGroup());
+        detailGroups.addAll(detailGroupService.findAll());
+        model.addAttribute("detailsGroupList", detailGroups);
     }
 
     private void setSessionCurrentPhase(HttpSession session, Experiment experiment) {
