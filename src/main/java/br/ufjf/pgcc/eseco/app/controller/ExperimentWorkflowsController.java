@@ -106,8 +106,7 @@ public class ExperimentWorkflowsController {
         }
         workflow.setDateCreated(new Date());
         workflow.setVersion("1.0.0");
-        Wfms wfms = new Wfms();
-        workflow.setWfms(wfms);
+        workflow.setWfms(wfmsService.find(5));
         Collections.sort(workflow.getActivities());
 
         model.addAttribute("workflowForm", workflow);

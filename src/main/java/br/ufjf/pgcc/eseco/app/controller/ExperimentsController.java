@@ -144,12 +144,12 @@ public class ExperimentsController {
     }
 
     @RequestMapping(value = "/experiments/addDetailGroup", method = RequestMethod.POST)
-    public String addDetailGroup(@RequestParam("id") int id, @ModelAttribute("experimentForm") Experiment experiment, Model model, HttpSession session) {
+    public String addDetailGroup(@RequestParam("groupId") int groupId, @ModelAttribute("experimentForm") Experiment experiment, Model model, HttpSession session) {
 
         LOGGER.info("addDetailGroup()");
 
         List<Detail> details = experiment.getDetails();
-        DetailGroup detailGroup = detailGroupService.find(id);
+        DetailGroup detailGroup = detailGroupService.find(groupId);
         for (String detail : detailGroup.getDetailsList()) {
             Detail d = new Detail();
             d.setName(detail);
@@ -216,7 +216,9 @@ public class ExperimentsController {
             }
 
             try {
-
+                if(experiment.getDetailGroup().isNew()){
+                    experiment.setDetailGroup(null);
+                }
                 ArrayList<Detail> details = new ArrayList<>();
                 for (Detail d : experiment.getDetails()) {
                     if (d.getName() != null && !d.getName().isEmpty()) {
@@ -230,7 +232,8 @@ public class ExperimentsController {
             } catch (Exception ex) {
                 Logger.getLogger(ExperimentsController.class.getName()).log(Level.SEVERE, null, ex);
                 populateDefaultModel(model, experiment.getStatus(), experiment.getCurrentPhase());
-
+                model.addAttribute("msg", ex.getMessage());
+                model.addAttribute("css", "danger");
                 return "experiments/experiments-form";
             }
         }

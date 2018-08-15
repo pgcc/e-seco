@@ -28,7 +28,7 @@
             ;
             function addDetailGroup(component) {
                 if (component.value != 0) {
-                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetailGroup?id=" + component.value;
+                    var url = window.location.pathname.split("/experiments", 1) + "/experiments/addDetailGroup?groupId=" + component.value;
                     var form = document.getElementById("experimentform");
                     form.action = url;
                     form.submit();
