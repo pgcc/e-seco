@@ -74,6 +74,7 @@ body.structure-login {
     position: relative;
     top: 10px;
     left: 30px;
+    padding-right: 60px;
 }
 
 .structure-app-inner header nav.top-menu {
@@ -403,4 +404,8 @@ ul.lst-data-value li span:nth-child(2) {
 /* MISC */
 .cursor-pointer{
     cursor: pointer;
+}
+
+.logo-ufjf {
+    float: right;
 }

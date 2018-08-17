@@ -150,10 +150,17 @@
                                     </a>
                                     <span class="badge">${experiment.details.size()}</span>
                                 </h4>
-                            </div>
+                            </div>                                
                             <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
                                 <div class="panel-body">
                                     <ul class="list-group" >
+                                        <li class="list-group-item">
+                                            <h4 style="text-align: center; color: #337ab7">
+                                                As informações do protocolo apresentadas neste estudo de caso são apenas uma amostra.
+                                                O pesquisador deve inserir neste campo todos os detalhes necessários para a realização do experimento.
+                                                Outras informações do protocolo deste experimento são encontradas distribuídas no protocolo das atividades que compõem o experimento.
+                                            </h4>
+                                        </li>
                                         <c:forEach items="${experiment.details}" var="detail">
                                             <li class="list-group-item">${detail.name} = ${detail.description}</li>
                                             </c:forEach>

@@ -84,8 +84,14 @@
                                 </h4>
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="panel-body">
+                                <div class="panel-body">                                    
                                     <ul class="list-group" >
+                                        <li class="list-group-item">
+                                            <h4 style="text-align: center; color: #337ab7">
+                                            As informações do protocolo apresentadas neste estudo de caso são apenas uma amostra.
+                                            O pesquisador deve inserir neste campo todos os detalhes necessários para a realização da atividade.
+                                            </h4>
+                                        </li>
                                         <c:forEach items="${activity.details}" var="detail">
                                             <li class="list-group-item">${detail.name} = ${detail.description}</a></li>
                                             </c:forEach>

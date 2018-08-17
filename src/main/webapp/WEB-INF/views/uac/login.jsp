@@ -52,12 +52,15 @@
                 </form>
             </div>
             <div class="panel-footer">
+
                 <p class="text-center text-small no-margin">
-                    E-SECO © 2017
+                    <img style="width: 50%" src="<c:url value="/resources/images/logo_da_UFJF_2.png"/>" alt="UFJF">  
                     <br>
                     Federal University of Juiz de Fora
                     <br>
                     Computer Science Department
+                    <br>
+                    E-SECO © 2017
                 </p>
             </div>
         </div>
