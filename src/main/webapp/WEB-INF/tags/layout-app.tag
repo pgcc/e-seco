@@ -51,13 +51,15 @@
                     <ul class="dropdown-menu">
                         <li><a href="<c:url value="/experiments/activities"/>">Activities</a></li>
                         <li role="separator" class="divider"></li>
+                        <li><a href="<c:url value="/experiments/dataSources"/>">Data Sources</a></li>
+                        <li role="separator" class="divider"></li>
                         <li><a href="<c:url value="/experiments/entities"/>">Entities</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="<c:url value="/experiments"/>">Experiments</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="<c:url value="/experiments/wfms"/>">WFMS</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>                            
+                        <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
                     </ul>
                 </li>
                 <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
@@ -65,7 +67,7 @@
                     <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-cog"></i> <span>CONFIG</span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<c:url value="/agents"/>">Agents</a></li>
+                        <li><a href="<c:url value="/agents"/>">Agents< /a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="<c:url value="/disciplines"/>">Disciplines</a></li>
                         <li role="separator" class="divider"></li>
@@ -193,6 +195,7 @@
             <jsp:doBody/>
         </div>
     </main>
+
     <footer>
         <p class="text-center">E-SECO © 2017 - Federal University of Juiz de Fora - Computer Science Department</p>
     </footer>
