@@ -1,11 +1,15 @@
 package br.ufjf.pgcc.eseco.domain.model.experiment;
 
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @javax.persistence.Entity
-@Table(name = "exp_data_source") //nome da tabela a ser criada
+@Table(name = "exp_data_sources")
 public class DataSource {
 
     @Id
@@ -20,8 +24,15 @@ public class DataSource {
     @JoinColumn(name = "author_id")
     private Researcher author;
 
-    @Transient
-    private SourceName sourceName;
+    @Column(name = "date_created", columnDefinition = "DATETIME")
+    private Date dateCreated;
+
+    @Column(name = "date_updated", columnDefinition = "DATETIME")
+    private Date dateUpdated;
+
+    @OneToMany(mappedBy = "dataSource")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<DataSourceProvider> providers;
 
     public DataSource() {
     }
@@ -50,12 +61,28 @@ public class DataSource {
         this.author = author;
     }
 
-    public void setSourceName(SourceName sourceName) {
-        this.sourceName = sourceName;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public boolean isNew() {
-        return (this.id == 0);
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
+
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
+
+    public List<DataSourceProvider> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<DataSourceProvider> providers) {
+        this.providers = providers;
     }
 
     @Override

@@ -18,7 +18,7 @@
         <script type="text/javascript">
             // Get JSON Data for visualizations;
             var chartJson = JSON.parse('${chartDataJSON}');
-            
+
             /***********************************************/
             /* BUBLLE MENU                                 */
             /***********************************************/
@@ -42,14 +42,8 @@
     <jsp:body>
         <div class="row">
             <div class="col-xs-12">
-                <h2>Welcome to E-SECO</h2>
-
-                <div class="row">                    
-                        <div class="bubbleChart"/>                   
-                </div>
-                    
                 <c:if test="${fn:length(notifications) >= 1}">
-                    <ul class="list-group">
+                    <ul class="list-group margin-15-top">
                         <li class="list-group-item list-group-item-warning">
                             <i class="fa fa-exclamation-triangle"></i> Important Notifications
                         </li>
@@ -63,6 +57,34 @@
                         </c:forEach>
                     </ul>
                 </c:if>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Welcome to E-SECO
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>E-science Software Ecosystem</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Network Stats
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="bubbleChart"/>
+                    </div>
+                </div>
             </div>
         </div>
     </jsp:body>

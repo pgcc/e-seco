@@ -6,12 +6,4 @@
             <i class="fa fa-plus-circle"></i> Add Data Source
         </a>
     </li>
-    <c:if test="${dataSource != null}">
-        <li>
-            <a href="<c:url value="/experiments/dataSources/${dataSource.id}/update"/>">
-                <i class="fa fa-refresh"></i> Update
-            </a>
-        </li>
-    </c:if>
-
 </ul>
