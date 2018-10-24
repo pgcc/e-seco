@@ -1,0 +1,446 @@
+{
+  "agent": {
+    "kepler:user": {
+      "prov:label": "Lenita"
+    }
+  },
+  "wasGeneratedBy": {
+    "_:wGB75": {
+      "prov:time": "2018-06-28T14:42:27.445-03:00",
+      "prov:entity": "kepler:e7",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação GPR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:wGB74": {
+      "prov:time": "2018-06-28T14:42:27.130-03:00",
+      "prov:entity": "kepler:e6",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Classificação CAR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:wGB72": {
+      "prov:time": "2018-06-28T14:42:26.496-03:00",
+      "prov:entity": "kepler:e4",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a5"
+    },
+    "_:wGB71": {
+      "prov:time": "2018-06-28T14:42:26.195-03:00",
+      "prov:entity": "kepler:e3",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a4"
+    },
+    "_:wGB70": {
+      "prov:time": "2018-06-28T14:42:25.894-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a3"
+    },
+    "_:wGB69": {
+      "prov:time": "2018-06-28T14:42:25.293-03:00",
+      "prov:entity": "kepler:e1",
+      "kepler:channel": {
+        "$": "-1",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Seleção de animais.url",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a1"
+    }
+  },
+  "activity": {
+    "kepler:a4": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:26.195-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:26.195-03:00"
+    },
+    "kepler:a5": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:26.496-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:26.496-03:00"
+    },
+    "kepler:a2": {
+      "kepler:actorClass": {
+        "$": "ptolemy.actor.lib.gui.Display",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:25.594-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Adaptação dos animais",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:25.594-03:00"
+    },
+    "kepler:a3": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:25.894-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:25.894-03:00"
+    },
+    "kepler:a9": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileCopy",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:27.761-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:27.761-03:00"
+    },
+    "kepler:a6": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileCopy",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:26.811-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.classificação",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:26.813-03:00"
+    },
+    "kepler:a1": {
+      "kepler:actorClass": {
+        "$": "org.geon.FileWrite",
+        "type": "xsd:string"
+      },
+      "kepler:firing": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:startTime": "2018-06-28T14:42:25.293-03:00",
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR.Seleção de animais",
+        "type": "xsd:string"
+      },
+      "prov:endTime": "2018-06-28T14:42:25.293-03:00"
+    }
+  },
+  "prefix": {
+    "xsd": "http://www.w3.org/2001/XMLSchema",
+    "prov": "http://www.w3.org/ns/prov#",
+    "kepler": "http://kelper-project.org"
+  },
+  "wasAssociatedWith": {
+    "kepler:waw9": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a9"
+    },
+    "kepler:waw6": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a6"
+    },
+    "kepler:waw4": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a4"
+    },
+    "kepler:waw5": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a5"
+    },
+    "kepler:waw2": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a2"
+    },
+    "kepler:waw3": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a3"
+    },
+    "kepler:waw1": {
+      "prov:plan": "kepler:workflow",
+      "prov:agent": "kepler:user",
+      "prov:activity": "kepler:a1"
+    }
+  },
+  "used": {
+    "_:u85": {
+      "prov:time": "2018-06-28T14:42:25.594-03:00",
+      "prov:entity": "kepler:e1",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Adaptação dos animais.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a2"
+    },
+    "_:u93": {
+      "prov:time": "2018-06-28T14:42:27.761-03:00",
+      "prov:entity": "kepler:e6",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados.sourceFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+	    "_:u93": {
+      "prov:time": "2018-06-28T14:42:27.761-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados.sourceFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+    "_:u94": {
+      "prov:time": "2018-06-28T14:42:27.761-03:00",
+      "prov:entity": "kepler:e7",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Análise dos resultados.destinationFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a9"
+    },
+    "_:u90": {
+      "prov:time": "2018-06-28T14:42:26.813-03:00",
+      "prov:entity": "kepler:e3",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.classificação.destinationFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:u88": {
+      "prov:time": "2018-06-28T14:42:26.496-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do CAR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a5"
+    },
+    "_:u89": {
+      "prov:time": "2018-06-28T14:42:26.811-03:00",
+      "prov:entity": "kepler:e4",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.classificação.sourceFile",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a6"
+    },
+    "_:u86": {
+      "prov:time": "2018-06-28T14:42:25.894-03:00",
+      "prov:entity": "kepler:e1",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Coleta dos dados.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a3"
+    },
+    "_:u87": {
+      "prov:time": "2018-06-28T14:42:26.195-03:00",
+      "prov:entity": "kepler:e2",
+      "kepler:channel": {
+        "$": "0",
+        "type": "xsd:int"
+      },
+      "prov:role": {
+        "$": ".workflow_CAR_GPR.Cálculo do GPR.input",
+        "type": "xsd:string"
+      },
+      "prov:activity": "kepler:a4"
+    }
+  },
+  "entity": {
+    "kepler:workflow": {
+      "kepler:executionStopTime": {
+        "$": "2018-06-28T14:42:27.761-03:00",
+        "type": "xsd:dateTime"
+      },
+     "prov:value": {
+        "$": "\u003c?xml version\u003d\"1.0\" standalone\u003d\"no\"?\u003e\n\u003c!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\"\u003e\n\u003centity name\u003d\"workflow_classificação_CAR_GPR\" class\u003d\"org.kepler.moml.CompositeClassEntity\"\u003e\n    \u003cproperty name\u003d\"_createdBy\" class\u003d\"ptolemy.kernel.attributes.VersionAttribute\" value\u003d\"11.0.devel\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org/ns/:87210:13:42\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"null\"\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\" value\u003d\"urn:lsid:kepler-project.org/ns/:87210:11:88\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"Provenance Recorder\" class\u003d\"org.kepler.provenance.ProvenanceRecorder\"\u003e\n        \u003cproperty name\u003d\"Record Token Values\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"User Name\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Machine Name\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"containerWorkflowLSID\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"containerWorkflowName\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Delay Recording Specification\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"Recording Type\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"PROV\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org/ns/:87210:5:4\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eRecords provenance\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eDaniel Crawl\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"\" class\u003d\"ptolemy.vergil.basic.DocAttribute\"\u003e\n            \u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"Daniel Crawl\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"org.kepler.provenance.ProvenanceRecorder\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:548:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[315.0, 455.0]\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"filename\" class\u003d\"ptolemy.data.expr.FileParameter\" value\u003d\"C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\provenance3.json\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"namespace\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"http://kelper-project.org\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"nsPrefix\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"kepler\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"addTimestamps\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"true\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"outputType\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"JSON\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\" value\u003d\"urn:lsid:kepler-project.org:actor:548:1:urn:lsid:uuid:255a11e4-5b85-4fd5-851f-40537b110e98:111:4\"\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_windowProperties\" class\u003d\"ptolemy.actor.gui.WindowPropertiesAttribute\" value\u003d\"{bounds\u003d{-1448, -8, 1456, 876}, maximized\u003dfalse}\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilSize\" class\u003d\"ptolemy.actor.gui.SizeAttribute\" value\u003d\"[1135, 745]\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilZoomFactor\" class\u003d\"ptolemy.data.expr.ExpertParameter\" value\u003d\"0.8000000000000013\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"_vergilCenter\" class\u003d\"ptolemy.data.expr.ExpertParameter\" value\u003d\"{554.3749999999989, 595.6249999999993}\"\u003e\n    \u003c/property\u003e\n    \u003cproperty name\u003d\"DDF Director\" class\u003d\"ptolemy.domains.ddf.kernel.DDFDirector\"\u003e\n        \u003cproperty name\u003d\"localClock\" class\u003d\"ptolemy.actor.LocalClock\"\u003e\n            \u003cproperty name\u003d\"globalTimeResolution\" class\u003d\"ptolemy.actor.parameters.SharedParameter\" value\u003d\"1E-10\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"clockRate\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"1.0\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"iterations\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"0\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"maximumReceiverCapacity\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"0\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"runUntilDeadlockInOneIteration\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eGang Zhou\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026#10;            \u0026lt;p\u0026gt; The dynamic dataflow (DDF) domain is a superset of the synchronous\u0026#10;            dataflow(SDF) and Boolean dataflow(BDF) domains. In the SDF domain,\u0026#10;            an actor consumes and produces a fixed number of tokens per firing.\u0026#10;            This static information makes possible compile-time scheduling. In the\u0026#10;            DDF domain, there are few constraints on the production and consumption\u0026#10;            behavior of actors, and the schedulers make no attempt to construct a\u0026#10;            compile-time schedule. Instead, each actor has a set of firing rules\u0026#10;            (patterns) and can be fired if one of them is satisfied, i.e., one\u0026#10;            particular firing pattern forms a prefix of sequences of unconsumed\u0026#10;            tokens at input ports. The canonical actors in the DDF domain include\u0026#10;            Select and Switch, which consume or produce tokens on different channels\u0026#10;            based on the token received from the control port. (In practice, use\u0026#10;            DDFSelect and DDFBooleanSelect in the DDF-specific library instead of\u0026#10;            Select and BooleanSelect in the regular FlowControl library; however,\u0026#10;            Switch and BooleanSwitch in the regular FlowControl library can be\u0026#10;            used in DDF domain.)\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; The dynamic scheduler implemented in this director fires all enabled\u0026#10;            and non-deferrable actors once in a basic iteration. A deferrable\u0026#10;            actor is one that will not help one of the downstream actors become\u0026#10;            enabled because that downstream actor either already has enough tokens on\u0026#10;            the channel connecting those two actors or is waiting for tokens on\u0026#10;            another channel. If no actor fires so far, which means there is no\u0026#10;            enabled and non-deferrable actor, then among all enabled and deferrable\u0026#10;            actors, this director fires those which have the smallest maximum number\u0026#10;            of tokens on their output channels which satisfy the demand of destination\u0026#10;            actors. If still no actor fires, then there is no enabled actor. A user\u0026#10;            can treat several such basic iterations as a single iteration by adding\u0026#10;            a parameter with name \u0026lt;i\u0026gt;requiredFiringsPerIteration\u0026lt;/i\u0026gt; to an actor\u0026#10;            (which is often a sink actor or an actor directly connected to output port\u0026#10;            of the composite actor) and specifying the number of times this actor must\u0026#10;            be fired in a single iteration. If the value of the parameter\u0026#10;            \u0026lt;i\u0026gt;runUntilDeadlockInOneIteration\u0026lt;/i\u0026gt; is a BooleanToken with value true,\u0026#10;            one single iteration consists of repeating the basic iteration until\u0026#10;            deadlock is reached (thus overriding the previous definition of one\u0026#10;            iteration), which is the status of the model where all active\u0026#10;            actors under the control of this director are unable to fire because\u0026#10;            their firing rules are not satisfied. However, they may be able to fire\u0026#10;            again during next iteration when tokens are transferred in from an outside\u0026#10;            domain. Note \u0026lt;i\u0026gt;runUntilDeadlockInOneIteration\u0026lt;/i\u0026gt; can be set to true\u0026#10;            only when this director is not on the top level.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; The algorithm implementing one basic iteration goes like this:\u0026#10;            \u0026lt;pre\u0026gt;\u0026#10;            E \u003d set of enabled actors\u0026#10;            D \u003d set of deferrable enabled actors\u0026#10;            \u0026lt;/pre\u0026gt;\u0026#10;            One basic(default) iteration consists of:\u0026#10;            \u0026lt;pre\u0026gt;\u0026#10;            if (E\\D !\u003d empty set) {\u0026#10;            fire (E\\D)\u0026#10;            } else if (D !\u003d empty set) {\u0026#10;            fire minimax(D)\u0026#10;            } else {\u0026#10;            declare deadlock\u0026#10;            }\u0026#10;            \u0026lt;/pre\u0026gt;\u0026#10;            The function \u0026quot;minimax(D)\u0026quot; returns a subset of D with the smallest\u0026#10;            maximum number of tokens on their output channels which satisfy the\u0026#10;            demand of destination actors.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; Note that any SDF model can be run with a DDF Director. However, the\u0026#10;            notion of iteration is different. One could try to imitate the SDF\u0026#10;            iteration in the DDF domain by controlling the number of firings in one\u0026#10;            iteration for some actors, such as requiring a plotter to plot a fixed\u0026#10;            number of points in each iteration.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; In the DDF domain, the firing rule of any actor is specified by the token\u0026#10;            consumption rates of its input ports. A general DDF actor could change\u0026#10;            the consumption rates of its input ports after each firing of this actor.\u0026#10;            For multiports, an array token could be used to specify different rates\u0026#10;            for different channels connected to the same multiport. Note that in SDF,\u0026#10;            all channels connected to the same multiport have the same rate.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.\u0026#10;            See E. A. Lee et al., \u0026quot;The Almagest,\u0026quot; documentation for Ptolemy Classic,\u0026#10;            Vol. 1, Chapter 7, 1997.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;        \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:iterations\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify the number of times a workflow is iterated. By default, this parameter is set to \u0026quot;0\u0026quot;. Note that \u0026quot;0\u0026quot; does not mean \u0026quot;no iterations.\u0026quot; Rather, \u0026quot;0\u0026quot; means that the workflow will iterate forever. Values greater than zero specify the actual number of times the director should execute the entire workflow. \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:maximumReceiverCapacity\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eA Parameter representing the maximum capacity of each receiver controlled by this director. This is an integer that defaults to 0, which means the queue in each receiver is unbounded. To specify bounded queues, set this to a positive integer. \u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:runUntilDeadlockInOneIteration\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eA parameter indicating whether one iteration consists of repeated basic iterations until deadlock. If this parameter is true, the model will be executed until deadlock in one iteration. The default value is a BooleanToken with the value false. It cannot be set to true if this director is at the top level.\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org:director:5:1\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"ptolemy.domains.ddf.kernel.DDFDirector\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:directorclass:5:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#Director\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#Director\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{-290, 490}\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"\" class\u003d\"ptolemy.vergil.basic.DocAttribute\"\u003e\n            \u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"Gang Zhou\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"null\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"since\" class\u003d\"ptolemy.kernel.util.StringAttribute\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"\u0026#10;            \u0026lt;p\u0026gt; The dynamic dataflow (DDF) domain is a superset of the synchronous\u0026#10;            dataflow(SDF) and Boolean dataflow(BDF) domains. In the SDF domain,\u0026#10;            an actor consumes and produces a fixed number of tokens per firing.\u0026#10;            This static information makes possible compile-time scheduling. In the\u0026#10;            DDF domain, there are few constraints on the production and consumption\u0026#10;            behavior of actors, and the schedulers make no attempt to construct a\u0026#10;            compile-time schedule. Instead, each actor has a set of firing rules\u0026#10;            (patterns) and can be fired if one of them is satisfied, i.e., one\u0026#10;            particular firing pattern forms a prefix of sequences of unconsumed\u0026#10;            tokens at input ports. The canonical actors in the DDF domain include\u0026#10;            Select and Switch, which consume or produce tokens on different channels\u0026#10;            based on the token received from the control port. (In practice, use\u0026#10;            DDFSelect and DDFBooleanSelect in the DDF-specific library instead of\u0026#10;            Select and BooleanSelect in the regular FlowControl library; however,\u0026#10;            Switch and BooleanSwitch in the regular FlowControl library can be\u0026#10;            used in DDF domain.)\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; The dynamic scheduler implemented in this director fires all enabled\u0026#10;            and non-deferrable actors once in a basic iteration. A deferrable\u0026#10;            actor is one that will not help one of the downstream actors become\u0026#10;            enabled because that downstream actor either already has enough tokens on\u0026#10;            the channel connecting those two actors or is waiting for tokens on\u0026#10;            another channel. If no actor fires so far, which means there is no\u0026#10;            enabled and non-deferrable actor, then among all enabled and deferrable\u0026#10;            actors, this director fires those which have the smallest maximum number\u0026#10;            of tokens on their output channels which satisfy the demand of destination\u0026#10;            actors. If still no actor fires, then there is no enabled actor. A user\u0026#10;            can treat several such basic iterations as a single iteration by adding\u0026#10;            a parameter with name \u0026lt;i\u0026gt;requiredFiringsPerIteration\u0026lt;/i\u0026gt; to an actor\u0026#10;            (which is often a sink actor or an actor directly connected to output port\u0026#10;            of the composite actor) and specifying the number of times this actor must\u0026#10;            be fired in a single iteration. If the value of the parameter\u0026#10;            \u0026lt;i\u0026gt;runUntilDeadlockInOneIteration\u0026lt;/i\u0026gt; is a BooleanToken with value true,\u0026#10;            one single iteration consists of repeating the basic iteration until\u0026#10;            deadlock is reached (thus overriding the previous definition of one\u0026#10;            iteration), which is the status of the model where all active\u0026#10;            actors under the control of this director are unable to fire because\u0026#10;            their firing rules are not satisfied. However, they may be able to fire\u0026#10;            again during next iteration when tokens are transferred in from an outside\u0026#10;            domain. Note \u0026lt;i\u0026gt;runUntilDeadlockInOneIteration\u0026lt;/i\u0026gt; can be set to true\u0026#10;            only when this director is not on the top level.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; The algorithm implementing one basic iteration goes like this:\u0026#10;            \u0026lt;pre\u0026gt;\u0026#10;            E \u003d set of enabled actors\u0026#10;            D \u003d set of deferrable enabled actors\u0026#10;            \u0026lt;/pre\u0026gt;\u0026#10;            One basic(default) iteration consists of:\u0026#10;            \u0026lt;pre\u0026gt;\u0026#10;            if (E\\D !\u003d empty set) {\u0026#10;            fire (E\\D)\u0026#10;            } else if (D !\u003d empty set) {\u0026#10;            fire minimax(D)\u0026#10;            } else {\u0026#10;            declare deadlock\u0026#10;            }\u0026#10;            \u0026lt;/pre\u0026gt;\u0026#10;            The function \u0026quot;minimax(D)\u0026quot; returns a subset of D with the smallest\u0026#10;            maximum number of tokens on their output channels which satisfy the\u0026#10;            demand of destination actors.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; Note that any SDF model can be run with a DDF Director. However, the\u0026#10;            notion of iteration is different. One could try to imitate the SDF\u0026#10;            iteration in the DDF domain by controlling the number of firings in one\u0026#10;            iteration for some actors, such as requiring a plotter to plot a fixed\u0026#10;            number of points in each iteration.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; In the DDF domain, the firing rule of any actor is specified by the token\u0026#10;            consumption rates of its input ports. A general DDF actor could change\u0026#10;            the consumption rates of its input ports after each firing of this actor.\u0026#10;            For multiports, an array token could be used to specify different rates\u0026#10;            for different channels connected to the same multiport. Note that in SDF,\u0026#10;            all channels connected to the same multiport have the same rate.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;            \u0026lt;p\u0026gt; Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.\u0026#10;            See E. A. Lee et al., \u0026quot;The Almagest,\u0026quot; documentation for Ptolemy Classic,\u0026#10;            Vol. 1, Chapter 7, 1997.\u0026lt;/p\u0026gt;\u0026#10;           \u0026#10;        \"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"iterations (parameter)\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"Specify the number of times a workflow is iterated. By default, this parameter is set to \u0026quot;0\u0026quot;. Note that \u0026quot;0\u0026quot; does not mean \u0026quot;no iterations.\u0026quot; Rather, \u0026quot;0\u0026quot; means that the workflow will iterate forever. Values greater than zero specify the actual number of times the director should execute the entire workflow. \"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"maximumReceiverCapacity (parameter)\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"A Parameter representing the maximum capacity of each receiver controlled by this director. This is an integer that defaults to 0, which means the queue in each receiver is unbounded. To specify bounded queues, set this to a positive integer. \"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"runUntilDeadlockInOneIteration (parameter)\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"A parameter indicating whether one iteration consists of repeated basic iterations until deadlock. If this parameter is true, the model will be executed until deadlock in one iteration. The default value is a BooleanToken with the value false. It cannot be set to true if this director is at the top level.\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n    \u003c/property\u003e\n    \u003centity name\u003d\"Seleção de Animails\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[-130.0, 600.0]\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org/ns/:87210:17:2\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"animais selecionados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"defaultValue\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[580.0, 200.0]\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Adaptação de Animais\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[130.0, 550.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"animais selecionados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Coleta de Dados\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[125.0, 650.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"animais selecionados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"dados coletados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Cálculo do CAR\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[355.0, 545.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"dados coletados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"valores CAR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Cálculo do GPR\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[355.0, 615.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"dados coletados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"valores GPR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Classificação\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"[550.0, 580.0]\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"valores CAR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"valores GPR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"classificação CAR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"calssificação GPR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Análise dos Resltados\" class\u003d\"ptolemy.actor.TypedCompositeActor\"\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{770.0, 640.0}\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"resposta\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"OK\"\u003e\n        \u003c/property\u003e\n        \u003cport name\u003d\"classificação CAR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"classificação GPR\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"dados coletados\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"input\"/\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n        \u003cport name\u003d\"sucesso\" class\u003d\"ptolemy.actor.TypedIOPort\"\u003e\n            \u003cproperty name\u003d\"output\"/\u003e\n            \u003cproperty name\u003d\"defaultValue\" class\u003d\"ptolemy.data.expr.Parameter\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"_showName\" class\u003d\"ptolemy.data.expr.SingletonParameter\" value\u003d\"true\"\u003e\n            \u003c/property\u003e\n            \u003cproperty name\u003d\"_type\" class\u003d\"ptolemy.actor.TypeAttribute\" value\u003d\"string\"\u003e\n            \u003c/property\u003e\n        \u003c/port\u003e\n    \u003c/entity\u003e\n    \u003centity name\u003d\"Display\" class\u003d\"ptolemy.actor.lib.gui.Display\"\u003e\n        \u003cproperty name\u003d\"_windowProperties\" class\u003d\"ptolemy.actor.gui.WindowPropertiesAttribute\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_paneSize\" class\u003d\"ptolemy.actor.gui.SizeAttribute\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"rowsDisplayed\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"10\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"columnsDisplayed\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"40\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"suppressBlankLines\" class\u003d\"ptolemy.data.expr.Parameter\" value\u003d\"false\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"title\" class\u003d\"ptolemy.data.expr.StringParameter\" value\u003d\"teste\"\u003e\n        \u003c/property\u003e\n\u003cproperty name\u003d\"KeplerDocumentation\" class\u003d\"ptolemy.vergil.basic.KeplerDocumentationAttribute\"\u003e\n\u003cproperty name\u003d\"description\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"author\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eYuhong Xiong, Edward A. Lee\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"version\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003enull\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"userLevelDocumentation\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003e\u0026lt;p\u0026gt;The Display actor reads tokens of any type via its input multiport, and displays each token on a separate line in a text display window.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Specify the size of the text display window with the rowsDisplayed and columnsDisplayed parameters. Simply resizing the window onscreen does not persistently change the size when the workflow is saved, closed, and then re-opened. \u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;If the input is a string token, then the actor strips the surrounding quotation marks before displaying the value.\u0026lt;/p\u0026gt; \u0026#10;\u0026#10;\u0026lt;p\u0026gt;Select the suppressBlankLines parameter to specify that the actor not add blank lines to the display. By default, the actor will add blank lines.\u0026lt;/p\u0026gt;\u0026#10;\u0026#10;\u0026lt;p\u0026gt;Note: this actor can consume large amounts of memory. It is not advisable to use it to display large output streams.\u0026lt;/p\u0026gt;\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"port:input\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eA multiport that accepts tokens of any type.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:suppressBlankLines\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eSpecify whether the actor should display blank lines (the default) or suppress them.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:rowsDisplayed\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe vertical size of the display, in rows. The value is an integer that defaults to 10.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:columnsDisplayed\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe horizontal size of the display, in columns. The value is an integer that defaults to 40.\u003c/configure\u003e\u003c/property\u003e\n\u003cproperty name\u003d\"prop:title\" class\u003d\"ptolemy.kernel.util.ConfigurableAttribute\"\u003e\u003cconfigure\u003eThe title of the text display window. If specified, the value will appear in the title bar of the text display window.\u003c/configure\u003e\u003c/property\u003e\n\u003c/property\u003e        \u003cproperty name\u003d\"entityId\" class\u003d\"org.kepler.moml.NamedObjId\" value\u003d\"urn:lsid:kepler-project.org/ns/:87210:25:1\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"class\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"ptolemy.actor.lib.gui.Display\"\u003e\n            \u003cproperty name\u003d\"id\" class\u003d\"ptolemy.kernel.util.StringAttribute\" value\u003d\"urn:lsid:kepler-project.org:class:883:1\"\u003e\n            \u003c/property\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType00\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:1:1#TextualOutputActor\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"semanticType11\" class\u003d\"org.kepler.sms.SemanticType\" value\u003d\"urn:lsid:localhost:onto:2:1#TextualOutput\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"_location\" class\u003d\"ptolemy.kernel.util.Location\" value\u003d\"{900, 660}\"\u003e\n        \u003c/property\u003e\n        \u003cproperty name\u003d\"derivedFrom\" class\u003d\"org.kepler.moml.NamedObjIdReferralList\" value\u003d\"urn:lsid:kepler-project.org:actor:7:1\"\u003e\n        \u003c/property\u003e\n    \u003c/entity\u003e\n    \u003crelation name\u003d\"relation\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n        \u003cvertex name\u003d\"vertex1\" value\u003d\"[90.0, 625.0]\"\u003e\n        \u003c/vertex\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation2\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n        \u003cvertex name\u003d\"vertex1\" value\u003d\"[270.0, 675.0]\"\u003e\n        \u003c/vertex\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation3\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation4\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation5\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation6\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003crelation name\u003d\"relation7\" class\u003d\"ptolemy.actor.TypedIORelation\"\u003e\n    \u003c/relation\u003e\n    \u003clink port\u003d\"Seleção de Animails.animais selecionados\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Adaptação de Animais.animais selecionados\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Coleta de Dados.animais selecionados\" relation\u003d\"relation\"/\u003e\n    \u003clink port\u003d\"Coleta de Dados.dados coletados\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Cálculo do CAR.dados coletados\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Cálculo do CAR.valores CAR\" relation\u003d\"relation3\"/\u003e\n    \u003clink port\u003d\"Cálculo do GPR.dados coletados\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Cálculo do GPR.valores GPR\" relation\u003d\"relation4\"/\u003e\n    \u003clink port\u003d\"Classificação.valores CAR\" relation\u003d\"relation3\"/\u003e\n    \u003clink port\u003d\"Classificação.valores GPR\" relation\u003d\"relation4\"/\u003e\n    \u003clink port\u003d\"Classificação.classificação CAR\" relation\u003d\"relation5\"/\u003e\n    \u003clink port\u003d\"Classificação.calssificação GPR\" relation\u003d\"relation6\"/\u003e\n    \u003clink port\u003d\"Análise dos Resltados.classificação CAR\" relation\u003d\"relation5\"/\u003e\n    \u003clink port\u003d\"Análise dos Resltados.classificação GPR\" relation\u003d\"relation6\"/\u003e\n    \u003clink port\u003d\"Análise dos Resltados.dados coletados\" relation\u003d\"relation2\"/\u003e\n    \u003clink port\u003d\"Análise dos Resltados.sucesso\" relation\u003d\"relation7\"/\u003e\n    \u003clink port\u003d\"Display.input\" relation\u003d\"relation7\"/\u003e\n\u003c/entity\u003e\n",
+        "type": "xsd:string"
+      },
+      "kepler:executionStartTime": {
+        "$": "2018-06-28T14:42:24.976-03:00",
+        "type": "xsd:dateTime"
+      },
+      "kepler:actorName": {
+        "$": ".workflow_CAR_GPR",
+        "type": "xsd:string"
+      },
+      "kepler:executionLSID": {
+        "$": "urn:lsid:kepler-project.org/ns/:87210:65:1",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e6": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação CAR.xlsx",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e7": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\classificação GPR.xlsx",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e1": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\animais.xlsx",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e4": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha CAR.xlsx",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e2": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\dados coletados.xlsx",
+        "type": "xsd:string"
+      }
+    },
+    "kepler:e3": {
+      "kepler:tokenClass": {
+        "$": "ptolemy.data.StringToken",
+        "type": "xsd:string"
+      },
+      "prov:value": {
+        "$": "C:\\Users\\Lenita\\Documents\\NetBeansProjects\\e-seco\\src\\main\\resources\\workflows\\embrapa_1.0\\planilha GPR.xlsx",
+        "type": "xsd:string"
+      }
+    }
+  }
+}
