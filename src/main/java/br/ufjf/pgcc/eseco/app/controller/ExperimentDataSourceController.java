@@ -101,6 +101,19 @@ public class ExperimentDataSourceController {
             }
         }
 
+        for(DataSourceProvider dataSourceProvider : chosenDataSourceProvidersList){
+            System.out.print("DataProvider: ");
+            System.out.print(dataSourceProvider.getDataProvider().getName());
+            System.out.print(" :: id: ");
+            System.out.println(dataSourceProvider.getDataProvider().getId());
+            System.out.println("Parameters: ");
+            for(DataSourceProviderParameter dataSourceProviderParameter: dataSourceProvider.getParameters()){
+                System.out.print(dataSourceProviderParameter.getDataProviderParameter().getName());
+                System.out.print(" = ");
+                System.out.println(dataSourceProviderParameter.getValueString());
+            }
+            System.out.println("-----------");
+        }
 
         /* ********************************************************************************************************** */
         /* VALIDATE FORM DATA                                                                                         */

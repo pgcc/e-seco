@@ -67,10 +67,80 @@
     color: #fff;
 }
 
+.pnl-experiments{
+    display: flex;
+    border: 1px solid #dddddd;
+    margin-bottom: 20px;
+}
+.pnl-experiments .panel{
+    width: 25%;
+    margin-bottom: 0;
+    border: 0;
+    border-radius: 0;
+}
+.pnl-experiments .panel-body{
+    height: 100%;
+}
+.pnl-experiments .panel-heading{
+    border-radius: 0;
+    height: 50px;
+}
+.pnl-experiments .panel-title{
+    color: #fff;
+}
+.pnl-experiments .panel-heading h2{
+    line-height: 28px;
+}
+
+.pnl-experiments .panel-phase01{
+    background: #eff3f4;
+}
+.pnl-experiments .panel-phase01 .panel-heading{
+    background: #0097a7;
+}
+
+.pnl-experiments .panel-phase02{
+    background: #ebeff0;
+}
+.pnl-experiments .panel-phase02 .panel-heading{
+    background: #0288d1;
+}
+
+.pnl-experiments .panel-phase03{
+    background: #eff3f4;
+}
+.pnl-experiments .panel-phase03 .panel-heading{
+    background: #f57f17;
+}
+
+.pnl-experiments .panel-phase04{
+    background: #ebeff0;
+}
+.pnl-experiments .panel-phase04 .panel-heading{
+    background: #96aab1;
+}
+
+
 
 /* MEDIA QUERY FOR EXTRA SMALL/PHONE DEVICES */
 @media only screen and (max-width : 480px) {
     .pnl-login, .pnl-register{
         width: 100%;
     }
+}
+
+
+/**********************************************************************************************************************/
+/*** BOXES (box)                                                                                                      */
+/**********************************************************************************************************************/
+
+.box-experiment {
+    box-shadow: 1px 1px 2px #bbb;
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+.box-experiment p{
+    color: #777;
 }

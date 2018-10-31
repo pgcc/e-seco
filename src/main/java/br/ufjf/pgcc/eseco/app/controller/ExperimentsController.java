@@ -88,20 +88,19 @@ public class ExperimentsController {
 
         LOGGER.info("showAllExperiments()");
 
-        ArrayList<Experiment> myexperiments = new ArrayList<>();
-        ArrayList<Experiment> experiments = new ArrayList<>();
+        // Get all experiments
+        List<Experiment> experimentsPhase01 = experimentService.findByPhase(ExperimentPhase.PROBLEM_INVESTIGATION);
+        List<Experiment> experimentsPhase02 = experimentService.findByPhase(ExperimentPhase.EXPERIMENT_PROTOTYPING);
+        List<Experiment> experimentsPhase03 = experimentService.findByPhase(ExperimentPhase.EXPERIMENT_EXECUTION);
+        List<Experiment> experimentsPhase04 = experimentService.findByPhase(ExperimentPhase.RESULTS_PUBLICATION);
+        List<Experiment> experimentsPhase05 = experimentService.findByPhase(ExperimentPhase.EXPERIMENT_FINISHED);
 
-        User user = (User) session.getAttribute("logged_user");
-        for (Experiment e : experimentService.findAll()) {
-            if (e.getAuthor().getId() == user.getAgent().getResearcher().getId()) {
-                myexperiments.add(e);
-            } else {
-                experiments.add(e);
-            }
-        }
+        model.addAttribute("experimentsPhase01", experimentsPhase01);
+        model.addAttribute("experimentsPhase02", experimentsPhase02);
+        model.addAttribute("experimentsPhase03", experimentsPhase03);
+        model.addAttribute("experimentsPhase04", experimentsPhase04);
+        model.addAttribute("experimentsPhase05", experimentsPhase05);
 
-        model.addAttribute("myexperiments", myexperiments);
-        model.addAttribute("experiments", experiments);
         return "experiments/list";
     }
 
