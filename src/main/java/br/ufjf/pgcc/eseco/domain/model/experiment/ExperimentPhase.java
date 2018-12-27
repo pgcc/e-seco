@@ -13,7 +13,7 @@ import java.util.List;
  * @author Lenita
  */
 public enum ExperimentPhase {
-    PROBLEM_INVESTIGATION("Ploblem Investigation"),
+    PROBLEM_INVESTIGATION("Problem Investigation"),
     EXPERIMENT_PROTOTYPING("Experiment Prototyping"),
     EXPERIMENT_EXECUTION("Experiment Execution"),
     RESULTS_PUBLICATION("Results Publication"),

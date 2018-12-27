@@ -3,6 +3,7 @@ package br.ufjf.pgcc.eseco.domain.service.experiment;
 import br.ufjf.pgcc.eseco.domain.dao.experiment.ExperimentDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Researcher;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Experiment;
+import br.ufjf.pgcc.eseco.domain.model.experiment.ExperimentPhase;
 import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,27 @@ public class ExperimentService {
                 }
             }
         }
+        return experimentsFound;
+    }
+
+    /**
+     *
+     * @param experimentPhase
+     * @return
+     */
+    public List<Experiment> findByPhase(ExperimentPhase experimentPhase) {
+
+        List<Experiment> experiments = findAll();
+        ArrayList<Experiment> experimentsFound = new ArrayList<>();
+
+        for (Experiment experiment : experiments) {
+            if (experiment.getCurrentPhase() == experimentPhase) {
+                if (!experimentsFound.contains(experiment)) {
+                    experimentsFound.add(experiment);
+                }
+            }
+        }
+
         return experimentsFound;
     }
 }
