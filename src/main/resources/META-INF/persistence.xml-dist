@@ -13,7 +13,7 @@ DO NOT EDIT OR DELETE THIS FILE, INSTEAD, USE IT TO CREATE AN persistence.xml AN
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value=""/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/eseco"/>
             <property name="javax.persistence.jdbc.user" value=""/>
             <property name="javax.persistence.jdbc.password" value=""/>
 
