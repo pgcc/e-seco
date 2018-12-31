@@ -85,7 +85,7 @@ public class WorkflowServiceContextModelService {
                 ArrayList<String> usedEsecoWorkflowServicesStringList = new ArrayList<>();
                 ArrayList<WorkflowServiceContextModel> usedEsecoWorkflowServicesList = new ArrayList<>();
 
-                Class<?>[] servicesClasses = composedOfAnnotation.servicesClasses();
+                Class<?>[] servicesClasses = composedOfAnnotation.classes();
                 for (Class<?> serviceClass : servicesClasses) {
 
                     // Verify if it is a ESECO Workflow Service

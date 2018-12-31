@@ -8,7 +8,7 @@ public class ApiRestResult {
 
     private String data;
     private JsonObject jsonData;
-    private ArrayList<String> _links;
+    private ArrayList<String> links;
     private String error;
 
 
@@ -30,12 +30,12 @@ public class ApiRestResult {
         this.jsonData = jsonData;
     }
 
-    public ArrayList<String> get_links() {
-        return _links;
+    public ArrayList<String> getLinks() {
+        return links;
     }
 
-    public void set_links(ArrayList<String> _links) {
-        this._links = _links;
+    public void setLinks(ArrayList<String> links) {
+        this.links = links;
     }
 
     public String getError() {

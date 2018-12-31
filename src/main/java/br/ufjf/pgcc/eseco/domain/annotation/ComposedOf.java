@@ -5,5 +5,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ComposedOf {
-    Class<?>[] servicesClasses();
+    Class<?>[] classes();
 }

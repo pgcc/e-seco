@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 public class RoleService {
@@ -30,16 +28,4 @@ public class RoleService {
         return roleDAO.findAll();
     }
 
-    @Transactional
-    public void populateRoles() {
-        if (roleDAO.findAll().isEmpty()) {
-            try {
-                roleDAO.add(new Role(1, "Admin"));
-                roleDAO.add(new Role(2, "Researcher"));
-                roleDAO.add(new Role(3, "Developer"));
-            } catch (Exception ex) {
-                Logger.getLogger(RoleService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
 }

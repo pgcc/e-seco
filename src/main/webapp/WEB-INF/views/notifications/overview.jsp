@@ -20,7 +20,9 @@
 
 
     <jsp:attribute name="breadcrumbs">
-        <a href="<c:url value="/notifications"/>"><i class="fa fa-street-view"></i> Notifications</a>
+        <ol class="breadcrumb">
+            <li><a href="<c:url value="/notifications"/>"><i class="fa fa-street-view"></i> Notifications</a></li>
+        </ol>
     </jsp:attribute>
 
 

@@ -24,8 +24,7 @@
             /***********************************************/
             function showBubbleChartVisualization() {
                 drawBubbleChart(chartJson);
-            }
-            ;
+            };
             showBubbleChartVisualization();
         </script>
 
@@ -82,7 +81,7 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-                        <div class="bubbleChart"/>
+                        <div class="bubbleChart"></div>
                     </div>
                 </div>
             </div>

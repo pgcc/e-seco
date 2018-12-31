@@ -33,11 +33,4 @@ public class ComponentTypeService {
         return componentTypeDao.findAll();
     }
 
-    @Transactional
-    public void populateComponentTypes() throws Exception {
-        if (componentTypeDao.findAll().isEmpty()) {
-            componentTypeDao.add(new ComponentType("Plugin"));
-            componentTypeDao.add(new ComponentType("Workflow Service"));
-        }
-    }
 }

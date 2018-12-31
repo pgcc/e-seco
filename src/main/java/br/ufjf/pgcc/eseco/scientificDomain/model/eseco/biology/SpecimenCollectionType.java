@@ -1,10 +1,10 @@
-package br.ufjf.pgcc.eseco.scientificDomain.model.agriculture;
+package br.ufjf.pgcc.eseco.scientificDomain.model.eseco.biology;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sm_agriculture_animals")
-public class Animal {
+@Table(name = "sm_eseco_biology_specimen_collection_types")
+public class SpecimenCollectionType {
 
     @Id
     @Column(name = "id")
@@ -32,4 +32,5 @@ public class Animal {
     public void setName(String name) {
         this.name = name;
     }
+
 }

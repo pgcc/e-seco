@@ -300,9 +300,11 @@ public class ComponentsController {
         String wsUrl = request.getParameter("ws-url");
         String wsDescription = request.getParameter("ws-description");
 
+        // PLUGIN
         if (type.equals("1")) {
 
 
+        // WORKFLOW SERVICE
         } else if (type.equals("2")) {
 
             // Get Session

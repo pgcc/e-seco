@@ -3,9 +3,11 @@ package br.ufjf.pgcc.eseco.domain.service.uac;
 import br.ufjf.pgcc.eseco.app.service.MailerService;
 import br.ufjf.pgcc.eseco.domain.dao.uac.UserDAO;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
+import br.ufjf.pgcc.eseco.domain.model.core.Developer;
 import br.ufjf.pgcc.eseco.domain.model.uac.Role;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.core.AgentService;
+import br.ufjf.pgcc.eseco.domain.service.core.DeveloperService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,17 +24,20 @@ public class UserService {
     private MailerService mailerService;
     private AgentService agentService;
     private RoleService roleService;
+    private DeveloperService developerService;
 
     @Autowired
-    public UserService(UserDAO userDao, MailerService mailerService, AgentService agentService, RoleService roleService) {
+    public UserService(
+            UserDAO userDao,
+            MailerService mailerService,
+            AgentService agentService,
+            RoleService roleService,
+            DeveloperService developerService) {
         this.userDao = userDao;
         this.mailerService = mailerService;
         this.agentService = agentService;
         this.roleService = roleService;
-    }
-
-    public UserService() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.developerService = developerService;
     }
 
     @Transactional
@@ -163,6 +168,13 @@ public class UserService {
         ArrayList<Role> rolesList = new ArrayList<>();
         for (Integer roleId : rolesIdList) {
             rolesList.add(roleService.find(roleId));
+
+            // Create developer profile
+            if (roleId == 3) {
+                Developer newDeveloper = new Developer();
+                newDeveloper.setAgent(user.getAgent());
+                developerService.registerNewDeveloper(newDeveloper);
+            }
         }
 
         // Set user data

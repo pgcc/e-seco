@@ -49,7 +49,7 @@ public class ClassInternalMetricsModelService {
 
         ComposedOf composedOfAnnotation = classToInspect.getAnnotation(ComposedOf.class);
         if (null != composedOfAnnotation) {
-            Class<?>[] servicesClasses = composedOfAnnotation.servicesClasses();
+            Class<?>[] servicesClasses = composedOfAnnotation.classes();
             for (Class<?> serviceClass : servicesClasses) {
                 totalServicesCount++;
 
