@@ -1,0 +1,30 @@
+/**************************************************************************************************/
+/*** E-SECO                                                                                       */
+/**************************************************************************************************/
+
+
+Core
+    Auth
+    MVC
+    Logs
+    Group Memory
+    Databases
+    
+Context Module
+
+Provenance Module
+
+Components Module
+    SPL
+    Services
+    Plugins
+
+Visualization Module
+
+Integration Module
+    Clients
+    API
+
+Interoperability Module
+
+User Interface

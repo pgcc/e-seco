@@ -1,0 +1,31 @@
+/**************************************************************************************************/
+/*** E-SECO - COMPONENTS MODULE - PLUGINS                                                         */
+/**************************************************************************************************/
+
+--------------------------------------------------
+-- CONCEPTS
+--------------------------------------------------
+
+----------
+Basic URI
+
+
+
+
+--------------------------------------------------
+-- INSTRUCTIONS
+--------------------------------------------------
+
+----------
+Classes
+
+PluginFeatures
+PluginInterface
+PluginMenuEntryFeatureInterface
+PluginBackgroundTaskFeatureInterface
+PluginControllerFeatureInterface
+
+1) Create your plugin class that implements the PluginInterface
+2) Set up the required methods
+    2.1) 
+3) Register the plugin

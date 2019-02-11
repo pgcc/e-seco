@@ -1,0 +1,101 @@
+/**************************************************************************************************/
+/*** E-SECO - INTEGRATION MODULE - API                                                            */
+/**************************************************************************************************/
+
+--------------------------------------------------
+-- URI
+--------------------------------------------------
+
+----------
+Basic URI
+
+    The E-Seco APIs responds to URIs like: http://nenc.ufjf.br:8080/eseco/api/{namespace}/{serviceName}
+
+    Where:
+
+    {namespace} is the namespace of the service, informed when registering the webservice. 
+        The namespace may be any name composed of lower case alphanumeric characters.
+        Conventionally, the namespace is the same package as the internal class of the webservice (replacing the "." by "-") that starts after br.ufjf.eseco.services
+        
+        Ex.: For a webservice which internal class is: br.ufjf.eseco.services.eseco.physics.AccelerationCalculator, the namespace would be "eseco-physics".
+        
+    {serviceName} is the webservice name, informed when registering the webservice. 
+        The namespace may be any name composed of lower case alphanumeric characters.
+        Conventionally, the serviceName is the lower case, dash-style version of the webservice internal class name.
+        
+        Ex.: For a webservice which internal class is: br.ufjf.eseco.services.physics.AccelerationCalculator, the serviceName would be "acceleration-calculator".
+    
+----------
+Return
+
+    All E-Seco API calls returns an json standardized return model. This model may have the indexes:
+    
+    jsonData
+        The returned data of the webservice
+    
+    links
+        Links to others resources within the webservice
+        
+    error
+        Erros that may occour when consuming the webservice
+
+   
+----------
+Methods
+
+    The Basic URI of the webservice points to the index of the webservice, where its methods is listed in the "links" index. 
+    The methods of the webservice may me called passing the "m" parameter.
+    When creating your webservice, all public methods will be offered to the user as a possible method to invoke.
+    
+
+----------
+Parameters
+    
+    The parameters that are required and/or accepted by each webservice method is passed through the parameter "p"
+
+
+
+
+
+http://localhost:8888/eseco/api/eseco-physics/distance-traveled
+http://localhost:8888/eseco/api/eseco-physics/distance-traveled?m=getJson&p=0&p=146.3&p=26.6
+
+http://localhost:8888/eseco/api/eseco-physics/acceleration-calculator
+http://localhost:8888/eseco/api/eseco-physics/acceleration-calculator?m=getJson&p=0&p=146.3&p=5.50
+
+http://localhost:8888/eseco/api/eseco-biology/specimen-information-search
+http://localhost:8888/eseco/api/eseco-biology/specimen-information-search?m=getSpecimensByCollectionType&p=Crustacea
+http://localhost:8888/eseco/api/eseco-biology/specimen-information-search?m=getSpecimenCollectionTypes
+
+
+
+--------------------------------------------------
+-- CREATING AN WORKFLOW WEBSERVICE
+--------------------------------------------------
+
+All Parameters MUST be an String
+Max of 5 Parameters (until now)
+
+Objects may be used, the package is scientificDomain
+
+Using default E-Seco workflow webservices as examples.
+
+Creating a basic webservice
+    br.ufjf.pgcc.eseco.services.eseco.physics.DistanceTravelled
+
+Creating a webservice that is composed of other webservices
+    br.ufjf.pgcc.eseco.services.eseco.physics.AccelerationCalculator
+
+Creating a webservice that consumes an external API
+    br.ufjf.pgcc.eseco.services.eseco.biology.SpecimenInformationSearch
+
+Creating a webservice that retrieves data from E-Seco database
+    br.ufjf.pgcc.eseco.services.eseco.biology.SpecimenInformationSearch
+
+
+
+
+
+
+
+
