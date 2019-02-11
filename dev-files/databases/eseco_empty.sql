@@ -5,13 +5,11 @@ create table core_agents
   birthday datetime     null,
   gender   varchar(1)   null,
   name     varchar(255) not null,
-  user_id  int          not null
+  user_id  int          not null,
+  constraint FKktjutrgawejpe3sx56qomtw9d
+    foreign key (user_id) references uac_users (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKktjutrgawejpe3sx56qomtw9d
-  on core_agents (user_id);
 
 INSERT INTO eseco.core_agents (id, birthday, gender, name, user_id) VALUES (1, '1986-12-01 00:00:00', 'M', 'Leonardo de Aguiar', 1);
 create table core_agents_developers
@@ -19,13 +17,11 @@ create table core_agents_developers
   id       int auto_increment
     primary key,
   photo    varchar(255) null,
-  agent_id int          null
+  agent_id int          null,
+  constraint FKt3u84t7tbhdlqr96gfjv8hsfk
+    foreign key (agent_id) references core_agents (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKt3u84t7tbhdlqr96gfjv8hsfk
-  on core_agents_developers (agent_id);
 
 INSERT INTO eseco.core_agents_developers (id, photo, agent_id) VALUES (1, null, 1);
 create table core_agents_developers_institutions
@@ -33,13 +29,13 @@ create table core_agents_developers_institutions
   developer_id   int not null,
   institution_id int not null,
   constraint UK_i6dwtf4lnaf4oj9kl8e3fi738
-    unique (institution_id)
+    unique (institution_id),
+  constraint FKao27ibvtxixjphvpxoxsegi35
+    foreign key (institution_id) references core_institutions (id),
+  constraint FKhmayxudv5ag8pqn3028tscg1s
+    foreign key (developer_id) references core_agents_developers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKhmayxudv5ag8pqn3028tscg1s
-  on core_agents_developers_institutions (developer_id);
 
 
 create table core_agents_researchers
@@ -54,58 +50,47 @@ create table core_agents_researchers
   title           varchar(255) null,
   agent_id        int          null,
   lattes_id       varchar(255) null,
-  researchgate_id varchar(255) null
+  researchgate_id varchar(255) null,
+  constraint FK71mh4922a0q3t7ebjdmviloap
+    foreign key (agent_id) references core_agents (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK71mh4922a0q3t7ebjdmviloap
-  on core_agents_researchers (agent_id);
 
 
 create table core_agents_researchers_disciplines
 (
   researcher_id int not null,
-  discipline_id int not null
+  discipline_id int not null,
+  constraint FK3cljndx53oh3fhog3r3pcqlae
+    foreign key (researcher_id) references core_agents_researchers (id),
+  constraint FKaop4mqc7p60pj7ojdctcod69m
+    foreign key (discipline_id) references core_disciplines (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK3cljndx53oh3fhog3r3pcqlae
-  on core_agents_researchers_disciplines (researcher_id);
-
-create index FKaop4mqc7p60pj7ojdctcod69m
-  on core_agents_researchers_disciplines (discipline_id);
 
 
 create table core_agents_researchers_institutions
 (
   researcher_id  int not null,
-  institution_id int not null
+  institution_id int not null,
+  constraint FK4wlj79hpje54w1yhctjronm5t
+    foreign key (institution_id) references core_institutions (id),
+  constraint FKnjibjwyfx0du85ecdpc8fbyql
+    foreign key (researcher_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK4wlj79hpje54w1yhctjronm5t
-  on core_agents_researchers_institutions (institution_id);
-
-create index FKnjibjwyfx0du85ecdpc8fbyql
-  on core_agents_researchers_institutions (researcher_id);
 
 
 create table core_agents_researchers_interests
 (
   researcher_id int not null,
-  interest_id   int not null
+  interest_id   int not null,
+  constraint FKnh6mjtvpkjbia7pheato1wreb
+    foreign key (researcher_id) references core_agents_researchers (id),
+  constraint FKr2qbtbwm9j8ovy2ssgulkv1e2
+    foreign key (interest_id) references core_interests (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKnh6mjtvpkjbia7pheato1wreb
-  on core_agents_researchers_interests (researcher_id);
-
-create index FKr2qbtbwm9j8ovy2ssgulkv1e2
-  on core_agents_researchers_interests (interest_id);
 
 
 create table core_agents_researchers_keywords
@@ -114,13 +99,11 @@ create table core_agents_researchers_keywords
     primary key,
   name          varchar(255) null,
   year          varchar(255) null,
-  researcher_id int          null
+  researcher_id int          null,
+  constraint FKbysyrmdwrxoud8bteeejyfyyp
+    foreign key (researcher_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKbysyrmdwrxoud8bteeejyfyyp
-  on core_agents_researchers_keywords (researcher_id);
 
 
 create table core_cities
@@ -130,13 +113,11 @@ create table core_cities
   name     varchar(255) null,
   state_id int          not null,
   constraint UK_6ivyhwdpu1fxm1m97g2qawr8o
-    unique (name)
+    unique (name),
+  constraint FKr4n74h5yvj373tnllfn8y777x
+    foreign key (state_id) references core_states (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKr4n74h5yvj373tnllfn8y777x
-  on core_cities (state_id);
 
 INSERT INTO eseco.core_cities (id, name, state_id) VALUES (1, 'Rio Branco', 1);
 INSERT INTO eseco.core_cities (id, name, state_id) VALUES (2, 'Maceió', 2);
@@ -181,7 +162,6 @@ create table core_countries
   constraint UK_pp4fmuelxg7uksfdfnkoofkog
     unique (name)
 )
-  engine = InnoDB
   charset = latin1;
 
 INSERT INTO eseco.core_countries (id, code, name) VALUES (1, 'AF', 'Afghanistan');
@@ -436,13 +416,11 @@ create table core_disciplines
   id     int auto_increment
     primary key,
   name   varchar(255) null,
-  parent int          null
+  parent int          null,
+  constraint FKci04mmvbc7f2kf2rjr38xtodp
+    foreign key (parent) references core_disciplines (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKci04mmvbc7f2kf2rjr38xtodp
-  on core_disciplines (parent);
 
 INSERT INTO eseco.core_disciplines (id, name, parent) VALUES (1, 'Agricultural and Biological Sciences', null);
 INSERT INTO eseco.core_disciplines (id, name, parent) VALUES (2, 'Arts and Humanities', null);
@@ -478,13 +456,11 @@ create table core_institutions
   id      int auto_increment
     primary key,
   name    varchar(255) not null,
-  city_id int          null
+  city_id int          null,
+  constraint FKm24ugeiqnr5535qfa9eta6c6y
+    foreign key (city_id) references core_cities (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKm24ugeiqnr5535qfa9eta6c6y
-  on core_institutions (city_id);
 
 INSERT INTO eseco.core_institutions (id, name, city_id) VALUES (1, 'Universidade Federal de Juiz de Fora', 28);
 INSERT INTO eseco.core_institutions (id, name, city_id) VALUES (2, 'Universidade Federal de  Minas Gerais', 13);
@@ -500,19 +476,18 @@ create table core_interests
     primary key,
   name varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 INSERT INTO eseco.core_interests (id, name) VALUES (1, 'Context awareness');
 INSERT INTO eseco.core_interests (id, name) VALUES (2, 'Data provenance');
-INSERT INTO eseco.core_interests (id, name) VALUES (15, 'Laticínios');
-INSERT INTO eseco.core_interests (id, name) VALUES (14, 'Nutrição animal');
-INSERT INTO eseco.core_interests (id, name) VALUES (13, 'Produção de leite');
-INSERT INTO eseco.core_interests (id, name) VALUES (12, 'Reprodução animal');
-INSERT INTO eseco.core_interests (id, name) VALUES (11, 'Criação de bezerros');
 INSERT INTO eseco.core_interests (id, name) VALUES (8, 'Zootecnia');
 INSERT INTO eseco.core_interests (id, name) VALUES (9, 'Produção animal');
 INSERT INTO eseco.core_interests (id, name) VALUES (10, 'Bovinocultura');
+INSERT INTO eseco.core_interests (id, name) VALUES (11, 'Criação de bezerros');
+INSERT INTO eseco.core_interests (id, name) VALUES (12, 'Reprodução animal');
+INSERT INTO eseco.core_interests (id, name) VALUES (13, 'Produção de leite');
+INSERT INTO eseco.core_interests (id, name) VALUES (14, 'Nutrição animal');
+INSERT INTO eseco.core_interests (id, name) VALUES (15, 'Laticínios');
 INSERT INTO eseco.core_interests (id, name) VALUES (16, 'Rúmen');
 INSERT INTO eseco.core_interests (id, name) VALUES (17, 'Nutrição de ruminantes');
 INSERT INTO eseco.core_interests (id, name) VALUES (18, 'Produção de ruminates');
@@ -533,16 +508,13 @@ INSERT INTO eseco.core_interests (id, name) VALUES (32, 'Qualidade do Leite');
 create table core_research_group_researcher
 (
   research_group_id int not null,
-  researcher_id     int not null
+  researcher_id     int not null,
+  constraint FKdwlqyjavrshab1xhd5wrgut5n
+    foreign key (research_group_id) references core_research_groups (id),
+  constraint FKmp014i6g70kmem7j7k0um55ge
+    foreign key (researcher_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKdwlqyjavrshab1xhd5wrgut5n
-  on core_research_group_researcher (research_group_id);
-
-create index FKmp014i6g70kmem7j7k0um55ge
-  on core_research_group_researcher (researcher_id);
 
 
 create table core_research_groups
@@ -553,7 +525,6 @@ create table core_research_groups
   name        varchar(255) null,
   web_page    varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 
@@ -568,16 +539,13 @@ create table core_states
   constraint UK_3i9bpujt632hy8sgefetumy1o
     unique (name),
   constraint UK_evs3m0995aphx73eacn09rh0j
-    unique (code)
+    unique (code),
+  constraint FKqvbfm1xx841ggoffqcevyxbgw
+    foreign key (capital_id) references core_cities (id),
+  constraint FKrxrh3rp1wy2qnr4feqp2ackxt
+    foreign key (country_id) references core_countries (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKqvbfm1xx841ggoffqcevyxbgw
-  on core_states (capital_id);
-
-create index FKrxrh3rp1wy2qnr4feqp2ackxt
-  on core_states (country_id);
 
 INSERT INTO eseco.core_states (id, code, name, capital_id, country_id) VALUES (1, 'AC', 'Acre', 1, 31);
 INSERT INTO eseco.core_states (id, code, name, capital_id, country_id) VALUES (2, 'AL', 'Alagoas', 2, 31);
@@ -613,28 +581,23 @@ create table exp_activities
   date_created date         null,
   description  text         null,
   name         varchar(255) null,
-  author_id    int          null
+  author_id    int          null,
+  constraint FKknhvi932iavpyc4jvbgb860ij
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKknhvi932iavpyc4jvbgb860ij
-  on exp_activities (author_id);
 
 
 create table exp_activities_workflowservices
 (
   activity_id        int not null,
-  workflowservice_id int not null
+  workflowservice_id int not null,
+  constraint FKkt0tkhnlip2yrjog52hc55qqh
+    foreign key (activity_id) references exp_activities (id),
+  constraint FKlfri0mlyljcchw69d0ww7lwva
+    foreign key (workflowservice_id) references res_workflow_services (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKkt0tkhnlip2yrjog52hc55qqh
-  on exp_activities_workflowservices (activity_id);
-
-create index FKlfri0mlyljcchw69d0ww7lwva
-  on exp_activities_workflowservices (workflowservice_id);
 
 
 create table exp_activity_detail
@@ -642,13 +605,13 @@ create table exp_activity_detail
   activity_id int not null,
   detail_id   int not null,
   constraint UK_9p8nagsaqsb1polyd2kkorb1g
-    unique (detail_id)
+    unique (detail_id),
+  constraint FK91m2uj5jbunsqqyh7tn69nr35
+    foreign key (detail_id) references exp_detail (id),
+  constraint FKg94xk6vxyu4hlk4iy64nq14sx
+    foreign key (activity_id) references exp_activities (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKg94xk6vxyu4hlk4iy64nq14sx
-  on exp_activity_detail (activity_id);
 
 
 create table exp_activity_executions
@@ -658,46 +621,37 @@ create table exp_activity_executions
   end_time   datetime null,
   start_time datetime null,
   activity   int      not null,
-  author_id  int      not null
+  author_id  int      not null,
+  constraint FKi6j19dn15qjhbgvvimgkuwbpw
+    foreign key (activity) references exp_activities (id),
+  constraint FKqlj8imgp9b5848dule4ioqkvo
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKi6j19dn15qjhbgvvimgkuwbpw
-  on exp_activity_executions (activity);
-
-create index FKqlj8imgp9b5848dule4ioqkvo
-  on exp_activity_executions (author_id);
 
 
 create table exp_activity_inputs
 (
   activity_id int not null,
-  port_id     int not null
+  port_id     int not null,
+  constraint FK8iyfqt6yrvbp4ce285l8sa2v8
+    foreign key (activity_id) references exp_activity_executions (id),
+  constraint FKlycvy5395xctc2cc8qjw7vwsl
+    foreign key (port_id) references exp_ports (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK8iyfqt6yrvbp4ce285l8sa2v8
-  on exp_activity_inputs (activity_id);
-
-create index FKlycvy5395xctc2cc8qjw7vwsl
-  on exp_activity_inputs (port_id);
 
 
 create table exp_activity_outputs
 (
   activity_id int not null,
-  port_id     int not null
+  port_id     int not null,
+  constraint FK1t6g6i4xtt0150n2x7ropk0m1
+    foreign key (port_id) references exp_ports (id),
+  constraint FKsxoc2ds8xl42dcdl52jdrxmwn
+    foreign key (activity_id) references exp_activity_executions (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK1t6g6i4xtt0150n2x7ropk0m1
-  on exp_activity_outputs (port_id);
-
-create index FKsxoc2ds8xl42dcdl52jdrxmwn
-  on exp_activity_outputs (activity_id);
 
 
 create table exp_data_providers
@@ -705,8 +659,7 @@ create table exp_data_providers
   id   int auto_increment
     primary key,
   name varchar(255) null
-)
-  engine = InnoDB;
+);
 
 INSERT INTO eseco.exp_data_providers (id, name) VALUES (1, 'Solcast');
 INSERT INTO eseco.exp_data_providers (id, name) VALUES (2, 'Darksky');
@@ -715,12 +668,10 @@ create table exp_data_providers_parameters
   id              int auto_increment
     primary key,
   name            varchar(255) null,
-  dataProvider_id int          null
-)
-  engine = InnoDB;
-
-create index FK7amatgircys7cvadyoal6l36o
-  on exp_data_providers_parameters (dataProvider_id);
+  dataProvider_id int          null,
+  constraint FK7amatgircys7cvadyoal6l36o
+    foreign key (dataProvider_id) references exp_data_providers (id)
+);
 
 
 create table exp_data_sources
@@ -730,12 +681,10 @@ create table exp_data_sources
   date_created datetime     null,
   date_updated datetime     null,
   name         varchar(255) null,
-  author_id    int          null
-)
-  engine = InnoDB;
-
-create index FKpe3w3tes9jrs1ivthrlewxh97
-  on exp_data_sources (author_id);
+  author_id    int          null,
+  constraint FKpe3w3tes9jrs1ivthrlewxh97
+    foreign key (author_id) references core_agents_researchers (id)
+);
 
 
 create table exp_data_sources_providers
@@ -743,15 +692,12 @@ create table exp_data_sources_providers
   id              int auto_increment
     primary key,
   dataProvider_id int null,
-  dataSource_id   int null
-)
-  engine = InnoDB;
-
-create index FK2yy4rp21708n1mfr3rw95jk8s
-  on exp_data_sources_providers (dataSource_id);
-
-create index FKhu799n2p6m7uxw1qw0pvd7hmn
-  on exp_data_sources_providers (dataProvider_id);
+  dataSource_id   int null,
+  constraint FK2yy4rp21708n1mfr3rw95jk8s
+    foreign key (dataSource_id) references exp_data_sources (id),
+  constraint FKhu799n2p6m7uxw1qw0pvd7hmn
+    foreign key (dataProvider_id) references exp_data_providers (id)
+);
 
 
 create table exp_data_sources_providers_parameters
@@ -760,15 +706,12 @@ create table exp_data_sources_providers_parameters
     primary key,
   value_string             varchar(255) null,
   dataProviderParameter_id int          null,
-  dataSourceProvider_id    int          null
-)
-  engine = InnoDB;
-
-create index FKbqbybtk48ypdqwcrq5rmsveee
-  on exp_data_sources_providers_parameters (dataProviderParameter_id);
-
-create index FKqc5hx695up75hp8iixy4r8yn6
-  on exp_data_sources_providers_parameters (dataSourceProvider_id);
+  dataSourceProvider_id    int          null,
+  constraint FKbqbybtk48ypdqwcrq5rmsveee
+    foreign key (dataProviderParameter_id) references exp_data_providers_parameters (id),
+  constraint FKqc5hx695up75hp8iixy4r8yn6
+    foreign key (dataSourceProvider_id) references exp_data_sources_providers (id)
+);
 
 
 create table exp_detail
@@ -778,7 +721,6 @@ create table exp_detail
   description text         null,
   name        varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 
@@ -789,7 +731,6 @@ create table exp_detail_group
   details varchar(255) null,
   name    varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 
@@ -798,13 +739,11 @@ create table exp_entities
   id        int auto_increment
     primary key,
   name      varchar(255) null,
-  author_id int          null
+  author_id int          null,
+  constraint FK699fd14d82vuqdi3jdb0i8ql1
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK699fd14d82vuqdi3jdb0i8ql1
-  on exp_entities (author_id);
 
 
 create table exp_entities_data
@@ -813,13 +752,11 @@ create table exp_entities_data
     primary key,
   type      varchar(255) null,
   value     text         null,
-  entity_id int          null
+  entity_id int          null,
+  constraint FKj153csisgfpd3u6orjwt7dj2c
+    foreign key (entity_id) references exp_entities (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKj153csisgfpd3u6orjwt7dj2c
-  on exp_entities_data (entity_id);
 
 
 create table exp_entities_documents
@@ -829,13 +766,11 @@ create table exp_entities_documents
   file      varchar(255) null,
   type      varchar(255) null,
   value     text         null,
-  entity_id int          null
+  entity_id int          null,
+  constraint FK6lchls351ad1dhnlqen5xu3c3
+    foreign key (entity_id) references exp_entities (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK6lchls351ad1dhnlqen5xu3c3
-  on exp_entities_documents (entity_id);
 
 
 create table exp_experiment_detail
@@ -843,43 +778,37 @@ create table exp_experiment_detail
   experiment_id int not null,
   detail_id     int not null,
   constraint UK_5qh9pd03h1yw4ypkv7fvkbpmr
-    unique (detail_id)
+    unique (detail_id),
+  constraint FK7j63x9wgxt5a20myu4hfdfnnt
+    foreign key (experiment_id) references exp_experiments (id),
+  constraint FKxtda5eixw61hm7c1y4rnahsf
+    foreign key (detail_id) references exp_detail (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK7j63x9wgxt5a20myu4hfdfnnt
-  on exp_experiment_detail (experiment_id);
 
 
 create table exp_experiment_discipline
 (
   experiment_id int not null,
-  discipline_id int not null
+  discipline_id int not null,
+  constraint FK6405qih7ujt75qdek5jdjilxh
+    foreign key (discipline_id) references core_disciplines (id),
+  constraint FKicvn8r1iufvhwgbjs46n832wg
+    foreign key (experiment_id) references exp_experiments (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK6405qih7ujt75qdek5jdjilxh
-  on exp_experiment_discipline (discipline_id);
-
-create index FKicvn8r1iufvhwgbjs46n832wg
-  on exp_experiment_discipline (experiment_id);
 
 
 create table exp_experiment_institution
 (
   experiment_id  int not null,
-  institution_id int not null
+  institution_id int not null,
+  constraint FK30q79mt5qlny8appo6dleufhh
+    foreign key (institution_id) references core_institutions (id),
+  constraint FKlyfd8lk44lvpi327gij49ejv
+    foreign key (experiment_id) references exp_experiments (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK30q79mt5qlny8appo6dleufhh
-  on exp_experiment_institution (institution_id);
-
-create index FKlyfd8lk44lvpi327gij49ejv
-  on exp_experiment_institution (experiment_id);
 
 
 create table exp_experiment_phase_reports
@@ -890,61 +819,49 @@ create table exp_experiment_phase_reports
   date_created  date null,
   description   text null,
   author_id     int  not null,
-  experiment_id int  not null
+  experiment_id int  not null,
+  constraint FK2ga5hmynaoplcs0465uvovke1
+    foreign key (experiment_id) references exp_experiments (id),
+  constraint FKbyjnl6edgxdup59rbo11fq13u
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK2ga5hmynaoplcs0465uvovke1
-  on exp_experiment_phase_reports (experiment_id);
-
-create index FKbyjnl6edgxdup59rbo11fq13u
-  on exp_experiment_phase_reports (author_id);
 
 
 create table exp_experiment_research_group
 (
   experiment_id     int not null,
-  research_group_id int not null
+  research_group_id int not null,
+  constraint FKk0f62wi8ou8gy95afpvn31369
+    foreign key (research_group_id) references core_research_groups (id),
+  constraint FKp405w03fa0qljtm7q4gdxkyu4
+    foreign key (experiment_id) references exp_experiments (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKk0f62wi8ou8gy95afpvn31369
-  on exp_experiment_research_group (research_group_id);
-
-create index FKp405w03fa0qljtm7q4gdxkyu4
-  on exp_experiment_research_group (experiment_id);
 
 
 create table exp_experiment_researcher
 (
   experiment_id int not null,
-  researcher_id int not null
+  researcher_id int not null,
+  constraint FK36kab23m9ujw80yr0k0uxismy
+    foreign key (experiment_id) references exp_experiments (id),
+  constraint FK39mgah2kmqt5mbre5lubvmbh4
+    foreign key (researcher_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK36kab23m9ujw80yr0k0uxismy
-  on exp_experiment_researcher (experiment_id);
-
-create index FK39mgah2kmqt5mbre5lubvmbh4
-  on exp_experiment_researcher (researcher_id);
 
 
 create table exp_experiment_workflow
 (
   experiment_id int not null,
-  workflow_id   int not null
+  workflow_id   int not null,
+  constraint FK72eci3bh650vx70nkt2lfccah
+    foreign key (experiment_id) references exp_experiments (id),
+  constraint FKmq6ldbobb91incdsjidwq95p1
+    foreign key (workflow_id) references exp_workflows (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK72eci3bh650vx70nkt2lfccah
-  on exp_experiment_workflow (experiment_id);
-
-create index FKmq6ldbobb91incdsjidwq95p1
-  on exp_experiment_workflow (workflow_id);
 
 
 create table exp_experiments
@@ -961,29 +878,24 @@ create table exp_experiments
   status        int          null,
   version       varchar(255) null,
   author_id     int          not null,
-  detail_group  int          null
+  detail_group  int          null,
+  constraint FK3y6i7ghj28e3kd4gnxh1i40kv
+    foreign key (detail_group) references exp_detail_group (id),
+  constraint FK8wdtrv2sj8xua9d7s9pmq2cf4
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK3y6i7ghj28e3kd4gnxh1i40kv
-  on exp_experiments (detail_group);
-
-create index FK8wdtrv2sj8xua9d7s9pmq2cf4
-  on exp_experiments (author_id);
 
 
 create table exp_ports
 (
   id        int auto_increment
     primary key,
-  entity_id int not null
+  entity_id int not null,
+  constraint FK830q3jyptlpgcj45opi97hmw5
+    foreign key (entity_id) references exp_entities (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK830q3jyptlpgcj45opi97hmw5
-  on exp_ports (entity_id);
 
 
 create table exp_wfms
@@ -993,7 +905,6 @@ create table exp_wfms
   link varchar(255) null,
   name varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 
@@ -1002,13 +913,13 @@ create table exp_workflow_activity
   order_exec  int null,
   activity_id int not null,
   workflow_id int not null,
-  primary key (activity_id, workflow_id)
+  primary key (activity_id, workflow_id),
+  constraint FK22ppdcl5uu8bj6at6eaqc2sv2
+    foreign key (activity_id) references exp_activities (id),
+  constraint FKo8td603fqb6sv954o1fwwxpy9
+    foreign key (workflow_id) references exp_workflows (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKo8td603fqb6sv954o1fwwxpy9
-  on exp_workflow_activity (workflow_id);
 
 
 create table exp_workflow_execution_activity_execution
@@ -1016,13 +927,13 @@ create table exp_workflow_execution_activity_execution
   workflow_execution_id int not null,
   activity_execution_id int not null,
   constraint UK_93w0is4v17g1k0noldtw2m27r
-    unique (activity_execution_id)
+    unique (activity_execution_id),
+  constraint FKgcp79sv36gerdehg3m4rh24kg
+    foreign key (activity_execution_id) references exp_activity_executions (id),
+  constraint FKh8s3866jdht94q2rbhj72nfam
+    foreign key (workflow_execution_id) references exp_workflow_executions (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKh8s3866jdht94q2rbhj72nfam
-  on exp_workflow_execution_activity_execution (workflow_execution_id);
 
 
 create table exp_workflow_executions
@@ -1033,49 +944,39 @@ create table exp_workflow_executions
   start_time    datetime null,
   author_id     int      not null,
   experiment_id int      not null,
-  workflow      int      not null
+  workflow      int      not null,
+  constraint FKebyw0g9ol47bdei6to92ithk7
+    foreign key (experiment_id) references exp_experiments (id),
+  constraint FKk4v7d9ofa6iq5xf2e57s0wx0g
+    foreign key (workflow) references exp_workflows (id),
+  constraint FKnjlmwsbt81c6q3bxjb2phr0g7
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKebyw0g9ol47bdei6to92ithk7
-  on exp_workflow_executions (experiment_id);
-
-create index FKk4v7d9ofa6iq5xf2e57s0wx0g
-  on exp_workflow_executions (workflow);
-
-create index FKnjlmwsbt81c6q3bxjb2phr0g7
-  on exp_workflow_executions (author_id);
 
 
 create table exp_workflow_inputs
 (
   workflow_id int not null,
-  port_id     int not null
+  port_id     int not null,
+  constraint FKgnujy2g8lck650r1rlerthyi9
+    foreign key (port_id) references exp_ports (id),
+  constraint FKmjmnxve10uj2na4jw2et0mrvg
+    foreign key (workflow_id) references exp_workflow_executions (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKgnujy2g8lck650r1rlerthyi9
-  on exp_workflow_inputs (port_id);
-
-create index FKmjmnxve10uj2na4jw2et0mrvg
-  on exp_workflow_inputs (workflow_id);
 
 
 create table exp_workflow_outputs
 (
   workflow_id int not null,
-  port_id     int not null
+  port_id     int not null,
+  constraint FKc1esrqi7mpm87s6lppkwueebm
+    foreign key (port_id) references exp_ports (id),
+  constraint FKqrnhq7rsyaknym2y0fx9ds1wm
+    foreign key (workflow_id) references exp_workflow_executions (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKc1esrqi7mpm87s6lppkwueebm
-  on exp_workflow_outputs (port_id);
-
-create index FKqrnhq7rsyaknym2y0fx9ds1wm
-  on exp_workflow_outputs (workflow_id);
 
 
 create table exp_workflows
@@ -1089,23 +990,19 @@ create table exp_workflows
   value        text         null,
   version      varchar(255) null,
   author_id    int          not null,
-  wfms         int          not null
+  wfms         int          not null,
+  constraint FK1s70xnudcejtrpibci2oiyu0g
+    foreign key (wfms) references exp_wfms (id),
+  constraint FKqslqgl3bji8jfhnk39ho8x3cj
+    foreign key (author_id) references core_agents_researchers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK1s70xnudcejtrpibci2oiyu0g
-  on exp_workflows (wfms);
-
-create index FKqslqgl3bji8jfhnk39ho8x3cj
-  on exp_workflows (author_id);
 
 
 create table hibernate_sequence
 (
   next_val bigint null
-)
-  engine = InnoDB;
+);
 
 INSERT INTO eseco.hibernate_sequence (next_val) VALUES (21);
 create table res_component_developers
@@ -1113,13 +1010,13 @@ create table res_component_developers
   component_id int not null,
   developer_id int not null,
   constraint UK_h941jk5dpq11i0uiaqo2t7gby
-    unique (developer_id)
+    unique (developer_id),
+  constraint FKeoykgm79uj440dfm89tkidhgb
+    foreign key (component_id) references res_components (id),
+  constraint FKs0x2dn8b3r81ai68ppx2cyy3j
+    foreign key (developer_id) references core_agents_developers (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKeoykgm79uj440dfm89tkidhgb
-  on res_component_developers (component_id);
 
 
 create table res_component_types
@@ -1128,7 +1025,6 @@ create table res_component_types
     primary key,
   name varchar(255) null
 )
-  engine = InnoDB
   charset = latin1;
 
 INSERT INTO eseco.res_component_types (id, name) VALUES (1, 'Plugin');
@@ -1142,20 +1038,33 @@ create table res_components
   documentation_url text         null,
   name              varchar(255) null,
   author_id         int          not null,
-  type_id           int          not null
+  type_id           int          not null,
+  constraint FKfa2l3vre3kbnar6k9alu8q9fl
+    foreign key (author_id) references core_agents_developers (id),
+  constraint FKgvn6qp9ggx1vjv0xuw9aa8w8w
+    foreign key (type_id) references res_component_types (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FKfa2l3vre3kbnar6k9alu8q9fl
-  on res_components (author_id);
-
-create index FKgvn6qp9ggx1vjv0xuw9aa8w8w
-  on res_components (type_id);
 
 INSERT INTO eseco.res_components (id, date_created, date_updated, documentation_url, name, author_id, type_id) VALUES (1, '2018-12-31 15:25:26', null, null, 'E-SECO - Physics - Distance Traveled', 1, 2);
 INSERT INTO eseco.res_components (id, date_created, date_updated, documentation_url, name, author_id, type_id) VALUES (2, '2018-12-31 15:58:20', null, null, 'E-SECO - Physics - Acceleration Calculator', 1, 2);
 INSERT INTO eseco.res_components (id, date_created, date_updated, documentation_url, name, author_id, type_id) VALUES (3, '2018-12-31 16:36:28', null, null, 'E-SECO - Biology - Specimen Information Search', 1, 2);
+INSERT INTO eseco.res_components (id, date_created, date_updated, documentation_url, name, author_id, type_id) VALUES (4, '2019-02-10 18:13:05', null, null, 'Collaborative Research Environment ', 1, 1);
+create table res_plugins
+(
+  id             int auto_increment
+    primary key,
+  internal_class varchar(255) null,
+  component_id   int          null,
+  constraint UK_7avy3qpxm22uii6g4s9jgnmwm
+    unique (internal_class)
+)
+  engine = MyISAM;
+
+create index FKm6vs8u7lif4nnmgo567srxxgq
+  on res_plugins (component_id);
+
+INSERT INTO eseco.res_plugins (id, internal_class, component_id) VALUES (1, 'br.ufjf.pgcc.eseco.app.plugins.CollaborativeResearchEnvironment.Plugin', 4);
 create table res_workflow_services
 (
   id             int auto_increment
@@ -1167,13 +1076,11 @@ create table res_workflow_services
   url            varchar(255) null,
   component_id   int          null,
   constraint UK_rqe4cpt8u2tqae6mff9ugshfl
-    unique (internal_class)
+    unique (internal_class),
+  constraint FK4xgj81k1ipc821xx0f0scx770
+    foreign key (component_id) references res_components (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK4xgj81k1ipc821xx0f0scx770
-  on res_workflow_services (component_id);
 
 INSERT INTO eseco.res_workflow_services (id, description, internal_class, nature, type, url, component_id) VALUES (1, 'Return the distance traveled by an specified acceleration from between an initial and final speeds', 'br.ufjf.pgcc.eseco.services.eseco.physics.DistanceTraveled', null, 'REST', 'http://nenc.ufjf.br:8080/eseco/api/eseco-physics/distance-traveled', 1);
 INSERT INTO eseco.res_workflow_services (id, description, internal_class, nature, type, url, component_id) VALUES (2, 'Return the acceleration from a change of speed in certain time. Also returns the distance traveled.', 'br.ufjf.pgcc.eseco.services.eseco.physics.AccelerationCalculator', null, 'REST', 'http://nenc.ufjf.br:8080/eseco/api/eseco-physics/acceleration-calculator', 2);
@@ -1191,19 +1098,15 @@ create table res_workflow_services_comments
   rate_star_5        int      null,
   commenter_id       int      not null,
   parent_id          int      null,
-  workflowService_id int      null
+  workflowService_id int      null,
+  constraint FK2sb2migp57btlnwt2ysc2atu
+    foreign key (commenter_id) references core_agents (id),
+  constraint FK7n39gqun30il865diafefctoi
+    foreign key (parent_id) references res_workflow_services_comments (id),
+  constraint FKaq7r193c0ly8s681avret2nrr
+    foreign key (workflowService_id) references res_workflow_services (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK2sb2migp57btlnwt2ysc2atu
-  on res_workflow_services_comments (commenter_id);
-
-create index FK7n39gqun30il865diafefctoi
-  on res_workflow_services_comments (parent_id);
-
-create index FKaq7r193c0ly8s681avret2nrr
-  on res_workflow_services_comments (workflowService_id);
 
 
 create table res_workflow_services_ratings
@@ -1220,16 +1123,13 @@ create table res_workflow_services_ratings
   value_performance   int      null,
   value_reliability   int      null,
   rater_id            int      not null,
-  workflowService_id  int      null
+  workflowService_id  int      null,
+  constraint FK1wsug3y880h83wxsqag980oil
+    foreign key (workflowService_id) references res_workflow_services (id),
+  constraint FKp7jehvgu7w02hpgqleahm7qg1
+    foreign key (rater_id) references core_agents (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK1wsug3y880h83wxsqag980oil
-  on res_workflow_services_ratings (workflowService_id);
-
-create index FKp7jehvgu7w02hpgqleahm7qg1
-  on res_workflow_services_ratings (rater_id);
 
 
 create table res_workflow_services_ratings_invitations
@@ -1243,19 +1143,15 @@ create table res_workflow_services_ratings_invitations
   participated_in_chat bit      null,
   asker_id             int      null,
   rater_id             int      null,
-  workflowService_id   int      null
+  workflowService_id   int      null,
+  constraint FK7t5m8q9o3pt01dwfsdceevtcp
+    foreign key (asker_id) references core_agents_developers (id),
+  constraint FK85bfwpgps3rrcqr0psg9ceqnp
+    foreign key (rater_id) references core_agents_researchers (id),
+  constraint FKkppk4lffpqe7amg9jdasqcb2d
+    foreign key (workflowService_id) references res_workflow_services (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK7t5m8q9o3pt01dwfsdceevtcp
-  on res_workflow_services_ratings_invitations (asker_id);
-
-create index FK85bfwpgps3rrcqr0psg9ceqnp
-  on res_workflow_services_ratings_invitations (rater_id);
-
-create index FKkppk4lffpqe7amg9jdasqcb2d
-  on res_workflow_services_ratings_invitations (workflowService_id);
 
 
 create table sm_eseco_biology_specimen_collection_types
@@ -1263,8 +1159,7 @@ create table sm_eseco_biology_specimen_collection_types
   id   int auto_increment
     primary key,
   name varchar(255) not null
-)
-  engine = InnoDB;
+);
 
 INSERT INTO eseco.sm_eseco_biology_specimen_collection_types (id, name) VALUES (1, 'Observations');
 INSERT INTO eseco.sm_eseco_biology_specimen_collection_types (id, name) VALUES (2, 'Botany');
@@ -1282,7 +1177,6 @@ create table uac_roles
     primary key,
   name varchar(255) not null
 )
-  engine = InnoDB
   charset = latin1;
 
 INSERT INTO eseco.uac_roles (id, name) VALUES (1, 'Admin');
@@ -1306,23 +1200,19 @@ create table uac_users
   constraint UK_kl9p593rs2a8wjpsitrgh7i60
     unique (login)
 )
-  engine = InnoDB
   charset = latin1;
 
 INSERT INTO eseco.uac_users (id, activation_code, activation_expire_date, active, email, login, password, redefinition_code, redefinition_expire_date, register_date) VALUES (1, null, null, true, 'leoaguiarpereira@gmail.com', 'leoaguiarpereira@gmail.com', '94cd166631d14dab533858b9b47e9584a2ff3f65', null, null, '2018-12-31 15:19:39');
 create table uac_users_roles
 (
   id_user int not null,
-  id_role int not null
+  id_role int not null,
+  constraint FK7808thnb4yhr5rw92ikg2h59j
+    foreign key (id_user) references uac_users (id),
+  constraint FKmjqpx78dy0ermw3hvguqs8020
+    foreign key (id_role) references uac_roles (id)
 )
-  engine = InnoDB
   charset = latin1;
-
-create index FK7808thnb4yhr5rw92ikg2h59j
-  on uac_users_roles (id_user);
-
-create index FKmjqpx78dy0ermw3hvguqs8020
-  on uac_users_roles (id_role);
 
 INSERT INTO eseco.uac_users_roles (id_user, id_role) VALUES (1, 2);
 INSERT INTO eseco.uac_users_roles (id_user, id_role) VALUES (1, 3);
