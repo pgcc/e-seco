@@ -130,8 +130,7 @@
                         <h3 class="panel-title">List of Internal Workflow Services</h3>
                     </div>
                     <div class="panel-body">
-
-                        <div id="services" class="table-responsive">
+                        <div id="services">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6">
                                     <form id="frm-actions"
@@ -153,56 +152,59 @@
                                 </div>
                             </div>
 
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="text-center" style="width:40px;">
-                                        <input id="cbx-actions-select-all" title="Select All"
-                                               type="checkbox">
-                                    </th>
-                                    <th>
-                                        <button class="sort" data-sort="service_name">Name</button>
-                                    </th>
-                                    <th class="text-center" style="width:130px;">
-                                        <button class="sort" data-sort="service_type">Type</button>
-                                    </th>
-                                    <th style="width:130px;">
-                                        <button class="sort" data-sort="service_author">Author</button>
-                                    </th>
-                                    <th class="text-center" style="width:130px;">Date Created</th>
-                                    <th style="width:300px;">Description</th>
-                                    <th class="text-center" style="width:60px;">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody class="list">
-                                <c:forEach var="service" items="${services_workflow_list}">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
                                     <tr>
-                                        <td class="text-center">
-                                            <input name="actions-item-${service.component.id}"
-                                                   class="cbx-actions-item" title="Select This"
-                                                   type="checkbox" value="${service.component.id}">
-                                        </td>
-                                        <td class="service_name"><c:out value="${service.component.name}"/></td>
-                                        <td class="service_type text-center"><c:out value="${service.type}"/></td>
-                                        <td class="service_author"><c:out
-                                                value="${service.component.author.agent.name}"/></td>
-                                        <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
-                                                                                value="${service.component.dateCreated}"/></td>
-                                        <td class="service_description text-justify"><c:out value="${service.shortDescription}"/></td>
-                                        <td>
-                                            <a class="btn btn-xs btn-primary"
-                                               href="<c:url value="/components/details/2/${service.component.id}"/>">Explore</a>
-                                        </td>
+                                        <th class="text-center" style="width:40px;">
+                                            <input id="cbx-actions-select-all" title="Select All"
+                                                   type="checkbox">
+                                        </th>
+                                        <th>
+                                            <button class="sort" data-sort="service_name">Name</button>
+                                        </th>
+                                        <th class="text-center" style="width:130px;">
+                                            <button class="sort" data-sort="service_type">Type</button>
+                                        </th>
+                                        <th style="width:130px;">
+                                            <button class="sort" data-sort="service_author">Author</button>
+                                        </th>
+                                        <th class="text-center" style="width:130px;">Date Created</th>
+                                        <th style="width:300px;">Description</th>
+                                        <th class="text-center" style="width:60px;">Actions</th>
                                     </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="list">
+                                    <c:forEach var="service" items="${services_workflow_list}">
+                                        <tr>
+                                            <td class="text-center">
+                                                <input name="actions-item-${service.component.id}"
+                                                       class="cbx-actions-item" title="Select This"
+                                                       type="checkbox" value="${service.component.id}">
+                                            </td>
+                                            <td class="service_name"><c:out value="${service.component.name}"/></td>
+                                            <td class="service_type text-center"><c:out
+                                                    value="${service.type}"/></td>
+                                            <td class="service_author"><c:out
+                                                    value="${service.component.author.agent.name}"/></td>
+                                            <td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd"
+                                                                                    value="${service.component.dateCreated}"/></td>
+                                            <td class="service_description text-justify"><c:out
+                                                    value="${service.shortDescription}"/></td>
+                                            <td>
+                                                <a class="btn btn-xs btn-primary"
+                                                   href="<c:url value="/components/details/2/${service.component.id}"/>">Explore</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
-        </div>
         </div>
     </jsp:body>
 </t:layout-app>

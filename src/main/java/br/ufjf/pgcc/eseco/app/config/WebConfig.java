@@ -16,6 +16,7 @@ import br.ufjf.pgcc.eseco.app.converter.StringToDateConverter;
 import br.ufjf.pgcc.eseco.app.converter.WorkflowActivityIdToWorkflowActivityConverter;
 import br.ufjf.pgcc.eseco.app.converter.WorkflowIdToWorkflowConverter;
 import br.ufjf.pgcc.eseco.app.converter.WorkflowServiceIdToWorkflowServiceConverter;
+import br.ufjf.pgcc.eseco.app.interceptor.PluginsInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -38,11 +39,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     NotificationsInterceptor notificationsInterceptor() {
         return new NotificationsInterceptor();
     }
-    
+
+    @Bean
+    PluginsInterceptor pluginsInterceptor() {
+        return new PluginsInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticatorInterceptor());
         registry.addInterceptor(notificationsInterceptor());
+        registry.addInterceptor(pluginsInterceptor());
     }
     
     @Override

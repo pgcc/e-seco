@@ -64,6 +64,7 @@
 
                 drawGraph(graphData, target, width);
             };
+
             function mountDataToUsageAndRelations(itemData) {
 
                 var graphData = {
@@ -90,56 +91,56 @@
 
                 <c:forEach var="activity" items="${activitiesList}">
 
-                    graphData.nodes.push({
-                        "name": "${activity.name}", "group": groupId, "kind": 3
-                    });
-                    graphData.links.push({
-                        "source": 0, "target": groupId, "value": 1, "type": "arrow"
-                    });
+                graphData.nodes.push({
+                    "name": "${activity.name}", "group": groupId, "kind": 3
+                });
+                graphData.links.push({
+                    "source": 0, "target": groupId, "value": 1, "type": "arrow"
+                });
 
-                    groupIdActivity = groupId;
-                    groupId++;
+                groupIdActivity = groupId;
+                groupId++;
 
-                    <c:forEach var="workflow" items="${activity.workflows}">
+                <c:forEach var="workflow" items="${activity.workflows}">
 
-                        graphData.nodes.push({
-                            "name": "${workflow.name}", "group": groupId, "kind": 4
-                        });
-                        graphData.links.push({
-                            "source": groupIdActivity, "target": groupId, "value": 1, "type": "arrow"
-                        });
+                graphData.nodes.push({
+                    "name": "${workflow.name}", "group": groupId, "kind": 4
+                });
+                graphData.links.push({
+                    "source": groupIdActivity, "target": groupId, "value": 1, "type": "arrow"
+                });
 
-                        groupIdWorkflow = groupId;
-                        groupId++;
+                groupIdWorkflow = groupId;
+                groupId++;
 
-                        <c:forEach var="experiment" items="${workflow.experiments}">
+                <c:forEach var="experiment" items="${workflow.experiments}">
 
-                            graphData.nodes.push({
-                                "name": "${experiment.name}", "group": groupId, "kind": 5
-                            });
-                            graphData.links.push({
-                                "source": groupIdWorkflow, "target": groupId, "value": 1, "type": "arrow"
-                            });
+                graphData.nodes.push({
+                    "name": "${experiment.name}", "group": groupId, "kind": 5
+                });
+                graphData.links.push({
+                    "source": groupIdWorkflow, "target": groupId, "value": 1, "type": "arrow"
+                });
 
-                            groupIdExperiment = groupId;
-                            groupId++;
+                groupIdExperiment = groupId;
+                groupId++;
 
-                                <c:forEach var="researcher" items="${experiment.researchers}">
+                <c:forEach var="researcher" items="${experiment.researchers}">
 
-                                graphData.nodes.push({
-                                    "name": "${researcher.agent.name}", "group": groupId, "kind": 6
-                                });
-                                graphData.links.push({
-                                    "source": groupId, "target": groupIdExperiment, "value": 1, "type": "arrow"
-                                });
+                graphData.nodes.push({
+                    "name": "${researcher.agent.name}", "group": groupId, "kind": 6
+                });
+                graphData.links.push({
+                    "source": groupId, "target": groupIdExperiment, "value": 1, "type": "arrow"
+                });
 
-                                groupId++;
+                groupId++;
 
-                                </c:forEach>
+                </c:forEach>
 
-                        </c:forEach>
+                </c:forEach>
 
-                    </c:forEach>
+                </c:forEach>
 
                 </c:forEach>
 
@@ -148,6 +149,7 @@
 
                 return graphData;
             }
+
             showUsageAndRelationsGraphVisualization();
 
 
@@ -178,6 +180,7 @@
                     drawPie(pieData, "#box-chart-researcher-ratings-pie", width)
                 }
             };
+
             function mountDataToPie(itemData) {
                 var pieData = [
                     {"rating": "Approvals", "quantity": componentContextJson.totalApprovals},
@@ -186,6 +189,7 @@
 
                 return pieData;
             }
+
             showResearcherRatingsVisualization();
 
 
@@ -216,6 +220,7 @@
                 var treemapData = mountDataToTreemap(componentContextJson);
                 drawTreemap(treemapData, "#box-chart-dependencies-treemap", width);
             };
+
             function mountDataToTreemap(itemData) {
                 var treemapData = {
                     "name": itemData.wsInternalClass,
@@ -260,6 +265,7 @@
 
                 return treemapData;
             }
+
             showDependenciesVisualization();
 
             // Graph
@@ -272,6 +278,7 @@
 
                 drawGraph(graphData, target, width);
             };
+
             function mountDataToGraph(itemData) {
                 var data1 = itemData.wsInternalClassInternalMetrics.esecoWorkflowServicesNames;
                 var data2 = itemData.wsInternalClassInternalMetrics.esecoCoreServicesNames;
@@ -534,6 +541,7 @@
 
                 return graphData;
             }
+
             showDependenciesGraphVisualization();
 
 
@@ -646,12 +654,14 @@
                     return string;
                 }
             }
+
             function decodeEntities(encodedString) {
                 var textArea = document.createElement('textarea');
                 textArea.innerHTML = encodedString;
                 var regexp = new RegExp("<br>", 'g');
                 return Utf8.decode(textArea.value.replace(regexp, '\n'));
             }
+
             function mountBoxCommentStars(data, ommitlink) {
 
                 var rateStarsTotal = data.rateStarsTotal;
@@ -689,6 +699,7 @@
                         )
                     );
             }
+
             function addCommentToTable(tbody, data, isChild) {
                 var photoWidth = isChild ? "50px" : "80px";
                 var tr = null;
@@ -926,7 +937,9 @@
                                     </li>
                                     <li class="list-group-item">
                                         <span>Author</span>
-                                        <span><a href="<c:url value="/agents/${component.author.agent.id}"/>" target="_blank">${componentContextInfo.author} <i class="fa fa-external-link"></i></a></span>
+                                        <span><a href="<c:url value="/agents/${component.author.agent.id}"/>"
+                                                 target="_blank">${componentContextInfo.author} <i
+                                                class="fa fa-external-link"></i></a></span>
                                     </li>
                                     <li class="list-group-item">
                                         <span>Date Created</span>

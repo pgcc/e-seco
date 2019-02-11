@@ -78,6 +78,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         if (roleResearcher) {
             switch (route) {
                 case "api":
+                case "plugins":
                 case "not-authorized":
                 case "logout":
                 case "home":
@@ -103,6 +104,7 @@ public class AuthenticatorInterceptor implements HandlerInterceptor {
         if (roleDeveloper) {
             switch (route) {
                 case "api":
+                case "plugins":
                 case "not-authorized":
                 case "logout":
                 case "home":

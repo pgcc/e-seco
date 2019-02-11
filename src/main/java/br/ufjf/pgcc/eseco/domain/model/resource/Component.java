@@ -50,6 +50,9 @@ public class Component {
     @OneToOne(mappedBy = "component", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private WorkflowService workflowService;
 
+    @OneToOne(mappedBy = "component", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Plugin plugin;
+
 
     /* GETTERS/SETTERS */
 
@@ -125,4 +128,11 @@ public class Component {
         this.workflowService = workflowService;
     }
 
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(Plugin plugin) {
+        this.plugin = plugin;
+    }
 }

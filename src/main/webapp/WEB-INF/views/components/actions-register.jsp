@@ -18,10 +18,20 @@
             $("#component-type").on("change", function () {
                 if ($(this).find(":selected").val() == 1) {
                     $(".form-workflow_service-info").fadeOut(function () {
+                        $(".form-plugin-info input, .form-plugin-info select, .form-plugin-info textarea")
+                            .attr("disabled", false);
+                        $(".form-workflow_service-info input, .form-workflow_service-info select, .form-workflow_service-info textarea")
+                            .attr("disabled", true);
+
                         $(".form-plugin-info").fadeIn();
                     });
                 } else if ($(this).find(":selected").val() == 2) {
                     $(".form-plugin-info").fadeOut(function () {
+                        $(".form-plugin-info input, .form-plugin-info select, .form-plugin-info textarea")
+                            .attr("disabled", true);
+                        $(".form-workflow_service-info input, .form-workflow_service-info select, .form-workflow_service-info textarea")
+                            .attr("disabled", false);
+
                         $(".form-workflow_service-info").fadeIn();
                     });
                 }else{
@@ -71,7 +81,10 @@
                                     </div>
 
                                     <div class="form-plugin-info" style="display:none;">
-
+                                        <div class="form-group">
+                                            <label for="plugin-internal_class">Internal Class Name</label>
+                                            <input id="plugin-internal_class" name="plugin-internal_class" class="form-control" required>
+                                        </div>
                                     </div>
 
                                     <div class="form-workflow_service-info" style="display:none;">

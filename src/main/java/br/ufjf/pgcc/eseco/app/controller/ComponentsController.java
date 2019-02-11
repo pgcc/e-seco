@@ -4,6 +4,7 @@ import br.ufjf.biocatalogue.exception.BioCatalogueException;
 import br.ufjf.pgcc.eseco.app.model.WorkflowServiceSearchResult;
 import br.ufjf.pgcc.eseco.app.service.BioCatalogueService;
 import br.ufjf.pgcc.eseco.domain.model.analysis.ReseacherRelevance;
+import br.ufjf.pgcc.eseco.domain.model.context.PluginContextModel;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceContextModel;
 import br.ufjf.pgcc.eseco.domain.model.context.WorkflowServiceRatingContextModel;
 import br.ufjf.pgcc.eseco.domain.model.core.Agent;
@@ -15,6 +16,7 @@ import br.ufjf.pgcc.eseco.domain.model.experiment.Workflow;
 import br.ufjf.pgcc.eseco.domain.model.resource.*;
 import br.ufjf.pgcc.eseco.domain.model.uac.User;
 import br.ufjf.pgcc.eseco.domain.service.analysis.ResearcherRelevanceService;
+import br.ufjf.pgcc.eseco.domain.service.context.PluginContextModelService;
 import br.ufjf.pgcc.eseco.domain.service.resource.*;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceContextModelService;
 import br.ufjf.pgcc.eseco.domain.service.context.WorkflowServiceRatingContextModelService;
@@ -42,7 +44,9 @@ public class ComponentsController {
     private ComponentService componentService;
     private ComponentTypeService componentTypeService;
     private WorkflowServiceService workflowServiceService;
+    private PluginService pluginService;
     private BioCatalogueService bioCatalogueService;
+    private PluginContextModelService pluginContextModelService;
     private WorkflowServiceContextModelService workflowServiceContextModelService;
     private WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService;
     private ResearcherService researcherService;
@@ -55,7 +59,9 @@ public class ComponentsController {
     public ComponentsController(ComponentService componentService,
                                 ComponentTypeService componentTypeService,
                                 WorkflowServiceService workflowServiceService,
+                                PluginService pluginService,
                                 BioCatalogueService bioCatalogueService,
+                                PluginContextModelService pluginContextModelService,
                                 WorkflowServiceContextModelService workflowServiceContextModelService,
                                 WorkflowServiceRatingContextModelService workflowServiceRatingContextModelService,
                                 ResearcherService researcherService,
@@ -66,7 +72,9 @@ public class ComponentsController {
         this.componentService = componentService;
         this.componentTypeService = componentTypeService;
         this.workflowServiceService = workflowServiceService;
+        this.pluginService = pluginService;
         this.bioCatalogueService = bioCatalogueService;
+        this.pluginContextModelService = pluginContextModelService;
         this.workflowServiceContextModelService = workflowServiceContextModelService;
         this.workflowServiceRatingContextModelService = workflowServiceRatingContextModelService;
         this.researcherService = researcherService;
@@ -106,11 +114,37 @@ public class ComponentsController {
             session.removeAttribute("comment_rated");
         }
 
+        Component component = componentService.find(id);
+        model.addAttribute("component", component);
+        String detailsPage = "";
+
         switch (type) {
             case DETAIL_PLUGIN:
-            case DETAIL_WORKFLOW_SERVICE_INTERNAL:
-                Component component = componentService.find(id);
                 if (null != component) {
+                    detailsPage = "components/details-plugin";
+
+                    // Create context info for this component
+                    PluginContextModel componentContextInfo = null;
+                    try {
+                        componentContextInfo = pluginContextModelService.createModelInfo(component);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Transform context info into JSON String
+                    Gson gson = new GsonBuilder().create();
+                    String componentContextInfoJSON = gson.toJson(componentContextInfo);
+
+                    model.addAttribute("componentContextInfo", componentContextInfo);
+                    model.addAttribute("componentContextInfoJSON", componentContextInfoJSON);
+                }
+
+                break;
+
+            case DETAIL_WORKFLOW_SERVICE_INTERNAL:
+                if (null != component) {
+                    detailsPage = "components/details-workflowservice";
+
                     // Create context info for this component
                     WorkflowServiceContextModel componentContextInfo = null;
                     try {
@@ -145,8 +179,8 @@ public class ComponentsController {
                         researchersList = componentContextInfo.getResearchersUsing();
                         componentContextInfo.setResearchersUsing(null);
 
-                        for(WorkflowServiceRating workflowServiceRating : componentContextInfo.getWsRatings()){
-                            if(workflowServiceRating.getType() == 2){
+                        for (WorkflowServiceRating workflowServiceRating : componentContextInfo.getWsRatings()) {
+                            if (workflowServiceRating.getType() == 2) {
                                 ratingsList.add(workflowServiceRating);
                             }
                         }
@@ -167,7 +201,6 @@ public class ComponentsController {
                     Gson gson = new GsonBuilder().create();
                     String componentContextInfoJSON = gson.toJson(componentContextInfo);
 
-                    model.addAttribute("component", component);
                     model.addAttribute("componentContextInfo", componentContextInfo);
                     model.addAttribute("componentContextInfoJSON", componentContextInfoJSON);
                     model.addAttribute("usedEsecoWorkflowServicesList", usedEsecoWorkflowServicesList);
@@ -179,6 +212,7 @@ public class ComponentsController {
                     model.addAttribute("commentsList", commentsList);
                     model.addAttribute("rootCommentsList", rootCommentsList);
                 }
+
                 break;
 
             case DETAIL_WORKFLOW_SERVICE_EXTERNAL_BIOCATALOGUE:
@@ -186,7 +220,7 @@ public class ComponentsController {
                 break;
         }
 
-        return "components/details";
+        return detailsPage;
     }
 
     @RequestMapping(value = "/components/details/{type}/{id}/ratings-visualization")
@@ -240,7 +274,11 @@ public class ComponentsController {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @RequestMapping(value = "/components/plugins")
-    public String plugins() {
+    public String plugins(Model model) {
+        List<Plugin> pluginsList = pluginService.findAll();
+
+        model.addAttribute("plugins_list", pluginsList);
+
         return "components/explore-plugins";
     }
 
@@ -295,40 +333,56 @@ public class ComponentsController {
         String name = request.getParameter("component-name");
         String type = request.getParameter("component-type");
         String documentation = request.getParameter("component-documentation");
-        String wsInternalClass = request.getParameter("ws-internal_class");
-        String wsType = request.getParameter("ws-type");
-        String wsUrl = request.getParameter("ws-url");
-        String wsDescription = request.getParameter("ws-description");
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        // Get Logged User from Session
+        User user = (User) session.getAttribute("logged_user");
+
+        // Get User Agent
+        Agent agent = user.getAgent();
+
+        ComponentType componentType = componentTypeService.find(Integer.parseInt(type));
+        Component component = new Component();
+        component.setName(name);
+        if (!documentation.equals("")) {
+            component.setDocumentationUrl(documentation);
+        }
+        component.setType(componentType);
+        component.setAuthor(agent.getDeveloper());
+        component.setDateCreated(new Date());
+
+        try {
+            component = componentService.add(component);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // PLUGIN
         if (type.equals("1")) {
+            try {
+                String pluginInternalClass = request.getParameter("plugin-internal_class");
 
+                Plugin plugin = new Plugin();
+                plugin.setInternalClass(pluginInternalClass);
+                plugin.setComponent(component);
 
-        // WORKFLOW SERVICE
-        } else if (type.equals("2")) {
+                pluginService.add(plugin);
 
-            // Get Session
-            HttpSession session = request.getSession();
+                return "redirect:/components/details/1/" + component.getId();
 
-            // Get Logged User from Session
-            User user = (User) session.getAttribute("logged_user");
-
-            // Get User Agent
-            Agent agent = user.getAgent();
-
-            ComponentType componentType = componentTypeService.find(Integer.parseInt(type));
-
-            Component component = new Component();
-            component.setName(name);
-            component.setType(componentType);
-            component.setAuthor(agent.getDeveloper());
-            component.setDateCreated(new Date());
-            if (!documentation.equals("")) {
-                component.setDocumentationUrl(documentation);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
+            // WORKFLOW SERVICE
+        } else if (type.equals("2")) {
             try {
-                component = componentService.add(component);
+                String wsInternalClass = request.getParameter("ws-internal_class");
+                String wsType = request.getParameter("ws-type");
+                String wsUrl = request.getParameter("ws-url");
+                String wsDescription = request.getParameter("ws-description");
 
                 WorkflowService workflowService = new WorkflowService();
                 workflowService.setInternalClass(wsInternalClass);
@@ -337,7 +391,7 @@ public class ComponentsController {
                 workflowService.setDescription(wsDescription);
                 workflowService.setComponent(component);
 
-                workflowService = workflowServiceService.add(workflowService);
+                workflowServiceService.add(workflowService);
 
                 return "redirect:/components/details/2/" + component.getId();
 

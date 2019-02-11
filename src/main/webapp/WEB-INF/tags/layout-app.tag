@@ -69,7 +69,25 @@
                     <li><a href="<c:url value="/experiments/workflows"/>">Workflows</a></li>
                 </ul>
             </li>
+
             <li><a href="<c:url value="/components"/>"><i class="fa fa-cogs"></i> <span>COMPONENTS</span></a></li>
+
+            <c:if test="${not empty sessionScope.eseco_plugins_menu_entries}">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-plug"></i> <span>PLUGINS</span></a>
+                <ul class="dropdown-menu">
+                    <c:forEach var="plugin_menu_entry" items="${sessionScope.eseco_plugins_menu_entries}" varStatus="loop">
+                    <li><a href="<c:url value="/plugins${plugin_menu_entry.uri}"/>">${plugin_menu_entry.title}</a></li>
+
+                        <c:if test="${!loop.last}">
+                            <li role="separator" class="divider"></li>
+                        </c:if>
+                    </c:forEach>
+                </ul>
+            </li>
+            </c:if>
+
             <li class="dropdown">
                 <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-cog"></i> <span>CONFIG</span></a>
@@ -109,8 +127,8 @@
                     </c:if>
                 </ul>
             </li>
-
         </ul>
+
         <ul class="top-menu-right">
             <li>
                 <div class="dropdown">
@@ -178,25 +196,25 @@
 </header>
 <main>
 
+    <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}"/>
+    <c:if test="${urlParts[1] != null && urlParts[1] != 'plugins'}">
     <div class="main-menu">
-        <c:set var="urlParts" value="${fn:split(requestScope['javax.servlet.forward.request_uri'], '/')}"/>
-        <c:if test="${urlParts[1] != null}">
-            <c:choose>
-                <c:when test="${urlParts[2]!= null}">
-                    <c:catch var="e">
-                        <jsp:include
-                                page="/WEB-INF/views/${urlParts[1]}/${urlParts[2]}/${urlParts[1]}-${urlParts[2]}-menu.jsp"/>
-                    </c:catch>
-                    <c:if test="${!empty e}">
-                        <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
-                    </c:if>
-                </c:when>
-                <c:otherwise>
+        <c:choose>
+            <c:when test="${urlParts[2]!= null}">
+                <c:catch var="e">
+                    <jsp:include
+                            page="/WEB-INF/views/${urlParts[1]}/${urlParts[2]}/${urlParts[1]}-${urlParts[2]}-menu.jsp"/>
+                </c:catch>
+                <c:if test="${!empty e}">
                     <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
-                </c:otherwise>
-            </c:choose>
-        </c:if>
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="/WEB-INF/views/${urlParts[1]}/${urlParts[1]}-menu.jsp"/>
+            </c:otherwise>
+        </c:choose>
     </div>
+    </c:if>
 
     <div class="main-content container-fluid">
         <jsp:doBody/>
