@@ -13,6 +13,8 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
+    background: url('../../../resources/images/eseco-bg.jpg');
+    position: relative;
 }
 
 @media (min-width: 768px) {
@@ -142,6 +144,7 @@ body.structure-login {
 .structure-app-inner main {
     display: flex;
     flex: 1;
+    background: #fff;
 }
 
 .structure-app-inner .main-menu {
@@ -242,6 +245,14 @@ body.structure-login {
 /**********************************************************************************************************************/
 /*** COMPONENTS                                                                                                       */
 /**********************************************************************************************************************/
+
+/* Perspective Page View */
+#showMenu{
+    position: fixed;
+    bottom: 0;
+
+}
+
 
 /* Panel Heading Buttons */
 div.pnl-heading-buttons {

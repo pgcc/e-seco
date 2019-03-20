@@ -7,7 +7,7 @@
 --------------------------------------------------
 
 ----------
-Basic URI
+BASIC URI
 
     The E-Seco APIs responds to URIs like: http://nenc.ufjf.br:8080/eseco/api/{namespace}/{serviceName}
 
@@ -25,8 +25,9 @@ Basic URI
         
         Ex.: For a webservice which internal class is: br.ufjf.eseco.services.physics.AccelerationCalculator, the serviceName would be "acceleration-calculator".
     
+    
 ----------
-Return
+RETURN
 
     All E-Seco API calls returns an json standardized return model. This model may have the indexes:
     
@@ -41,7 +42,7 @@ Return
 
    
 ----------
-Methods
+METHODS
 
     The Basic URI of the webservice points to the index of the webservice, where its methods is listed in the "links" index. 
     The methods of the webservice may me called passing the "m" parameter.
@@ -49,23 +50,19 @@ Methods
     
 
 ----------
-Parameters
+PARAMETERS
     
     The parameters that are required and/or accepted by each webservice method is passed through the parameter "p"
 
+    http://nenc.ufjf.br:8080/eseco/api/eseco-physics/distance-traveled
+    http://nenc.ufjf.br:8080/eseco/api/eseco-physics/distance-traveled?m=getJson&p=0&p=146.3&p=26.6
 
+    http://nenc.ufjf.br:8080/eseco/api/eseco-physics/acceleration-calculator
+    http://nenc.ufjf.br:8080/eseco/api/eseco-physics/acceleration-calculator?m=getJson&p=0&p=146.3&p=5.50
 
-
-
-http://localhost:8888/eseco/api/eseco-physics/distance-traveled
-http://localhost:8888/eseco/api/eseco-physics/distance-traveled?m=getJson&p=0&p=146.3&p=26.6
-
-http://localhost:8888/eseco/api/eseco-physics/acceleration-calculator
-http://localhost:8888/eseco/api/eseco-physics/acceleration-calculator?m=getJson&p=0&p=146.3&p=5.50
-
-http://localhost:8888/eseco/api/eseco-biology/specimen-information-search
-http://localhost:8888/eseco/api/eseco-biology/specimen-information-search?m=getSpecimensByCollectionType&p=Crustacea
-http://localhost:8888/eseco/api/eseco-biology/specimen-information-search?m=getSpecimenCollectionTypes
+    http://nenc.ufjf.br:8080/eseco/api/eseco-biology/specimen-information-search
+    http://nenc.ufjf.br:8080/eseco/api/eseco-biology/specimen-information-search?m=getSpecimensByCollectionType&p=Crustacea
+    http://nenc.ufjf.br:8080/eseco/api/eseco-biology/specimen-information-search?m=getSpecimenCollectionTypes
 
 
 

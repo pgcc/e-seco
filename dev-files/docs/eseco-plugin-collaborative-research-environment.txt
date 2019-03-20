@@ -1,0 +1,115 @@
+/**************************************************************************************************/
+/*** E-SECO - PLUGIN - COLLABORATIVE RESEARCH ENVIRONMENT (CRE)                                   */
+/**************************************************************************************************/
+
+
+--------------------------------------------------
+-- E-SECO PLUGIN
+--------------------------------------------------
+
+----------
+DESCRIÇÃO
+
+    Ambiente onde a colaboração entre os usuários da plataforma é operada e gerenciada.
+    Este ambiente fornece meios para que usuários entrem em contato uns com os outros.
+    Também expõe as ações de cada um, no sentido de favorecer a contextualização de cada usuário.
+    Além disso, esse ambiente permite o controle de tarefas, tanto individuais quanto de grupo a ser realizadas nos experimentos.
+
+
+----------
+ARQUIVOS
+
+    br.ufjf.pgcc.eseco.app.plugins.CollaborativeResearchEnvironment.Plugin
+    br.ufjf.pgcc.eseco.app.plugins.CollaborativeResearchEnvironment.PluginMenuEntryFeature
+    br.ufjf.pgcc.eseco.app.plugins.CollaborativeResearchEnvironment.controller.CREController
+
+
+
+--------------------------------------------------
+-- DATA SOURCES
+--------------------------------------------------
+
+----------
+DESCRIÇÃO
+
+    Os Data Sources são consultas de dados que podem ser realizadas pelos usuários da plataforma, no intuito de obter dados a serem utilizados em suas experimentações.
+
+
+----------
+RECURSOS DISPONÍVEIS
+
+    -> Listar
+        Lista de todos os Data Sources cadastrados, com a opção de visualizar detalhes em cada um.
+
+    -> Detalhar
+        Detalhamento do Data Source, expondo suas informações básicas e permitindo executar uma consulta em tempo real e receber seus dados.
+
+    -> Adicionar
+        Cadastro de Data Source com nome e parametros para diversos Data Providers.
+
+    -> Atualizar
+        Atualização de informações de um Data Source.
+
+
+----------
+ARQUIVOS
+
+    br.ufjf.pgcc.eseco.app.controller.ExperimentDataSourceController
+    br.ufjf.pgcc.eseco.domain.model.experiment.DataSource
+    br.ufjf.pgcc.eseco.domain.model.experiment.DataSourceProvider
+    br.ufjf.pgcc.eseco.domain.model.experiment.DataSourceProviderParameter
+    br.ufjf.pgcc.eseco.domain.dao.experiment.DataSourceDAO
+    br.ufjf.pgcc.eseco.domain.dao.experiment.DataSourceProviderDAO
+    br.ufjf.pgcc.eseco.domain.dao.experiment.DataSourceProviderParameterDAO
+    br.ufjf.pgcc.eseco.domain.service.experiment.DataSourceService
+    br.ufjf.pgcc.eseco.domain.service.experiment.DataSourceProviderParameterService
+    br.ufjf.pgcc.eseco.domain.service.experiment.DataSourceProviderService
+    main/webapp/WEB-INF/views/experiments/dataSources/add.jsp
+    main/webapp/WEB-INF/views/experiments/dataSources/list.jsp
+    main/webapp/WEB-INF/views/experiments/dataSources/view.jsp
+    main/webapp/WEB-INF/views/experiments/dataSources/update.jsp
+    main/webapp/WEB-INF/views/experiments/dataSources/experiments-dataSources-menu.jsp
+
+
+----------
+TABELAS EM BANCO DE DADOS
+
+    exp_data_sources
+    exp_data_sources_providers
+    exp_data_sources_providers_parameters
+
+
+
+--------------------------------------------------
+-- DATA PROVIDERS
+--------------------------------------------------
+
+----------
+DESCRIÇÃO
+
+    Atua como uma entidade de apoio ao Data Source, pois, são responsáveis por indicar qual a origem da consulta a ser realizada pelo Data Source.
+    Os Data Providers podem requerir parâmetros (de acordo com as exigências da origem) e o Data Source que o utilizar deverá informar esses parâmetros para a adequada execução da consulta.
+
+
+----------
+ARQUIVOS
+
+    br.ufjf.pgcc.eseco.domain.model.experiment.DataProvider
+    br.ufjf.pgcc.eseco.domain.model.experiment.DataProviderParameter
+    br.ufjf.pgcc.eseco.domain.dao.experiment.DataProviderDAO
+    br.ufjf.pgcc.eseco.domain.dao.experiment.DataProviderParameterDAO
+    br.ufjf.pgcc.eseco.domain.service.experiment.DataProviderService
+    br.ufjf.pgcc.eseco.domain.service.experiment.DataProviderParameterService
+
+
+----------
+TABELAS EM BANCO DE DADOS
+
+    exp_data_providers
+    exp_data_providers_parameters
+
+
+
+
+
+

@@ -7,7 +7,7 @@
 --------------------------------------------------
 
 ----------
-Basic URI
+BASIC URI
 
 
 
@@ -17,7 +17,7 @@ Basic URI
 --------------------------------------------------
 
 ----------
-Classes
+CLASSES
 
 PluginFeatures
 PluginInterface

@@ -22,7 +22,11 @@
 
 
     <jsp:attribute name="javascripts">
-
+        <script type="text/javascript">
+            $('.integrated-data-item').on('click', function () {
+                $('#myModal').modal();
+            });
+        </script>
     </jsp:attribute>
 
 
@@ -112,10 +116,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-xs-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">AA</h3>
+                                <h3 class="panel-title">Integrated</h3>
                             </div>
                             <div class="panel-body">
 
@@ -130,18 +134,18 @@
                                     <tbody>
                                     <tr>
                                         <td>1</td>
-                                        <td>Global Horizontal Irradiance center value (mean)</td>
-                                        <td>215</td>
+                                        <td>Wind Speed</td>
+                                        <td>2.87</td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td>Global Horizontal Irradiance 10th percentile value (low scenario)</td>
-                                        <td>84</td>
+                                        <td>Wind Gust</td>
+                                        <td>5.28</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="integrated-data-item">
                                         <td>3</td>
-                                        <td>Global Horizontal Irradiance 90th percentile value (high scenario)</td>
-                                        <td>408</td>
+                                        <td>Wind Bearing</td>
+                                        <td>26</td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
@@ -204,18 +208,18 @@
                                     </tr>
                                     <tr>
                                         <td>15</td>
-                                        <td>Wind Speed</td>
-                                        <td>2.87</td>
+                                        <td>Global Horizontal Irradiance center value (mean)</td>
+                                        <td>215</td>
                                     </tr>
                                     <tr>
                                         <td>16</td>
-                                        <td>Wind Gust</td>
-                                        <td>5.28</td>
+                                        <td>Global Horizontal Irradiance 10th percentile value (low scenario)</td>
+                                        <td>84</td>
                                     </tr>
                                     <tr>
                                         <td>17</td>
-                                        <td>Wind Bearing</td>
-                                        <td>26</td>
+                                        <td>Global Horizontal Irradiance 90th percentile value (high scenario)</td>
+                                        <td>408</td>
                                     </tr>
                                     <tr>
                                         <td>18</td>
@@ -270,48 +274,54 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-xs-12 col-sm-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">BB</h3>
-                            </div>
-                            <div class="panel-body">
-
-                                <table class="table">
-                                    <tr>
-                                        <td>uses standard</td>
-                                        <td>W/m^2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>from data provider</td>
-                                        <td>Solcast</td>
-                                    </tr>
-                                    <tr>
-                                        <td>measured by sensor</td>
-                                        <td>pyranometer</td>
-                                    </tr>
-                                    <tr>
-                                        <td>has spectral range</td>
-                                        <td>300nm &#8208; 30000nm</td>
-                                    </tr>
-                                    <tr>
-                                        <td>has view angle</td>
-                                        <td>180°</td>
-                                    </tr>
-                                    <tr>
-                                        <td>has definition</td>
-                                        <td> "is the total amount of shortwave radiation
-                                            received<br>from above by a surface horizontal to the ground"
-                                        </td>
-                                    </tr>
-                                </table>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Wind Bearing</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>Value</td>
+                                <td>26</td>
+                            </tr>
+                            <tr>
+                                <td>Unit</td>
+                                <td>Degree</td>
+                            </tr>
+                            <tr>
+                                <td>Sensor</td>
+                                <td>Anemometer</td>
+                            </tr>
+                            <tr>
+                                <td>Provider</td>
+                                <td>Dark Sky</td>
+                            </tr>
+                            <tr>
+                                <td>Location</td>
+                                <td>-22.458778, -44.848139</td>
+                            </tr>
+                            <tr>
+                                <td>Definition</td>
+                                <td>Is the direction that the wind is coming from in degrees, with true north at 0º and
+                                progressing clockwise. If wind speed is 0, then this value will not be defined.</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
     </jsp:body>
